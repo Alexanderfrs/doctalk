@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Mic, Volume2, CheckCircle, RefreshCw, Type, BookOpen } from "lucide-react";
+import { ArrowLeft, Mic, Volume2, CheckCircle, RefreshCw, Type, BookOpen, Lightbulb } from "lucide-react";
 import { toast } from "sonner";
 import scenarios from "@/data/scenarios";
 import useTextToSpeech from "@/hooks/useTextToSpeech";
@@ -28,8 +27,10 @@ const ScenarioDetail = () => {
   const [loadingPage, setLoadingPage] = useState(true);
   const [relevantVocabulary, setRelevantVocabulary] = useState<VocabularyWord[]>([]);
   const [usedVocabulary, setUsedVocabulary] = useState<string[]>([]);
+  const [suggestedVocabulary, setSuggestedVocabulary] = useState<VocabularyWord[]>([]);
   
   const userResponseRef = useRef<HTMLInputElement>(null);
+  const recordingPromptShown = useRef(false);
 
   const { speak, isSpeaking } = useTextToSpeech();
   const { 
@@ -38,18 +39,32 @@ const ScenarioDetail = () => {
     startListening, 
     stopListening, 
     resetText,
-    hasRecognitionSupport 
+    hasRecognitionSupport,
+    error: recognitionError
   } = useVoiceRecognition({
     language: 'de-DE',
     continuous: true,
-    onResult: (result) => {
-      console.log("Speech recognition result:", result);
+    onResult: (result, isFinal) => {
+      console.log("Speech recognition result:", result, "isFinal:", isFinal);
     },
     onError: (error) => {
       console.error("Speech recognition error:", error);
-      toast.error("Fehler bei der Spracherkennung. Bitte versuchen Sie es erneut.");
+      if (!error.includes("not supported")) {
+        toast.error("Fehler bei der Spracherkennung. Bitte versuchen Sie es erneut.");
+      } else {
+        toast.error("Ihr Browser unterstützt keine Spracherkennung. Bitte verwenden Sie die Texteingabe.");
+        setInputMethod("text");
+      }
     }
   });
+
+  useEffect(() => {
+    if (recognitionError && recognitionError.includes("not supported") && !recordingPromptShown.current) {
+      toast.error("Ihr Browser unterstützt keine Spracherkennung. Bitte verwenden Sie die Texteingabe.");
+      setInputMethod("text");
+      recordingPromptShown.current = true;
+    }
+  }, [recognitionError]);
 
   useEffect(() => {
     const foundScenario = scenarios.find(s => s.id === id);
@@ -66,6 +81,9 @@ const ScenarioDetail = () => {
           }
         });
         setRelevantVocabulary(vocabWords.slice(0, 10)); // Limit to 10 words total
+        
+        // Randomly select 3 words to suggest for each dialogue
+        updateSuggestedVocabulary(vocabWords);
       }
     } else {
       navigate("/practice");
@@ -83,6 +101,21 @@ const ScenarioDetail = () => {
     setUserResponse(text);
   }, [text]);
 
+  const updateSuggestedVocabulary = (allVocab) => {
+    if (allVocab && allVocab.length > 0) {
+      // Shuffle array and take first 3 elements
+      const shuffled = [...allVocab].sort(() => 0.5 - Math.random());
+      setSuggestedVocabulary(shuffled.slice(0, 3));
+    }
+  };
+
+  // Update suggested vocabulary when moving to the next dialogue
+  useEffect(() => {
+    if (relevantVocabulary.length > 0) {
+      updateSuggestedVocabulary(relevantVocabulary);
+    }
+  }, [currentDialogueIndex, relevantVocabulary]);
+
   const playCurrentLine = () => {
     if (!scenario || !scenario.dialogue[currentDialogueIndex]) return;
     
@@ -94,7 +127,8 @@ const ScenarioDetail = () => {
 
   const handleRecordAnswer = async () => {
     if (!hasRecognitionSupport) {
-      toast.error("Spracherkennung wird von Ihrem Browser nicht unterstützt.");
+      toast.error("Spracherkennung wird von Ihrem Browser nicht unterstützt. Bitte verwenden Sie die Texteingabe.");
+      setInputMethod("text");
       return;
     }
     
@@ -102,13 +136,32 @@ const ScenarioDetail = () => {
       stopListening();
     } else {
       try {
-        resetText();
-        await startListening();
-        toast.success("Spracherkennung aktiviert. Sprechen Sie jetzt.");
+        // Ask for microphone permissions
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          // Stop tracks to avoid keeping microphone active
+          stream.getTracks().forEach(track => track.stop());
+          
+          resetText();
+          await startListening();
+          toast.success("Spracherkennung aktiviert. Sprechen Sie jetzt.");
+        } catch (permissionError) {
+          console.error("Microphone permission denied:", permissionError);
+          toast.error("Bitte erlauben Sie den Zugriff auf das Mikrofon, um die Spracherkennung zu nutzen.");
+        }
       } catch (error) {
         console.error("Failed to start recording:", error);
         toast.error("Konnte die Aufnahme nicht starten. Bitte erlauben Sie den Zugriff auf das Mikrofon.");
       }
+    }
+  };
+
+  const handleUseVocabulary = (word) => {
+    const wordText = word.german;
+    if (inputMethod === "voice") {
+      setUserResponse(prev => prev ? `${prev} ${wordText}` : wordText);
+    } else {
+      setTypedResponse(prev => prev ? `${prev} ${wordText}` : wordText);
     }
   };
 
@@ -124,17 +177,25 @@ const ScenarioDetail = () => {
       stopListening();
     }
 
-    // Simple evaluation logic - can be enhanced with more sophisticated comparison
+    // Enhanced evaluation logic - looks for key concepts rather than exact matches
     const correctAnswer = scenario.dialogue[currentDialogueIndex].text;
-    const userWords = response.toLowerCase().split(' ');
-    const correctWords = correctAnswer.toLowerCase().split(' ');
+    const userWords = response.toLowerCase().split(/\s+/);
     
-    // Count words that match
-    const matchingWords = userWords.filter(word => 
-      correctWords.some(correctWord => correctWord.includes(word) || word.includes(correctWord))
-    ).length;
+    // Extract keywords from the correct answer
+    const keywordsFromCorrect = extractKeywords(correctAnswer.toLowerCase());
     
-    const percentageMatch = (matchingWords / correctWords.length) * 100;
+    // Count keywords that match
+    const matchingKeywords = keywordsFromCorrect.filter(keyword => 
+      userWords.some(word => word.includes(keyword) || keyword.includes(word))
+    );
+    
+    const percentageMatch = (matchingKeywords.length / Math.max(1, keywordsFromCorrect.length)) * 100;
+    
+    // Check for any irrelevant words that shouldn't be there
+    const irrelevantWords = ["um", "der", "die", "das", "ein", "eine", "und", "oder", "aber"];
+    const hasIrrelevantOnly = userWords.every(word => 
+      irrelevantWords.includes(word) || word.length < 2
+    );
     
     // Check if any vocabulary words were used
     const newUsedVocabulary = [...usedVocabulary];
@@ -150,15 +211,27 @@ const ScenarioDetail = () => {
       setUsedVocabulary(newUsedVocabulary);
     }
     
-    if (percentageMatch > 70) {
-      setFeedbackMessage("Sehr gut! Deine Antwort war korrekt.");
+    if (hasIrrelevantOnly) {
+      setFeedbackMessage("Deine Antwort enthält keine relevanten Wörter. Versuche es noch einmal mit einer vollständigen Antwort.");
+    } else if (percentageMatch > 70) {
+      setFeedbackMessage("Sehr gut! Deine Antwort enthält die wichtigsten Elemente und ist angemessen für diese Situation.");
     } else if (percentageMatch > 40) {
-      setFeedbackMessage("Nicht schlecht, aber versuche es noch einmal. Die korrekte Antwort ist: " + correctAnswer);
+      setFeedbackMessage("Nicht schlecht, aber deine Antwort könnte verbessert werden. Versuche, spezifischere medizinische Begriffe zu verwenden.");
     } else {
-      setFeedbackMessage("Versuche es noch einmal. Die korrekte Antwort ist: " + correctAnswer);
+      setFeedbackMessage("Deine Antwort passt nicht ganz zur Situation. Eine passendere Antwort wäre: " + correctAnswer);
     }
     
     setShowFeedback(true);
+  };
+
+  // Helper function to extract keywords from text
+  const extractKeywords = (text) => {
+    const words = text.split(/\s+/);
+    // Filter out common words and short words
+    return words.filter(word => 
+      word.length > 3 && 
+      !["und", "oder", "aber", "der", "die", "das", "ein", "eine", "mit", "für", "von", "zum"].includes(word)
+    );
   };
 
   const moveToNextLine = () => {
@@ -260,7 +333,30 @@ const ScenarioDetail = () => {
                   {scenario.dialogue[currentDialogueIndex].speaker === 'user' && (
                     <div className="mt-6">
                       <div className="mb-4">
-                        <h3 className="text-lg font-medium mb-2">Deine Antwort:</h3>
+                        <div className="flex justify-between items-center mb-4">
+                          <h3 className="text-lg font-medium">Deine Antwort:</h3>
+                          
+                          {suggestedVocabulary.length > 0 && (
+                            <div className="flex items-center gap-1 text-sm text-medical-600">
+                              <Lightbulb className="h-4 w-4" />
+                              <span>Vorgeschlagene Vokabeln:</span>
+                            </div>
+                          )}
+                        </div>
+                        
+                        {suggestedVocabulary.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {suggestedVocabulary.map(word => (
+                              <VocabularyCard 
+                                key={word.id} 
+                                word={word}
+                                isSuggested={true}
+                                onUse={() => handleUseVocabulary(word)}
+                                className="h-[150px] w-[150px] sm:w-[180px]"
+                              />
+                            ))}
+                          </div>
+                        )}
                         
                         <Tabs defaultValue="voice" className="w-full mb-4" 
                           onValueChange={(value) => setInputMethod(value as "voice" | "text")}>
@@ -279,6 +375,10 @@ const ScenarioDetail = () => {
                             <div className="bg-white rounded-lg p-3 min-h-[100px] shadow-sm border border-neutral-100">
                               {userResponse || (isListening ? "Zuhören..." : "Klicke unten auf den Mikrofonknopf, um deine Antwort einzusprechen.")}
                             </div>
+                            
+                            <div className="text-xs text-neutral-500 mt-2">
+                              <p>Hinweis: Reagiere frei und natürlich auf die Situation. Du musst nicht exakt wiederholen, was vorgegeben ist.</p>
+                            </div>
                           </TabsContent>
                           
                           <TabsContent value="text">
@@ -291,6 +391,10 @@ const ScenarioDetail = () => {
                                 onChange={(e) => setTypedResponse(e.target.value)} 
                                 multiline
                               />
+                            </div>
+                            
+                            <div className="text-xs text-neutral-500 mt-2">
+                              <p>Hinweis: Reagiere frei und natürlich auf die Situation. Du musst nicht exakt wiederholen, was vorgegeben ist.</p>
                             </div>
                           </TabsContent>
                         </Tabs>

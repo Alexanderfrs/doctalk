@@ -2,18 +2,23 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { VocabularyWord } from "@/data/vocabulary";
-import { Check, Volume2, BookOpen } from "lucide-react";
+import { Check, Volume2, BookOpen, Plus } from "lucide-react";
+import { toast } from "sonner";
 
 interface VocabularyCardProps {
   word: VocabularyWord;
   onPractice?: () => void;
   className?: string;
+  isSuggested?: boolean;
+  onUse?: () => void;
 }
 
 const VocabularyCard: React.FC<VocabularyCardProps> = ({
   word,
   onPractice,
   className,
+  isSuggested = false,
+  onUse,
 }) => {
   const [flipped, setFlipped] = useState(false);
   const [mastered, setMastered] = useState(word.mastered || false);
@@ -25,6 +30,9 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
   const handleMastered = (e: React.MouseEvent) => {
     e.stopPropagation();
     setMastered(!mastered);
+    if (!mastered) {
+      toast.success(`"${word.german}" als gemeistert markiert`);
+    }
   };
 
   const playPronunciation = (e: React.MouseEvent) => {
@@ -36,11 +44,20 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
     }
   };
 
+  const handleUseWord = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onUse) {
+      onUse();
+      toast.success(`Vokabel "${word.german}" zum Text hinzugefügt`);
+    }
+  };
+
   return (
     <div 
       className={cn(
         "relative h-[200px] w-full cursor-pointer perspective group",
         mastered && "ring-2 ring-green-500 ring-offset-2",
+        isSuggested && "border-2 border-medical-300 shadow-md",
         className
       )}
       onClick={handleFlip}
@@ -74,7 +91,7 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
             {word.german}
           </h3>
           
-          <div className="mt-auto flex justify-center">
+          <div className="mt-auto flex justify-center gap-2">
             <button 
               className="text-neutral-500 hover:text-medical-600 transition-colors"
               onClick={playPronunciation}
@@ -82,6 +99,16 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
             >
               <Volume2 className="h-5 w-5" />
             </button>
+            
+            {isSuggested && onUse && (
+              <button 
+                className="text-medical-500 hover:text-medical-600 transition-colors"
+                onClick={handleUseWord}
+                aria-label="Use word in response"
+              >
+                <Plus className="h-5 w-5" />
+              </button>
+            )}
           </div>
         </div>
         

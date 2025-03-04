@@ -56,37 +56,47 @@ const useVoiceRecognition = ({
       return;
     }
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognitionRef.current = new SpeechRecognition();
-    recognitionRef.current.lang = language;
-    recognitionRef.current.continuous = continuous;
-    recognitionRef.current.interimResults = interimResults;
+    try {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.lang = language;
+      recognitionRef.current.continuous = continuous;
+      recognitionRef.current.interimResults = interimResults;
 
-    recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
-      const resultIndex = event.resultIndex;
-      const transcript = event.results[resultIndex][0].transcript;
-      const isFinal = event.results[resultIndex].isFinal;
+      recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+        const resultIndex = event.resultIndex;
+        const transcript = event.results[resultIndex][0].transcript;
+        const isFinal = event.results[resultIndex].isFinal;
 
-      if (isFinal) {
-        setText((prev) => prev + ' ' + transcript);
-        if (onResult) onResult(transcript, true);
-      } else {
-        if (onResult) onResult(transcript, false);
-      }
-    };
+        if (isFinal) {
+          setText((prev) => prev + ' ' + transcript);
+          if (onResult) onResult(transcript, true);
+        } else {
+          if (onResult) onResult(transcript, false);
+        }
+      };
 
-    recognitionRef.current.onerror = (event: any) => {
-      setError(`Speech recognition error: ${event.error}`);
-      if (onError) onError(`Speech recognition error: ${event.error}`);
-    };
+      recognitionRef.current.onerror = (event: any) => {
+        console.error("Speech recognition error:", event.error);
+        setError(`Speech recognition error: ${event.error}`);
+        if (onError) onError(`Speech recognition error: ${event.error}`);
+      };
 
-    recognitionRef.current.onend = () => {
-      setIsListening(false);
-    };
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    } catch (err) {
+      console.error("Error initializing speech recognition:", err);
+      setError('Failed to initialize speech recognition');
+    }
 
     return () => {
       if (recognitionRef.current) {
-        recognitionRef.current.stop();
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          console.error("Error stopping recognition:", e);
+        }
       }
     };
   }, [language, continuous, interimResults, hasRecognitionSupport, onResult, onError]);
@@ -104,12 +114,21 @@ const useVoiceRecognition = ({
         setError('Failed to start speech recognition');
         setIsListening(false);
       }
+    } else {
+      // Fallback for browsers without support
+      setText("Browser unterstützt keine Spracherkennung. Bitte verwenden Sie die Texteingabe.");
+      setError('Speech recognition is not supported');
+      if (onError) onError('Speech recognition is not supported');
     }
-  }, [hasRecognitionSupport]);
+  }, [hasRecognitionSupport, onResult, onError]);
 
   const stopListening = useCallback(() => {
     if (hasRecognitionSupport && recognitionRef.current) {
-      recognitionRef.current.stop();
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        console.error("Error stopping recognition:", e);
+      }
       setIsListening(false);
     }
   }, [hasRecognitionSupport]);
