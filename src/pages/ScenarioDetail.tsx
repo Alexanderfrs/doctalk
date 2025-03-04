@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
@@ -23,11 +22,11 @@ const ScenarioDetail = () => {
 
   const { speak, isSpeaking } = useTextToSpeech();
   const { 
+    text, 
     isListening, 
-    transcript, 
     startListening, 
     stopListening, 
-    resetTranscript 
+    resetText 
   } = useVoiceRecognition();
 
   useEffect(() => {
@@ -47,8 +46,8 @@ const ScenarioDetail = () => {
   }, [id, navigate]);
 
   useEffect(() => {
-    setUserResponse(transcript);
-  }, [transcript]);
+    setUserResponse(text);
+  }, [text]);
 
   const playCurrentLine = () => {
     if (!scenario || !scenario.dialogue[currentDialogueIndex]) return;
@@ -63,13 +62,13 @@ const ScenarioDetail = () => {
     if (isListening) {
       stopListening();
     } else {
-      resetTranscript();
+      resetText();
       startListening();
     }
   };
 
   const handleSubmitAnswer = () => {
-    if (!userResponse.trim()) {
+    if (!userResponse || !userResponse.trim()) {
       toast.error("Bitte sprich eine Antwort ein");
       return;
     }
@@ -104,7 +103,7 @@ const ScenarioDetail = () => {
       setCurrentDialogueIndex(prevIndex => prevIndex + 1);
       setUserResponse("");
       setShowFeedback(false);
-      resetTranscript();
+      resetText();
     } else {
       setExerciseCompleted(true);
       toast.success("Übung abgeschlossen!");
@@ -116,7 +115,7 @@ const ScenarioDetail = () => {
     setUserResponse("");
     setShowFeedback(false);
     setExerciseCompleted(false);
-    resetTranscript();
+    resetText();
   };
 
   if (!scenario) {
@@ -213,7 +212,7 @@ const ScenarioDetail = () => {
                           <Button 
                             variant="outline" 
                             onClick={handleSubmitAnswer}
-                            disabled={!userResponse.trim()}
+                            disabled={!userResponse || !userResponse.trim()}
                           >
                             Antwort überprüfen
                           </Button>

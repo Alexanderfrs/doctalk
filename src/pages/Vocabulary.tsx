@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
-  BookOpen, 
   Search, 
   Filter, 
   Check, 
@@ -17,15 +16,18 @@ import {
   List 
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import vocabularyItems from "@/data/vocabulary";
+import vocabularyCategories, { VocabularyWord } from "@/data/vocabulary";
 
 const Vocabulary = () => {
   const [loadingPage, setLoadingPage] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredVocabulary, setFilteredVocabulary] = useState(vocabularyItems);
+  const [filteredWords, setFilteredWords] = useState<VocabularyWord[]>([]);
   const [activeCategory, setActiveCategory] = useState("all");
   const [activeDifficulty, setActiveDifficulty] = useState("all");
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  
+  // Flatten all vocabulary words from all categories
+  const allWords = vocabularyCategories.flatMap(category => category.words);
 
   useEffect(() => {
     // Simulate loading delay for animation
@@ -37,28 +39,27 @@ const Vocabulary = () => {
 
   useEffect(() => {
     // Apply filters and search
-    let result = [...vocabularyItems];
+    let result = [...allWords];
     
     if (activeCategory !== "all") {
-      result = result.filter(item => item.category === activeCategory);
+      result = result.filter(word => word.category === activeCategory);
     }
     
-    if (activeDifficulty !== "all") {
-      result = result.filter(item => item.difficulty === activeDifficulty);
-    }
+    // Note: We don't have difficulty on VocabularyWord, so we'll skip that filter for now
+    // If needed, we could add a difficulty property to VocabularyWord
     
     if (searchTerm.trim() !== "") {
       const term = searchTerm.toLowerCase();
       result = result.filter(
-        item => 
-          item.term.toLowerCase().includes(term) || 
-          item.translation.toLowerCase().includes(term) ||
-          (item.definition && item.definition.toLowerCase().includes(term))
+        word => 
+          word.german.toLowerCase().includes(term) || 
+          word.english.toLowerCase().includes(term) ||
+          (word.example && word.example.toLowerCase().includes(term))
       );
     }
     
-    setFilteredVocabulary(result);
-  }, [activeCategory, activeDifficulty, searchTerm]);
+    setFilteredWords(result);
+  }, [activeCategory, activeDifficulty, searchTerm, allWords]);
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
@@ -81,11 +82,7 @@ const Vocabulary = () => {
 
   const categories = [
     { id: "all", label: "Alle" },
-    { id: "general", label: "Allgemein" },
-    { id: "anatomy", label: "Anatomie" },
-    { id: "diagnosis", label: "Diagnose" },
-    { id: "medication", label: "Medikamente" },
-    { id: "procedures", label: "Verfahren" }
+    ...vocabularyCategories.map(cat => ({ id: cat.id, label: cat.name }))
   ];
 
   const difficulties = [
@@ -217,18 +214,18 @@ const Vocabulary = () => {
           <section>
             <div className="mb-4">
               <p className="text-neutral-600">
-                {filteredVocabulary.length} {filteredVocabulary.length === 1 ? 'Vokabel' : 'Vokabeln'} gefunden
+                {filteredWords.length} {filteredWords.length === 1 ? 'Vokabel' : 'Vokabeln'} gefunden
               </p>
             </div>
             
-            {filteredVocabulary.length > 0 ? (
+            {filteredWords.length > 0 ? (
               <ScrollArea className="h-[calc(100vh-350px)] pr-4">
-                <div className="space-y-4 mb-12">
-                  {filteredVocabulary.map((item) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+                  {filteredWords.map((word) => (
                     <VocabularyCard 
-                      key={item.id} 
-                      item={item}
-                      onPractice={() => startVoicePractice(item)}
+                      key={word.id} 
+                      word={word}
+                      onPractice={() => startVoicePractice(word)}
                     />
                   ))}
                 </div>

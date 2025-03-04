@@ -6,13 +6,13 @@ import { Check, Volume2 } from "lucide-react";
 
 interface VocabularyCardProps {
   word: VocabularyWord;
-  onClick?: () => void;
+  onPractice?: () => void;
   className?: string;
 }
 
 const VocabularyCard: React.FC<VocabularyCardProps> = ({
   word,
-  onClick,
+  onPractice,
   className,
 }) => {
   const [flipped, setFlipped] = useState(false);
@@ -31,6 +31,9 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
     e.stopPropagation();
     // This would connect to a TTS API in a real implementation
     console.log('Playing pronunciation for:', word.german);
+    if (onPractice) {
+      onPractice();
+    }
   };
 
   return (
