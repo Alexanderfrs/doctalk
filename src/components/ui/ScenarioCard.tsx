@@ -5,6 +5,7 @@ import { Scenario } from "@/data/scenarios";
 import ProgressBar from "./ProgressBar";
 import { Heart, MessageCircle, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface ScenarioCardProps {
   scenario: Scenario;
@@ -41,6 +42,13 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({
   onClick,
   className,
 }) => {
+  const navigate = useNavigate();
+
+  const handleStartExercise = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/scenario/${scenario.id}`);
+  };
+  
   return (
     <div 
       className={cn(
@@ -95,10 +103,7 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({
       <Button 
         size="sm" 
         className="w-full bg-white text-medical-600 border border-medical-200 hover:bg-medical-50"
-        onClick={(e) => {
-          e.stopPropagation();
-          onClick?.();
-        }}
+        onClick={handleStartExercise}
       >
         Übung starten
       </Button>
