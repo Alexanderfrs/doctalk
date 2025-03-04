@@ -1,22 +1,33 @@
 
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ScenarioCard from "@/components/ui/ScenarioCard";
-import scenarios from "@/data/scenarios";
 import { Button } from "@/components/ui/button";
-import { Mic, BookOpen, Filter, Check, RefreshCw, ChevronDown } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  Search, 
+  Filter, 
+  Check, 
+  RefreshCw, 
+  ChevronDown,
+  BookOpen,
+  Mic 
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+import scenarios, { Scenario } from "@/data/scenarios";
+import { useNavigate } from "react-router-dom";
 
 const Practice = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [filteredScenarios, setFilteredScenarios] = useState(scenarios);
-  const [activeCategory, setActiveCategory] = useState(searchParams.get("category") || "all");
-  const [activeDifficulty, setActiveDifficulty] = useState(searchParams.get("difficulty") || "all");
+  const navigate = useNavigate();
   const [loadingPage, setLoadingPage] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredScenarios, setFilteredScenarios] = useState<Scenario[]>([]);
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeDifficulty, setActiveDifficulty] = useState("all");
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-
+  
   useEffect(() => {
     // Simulate loading delay for animation
     const timer = setTimeout(() => {
@@ -26,7 +37,7 @@ const Practice = () => {
   }, []);
 
   useEffect(() => {
-    // Apply filters
+    // Apply filters and search
     let result = [...scenarios];
     
     if (activeCategory !== "all") {
@@ -37,34 +48,41 @@ const Practice = () => {
       result = result.filter(scenario => scenario.difficulty === activeDifficulty);
     }
     
-    setFilteredScenarios(result);
+    if (searchTerm.trim() !== "") {
+      const term = searchTerm.toLowerCase();
+      result = result.filter(
+        scenario => 
+          scenario.title.toLowerCase().includes(term) || 
+          scenario.description.toLowerCase().includes(term) ||
+          scenario.tags.some(tag => tag.toLowerCase().includes(term))
+      );
+    }
     
-    // Update URL params
-    const params = new URLSearchParams();
-    if (activeCategory !== "all") params.set("category", activeCategory);
-    if (activeDifficulty !== "all") params.set("difficulty", activeDifficulty);
-    setSearchParams(params, { replace: true });
-  }, [activeCategory, activeDifficulty, setSearchParams]);
+    setFilteredScenarios(result);
+  }, [activeCategory, activeDifficulty, searchTerm]);
 
-  const handleCategoryChange = (category) => {
+  const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
   };
 
-  const handleDifficultyChange = (difficulty) => {
+  const handleDifficultyChange = (difficulty: string) => {
     setActiveDifficulty(difficulty);
   };
 
   const resetFilters = () => {
     setActiveCategory("all");
     setActiveDifficulty("all");
+    setSearchTerm("");
   };
 
   const categories = [
-    { id: "all", label: "Alle" },
-    { id: "patient-care", label: "Patientenversorgung" },
+    { id: "all", label: "Alle Bereiche" },
+    { id: "patient-care", label: "Patientenpflege" },
     { id: "emergency", label: "Notfälle" },
     { id: "documentation", label: "Dokumentation" },
-    { id: "teamwork", label: "Teamarbeit" }
+    { id: "teamwork", label: "Teamarbeit" },
+    { id: "elderly-care", label: "Altenpflege" },
+    { id: "disability-care", label: "Behindertenbetreuung" }
   ];
 
   const difficulties = [
@@ -85,7 +103,7 @@ const Practice = () => {
               <div>
                 <h1 className="text-3xl font-bold mb-2 text-neutral-800">Übungen</h1>
                 <p className="text-neutral-600">
-                  Trainiere deine medizinischen Sprachkenntnisse mit realistischen Szenarien
+                  Praktiziere medizinisches Deutsch in realistischen Szenarien aus deinem Berufsalltag
                 </p>
               </div>
               
@@ -99,8 +117,21 @@ const Practice = () => {
                 
                 <Button className="flex items-center bg-medical-500 hover:bg-medical-600">
                   <Mic className="h-4 w-4 mr-2" />
-                  Sprachübung starten
+                  Aussprache üben
                 </Button>
+              </div>
+            </div>
+            
+            {/* Search bar */}
+            <div className="flex w-full max-w-full mb-6">
+              <div className="relative w-full">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-400" />
+                <Input
+                  className="pl-10 w-full"
+                  placeholder="Übungen suchen..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
               </div>
             </div>
             
@@ -120,7 +151,7 @@ const Practice = () => {
             {/* Filters */}
             <div className={`${isFiltersOpen ? 'block' : 'hidden'} md:block space-y-4 md:space-y-0 mb-6 bg-white p-4 md:p-0 rounded-lg md:bg-transparent shadow-sm md:shadow-none`}>
               <div className="flex flex-col md:flex-row gap-2 md:items-center mb-4">
-                <p className="text-sm font-medium text-neutral-700 md:mr-2">Kategorie:</p>
+                <p className="text-sm font-medium text-neutral-700 md:mr-2">Bereich:</p>
                 <div className="flex flex-wrap gap-2">
                   {categories.map((category) => (
                     <Button
@@ -143,7 +174,7 @@ const Practice = () => {
               </div>
               
               <div className="flex flex-col md:flex-row gap-2 md:items-center mb-4">
-                <p className="text-sm font-medium text-neutral-700 md:mr-2">Schwierigkeit:</p>
+                <p className="text-sm font-medium text-neutral-700 md:mr-2">Sprachniveau:</p>
                 <div className="flex flex-wrap gap-2">
                   {difficulties.map((difficulty) => (
                     <Button
@@ -165,7 +196,7 @@ const Practice = () => {
                 </div>
               </div>
               
-              {(activeCategory !== "all" || activeDifficulty !== "all") && (
+              {(activeCategory !== "all" || activeDifficulty !== "all" || searchTerm.trim() !== "") && (
                 <Button
                   variant="ghost"
                   size="sm"
@@ -187,17 +218,19 @@ const Practice = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {filteredScenarios.map((scenario) => (
-                <ScenarioCard 
-                  key={scenario.id} 
-                  scenario={scenario} 
-                  onClick={() => console.log(`Navigate to scenario: ${scenario.id}`)}
-                />
-              ))}
-            </div>
-            
-            {filteredScenarios.length === 0 && (
+            {filteredScenarios.length > 0 ? (
+              <ScrollArea className="h-[calc(100vh-350px)] pr-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+                  {filteredScenarios.map((scenario) => (
+                    <ScenarioCard 
+                      key={scenario.id} 
+                      scenario={scenario}
+                      onClick={() => navigate(`/scenario/${scenario.id}`)}
+                    />
+                  ))}
+                </div>
+              </ScrollArea>
+            ) : (
               <div className="text-center py-12">
                 <p className="text-neutral-500 mb-4">Keine Übungen mit den gewählten Filtern gefunden.</p>
                 <Button variant="outline" onClick={resetFilters}>

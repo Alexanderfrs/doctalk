@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Mic, Volume2, CheckCircle, RefreshCw } from "lucide-react";
+import { ArrowLeft, Mic, Volume2, CheckCircle, RefreshCw, Type, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 import scenarios from "@/data/scenarios";
 import useTextToSpeech from "@/hooks/useTextToSpeech";
 import useVoiceRecognition from "@/hooks/useVoiceRecognition";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import VocabularyCard from "@/components/ui/VocabularyCard";
+import vocabularyCategories, { VocabularyWord } from "@/data/vocabulary";
 
 const ScenarioDetail = () => {
   const { id } = useParams();
@@ -15,10 +20,16 @@ const ScenarioDetail = () => {
   const [scenario, setScenario] = useState(null);
   const [currentDialogueIndex, setCurrentDialogueIndex] = useState(0);
   const [userResponse, setUserResponse] = useState("");
+  const [typedResponse, setTypedResponse] = useState("");
+  const [inputMethod, setInputMethod] = useState<"voice" | "text">("voice");
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
   const [exerciseCompleted, setExerciseCompleted] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
+  const [relevantVocabulary, setRelevantVocabulary] = useState<VocabularyWord[]>([]);
+  const [usedVocabulary, setUsedVocabulary] = useState<string[]>([]);
+  
+  const userResponseRef = useRef<HTMLInputElement>(null);
 
   const { speak, isSpeaking } = useTextToSpeech();
   const { 
@@ -26,13 +37,36 @@ const ScenarioDetail = () => {
     isListening, 
     startListening, 
     stopListening, 
-    resetText 
-  } = useVoiceRecognition();
+    resetText,
+    hasRecognitionSupport 
+  } = useVoiceRecognition({
+    language: 'de-DE',
+    continuous: true,
+    onResult: (result) => {
+      console.log("Speech recognition result:", result);
+    },
+    onError: (error) => {
+      console.error("Speech recognition error:", error);
+      toast.error("Fehler bei der Spracherkennung. Bitte versuchen Sie es erneut.");
+    }
+  });
 
   useEffect(() => {
     const foundScenario = scenarios.find(s => s.id === id);
     if (foundScenario) {
       setScenario(foundScenario);
+      
+      // Find relevant vocabulary for this scenario
+      if (foundScenario.vocabularyIds && foundScenario.vocabularyIds.length > 0) {
+        const vocabWords: VocabularyWord[] = [];
+        foundScenario.vocabularyIds.forEach(categoryId => {
+          const category = vocabularyCategories.find(cat => cat.id === categoryId);
+          if (category) {
+            vocabWords.push(...category.words.slice(0, 5)); // Limit to 5 words per category
+          }
+        });
+        setRelevantVocabulary(vocabWords.slice(0, 10)); // Limit to 10 words total
+      }
     } else {
       navigate("/practice");
       toast.error("Szenario nicht gefunden");
@@ -59,23 +93,40 @@ const ScenarioDetail = () => {
   };
 
   const handleRecordAnswer = async () => {
+    if (!hasRecognitionSupport) {
+      toast.error("Spracherkennung wird von Ihrem Browser nicht unterstützt.");
+      return;
+    }
+    
     if (isListening) {
       stopListening();
     } else {
-      resetText();
-      startListening();
+      try {
+        resetText();
+        await startListening();
+        toast.success("Spracherkennung aktiviert. Sprechen Sie jetzt.");
+      } catch (error) {
+        console.error("Failed to start recording:", error);
+        toast.error("Konnte die Aufnahme nicht starten. Bitte erlauben Sie den Zugriff auf das Mikrofon.");
+      }
     }
   };
 
   const handleSubmitAnswer = () => {
-    if (!userResponse || !userResponse.trim()) {
-      toast.error("Bitte sprich eine Antwort ein");
+    let response = inputMethod === "voice" ? userResponse : typedResponse;
+    
+    if (!response || !response.trim()) {
+      toast.error(inputMethod === "voice" ? "Bitte sprechen Sie eine Antwort ein" : "Bitte geben Sie eine Antwort ein");
       return;
+    }
+
+    if (isListening) {
+      stopListening();
     }
 
     // Simple evaluation logic - can be enhanced with more sophisticated comparison
     const correctAnswer = scenario.dialogue[currentDialogueIndex].text;
-    const userWords = userResponse.toLowerCase().split(' ');
+    const userWords = response.toLowerCase().split(' ');
     const correctWords = correctAnswer.toLowerCase().split(' ');
     
     // Count words that match
@@ -84,6 +135,20 @@ const ScenarioDetail = () => {
     ).length;
     
     const percentageMatch = (matchingWords / correctWords.length) * 100;
+    
+    // Check if any vocabulary words were used
+    const newUsedVocabulary = [...usedVocabulary];
+    relevantVocabulary.forEach(vocabWord => {
+      const germanWord = vocabWord.german.toLowerCase();
+      if (response.toLowerCase().includes(germanWord) && !newUsedVocabulary.includes(vocabWord.id)) {
+        newUsedVocabulary.push(vocabWord.id);
+        toast.success(`Gut! Du hast das Vokabel "${vocabWord.german}" verwendet.`);
+      }
+    });
+    
+    if (newUsedVocabulary.length !== usedVocabulary.length) {
+      setUsedVocabulary(newUsedVocabulary);
+    }
     
     if (percentageMatch > 70) {
       setFeedbackMessage("Sehr gut! Deine Antwort war korrekt.");
@@ -102,6 +167,7 @@ const ScenarioDetail = () => {
     if (currentDialogueIndex < scenario.dialogue.length - 1) {
       setCurrentDialogueIndex(prevIndex => prevIndex + 1);
       setUserResponse("");
+      setTypedResponse("");
       setShowFeedback(false);
       resetText();
     } else {
@@ -113,6 +179,7 @@ const ScenarioDetail = () => {
   const restartExercise = () => {
     setCurrentDialogueIndex(0);
     setUserResponse("");
+    setTypedResponse("");
     setShowFeedback(false);
     setExerciseCompleted(false);
     resetText();
@@ -194,25 +261,58 @@ const ScenarioDetail = () => {
                     <div className="mt-6">
                       <div className="mb-4">
                         <h3 className="text-lg font-medium mb-2">Deine Antwort:</h3>
-                        <div className="bg-white rounded-lg p-3 min-h-[100px] shadow-sm border border-neutral-100">
-                          {userResponse || (isListening ? "Zuhören..." : "Klicke unten auf den Mikrofonknopf, um deine Antwort einzusprechen.")}
-                        </div>
+                        
+                        <Tabs defaultValue="voice" className="w-full mb-4" 
+                          onValueChange={(value) => setInputMethod(value as "voice" | "text")}>
+                          <TabsList className="grid w-full grid-cols-2">
+                            <TabsTrigger value="voice" className="flex items-center gap-1">
+                              <Mic className="h-4 w-4" />
+                              <span>Einsprechen</span>
+                            </TabsTrigger>
+                            <TabsTrigger value="text" className="flex items-center gap-1">
+                              <Type className="h-4 w-4" />
+                              <span>Eintippen</span>
+                            </TabsTrigger>
+                          </TabsList>
+                          
+                          <TabsContent value="voice">
+                            <div className="bg-white rounded-lg p-3 min-h-[100px] shadow-sm border border-neutral-100">
+                              {userResponse || (isListening ? "Zuhören..." : "Klicke unten auf den Mikrofonknopf, um deine Antwort einzusprechen.")}
+                            </div>
+                          </TabsContent>
+                          
+                          <TabsContent value="text">
+                            <div className="bg-white rounded-lg p-3 min-h-[100px] shadow-sm border border-neutral-100">
+                              <Input 
+                                ref={userResponseRef}
+                                className="w-full border-none shadow-none focus-visible:ring-0 px-0 h-auto min-h-[80px]"
+                                placeholder="Gib deine Antwort hier ein..."
+                                value={typedResponse}
+                                onChange={(e) => setTypedResponse(e.target.value)} 
+                                multiline
+                              />
+                            </div>
+                          </TabsContent>
+                        </Tabs>
                       </div>
                       
                       {!showFeedback ? (
                         <div className="flex gap-3">
-                          <Button 
-                            className={`flex items-center ${isListening ? 'bg-red-500 hover:bg-red-600' : 'bg-medical-500 hover:bg-medical-600'}`}
-                            onClick={handleRecordAnswer}
-                          >
-                            <Mic className="h-4 w-4 mr-2" />
-                            {isListening ? 'Aufnahme beenden' : 'Antwort einsprechen'}
-                          </Button>
+                          {inputMethod === "voice" && (
+                            <Button 
+                              className={`flex items-center ${isListening ? 'bg-red-500 hover:bg-red-600' : 'bg-medical-500 hover:bg-medical-600'}`}
+                              onClick={handleRecordAnswer}
+                            >
+                              <Mic className="h-4 w-4 mr-2" />
+                              {isListening ? 'Aufnahme beenden' : 'Antwort einsprechen'}
+                            </Button>
+                          )}
                           
                           <Button 
-                            variant="outline" 
+                            variant={inputMethod === "voice" ? "outline" : "default"}
                             onClick={handleSubmitAnswer}
-                            disabled={!userResponse || !userResponse.trim()}
+                            disabled={(inputMethod === "voice" && !userResponse) || 
+                                     (inputMethod === "text" && !typedResponse)}
                           >
                             Antwort überprüfen
                           </Button>
@@ -268,13 +368,27 @@ const ScenarioDetail = () => {
           </div>
           
           <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
-            <h2 className="text-xl font-semibold mb-4">Relevante Vokabeln</h2>
-            <div className="space-y-3">
-              {/* Here we could display vocabulary items related to the scenario */}
-              <p className="text-neutral-600 italic">
-                Vokabelübungen für dieses Szenario werden bald verfügbar sein.
-              </p>
+            <div className="flex items-center gap-2 mb-4">
+              <BookOpen className="h-5 w-5 text-medical-500" />
+              <h2 className="text-xl font-semibold">Relevante Vokabeln</h2>
             </div>
+            
+            {relevantVocabulary.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {relevantVocabulary.map(word => (
+                  <VocabularyCard 
+                    key={word.id} 
+                    word={{...word, mastered: usedVocabulary.includes(word.id)}}
+                    onPractice={() => speak(word.german)} 
+                    className="h-[180px]"
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-neutral-600 italic">
+                Keine spezifischen Vokabeln für dieses Szenario verfügbar.
+              </p>
+            )}
           </div>
         </div>
       </main>

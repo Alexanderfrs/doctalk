@@ -13,7 +13,8 @@ import {
   RefreshCw, 
   ChevronDown,
   Mic,
-  List 
+  List,
+  BookOpen 
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import vocabularyCategories, { VocabularyWord } from "@/data/vocabulary";
@@ -23,13 +24,24 @@ const Vocabulary = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredWords, setFilteredWords] = useState<VocabularyWord[]>([]);
   const [activeCategory, setActiveCategory] = useState("all");
-  const [activeDifficulty, setActiveDifficulty] = useState("all");
+  const [activeDomain, setActiveDomain] = useState("all");
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [masteredWords, setMasteredWords] = useState<string[]>([]);
   
   // Flatten all vocabulary words from all categories
   const allWords = vocabularyCategories.flatMap(category => category.words);
 
   useEffect(() => {
+    // Load mastered words from local storage
+    const saved = localStorage.getItem('masteredWords');
+    if (saved) {
+      try {
+        setMasteredWords(JSON.parse(saved));
+      } catch (e) {
+        console.error("Error loading mastered words:", e);
+      }
+    }
+    
     // Simulate loading delay for animation
     const timer = setTimeout(() => {
       setLoadingPage(false);
@@ -45,8 +57,20 @@ const Vocabulary = () => {
       result = result.filter(word => word.category === activeCategory);
     }
     
-    // Note: We don't have difficulty on VocabularyWord, so we'll skip that filter for now
-    // If needed, we could add a difficulty property to VocabularyWord
+    // Domain filter (this is a new filter for healthcare domains)
+    if (activeDomain !== "all") {
+      // Map domain to relevant categories
+      const domainCategories = {
+        'hospital': ['vital-signs', 'emergency', 'medications', 'pain-scale'],
+        'elderly-care': ['elderly-care', 'dementia', 'mobility', 'general-care'],
+        'disability-care': ['disability-care', 'communication', 'mobility']
+      };
+      
+      const relevantCategories = domainCategories[activeDomain] || [];
+      if (relevantCategories.length > 0) {
+        result = result.filter(word => relevantCategories.includes(word.category));
+      }
+    }
     
     if (searchTerm.trim() !== "") {
       const term = searchTerm.toLowerCase();
@@ -58,21 +82,40 @@ const Vocabulary = () => {
       );
     }
     
+    // Apply mastered status to words
+    result = result.map(word => ({
+      ...word,
+      mastered: masteredWords.includes(word.id)
+    }));
+    
     setFilteredWords(result);
-  }, [activeCategory, activeDifficulty, searchTerm, allWords]);
+  }, [activeCategory, activeDomain, searchTerm, allWords, masteredWords]);
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
   };
 
-  const handleDifficultyChange = (difficulty) => {
-    setActiveDifficulty(difficulty);
+  const handleDomainChange = (domain) => {
+    setActiveDomain(domain);
   };
 
   const resetFilters = () => {
     setActiveCategory("all");
-    setActiveDifficulty("all");
+    setActiveDomain("all");
     setSearchTerm("");
+  };
+
+  const updateMasteredStatus = (wordId, isMastered) => {
+    let newMasteredWords = [...masteredWords];
+    
+    if (isMastered && !newMasteredWords.includes(wordId)) {
+      newMasteredWords.push(wordId);
+    } else if (!isMastered && newMasteredWords.includes(wordId)) {
+      newMasteredWords = newMasteredWords.filter(id => id !== wordId);
+    }
+    
+    setMasteredWords(newMasteredWords);
+    localStorage.setItem('masteredWords', JSON.stringify(newMasteredWords));
   };
 
   const startVoicePractice = (word) => {
@@ -81,15 +124,15 @@ const Vocabulary = () => {
   };
 
   const categories = [
-    { id: "all", label: "Alle" },
+    { id: "all", label: "Alle Kategorien" },
     ...vocabularyCategories.map(cat => ({ id: cat.id, label: cat.name }))
   ];
 
-  const difficulties = [
-    { id: "all", label: "Alle Niveaus" },
-    { id: "beginner", label: "Anfänger (B1)" },
-    { id: "intermediate", label: "Fortgeschritten (B1+)" },
-    { id: "advanced", label: "Erfahren (B2)" }
+  const domains = [
+    { id: "all", label: "Alle Bereiche" },
+    { id: "hospital", label: "Krankenhaus" },
+    { id: "elderly-care", label: "Altenpflege" },
+    { id: "disability-care", label: "Behindertenbetreuung" }
   ];
 
   return (
@@ -174,29 +217,29 @@ const Vocabulary = () => {
               </div>
               
               <div className="flex flex-col md:flex-row gap-2 md:items-center mb-4">
-                <p className="text-sm font-medium text-neutral-700 md:mr-2">Schwierigkeit:</p>
+                <p className="text-sm font-medium text-neutral-700 md:mr-2">Berufsbereich:</p>
                 <div className="flex flex-wrap gap-2">
-                  {difficulties.map((difficulty) => (
+                  {domains.map((domain) => (
                     <Button
-                      key={difficulty.id}
+                      key={domain.id}
                       variant="outline"
                       size="sm"
                       className={cn(
                         "rounded-full",
-                        activeDifficulty === difficulty.id
+                        activeDomain === domain.id
                           ? "bg-medical-50 text-medical-700 border-medical-200"
                           : "bg-white text-neutral-700 hover:bg-neutral-50"
                       )}
-                      onClick={() => handleDifficultyChange(difficulty.id)}
+                      onClick={() => handleDomainChange(domain.id)}
                     >
-                      {difficulty.label}
-                      {activeDifficulty === difficulty.id && <Check className="ml-1 h-3 w-3" />}
+                      {domain.label}
+                      {activeDomain === domain.id && <Check className="ml-1 h-3 w-3" />}
                     </Button>
                   ))}
                 </div>
               </div>
               
-              {(activeCategory !== "all" || activeDifficulty !== "all" || searchTerm.trim() !== "") && (
+              {(activeCategory !== "all" || activeDomain !== "all" || searchTerm.trim() !== "") && (
                 <Button
                   variant="ghost"
                   size="sm"
@@ -207,6 +250,26 @@ const Vocabulary = () => {
                   Filter zurücksetzen
                 </Button>
               )}
+            </div>
+
+            {/* Progress summary */}
+            <div className="bg-white rounded-lg p-4 mb-6 border border-neutral-100">
+              <div className="flex items-center gap-2 mb-2">
+                <BookOpen className="h-5 w-5 text-medical-500" />
+                <h2 className="text-lg font-medium">Vokabel-Fortschritt</h2>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <div className="bg-neutral-100 h-2 rounded-full flex-grow">
+                  <div 
+                    className="bg-medical-500 h-2 rounded-full" 
+                    style={{width: `${Math.round((masteredWords.length / allWords.length) * 100)}%`}}
+                  ></div>
+                </div>
+                <span className="text-sm text-neutral-600 whitespace-nowrap">
+                  {masteredWords.length} von {allWords.length} beherrscht ({Math.round((masteredWords.length / allWords.length) * 100)}%)
+                </span>
+              </div>
             </div>
           </section>
           
@@ -219,7 +282,7 @@ const Vocabulary = () => {
             </div>
             
             {filteredWords.length > 0 ? (
-              <ScrollArea className="h-[calc(100vh-350px)] pr-4">
+              <ScrollArea className="h-[calc(100vh-450px)] pr-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
                   {filteredWords.map((word) => (
                     <VocabularyCard 

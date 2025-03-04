@@ -11,7 +11,7 @@ export interface Scenario {
   title: string;
   description: string;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
-  category: 'patient-care' | 'emergency' | 'documentation' | 'teamwork';
+  category: 'patient-care' | 'emergency' | 'documentation' | 'teamwork' | 'elderly-care' | 'disability-care';
   tags: string[];
   completed?: boolean;
   progress?: number;
@@ -50,7 +50,7 @@ const scenarios: Scenario[] = [
         translation: 'The pain started about a week ago, but since yesterday it has become unbearable.'
       }
     ],
-    vocabularyIds: ['vital-signs', 'pain-scale', 'admission']
+    vocabularyIds: ['vital-signs', 'pain-scale', 'general-care']
   },
   {
     id: 'medication',
@@ -82,7 +82,7 @@ const scenarios: Scenario[] = [
         translation: 'Are there side effects I should watch out for?'
       }
     ],
-    vocabularyIds: ['medications', 'side-effects', 'administration']
+    vocabularyIds: ['medications', 'side-effects', 'general-care']
   },
   {
     id: 'emergency',
@@ -147,6 +147,104 @@ const scenarios: Scenario[] = [
       }
     ],
     vocabularyIds: ['handover', 'vital-signs', 'postoperative']
+  },
+  // New scenarios for elderly care
+  {
+    id: 'dementia-care',
+    title: 'Demenzpflege',
+    description: 'Betreuung eines Bewohners mit Demenz im Pflegeheim',
+    difficulty: 'intermediate',
+    category: 'elderly-care',
+    tags: ['demenz', 'altenpflege', 'kommunikation'],
+    progress: 0,
+    dialogue: [
+      {
+        speaker: 'user',
+        text: 'Guten Morgen, Frau Becker. Wie haben Sie geschlafen?',
+        translation: 'Good morning, Mrs. Becker. How did you sleep?'
+      },
+      {
+        speaker: 'patient',
+        text: 'Wer sind Sie? Ich will nach Hause! Wo ist mein Mann?',
+        translation: 'Who are you? I want to go home! Where is my husband?'
+      },
+      {
+        speaker: 'user',
+        text: 'Ich bin Pflegerin Lisa, Frau Becker. Ich helfe Ihnen heute. Ihr Mann kommt später zu Besuch. Möchten Sie erstmal frühstücken?',
+        translation: 'I am Caregiver Lisa, Mrs. Becker. I am helping you today. Your husband will visit later. Would you like to have breakfast first?'
+      },
+      {
+        speaker: 'patient',
+        text: 'Mein Mann... ja, er kommt immer zum Frühstück. Ist der Kaffee schon fertig?',
+        translation: 'My husband... yes, he always comes for breakfast. Is the coffee ready yet?'
+      }
+    ],
+    vocabularyIds: ['elderly-care', 'dementia', 'general-care']
+  },
+  {
+    id: 'mobility-assistance',
+    title: 'Mobilitätshilfe',
+    description: 'Unterstützung eines älteren Patienten bei der Mobilisierung',
+    difficulty: 'beginner',
+    category: 'elderly-care',
+    tags: ['mobilität', 'altenpflege', 'sturz-prävention'],
+    progress: 0,
+    dialogue: [
+      {
+        speaker: 'user',
+        text: 'Herr Schmidt, wir sollten heute ein wenig spazieren gehen. Wie fühlen sich Ihre Beine an?',
+        translation: 'Mr. Schmidt, we should go for a little walk today. How do your legs feel?'
+      },
+      {
+        speaker: 'patient',
+        text: 'Meine Knie schmerzen etwas, aber ich würde gerne aufstehen. Ich sitze schon den ganzen Tag.',
+        translation: 'My knees hurt a little, but I would like to get up. I have been sitting all day.'
+      },
+      {
+        speaker: 'user',
+        text: 'Gut, ich helfe Ihnen. Nehmen Sie Ihren Gehstock und stützen Sie sich auf meinen Arm. Wir stehen langsam auf, in Ihrem Tempo.',
+        translation: 'Good, I will help you. Take your walking stick and lean on my arm. We will stand up slowly, at your pace.'
+      },
+      {
+        speaker: 'patient',
+        text: 'Danke, das ist sehr hilfreich. Wohin gehen wir?',
+        translation: 'Thank you, that is very helpful. Where are we going?'
+      }
+    ],
+    vocabularyIds: ['mobility', 'elderly-care', 'general-care']
+  },
+  // New scenario for disability care
+  {
+    id: 'communication-disability',
+    title: 'Kommunikation bei geistiger Behinderung',
+    description: 'Unterstützung und Kommunikation mit Bewohnern mit geistiger Behinderung',
+    difficulty: 'intermediate',
+    category: 'disability-care',
+    tags: ['behindertenbetreuung', 'kommunikation', 'unterstützte-kommunikation'],
+    progress: 0,
+    dialogue: [
+      {
+        speaker: 'user',
+        text: 'Hallo Thomas, möchtest du heute zum Gruppenfrühstück kommen oder in deinem Zimmer essen?',
+        translation: 'Hello Thomas, would you like to come to the group breakfast today or eat in your room?'
+      },
+      {
+        speaker: 'patient',
+        text: '...',
+        translation: '...'
+      },
+      {
+        speaker: 'user',
+        text: 'Hier sind die Bildkarten. Kannst du mir zeigen, was du möchtest? Hier ist das Bild für "Gruppenfrühstück" und hier für "im Zimmer essen".',
+        translation: 'Here are the picture cards. Can you show me what you want? Here is the picture for "group breakfast" and here for "eating in the room".'
+      },
+      {
+        speaker: 'patient',
+        text: '...(zeigt auf Gruppenfrühstück)',
+        translation: '...(points to group breakfast)'
+      }
+    ],
+    vocabularyIds: ['disability-care', 'communication', 'general-care']
   }
 ];
 

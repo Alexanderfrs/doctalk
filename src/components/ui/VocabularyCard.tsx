@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { VocabularyWord } from "@/data/vocabulary";
-import { Check, Volume2 } from "lucide-react";
+import { Check, Volume2, BookOpen } from "lucide-react";
 
 interface VocabularyCardProps {
   word: VocabularyWord;
@@ -40,6 +40,7 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
     <div 
       className={cn(
         "relative h-[200px] w-full cursor-pointer perspective group",
+        mastered && "ring-2 ring-green-500 ring-offset-2",
         className
       )}
       onClick={handleFlip}
@@ -112,6 +113,12 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
             <p className="text-xs text-neutral-500 mt-auto">
               {word.notes}
             </p>
+          )}
+          
+          {mastered && (
+            <div className="absolute top-2 right-2 bg-green-100 p-1 rounded-full">
+              <Check className="h-4 w-4 text-green-600" />
+            </div>
           )}
         </div>
       </div>
