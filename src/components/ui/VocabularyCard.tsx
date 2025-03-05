@@ -26,7 +26,8 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
   
   const { speak, isSpeaking } = useTextToSpeech({
     language: 'de-DE',
-    onStart: () => console.log('Started speaking'),
+    rate: 0.8, // Slightly slower to be clearer
+    onStart: () => console.log('Started speaking:', word.german),
     onEnd: () => console.log('Finished speaking'),
     onError: (error) => toast.error(`Fehler bei der Aussprache: ${error}`)
   });
@@ -45,10 +46,16 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
 
   const playPronunciation = (e: React.MouseEvent) => {
     e.stopPropagation();
-    speak(word.german);
-    console.log('Playing pronunciation for:', word.german);
-    if (onPractice) {
-      onPractice();
+    
+    // Play the pronunciation of the German word
+    if (word.german) {
+      console.log('Playing pronunciation for:', word.german);
+      speak(word.german);
+      
+      // Notify the parent component if needed
+      if (onPractice) {
+        onPractice();
+      }
     }
   };
 
@@ -110,8 +117,8 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
           <div className="mt-auto flex justify-center gap-2">
             <button 
               className={cn(
-                "text-neutral-500 hover:text-medical-600 transition-colors",
-                isSpeaking && "text-medical-600"
+                "text-neutral-500 hover:text-medical-600 transition-colors p-2 rounded-full hover:bg-medical-50",
+                isSpeaking && "text-medical-600 bg-medical-50"
               )}
               onClick={playPronunciation}
               aria-label="Play pronunciation"
@@ -121,7 +128,7 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
             
             {isSuggested && onUse && (
               <button 
-                className="text-medical-500 hover:text-medical-600 transition-colors"
+                className="text-medical-500 hover:text-medical-600 transition-colors p-2 rounded-full hover:bg-medical-50"
                 onClick={handleUseWord}
                 aria-label="Use word in response"
               >

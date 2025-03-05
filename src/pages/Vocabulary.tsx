@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import VocabularyCard from "@/components/ui/VocabularyCard";
+import AppNavigation from "@/components/navigation/AppNavigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -28,11 +28,9 @@ const Vocabulary = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [masteredWords, setMasteredWords] = useState<string[]>([]);
   
-  // Flatten all vocabulary words from all categories
   const allWords = vocabularyCategories.flatMap(category => category.words);
 
   useEffect(() => {
-    // Load mastered words from local storage
     const saved = localStorage.getItem('masteredWords');
     if (saved) {
       try {
@@ -42,7 +40,6 @@ const Vocabulary = () => {
       }
     }
     
-    // Simulate loading delay for animation
     const timer = setTimeout(() => {
       setLoadingPage(false);
     }, 300);
@@ -50,26 +47,21 @@ const Vocabulary = () => {
   }, []);
 
   useEffect(() => {
-    // Apply filters and search
     let result = [...allWords];
     
     if (activeCategory !== "all") {
       result = result.filter(word => word.category === activeCategory);
     }
     
-    // Domain filter (this is a new filter for healthcare domains)
-    if (activeDomain !== "all") {
-      // Map domain to relevant categories
-      const domainCategories = {
-        'hospital': ['vital-signs', 'emergency', 'medications', 'pain-scale'],
-        'elderly-care': ['elderly-care', 'dementia', 'mobility', 'general-care'],
-        'disability-care': ['disability-care', 'communication', 'mobility']
-      };
-      
-      const relevantCategories = domainCategories[activeDomain] || [];
-      if (relevantCategories.length > 0) {
-        result = result.filter(word => relevantCategories.includes(word.category));
-      }
+    const domainCategories = {
+      'hospital': ['vital-signs', 'emergency', 'medications', 'pain-scale'],
+      'elderly-care': ['elderly-care', 'dementia', 'mobility', 'general-care'],
+      'disability-care': ['disability-care', 'communication', 'mobility']
+    };
+    
+    const relevantCategories = domainCategories[activeDomain] || [];
+    if (relevantCategories.length > 0) {
+      result = result.filter(word => relevantCategories.includes(word.category));
     }
     
     if (searchTerm.trim() !== "") {
@@ -82,7 +74,6 @@ const Vocabulary = () => {
       );
     }
     
-    // Apply mastered status to words
     result = result.map(word => ({
       ...word,
       mastered: masteredWords.includes(word.id)
@@ -120,7 +111,6 @@ const Vocabulary = () => {
 
   const startVoicePractice = (word) => {
     console.log("Starting voice practice for:", word);
-    // Will implement voice functionality later
   };
 
   const categories = [
@@ -138,8 +128,9 @@ const Vocabulary = () => {
   return (
     <div className={`min-h-screen flex flex-col ${loadingPage ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}`}>
       <Header />
+      <AppNavigation />
       
-      <main className="flex-grow pt-24 px-4 md:px-8">
+      <main className="flex-grow pt-24 px-4 md:px-8 pb-24">
         <div className="container mx-auto">
           <section className="mb-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -165,7 +156,6 @@ const Vocabulary = () => {
               </div>
             </div>
             
-            {/* Search bar */}
             <div className="flex w-full max-w-full mb-6">
               <div className="relative w-full">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-400" />
@@ -178,7 +168,6 @@ const Vocabulary = () => {
               </div>
             </div>
             
-            {/* Mobile filter toggle */}
             <Button 
               variant="outline" 
               className="w-full md:hidden flex items-center justify-between mb-4"
@@ -191,7 +180,6 @@ const Vocabulary = () => {
               <ChevronDown className={`h-4 w-4 transition-transform ${isFiltersOpen ? 'transform rotate-180' : ''}`} />
             </Button>
             
-            {/* Filters */}
             <div className={`${isFiltersOpen ? 'block' : 'hidden'} md:block space-y-4 md:space-y-0 mb-6 bg-white p-4 md:p-0 rounded-lg md:bg-transparent shadow-sm md:shadow-none`}>
               <div className="flex flex-col md:flex-row gap-2 md:items-center mb-4">
                 <p className="text-sm font-medium text-neutral-700 md:mr-2">Kategorie:</p>
@@ -252,7 +240,6 @@ const Vocabulary = () => {
               )}
             </div>
 
-            {/* Progress summary */}
             <div className="bg-white rounded-lg p-4 mb-6 border border-neutral-100">
               <div className="flex items-center gap-2 mb-2">
                 <BookOpen className="h-5 w-5 text-medical-500" />
@@ -273,7 +260,6 @@ const Vocabulary = () => {
             </div>
           </section>
           
-          {/* Results */}
           <section>
             <div className="mb-4">
               <p className="text-neutral-600">
