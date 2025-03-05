@@ -87,9 +87,9 @@ const Practice = () => {
 
   const difficulties = [
     { id: "all", label: "Alle Niveaus" },
-    { id: "beginner", label: "Anfänger (B1)" },
-    { id: "intermediate", label: "Fortgeschritten (B1+)" },
-    { id: "advanced", label: "Erfahren (B2)" }
+    { id: "beginner", label: "Anfänger (A1-A2)" },
+    { id: "intermediate", label: "Mittelstufe (B1-B2)" },
+    { id: "advanced", label: "Fortgeschritten (C1)" }
   ];
 
   return (

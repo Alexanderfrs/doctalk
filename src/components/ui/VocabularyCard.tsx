@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { VocabularyWord } from "@/data/vocabulary";
 import { Check, Volume2, BookOpen, Plus } from "lucide-react";
 import { toast } from "sonner";
+import useTextToSpeech from "@/hooks/useTextToSpeech";
 
 interface VocabularyCardProps {
   word: VocabularyWord;
@@ -22,6 +23,13 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
 }) => {
   const [flipped, setFlipped] = useState(false);
   const [mastered, setMastered] = useState(word.mastered || false);
+  
+  const { speak, isSpeaking } = useTextToSpeech({
+    language: 'de-DE',
+    onStart: () => console.log('Started speaking'),
+    onEnd: () => console.log('Finished speaking'),
+    onError: (error) => toast.error(`Fehler bei der Aussprache: ${error}`)
+  });
 
   const handleFlip = () => {
     setFlipped(!flipped);
@@ -37,7 +45,7 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
 
   const playPronunciation = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // This would connect to a TTS API in a real implementation
+    speak(word.german);
     console.log('Playing pronunciation for:', word.german);
     if (onPractice) {
       onPractice();
@@ -101,7 +109,10 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
           
           <div className="mt-auto flex justify-center gap-2">
             <button 
-              className="text-neutral-500 hover:text-medical-600 transition-colors"
+              className={cn(
+                "text-neutral-500 hover:text-medical-600 transition-colors",
+                isSpeaking && "text-medical-600"
+              )}
               onClick={playPronunciation}
               aria-label="Play pronunciation"
             >

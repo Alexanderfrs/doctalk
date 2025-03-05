@@ -81,17 +81,17 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li>
                 <Link to="/practice?difficulty=beginner" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Anfänger (B1)
+                  Anfänger (A1-A2)
                 </Link>
               </li>
               <li>
                 <Link to="/practice?difficulty=intermediate" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Fortgeschritten (B1+)
+                  Mittelstufe (B1-B2)
                 </Link>
               </li>
               <li>
                 <Link to="/practice?difficulty=advanced" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Erfahren (B2)
+                  Fortgeschritten (C1)
                 </Link>
               </li>
             </ul>
