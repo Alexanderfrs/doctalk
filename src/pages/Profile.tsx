@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -20,6 +19,8 @@ import {
   CheckCircle,
   Crown,
   Sparkles,
+  DollarSign,
+  BookOpen as Book
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
