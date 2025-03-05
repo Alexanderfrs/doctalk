@@ -5,24 +5,36 @@ import { cn } from "@/lib/utils";
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   multiline?: boolean;
+  rows?: number;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, multiline, ...props }, ref) => {
+  ({ className, type, multiline, rows = 3, ...props }, ref) => {
     if (multiline) {
-      // Use a separate ref for the textarea
-      const textareaRef = React.useRef<HTMLTextAreaElement>(null);
-      
-      // Cast props to TextareaHTMLAttributes, omitting the input-specific props
-      const textareaProps = props as React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+      // For multiline input, we need to use a textarea
+      // Remove input-specific props that don't apply to textarea
+      const { 
+        type, 
+        checked,
+        capture,
+        accept,
+        alt,
+        height,
+        width,
+        src,
+        multiple,
+        pattern,
+        step,
+        ...textareaProps 
+      } = props as any;
       
       return (
         <textarea
           className={cn(
-            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+            "flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
             className
           )}
-          ref={textareaRef}
+          rows={rows}
           {...textareaProps}
         />
       );
