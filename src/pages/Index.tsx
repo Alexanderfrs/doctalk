@@ -6,7 +6,8 @@ import Footer from "@/components/layout/Footer";
 import ScenarioCard from "@/components/ui/ScenarioCard";
 import ProgressBar from "@/components/ui/ProgressBar";
 import scenarios from "@/data/scenarios";
-import { BookOpen, CheckCircle, MessageCircle, Stethoscope, Calendar, ArrowRight } from "lucide-react";
+import { BookOpen, CheckCircle, MessageCircle, Stethoscope, Calendar, ArrowRight, Globe, Brain, HeartPulse } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const [activeScenarios, setActiveScenarios] = useState(scenarios.slice(0, 3));
@@ -18,6 +19,8 @@ const Index = () => {
     totalVocabulary: 38,
     streak: 3,
   });
+
+  const { translate } = useLanguage();
 
   useEffect(() => {
     // Simulate loading delay for animation
@@ -34,6 +37,30 @@ const Index = () => {
     weeklyProgress: 3,
   };
 
+  // App unique benefits
+  const uniqueFeatures = [
+    {
+      icon: <HeartPulse className="h-6 w-6 text-medical-600" />,
+      title: "Medizinisches Fachvokabular",
+      description: "Spezialisiertes Vokabular und Redewendungen für den medizinischen Alltag"
+    },
+    {
+      icon: <MessageCircle className="h-6 w-6 text-medical-600" />,
+      title: "Praxisnahe Dialogszenarien",
+      description: "Übe realistische Gespräche mit Patienten und Kollegen aus dem Gesundheitswesen"
+    },
+    {
+      icon: <Brain className="h-6 w-6 text-medical-600" />,
+      title: "KI-gestützte Ausspracheübungen",
+      description: "Erhalte sofortiges Feedback zu deiner Aussprache und verbessere deine Sprachkompetenz"
+    },
+    {
+      icon: <Globe className="h-6 w-6 text-medical-600" />,
+      title: "Für alle Sprachniveaus",
+      description: "Angepasste Übungen für alle Sprachniveaus von A1 bis C1"
+    }
+  ];
+
   return (
     <div className={`min-h-screen flex flex-col ${loadingPage ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}`}>
       <Header />
@@ -44,13 +71,13 @@ const Index = () => {
           <div className="glass-panel p-8 flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2 animate-fade-in" style={{ animationDelay: '100ms' }}>
               <span className="inline-block px-3 py-1 bg-medical-100 text-medical-800 rounded-full text-sm font-medium mb-4">
-                Medizinisches Deutsch B1-B2
+                Medizinisches Deutsch für alle Sprachniveaus
               </span>
               <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
                 Verbessere deine <span className="text-gradient">medizinische Kommunikation</span>
               </h1>
               <p className="text-lg text-neutral-600 mb-6">
-                Trainiere Dialogszenarien und Fachvokabular für deinen beruflichen Alltag im Gesundheitswesen.
+                Trainiere Dialogszenarien und Fachvokabular für deinen beruflichen Alltag im Gesundheitswesen, unabhängig von deinem Sprachniveau.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button asChild size="lg" className="btn-primary">
@@ -170,8 +197,64 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Features section */}
+        {/* Why MedLingua is unique - NEW SECTION */}
         <section className="container mx-auto mb-12 animate-fade-in" style={{ animationDelay: '900ms' }}>
+          <h2 className="text-2xl font-semibold mb-6 text-center">Was MedLingua von anderen Sprachlern-Apps unterscheidet</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {uniqueFeatures.map((feature, index) => (
+              <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100 flex items-start gap-4">
+                <div className="w-12 h-12 bg-medical-50 rounded-full flex items-center justify-center flex-shrink-0">
+                  {feature.icon}
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium mb-2">{feature.title}</h3>
+                  <p className="text-neutral-600">{feature.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
+            <h3 className="text-xl font-medium mb-4 text-center">Im Vergleich zu allgemeinen Sprachlern-Apps</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[600px]">
+                <thead>
+                  <tr className="border-b border-neutral-200">
+                    <th className="py-3 px-4 text-left">Feature</th>
+                    <th className="py-3 px-4 text-center">Allgemeine Apps<br/>(Duolingo, Babbel, usw.)</th>
+                    <th className="py-3 px-4 text-center bg-medical-50 font-medium">MedLingua</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-neutral-100">
+                    <td className="py-3 px-4">Medizinisches Fachvokabular</td>
+                    <td className="py-3 px-4 text-center">Begrenzt oder nicht vorhanden</td>
+                    <td className="py-3 px-4 text-center bg-medical-50 font-medium">Umfassend & spezialisiert</td>
+                  </tr>
+                  <tr className="border-b border-neutral-100">
+                    <td className="py-3 px-4">Praxisnahe Dialogszenarien</td>
+                    <td className="py-3 px-4 text-center">Allgemeine Alltagsgespräche</td>
+                    <td className="py-3 px-4 text-center bg-medical-50 font-medium">Realistische medizinische Situationen</td>
+                  </tr>
+                  <tr className="border-b border-neutral-100">
+                    <td className="py-3 px-4">Lernziel</td>
+                    <td className="py-3 px-4 text-center">Allgemeine Sprachkenntnisse</td>
+                    <td className="py-3 px-4 text-center bg-medical-50 font-medium">Berufsbezogene Kommunikation</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4">Unterstützung von Fachkräften</td>
+                    <td className="py-3 px-4 text-center">Minimal</td>
+                    <td className="py-3 px-4 text-center bg-medical-50 font-medium">Spezifische Vorbereitung auf den Berufsalltag</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        
+        {/* Features section */}
+        <section className="container mx-auto mb-12 animate-fade-in" style={{ animationDelay: '1100ms' }}>
           <h2 className="text-2xl font-semibold mb-6 text-center">Warum MedLingua?</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -208,11 +291,11 @@ const Index = () => {
         </section>
         
         {/* CTA section */}
-        <section className="container mx-auto mb-16 animate-fade-in" style={{ animationDelay: '1100ms' }}>
+        <section className="container mx-auto mb-16 animate-fade-in" style={{ animationDelay: '1300ms' }}>
           <div className="bg-gradient-to-r from-medical-600 to-medical-500 rounded-2xl p-8 text-white text-center">
             <h2 className="text-3xl font-bold mb-4">Bereit, deine Sprachfähigkeiten zu verbessern?</h2>
             <p className="text-lg text-white/90 mb-6 max-w-2xl mx-auto">
-              Starte jetzt mit den Übungen und verbessere deine berufliche Kommunikation im medizinischen Bereich.
+              Starte jetzt mit den Übungen und verbessere deine berufliche Kommunikation im medizinischen Bereich - für alle Sprachniveaus von A1 bis C1.
             </p>
             <Button asChild size="lg" className="bg-white text-medical-600 hover:bg-white/90">
               <Link to="/practice">Mit Übungen beginnen</Link>

@@ -161,4 +161,21 @@
   .btn-secondary {
     @apply bg-secondary text-secondary-foreground rounded-full px-6 py-3 shadow-sm hover:bg-secondary/80 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-medical-400 focus:ring-offset-2;
   }
+
+  /* Card 3D transform utilities */
+  .perspective {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
 }

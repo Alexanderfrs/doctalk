@@ -5,11 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-interface LanguageSelectorProps {
-  compact?: boolean;
-}
-
-const LanguageSelector: React.FC<LanguageSelectorProps> = ({ compact = false }) => {
+const LanguageSelector: React.FC = () => {
   const { 
     userLanguage, 
     setUserLanguage, 
@@ -28,28 +24,6 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ compact = false }) 
   const handleDialectChange = (value: string) => {
     setGermanDialect(value);
   };
-
-  if (compact) {
-    return (
-      <div className="flex flex-col gap-2">
-        <Select value={userLanguage} onValueChange={handleLanguageChange}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select language" />
-          </SelectTrigger>
-          <SelectContent>
-            {supportedLanguages.map((language: Language) => (
-              <SelectItem key={language.code} value={language.code}>
-                <span className="flex items-center gap-2">
-                  {language.flag && <span>{language.flag}</span>}
-                  <span>{language.nativeName}</span>
-                </span>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-4">

@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,14 +10,14 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { ArrowRight, Award, Book, Crown, FileText, Flag, Lightbulb, BarChart3, Save, Settings, Star, User, BookOpen as Book2 } from "lucide-react";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import LanguageSelector from "@/components/language/LanguageSelector";
+import AvatarSelector from "@/components/profile/AvatarSelector";
 
-// Define the certificate types
 const certificateTypes = [
   {
     id: "app-achievement",
@@ -46,17 +45,18 @@ const Profile = () => {
   const [email, setEmail] = useState("user@example.com");
   const [name, setName] = useState("Maria Schmidt");
   const [profession, setProfession] = useState("Krankenschwester");
+  const [avatar, setAvatar] = useState("https://api.dicebear.com/7.x/avataaars/svg?seed=Maria");
   const [dailyGoal, setDailyGoal] = useState(20);
   const [notifications, setNotifications] = useState(true);
   const [soundEffects, setSoundEffects] = useState(true);
-  const [theme, setTheme] = useState("light");
   const [assessmentStarted, setAssessmentStarted] = useState(false);
   const [assessmentStep, setAssessmentStep] = useState(1);
   const [assessmentAnswers, setAssessmentAnswers] = useState({});
   const [subscription, setSubscription] = useState("basic");
+  
   const { userLanguage, germanDialect } = useLanguage();
+  const { theme, setTheme } = useTheme();
 
-  // Mock assessment questions
   const assessmentQuestions = [
     {
       id: "q1",
@@ -93,6 +93,13 @@ const Profile = () => {
     }
   ];
 
+  useEffect(() => {
+    const savedAvatar = localStorage.getItem('userAvatar');
+    if (savedAvatar) {
+      setAvatar(savedAvatar);
+    }
+  }, []);
+
   const handleStartAssessment = () => {
     setAssessmentStarted(true);
     setAssessmentStep(1);
@@ -110,7 +117,6 @@ const Profile = () => {
     if (assessmentStep < assessmentQuestions.length) {
       setAssessmentStep(prev => prev + 1);
     } else {
-      // Calculate results
       let correctCount = 0;
       Object.keys(assessmentAnswers).forEach(qId => {
         const question = assessmentQuestions.find(q => q.id === qId);
@@ -131,7 +137,12 @@ const Profile = () => {
   };
 
   const handleSaveSettings = () => {
+    localStorage.setItem('userAvatar', avatar);
     toast.success("Einstellungen gespeichert");
+  };
+
+  const handleAvatarChange = (newAvatar: string) => {
+    setAvatar(newAvatar);
   };
 
   const handleSaveGoals = () => {
@@ -145,7 +156,6 @@ const Profile = () => {
 
   const handleTakeCertificateTest = (certId) => {
     toast.info(`Test für ${certId} wird vorbereitet...`);
-    // In a real app, navigate to the test
   };
 
   return (
@@ -156,10 +166,10 @@ const Profile = () => {
         <div className="container mx-auto">
           <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-neutral-100 mb-8">
             <div className="flex flex-col md:flex-row gap-6 md:items-center mb-8">
-              <Avatar className="w-24 h-24 border-2 border-medical-100">
-                <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Maria" />
-                <AvatarFallback>MS</AvatarFallback>
-              </Avatar>
+              <AvatarSelector 
+                currentAvatar={avatar} 
+                onChange={handleAvatarChange} 
+              />
               
               <div className="flex-grow">
                 <h1 className="text-2xl font-bold mb-1">{name}</h1>

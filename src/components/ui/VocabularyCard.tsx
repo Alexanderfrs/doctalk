@@ -55,7 +55,7 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
   return (
     <div 
       className={cn(
-        "relative cursor-pointer perspective group",
+        "relative h-[180px] w-full cursor-pointer perspective",
         mastered && "ring-1 ring-green-500 ring-offset-1",
         isSuggested && "border border-medical-300 shadow-sm",
         className
@@ -64,12 +64,20 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
     >
       <div 
         className={cn(
-          "absolute inset-0 preserve-3d transition-transform duration-500 ease-in-out rounded-lg shadow-sm",
+          "absolute inset-0 w-full h-full preserve-3d transition-transform duration-500 ease-in-out rounded-lg shadow-sm",
           flipped ? "rotate-y-180" : ""
         )}
+        style={{
+          transformStyle: "preserve-3d"
+        }}
       >
         {/* Front of card */}
-        <div className="absolute inset-0 backface-hidden bg-white border border-neutral-200 rounded-lg p-3 flex flex-col">
+        <div 
+          className="absolute inset-0 w-full h-full backface-hidden bg-white border border-neutral-200 rounded-lg p-3 flex flex-col"
+          style={{
+            backfaceVisibility: "hidden"
+          }}
+        >
           <div className="flex justify-between items-start">
             <span className="px-1.5 py-0.5 text-xs bg-medical-100 text-medical-700 rounded-full mb-2">
               {word.category}
@@ -113,7 +121,13 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
         </div>
         
         {/* Back of card */}
-        <div className="absolute inset-0 backface-hidden rotate-y-180 bg-white border border-neutral-200 rounded-lg p-3 flex flex-col">
+        <div 
+          className="absolute inset-0 w-full h-full backface-hidden bg-white border border-neutral-200 rounded-lg p-3 flex flex-col"
+          style={{
+            backfaceVisibility: "hidden",
+            transform: "rotateY(180deg)"
+          }}
+        >
           <span className="px-1.5 py-0.5 text-xs self-start bg-neutral-100 text-neutral-600 rounded-full mb-2">
             English
           </span>
