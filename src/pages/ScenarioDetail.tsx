@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import VocabularyCard from "@/components/ui/VocabularyCard";
 import vocabularyCategories, { VocabularyWord } from "@/data/vocabulary";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSelector from "@/components/language/LanguageSelector";
 
 const ScenarioDetail = () => {
   const { id } = useParams();
@@ -29,9 +31,12 @@ const ScenarioDetail = () => {
   const [relevantVocabulary, setRelevantVocabulary] = useState<VocabularyWord[]>([]);
   const [usedVocabulary, setUsedVocabulary] = useState<string[]>([]);
   const [suggestedVocabulary, setSuggestedVocabulary] = useState<VocabularyWord[]>([]);
+  const [micPermissionGranted, setMicPermissionGranted] = useState<boolean | null>(null);
   
   const userResponseRef = useRef<HTMLInputElement>(null);
   const recordingPromptShown = useRef(false);
+  
+  const { userLanguage, germanDialect } = useLanguage();
 
   const { speak, isSpeaking } = useTextToSpeech();
   const { 
@@ -43,7 +48,7 @@ const ScenarioDetail = () => {
     hasRecognitionSupport,
     error: recognitionError
   } = useVoiceRecognition({
-    language: 'de-DE',
+    language: germanDialect || 'de-DE',
     continuous: true,
     onResult: (result, isFinal) => {
       console.log("Speech recognition result:", result, "isFinal:", isFinal);
@@ -53,7 +58,10 @@ const ScenarioDetail = () => {
     },
     onError: (error) => {
       console.error("Speech recognition error:", error);
-      if (!error.includes("not supported")) {
+      if (error.includes("permission")) {
+        setMicPermissionGranted(false);
+        toast.error("Bitte erlauben Sie den Zugriff auf das Mikrofon für die Spracherkennung.");
+      } else if (!error.includes("not supported")) {
         toast.error("Fehler bei der Spracherkennung. Bitte versuchen Sie es erneut.");
       } else {
         toast.error("Ihr Browser unterstützt keine Spracherkennung. Bitte verwenden Sie die Texteingabe.");
@@ -61,6 +69,25 @@ const ScenarioDetail = () => {
       }
     }
   });
+
+  // Check for microphone permissions
+  useEffect(() => {
+    const checkMicPermission = async () => {
+      try {
+        const permissionStatus = await navigator.permissions.query({ name: 'microphone' as PermissionName });
+        setMicPermissionGranted(permissionStatus.state === 'granted');
+        
+        permissionStatus.onchange = () => {
+          setMicPermissionGranted(permissionStatus.state === 'granted');
+        };
+      } catch (error) {
+        console.error("Failed to check microphone permission:", error);
+        // Some browsers don't support permissions API, we'll check when user tries to record
+      }
+    };
+    
+    checkMicPermission();
+  }, []);
 
   useEffect(() => {
     if (recognitionError && recognitionError.includes("not supported") && !recordingPromptShown.current) {
@@ -143,10 +170,17 @@ const ScenarioDetail = () => {
     } else {
       try {
         resetText();
+        // First request microphone permission if not already granted
+        if (micPermissionGranted === false || micPermissionGranted === null) {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          stream.getTracks().forEach(track => track.stop()); // Stop the stream after getting permission
+          setMicPermissionGranted(true);
+        }
         await startListening();
         toast.success("Spracherkennung aktiviert. Sprechen Sie jetzt.");
       } catch (error) {
         console.error("Failed to start recording:", error);
+        setMicPermissionGranted(false);
         toast.error("Konnte die Aufnahme nicht starten. Bitte erlauben Sie den Zugriff auf das Mikrofon.");
       }
     }
@@ -272,14 +306,20 @@ const ScenarioDetail = () => {
       
       <main className="flex-grow pt-24 px-4 md:px-8 pb-12">
         <div className="container mx-auto">
-          <Button 
-            variant="ghost" 
-            className="mb-6 flex items-center"
-            onClick={() => navigate("/practice")}
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Zurück zu allen Übungen
-          </Button>
+          <div className="flex justify-between items-center mb-6">
+            <Button 
+              variant="ghost" 
+              className="flex items-center"
+              onClick={() => navigate("/practice")}
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Zurück zu allen Übungen
+            </Button>
+            
+            <div className="w-36">
+              <LanguageSelector compact={true} />
+            </div>
+          </div>
           
           <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-neutral-100 mb-8">
             <h1 className="text-2xl md:text-3xl font-bold mb-2 text-neutral-800">
@@ -329,29 +369,29 @@ const ScenarioDetail = () => {
                   {scenario.dialogue[currentDialogueIndex].speaker === 'user' && (
                     <div className="mt-6">
                       <div className="mb-4">
-                        <div className="flex justify-between items-center mb-4">
+                        <div className="flex justify-between items-center mb-2">
                           <h3 className="text-lg font-medium">Deine Antwort:</h3>
-                          
-                          {suggestedVocabulary.length > 0 && (
-                            <div className="flex items-center gap-1 text-sm text-medical-600">
-                              <Lightbulb className="h-4 w-4" />
-                              <span>Vorgeschlagene Vokabeln:</span>
-                            </div>
-                          )}
                         </div>
                         
+                        {/* Compact Suggested Vocabulary */}
                         {suggestedVocabulary.length > 0 && (
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {suggestedVocabulary.map(word => (
-                              <div 
-                                key={word.id}
-                                className="bg-medical-50 border border-medical-100 rounded-lg p-2 text-sm flex items-center gap-1 cursor-pointer hover:bg-medical-100 transition-colors"
-                                onClick={() => handleUseVocabulary(word)}
-                              >
-                                <span className="font-medium">{word.german}</span>
-                                <span className="text-xs text-neutral-500">({word.english})</span>
-                              </div>
-                            ))}
+                          <div className="mb-3">
+                            <div className="flex items-center gap-1 text-xs text-medical-600 mb-1">
+                              <Lightbulb className="h-3 w-3" />
+                              <span>Vorgeschlagene Vokabeln:</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1 mb-2">
+                              {suggestedVocabulary.map(word => (
+                                <button 
+                                  key={word.id}
+                                  className="bg-medical-50 border border-medical-100 rounded-md px-2 py-1 text-xs flex items-center gap-1 cursor-pointer hover:bg-medical-100 transition-colors"
+                                  onClick={() => handleUseVocabulary(word)}
+                                  title={`${word.english} - ${word.example || ''}`}
+                                >
+                                  <span className="font-medium">{word.german}</span>
+                                </button>
+                              ))}
+                            </div>
                           </div>
                         )}
                         
@@ -372,6 +412,12 @@ const ScenarioDetail = () => {
                             <div className="bg-white rounded-lg p-3 min-h-[100px] shadow-sm border border-neutral-100">
                               {userResponse || (isListening ? "Zuhören..." : "Klicke unten auf den Mikrofonknopf, um deine Antwort einzusprechen.")}
                             </div>
+                            
+                            {micPermissionGranted === false && (
+                              <div className="bg-yellow-50 text-yellow-800 p-2 rounded-md mt-2 text-sm">
+                                Bitte erlauben Sie den Zugriff auf das Mikrofon in Ihrem Browser, um die Spracherkennung zu nutzen.
+                              </div>
+                            )}
                             
                             <div className="text-xs text-neutral-500 mt-2">
                               <p>Hinweis: Reagiere frei und natürlich auf die Situation. Du musst nicht exakt wiederholen, was vorgegeben ist.</p>
