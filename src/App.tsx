@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Practice from "./pages/Practice";
 import Vocabulary from "./pages/Vocabulary";
 import ScenarioDetail from "./pages/ScenarioDetail";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/practice" element={<Practice />} />
           <Route path="/vocabulary" element={<Vocabulary />} />
           <Route path="/scenario/:id" element={<ScenarioDetail />} />
+          <Route path="/profile" element={<Profile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

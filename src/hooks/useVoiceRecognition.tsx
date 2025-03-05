@@ -12,7 +12,7 @@ interface VoiceRecognitionOptions {
 interface UseVoiceRecognitionReturn {
   text: string;
   isListening: boolean;
-  startListening: () => void;
+  startListening: () => Promise<void>;
   stopListening: () => void;
   resetText: () => void;
   hasRecognitionSupport: boolean;
@@ -101,18 +101,37 @@ const useVoiceRecognition = ({
     };
   }, [language, continuous, interimResults, hasRecognitionSupport, onResult, onError]);
 
-  const startListening = useCallback(() => {
+  const startListening = useCallback(async () => {
     if (hasRecognitionSupport && recognitionRef.current) {
       setText('');
       setError(null);
       
       try {
-        recognitionRef.current.start();
-        setIsListening(true);
-      } catch (err) {
-        console.error('Speech recognition error:', err);
-        setError('Failed to start speech recognition');
-        setIsListening(false);
+        // Request microphone permission first
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+        
+        // First, ensure any existing recognition is stopped
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          // Ignore errors when stopping non-started recognition
+        }
+        
+        // Then start the recognition after a small delay
+        setTimeout(() => {
+          try {
+            recognitionRef.current.start();
+            setIsListening(true);
+          } catch (err) {
+            console.error('Speech recognition error:', err);
+            setError('Failed to start speech recognition');
+            setIsListening(false);
+          }
+        }, 100);
+      } catch (permissionErr) {
+        console.error('Microphone permission denied:', permissionErr);
+        setError('Microphone permission denied. Please allow microphone access to use speech recognition.');
+        if (onError) onError('Microphone permission denied');
       }
     } else {
       // Fallback for browsers without support
@@ -120,7 +139,7 @@ const useVoiceRecognition = ({
       setError('Speech recognition is not supported');
       if (onError) onError('Speech recognition is not supported');
     }
-  }, [hasRecognitionSupport, onResult, onError]);
+  }, [hasRecognitionSupport, onError]);
 
   const stopListening = useCallback(() => {
     if (hasRecognitionSupport && recognitionRef.current) {

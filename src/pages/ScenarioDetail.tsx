@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
@@ -46,6 +47,9 @@ const ScenarioDetail = () => {
     continuous: true,
     onResult: (result, isFinal) => {
       console.log("Speech recognition result:", result, "isFinal:", isFinal);
+      if (isFinal) {
+        setUserResponse(prev => prev ? `${prev} ${result}` : result);
+      }
     },
     onError: (error) => {
       console.error("Speech recognition error:", error);
@@ -98,7 +102,9 @@ const ScenarioDetail = () => {
   }, [id, navigate]);
 
   useEffect(() => {
-    setUserResponse(text);
+    if (text) {
+      setUserResponse(text);
+    }
   }, [text]);
 
   const updateSuggestedVocabulary = (allVocab) => {
@@ -136,19 +142,9 @@ const ScenarioDetail = () => {
       stopListening();
     } else {
       try {
-        // Ask for microphone permissions
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          // Stop tracks to avoid keeping microphone active
-          stream.getTracks().forEach(track => track.stop());
-          
-          resetText();
-          await startListening();
-          toast.success("Spracherkennung aktiviert. Sprechen Sie jetzt.");
-        } catch (permissionError) {
-          console.error("Microphone permission denied:", permissionError);
-          toast.error("Bitte erlauben Sie den Zugriff auf das Mikrofon, um die Spracherkennung zu nutzen.");
-        }
+        resetText();
+        await startListening();
+        toast.success("Spracherkennung aktiviert. Sprechen Sie jetzt.");
       } catch (error) {
         console.error("Failed to start recording:", error);
         toast.error("Konnte die Aufnahme nicht starten. Bitte erlauben Sie den Zugriff auf das Mikrofon.");
@@ -347,13 +343,14 @@ const ScenarioDetail = () => {
                         {suggestedVocabulary.length > 0 && (
                           <div className="flex flex-wrap gap-2 mb-4">
                             {suggestedVocabulary.map(word => (
-                              <VocabularyCard 
-                                key={word.id} 
-                                word={word}
-                                isSuggested={true}
-                                onUse={() => handleUseVocabulary(word)}
-                                className="h-[150px] w-[150px] sm:w-[180px]"
-                              />
+                              <div 
+                                key={word.id}
+                                className="bg-medical-50 border border-medical-100 rounded-lg p-2 text-sm flex items-center gap-1 cursor-pointer hover:bg-medical-100 transition-colors"
+                                onClick={() => handleUseVocabulary(word)}
+                              >
+                                <span className="font-medium">{word.german}</span>
+                                <span className="text-xs text-neutral-500">({word.english})</span>
+                              </div>
                             ))}
                           </div>
                         )}
@@ -478,13 +475,13 @@ const ScenarioDetail = () => {
             </div>
             
             {relevantVocabulary.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {relevantVocabulary.map(word => (
                   <VocabularyCard 
                     key={word.id} 
                     word={{...word, mastered: usedVocabulary.includes(word.id)}}
                     onPractice={() => speak(word.german)} 
-                    className="h-[180px]"
+                    className="h-[150px]"
                   />
                 ))}
               </div>

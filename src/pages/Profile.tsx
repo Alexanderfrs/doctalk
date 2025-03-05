@@ -1,636 +1,855 @@
+
 import React, { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Progress } from "@/components/ui/progress";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  Settings,
-  Award,
-  Target,
-  CreditCard,
   User,
-  Bell,
-  Languages,
-  Clock,
+  Settings,
+  BarChart3,
+  Trophy,
   Calendar,
+  Bell,
+  LogOut,
+  Globe,
   CheckCircle,
   Crown,
   Sparkles,
   DollarSign,
-  BookOpen as Book
+  BookOpen,
+  Award,
+  Clock
 } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import ProgressBar from "@/components/ui/ProgressBar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-
-const FeatureCard = ({ title, description, icon, premium = false }) => (
-  <div className="bg-white rounded-lg shadow-sm border border-neutral-100 p-4 flex gap-4 relative">
-    <div className="bg-medical-50 rounded-lg p-2 h-fit">{icon}</div>
-    <div>
-      <h3 className="font-medium">{title}</h3>
-      <p className="text-sm text-neutral-600">{description}</p>
-    </div>
-    {premium && (
-      <div className="absolute top-2 right-2 bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full text-xs flex items-center">
-        <Crown className="h-3 w-3 mr-0.5" /> Premium
-      </div>
-    )}
-  </div>
-);
 
 const Profile = () => {
+  const [loadingPage, setLoadingPage] = useState(true);
   const [activeTab, setActiveTab] = useState("settings");
-  const [languageLevel, setLanguageLevel] = useState("beginner");
-  const [subscription, setSubscription] = useState("basic");
-  const [dailyGoal, setDailyGoal] = useState(15);
-  const [assessmentStarted, setAssessmentStarted] = useState(false);
-  const [assessmentStep, setAssessmentStep] = useState(1);
-  const [assessmentProgress, setAssessmentProgress] = useState(0);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
+  const [autoPlay, setAutoPlay] = useState(false);
+  const [currentSubscription, setCurrentSubscription] = useState("basic");
+  const [language, setLanguage] = useState("german");
+  const [currentLevel, setCurrentLevel] = useState("b1");
+  const [dailyGoal, setDailyGoal] = useState(20);
+  const [weeklyGoalDays, setWeeklyGoalDays] = useState(5);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
+  const [currentAssessmentQuestion, setCurrentAssessmentQuestion] = useState(0);
+  const [assessmentAnswers, setAssessmentAnswers] = useState({});
+  const [showCertificateModal, setShowCertificateModal] = useState(false);
+  const [selectedCertificateType, setSelectedCertificateType] = useState("app");
 
-  const handleStartAssessment = () => {
-    setAssessmentStarted(true);
-    toast.success("Sprachbewertung gestartet");
-  };
-
-  const handleNextAssessmentStep = () => {
-    if (assessmentStep < 5) {
-      setAssessmentStep(assessmentStep + 1);
-      setAssessmentProgress(assessmentProgress + 20);
-    } else {
-      setAssessmentComplete(true);
-      setLanguageLevel("intermediate");
-      toast.success("Sprachbewertung abgeschlossen!");
-    }
-  };
-
-  const handleUpdateSubscription = (plan) => {
-    setSubscription(plan);
-    toast.success(`Abo auf ${plan === "premium" ? "Premium" : "Basic"} aktualisiert`);
-  };
-
-  const handleSaveGoals = () => {
-    toast.success("Lernziele gespeichert");
-  };
+  // Simulate loading delay for animation
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoadingPage(false);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSaveSettings = () => {
-    toast.success("Einstellungen gespeichert");
+    toast.success("Einstellungen wurden gespeichert");
   };
 
+  const handleLogout = () => {
+    toast.success("Sie wurden erfolgreich abgemeldet");
+  };
+
+  const handleAssessmentSubmit = () => {
+    setAssessmentComplete(true);
+    toast.success("Sprachbewertung abgeschlossen");
+    // In a real app, we would analyze the answers and set the level
+    setCurrentLevel("b1");
+  };
+
+  const handleChangeDailyGoal = (newGoal) => {
+    setDailyGoal(newGoal);
+    toast.success(`Tagesziel auf ${newGoal} Minuten aktualisiert`);
+  };
+
+  const handleChangeWeeklyGoal = (days) => {
+    setWeeklyGoalDays(days);
+    toast.success(`Wöchentliches Ziel auf ${days} Tage aktualisiert`);
+  };
+
+  const handleUpgradeSubscription = () => {
+    setCurrentSubscription("premium");
+    toast.success("Ihr Abonnement wurde auf Premium aktualisiert");
+  };
+
+  const assessmentQuestions = [
+    {
+      id: 1,
+      question: "Wie würden Sie Ihre aktuelle Deutschkenntnisse einschätzen?",
+      options: [
+        { value: "a1", label: "Anfänger (A1) - Grundlegende Ausdrücke" },
+        { value: "a2", label: "Grundlegend (A2) - Einfache Konversationen" },
+        { value: "b1", label: "Mittelstufe (B1) - Alltägliche Gespräche" },
+        { value: "b2", label: "Fortgeschritten (B2) - Komplexe Themen" },
+        { value: "c1", label: "Kompetent (C1) - Fließende Kommunikation" }
+      ]
+    },
+    {
+      id: 2,
+      question: "Was sind Ihre Stärken beim Deutschlernen?",
+      options: [
+        { value: "reading", label: "Lesen" },
+        { value: "writing", label: "Schreiben" },
+        { value: "speaking", label: "Sprechen" },
+        { value: "listening", label: "Hörverstehen" },
+        { value: "vocabulary", label: "Wortschatz" }
+      ]
+    },
+    {
+      id: 3,
+      question: "Was sind Ihre Hauptziele beim Deutschlernen?",
+      options: [
+        { value: "work", label: "Berufliche Kommunikation" },
+        { value: "certification", label: "Sprachzertifikate" },
+        { value: "daily", label: "Alltägliche Gespräche" },
+        { value: "technical", label: "Fachbegriffe verstehen" },
+        { value: "confidence", label: "Selbstsicherer sprechen" }
+      ]
+    },
+    {
+      id: 4,
+      question: "Welche medizinischen Bereiche sind für Sie am relevantesten?",
+      options: [
+        { value: "nursing", label: "Krankenpflege" },
+        { value: "elder", label: "Altenpflege" },
+        { value: "disability", label: "Behindertenbetreuung" },
+        { value: "emergency", label: "Notfallmedizin" },
+        { value: "admin", label: "Administrative Aufgaben" }
+      ]
+    },
+    {
+      id: 5,
+      question: "Wie viel Zeit können Sie täglich für das Deutschlernen aufwenden?",
+      options: [
+        { value: "5", label: "Weniger als 5 Minuten" },
+        { value: "15", label: "Etwa 15 Minuten" },
+        { value: "30", label: "Etwa 30 Minuten" },
+        { value: "60", label: "Etwa 1 Stunde" },
+        { value: "more", label: "Mehr als 1 Stunde" }
+      ]
+    }
+  ];
+
+  const certificates = [
+    {
+      id: "app-basic",
+      type: "app",
+      name: "Grundlagen der medizinischen Kommunikation",
+      description: "Ein Grundlagenzertifikat für medizinisches Deutsch und Kommunikation im Gesundheitswesen.",
+      requirements: "Abschluss von mindestens 10 Übungen und 75% Erfolgsquote.",
+      level: "A2-B1",
+      icon: BookOpen
+    },
+    {
+      id: "app-advanced",
+      type: "app",
+      name: "Fortgeschrittene medizinische Kommunikation",
+      description: "Ein fortgeschrittenes Zertifikat für detaillierte medizinische Fachsprache und komplexe Interaktionen.",
+      requirements: "Abschluss von mindestens 25 Übungen, 80% Erfolgsquote und Abschlussprüfung.",
+      level: "B1-B2",
+      icon: Award
+    },
+    {
+      id: "app-specialist",
+      type: "app",
+      name: "Fachspezialist Medizinisches Deutsch",
+      description: "Ein Spezialistenzertifikat für Ihren gewählten medizinischen Bereich mit umfangreicher Fachsprache.",
+      requirements: "Abschluss von 40 Übungen, 85% Erfolgsquote, spezialisierte Prüfung.",
+      level: "B2-C1",
+      icon: Trophy
+    },
+    {
+      id: "official-telc",
+      type: "official",
+      name: "telc Deutsch B1+ Medizin Pflege",
+      description: "Offizielles telc-Zertifikat für Pflegekräfte, das grundlegende Sprachkenntnisse bescheinigt.",
+      requirements: "Externe Prüfung bei einem telc-Prüfungszentrum.",
+      level: "B1+",
+      icon: CheckCircle
+    },
+    {
+      id: "official-goethe",
+      type: "official",
+      name: "Goethe-Zertifikat B1/B2",
+      description: "Offizielles Goethe-Institut Zertifikat, das allgemeine Sprachkenntnisse bescheinigt.",
+      requirements: "Externe Prüfung beim Goethe-Institut.",
+      level: "B1/B2",
+      icon: Globe
+    },
+    {
+      id: "official-dsd",
+      type: "official",
+      name: "Deutsches Sprachdiplom (DSD)",
+      description: "Offizielles Sprachdiplom der Kultusministerkonferenz, anerkannt für berufliche Zwecke.",
+      requirements: "Externe Prüfung bei einer DSD-akkreditierten Einrichtung.",
+      level: "B2/C1",
+      icon: Award
+    }
+  ];
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={`min-h-screen flex flex-col ${loadingPage ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}`}>
       <Header />
-      <main className="flex-grow pt-24 px-4 pb-12">
+
+      <main className="flex-grow pt-24 pb-12 px-4 md:px-8">
         <div className="container mx-auto">
-          <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-neutral-100 mb-8">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 bg-medical-100 rounded-full flex items-center justify-center text-medical-700 text-2xl font-bold">
-                MB
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold">Max Bauer</h1>
-                <p className="text-neutral-600">
-                  Sprachniveau: {languageLevel === "beginner" 
-                    ? "Anfänger (A1-A2)" 
-                    : languageLevel === "intermediate" 
-                    ? "Mittelstufe (B1-B2)" 
-                    : "Fortgeschritten (C1-C2)"}
-                </p>
-              </div>
-              <div className="ml-auto">
-                <div className="flex items-center gap-2">
-                  {subscription === "premium" ? (
-                    <div className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full flex items-center">
-                      <Crown className="h-4 w-4 mr-1" /> Premium-Nutzer
-                    </div>
-                  ) : (
-                    <div className="bg-neutral-100 text-neutral-600 px-3 py-1 rounded-full flex items-center">
-                      Basic-Nutzer
-                    </div>
-                  )}
+          <h1 className="text-3xl font-bold mb-6 text-neutral-800">Mein Profil</h1>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            {/* Left sidebar */}
+            <div className="md:col-span-3 bg-white rounded-xl p-6 shadow-sm border border-neutral-100 h-fit">
+              <div className="text-center mb-6">
+                <div className="w-24 h-24 rounded-full bg-medical-100 text-medical-500 flex items-center justify-center mx-auto mb-4">
+                  <User className="h-12 w-12" />
                 </div>
+                <h2 className="text-xl font-semibold">Max Mustermann</h2>
+                <p className="text-neutral-500">Pflegefachkraft</p>
+                <div className="flex items-center justify-center mt-2">
+                  <span className="px-3 py-1 bg-medical-100 text-medical-700 rounded-full text-sm font-medium">
+                    {currentLevel.toUpperCase()} • {currentSubscription === "premium" ? "Premium" : "Basis"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Button
+                  variant={activeTab === "settings" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActiveTab("settings")}
+                >
+                  <Settings className="mr-2 h-4 w-4" />
+                  Einstellungen
+                </Button>
+                <Button
+                  variant={activeTab === "assessment" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActiveTab("assessment")}
+                >
+                  <BarChart3 className="mr-2 h-4 w-4" />
+                  Sprachbewertung
+                </Button>
+                <Button
+                  variant={activeTab === "goals" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActiveTab("goals")}
+                >
+                  <Trophy className="mr-2 h-4 w-4" />
+                  Lernziele
+                </Button>
+                <Button
+                  variant={activeTab === "certificates" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActiveTab("certificates")}
+                >
+                  <Award className="mr-2 h-4 w-4" />
+                  Zertifikate
+                </Button>
+                <Button
+                  variant={activeTab === "subscription" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => setActiveTab("subscription")}
+                >
+                  <Crown className="mr-2 h-4 w-4" />
+                  Abonnement
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-neutral-500"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Abmelden
+                </Button>
               </div>
             </div>
 
-            <Tabs 
-              value={activeTab} 
-              onValueChange={setActiveTab}
-              className="w-full"
-            >
-              <TabsList className="grid grid-cols-4 mb-6">
-                <TabsTrigger value="settings" className="flex items-center gap-1">
-                  <Settings className="h-4 w-4" />
-                  <span className="hidden md:inline">Einstellungen</span>
-                </TabsTrigger>
-                <TabsTrigger value="assessment" className="flex items-center gap-1">
-                  <Languages className="h-4 w-4" />
-                  <span className="hidden md:inline">Sprachbewertung</span>
-                </TabsTrigger>
-                <TabsTrigger value="goals" className="flex items-center gap-1">
-                  <Target className="h-4 w-4" />
-                  <span className="hidden md:inline">Lernziele</span>
-                </TabsTrigger>
-                <TabsTrigger value="subscription" className="flex items-center gap-1">
-                  <CreditCard className="h-4 w-4" />
-                  <span className="hidden md:inline">Abo</span>
-                </TabsTrigger>
-              </TabsList>
+            {/* Right content area */}
+            <div className="md:col-span-9">
+              {activeTab === "settings" && (
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+                  <h2 className="text-xl font-semibold mb-6">Kontoeinstellungen</h2>
 
-              <TabsContent value="settings" className="space-y-6">
-                <div className="space-y-4">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <User className="h-5 w-5 text-medical-500" /> Persönliche Informationen
-                  </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Name</Label>
-                      <Input id="name" defaultValue="Max Bauer" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">E-Mail</Label>
-                      <Input id="email" type="email" defaultValue="max.bauer@example.com" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="profession">Beruf</Label>
-                      <Input id="profession" defaultValue="Krankenpfleger" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="workplace">Arbeitsplatz</Label>
-                      <Input id="workplace" defaultValue="Universitätsklinikum" />
-                    </div>
-                  </div>
-                </div>
-
-                <Separator />
-
-                <div className="space-y-4">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <Bell className="h-5 w-5 text-medical-500" /> Benachrichtigungen
-                  </h2>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">Tägliche Erinnerungen</p>
-                        <p className="text-sm text-neutral-600">Erhalte Erinnerungen, um deine täglichen Ziele zu erreichen</p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">E-Mail-Benachrichtigungen</p>
-                        <p className="text-sm text-neutral-600">Erhalte E-Mails über neue Übungen und deinen Fortschritt</p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                  </div>
-                </div>
-
-                <Separator />
-
-                <div className="space-y-4">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <Languages className="h-5 w-5 text-medical-500" /> Spracheinstellungen
-                  </h2>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="ui-language">Sprache der Benutzeroberfläche</Label>
-                      <Select defaultValue="de">
-                        <SelectTrigger id="ui-language">
-                          <SelectValue placeholder="Wähle eine Sprache" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="de">Deutsch</SelectItem>
-                          <SelectItem value="en">Englisch</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="learning-focus">Lernfokus</Label>
-                      <Select defaultValue="medical">
-                        <SelectTrigger id="learning-focus">
-                          <SelectValue placeholder="Wähle einen Fokus" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="medical">Medizinisches Fachvokabular</SelectItem>
-                          <SelectItem value="nursing">Pflegerisches Fachvokabular</SelectItem>
-                          <SelectItem value="general">Allgemeines Vokabular</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-4">
-                  <Button onClick={handleSaveSettings}>Einstellungen speichern</Button>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="assessment" className="space-y-6">
-                {!assessmentStarted ? (
-                  <div className="text-center py-8 space-y-6">
-                    <Languages className="h-12 w-12 text-medical-500 mx-auto" />
-                    <h2 className="text-2xl font-bold">Bewerte dein Sprachniveau</h2>
-                    <p className="text-neutral-600 max-w-lg mx-auto">
-                      Nimm an einer 5-minütigen Bewertung teil, um dein aktuelles Deutsch-Niveau 
-                      zu bestimmen. So können wir Übungen für dich personalisieren, die deinen 
-                      Bedürfnissen entsprechen.
-                    </p>
-                    <Button onClick={handleStartAssessment} size="lg">
-                      Sprachbewertung starten
-                    </Button>
-                  </div>
-                ) : !assessmentComplete ? (
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-xl font-semibold">Sprachbewertung</h2>
-                      <div className="text-sm text-neutral-600">
-                        Schritt {assessmentStep} von 5
+                  <div className="space-y-8">
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium">Persönliche Informationen</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="fullName">Vollständiger Name</Label>
+                          <Input id="fullName" defaultValue="Max Mustermann" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="email">E-Mail-Adresse</Label>
+                          <Input id="email" type="email" defaultValue="max.mustermann@example.com" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="profession">Beruf</Label>
+                          <Input id="profession" defaultValue="Pflegefachkraft" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="workSetting">Arbeitsumfeld</Label>
+                          <Select defaultValue="hospital">
+                            <SelectTrigger>
+                              <SelectValue placeholder="Wählen Sie Ihr Arbeitsumfeld" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="hospital">Krankenhaus</SelectItem>
+                              <SelectItem value="clinic">Klinik</SelectItem>
+                              <SelectItem value="eldercare">Altenpflege</SelectItem>
+                              <SelectItem value="disability">Behindertenbetreuung</SelectItem>
+                              <SelectItem value="ambulance">Rettungsdienst</SelectItem>
+                              <SelectItem value="other">Sonstiges</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
                     </div>
 
-                    <ProgressBar 
-                      value={assessmentProgress} 
-                      max={100} 
-                      className="w-full" 
-                      size="sm"
-                      label="Fortschritt"
-                      showValue={true}
-                    />
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium">App-Einstellungen</h3>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <Label className="text-base font-normal">Benachrichtigungen</Label>
+                            <p className="text-sm text-neutral-500">Erhalten Sie Erinnerungen und Updates</p>
+                          </div>
+                          <Switch
+                            checked={notificationsEnabled}
+                            onCheckedChange={setNotificationsEnabled}
+                          />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <Label className="text-base font-normal">Ton</Label>
+                            <p className="text-sm text-neutral-500">Aktivieren Sie Sound-Effekte</p>
+                          </div>
+                          <Switch
+                            checked={soundEnabled}
+                            onCheckedChange={setSoundEnabled}
+                          />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <Label className="text-base font-normal">Dunkelmodus</Label>
+                            <p className="text-sm text-neutral-500">Wechseln Sie zum dunklen Thema</p>
+                          </div>
+                          <Switch
+                            checked={darkMode}
+                            onCheckedChange={setDarkMode}
+                          />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <Label className="text-base font-normal">Automatische Audiowiedergabe</Label>
+                            <p className="text-sm text-neutral-500">Spielt Audioinhalte automatisch ab</p>
+                          </div>
+                          <Switch
+                            checked={autoPlay}
+                            onCheckedChange={setAutoPlay}
+                          />
+                        </div>
+                      </div>
+                    </div>
 
-                    <div className="bg-neutral-50 rounded-lg p-6 space-y-4">
-                      {assessmentStep === 1 && (
-                        <div className="space-y-4">
-                          <h3 className="font-medium">Wie würdest du dein Deutsch-Niveau einschätzen?</h3>
-                          <RadioGroup defaultValue="beginner">
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="beginner" id="beginner" />
-                              <Label htmlFor="beginner">Anfänger (A1-A2)</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="intermediate" id="intermediate" />
-                              <Label htmlFor="intermediate">Mittelstufe (B1-B2)</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="advanced" id="advanced" />
-                              <Label htmlFor="advanced">Fortgeschritten (C1-C2)</Label>
+                    <div className="pt-4">
+                      <Button onClick={handleSaveSettings}>Einstellungen speichern</Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "assessment" && (
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+                  <h2 className="text-xl font-semibold mb-6">Sprachbewertung</h2>
+
+                  {!assessmentComplete ? (
+                    <div className="space-y-6">
+                      <p className="text-neutral-600">
+                        Beantworten Sie einige Fragen, damit wir Ihren aktuellen Sprachstand besser verstehen und Ihnen passende Inhalte anbieten können.
+                      </p>
+
+                      <div className="flex items-center gap-2 mb-6">
+                        <Progress value={(currentAssessmentQuestion + 1) / assessmentQuestions.length * 100} className="h-2" />
+                        <span className="text-sm text-neutral-500">
+                          {currentAssessmentQuestion + 1}/{assessmentQuestions.length}
+                        </span>
+                      </div>
+
+                      <div className="space-y-8">
+                        <div>
+                          <h3 className="text-lg font-medium mb-4">
+                            {assessmentQuestions[currentAssessmentQuestion].question}
+                          </h3>
+
+                          <RadioGroup
+                            value={assessmentAnswers[assessmentQuestions[currentAssessmentQuestion].id]}
+                            onValueChange={(value) => {
+                              setAssessmentAnswers({
+                                ...assessmentAnswers,
+                                [assessmentQuestions[currentAssessmentQuestion].id]: value
+                              });
+                            }}
+                          >
+                            <div className="space-y-3">
+                              {assessmentQuestions[currentAssessmentQuestion].options.map((option) => (
+                                <div key={option.value} className="flex items-center space-x-2 bg-neutral-50 hover:bg-neutral-100 p-3 rounded-lg transition-colors">
+                                  <RadioGroupItem value={option.value} id={option.value} />
+                                  <Label htmlFor={option.value} className="flex-1 cursor-pointer">
+                                    {option.label}
+                                  </Label>
+                                </div>
+                              ))}
                             </div>
                           </RadioGroup>
                         </div>
-                      )}
 
-                      {assessmentStep === 2 && (
-                        <div className="space-y-4">
-                          <h3 className="font-medium">Wähle die passende Übersetzung für: "Der Patient hat starke Schmerzen."</h3>
-                          <RadioGroup defaultValue="a">
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="a" id="q2-a" />
-                              <Label htmlFor="q2-a">The patient has severe pain.</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="b" id="q2-b" />
-                              <Label htmlFor="q2-b">The patient is in a lot of pain.</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="c" id="q2-c" />
-                              <Label htmlFor="q2-c">The patient feels bad.</Label>
-                            </div>
-                          </RadioGroup>
+                        <div className="flex justify-between pt-4">
+                          <Button
+                            variant="outline"
+                            onClick={() => {
+                              if (currentAssessmentQuestion > 0) {
+                                setCurrentAssessmentQuestion(currentAssessmentQuestion - 1);
+                              }
+                            }}
+                            disabled={currentAssessmentQuestion === 0}
+                          >
+                            Zurück
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              if (currentAssessmentQuestion < assessmentQuestions.length - 1) {
+                                setCurrentAssessmentQuestion(currentAssessmentQuestion + 1);
+                              } else {
+                                handleAssessmentSubmit();
+                              }
+                            }}
+                            disabled={!assessmentAnswers[assessmentQuestions[currentAssessmentQuestion].id]}
+                          >
+                            {currentAssessmentQuestion < assessmentQuestions.length - 1 ? "Weiter" : "Abschließen"}
+                          </Button>
                         </div>
-                      )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      <div className="text-center py-6">
+                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <CheckCircle className="h-8 w-8 text-green-600" />
+                        </div>
+                        <h3 className="text-xl font-semibold mb-2">Bewertung abgeschlossen!</h3>
+                        <p className="text-neutral-600 mb-6 max-w-md mx-auto">
+                          Basierend auf Ihren Antworten haben wir Ihr Sprachniveau als B1 eingestuft.
+                          Wir haben Ihre Lernpläne und Übungen entsprechend angepasst.
+                        </p>
+                      </div>
 
-                      {assessmentStep === 3 && (
-                        <div className="space-y-4">
-                          <h3 className="font-medium">Ergänze den folgenden Satz: "Die Krankenschwester _____ dem Patienten eine Spritze."</h3>
-                          <RadioGroup defaultValue="b">
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="a" id="q3-a" />
-                              <Label htmlFor="q3-a">machst</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="b" id="q3-b" />
-                              <Label htmlFor="q3-b">gibt</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="c" id="q3-c" />
-                              <Label htmlFor="q3-c">nehmen</Label>
-                            </div>
-                          </RadioGroup>
-                        </div>
-                      )}
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-medium">Ihre Ergebnisse</h3>
 
-                      {assessmentStep === 4 && (
-                        <div className="space-y-4">
-                          <h3 className="font-medium">Lies den folgenden Text und beantworte die Frage:</h3>
-                          <p className="text-neutral-700 bg-white p-3 rounded border border-neutral-200">
-                            Herr Schmidt wurde gestern mit starken Bauchschmerzen ins Krankenhaus eingeliefert. 
-                            Nach einer Untersuchung wurde eine Blinddarmentzündung diagnostiziert. 
-                            Der Arzt entschied, dass eine Operation notwendig sei.
-                          </p>
-                          <p className="font-medium mt-4">Was wurde bei Herrn Schmidt diagnostiziert?</p>
-                          <RadioGroup defaultValue="a">
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="a" id="q4-a" />
-                              <Label htmlFor="q4-a">Eine Blinddarmentzündung</Label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="bg-neutral-50 p-4 rounded-lg">
+                            <h4 className="text-sm font-medium text-neutral-500 mb-2">Sprachniveau</h4>
+                            <div className="flex items-center">
+                              <div className="w-10 h-10 rounded-full bg-medical-100 text-medical-600 flex items-center justify-center mr-3">
+                                <Trophy className="h-5 w-5" />
+                              </div>
+                              <div>
+                                <p className="text-lg font-semibold">B1 Mittelstufe</p>
+                                <p className="text-sm text-neutral-500">Selbständige Sprachanwendung</p>
+                              </div>
                             </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="b" id="q4-b" />
-                              <Label htmlFor="q4-b">Starke Kopfschmerzen</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="c" id="q4-c" />
-                              <Label htmlFor="q4-c">Eine Grippe</Label>
-                            </div>
-                          </RadioGroup>
-                        </div>
-                      )}
+                          </div>
 
-                      {assessmentStep === 5 && (
-                        <div className="space-y-4">
-                          <h3 className="font-medium">Wähle die grammatikalisch korrekte Antwort:</h3>
-                          <p className="font-medium">Nachdem der Patient untersucht worden war, ...</p>
-                          <RadioGroup defaultValue="b">
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="a" id="q5-a" />
-                              <Label htmlFor="q5-a">er hat ein Rezept bekommen.</Label>
+                          <div className="bg-neutral-50 p-4 rounded-lg">
+                            <h4 className="text-sm font-medium text-neutral-500 mb-2">Stärken</h4>
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span>Hörverstehen</span>
+                                <span className="text-medical-600 font-medium">Fortgeschritten</span>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <span>Wortschatz</span>
+                                <span className="text-medical-600 font-medium">Mittelstufe</span>
+                              </div>
                             </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="b" id="q5-b" />
-                              <Label htmlFor="q5-b">bekam er ein Rezept.</Label>
+                          </div>
+
+                          <div className="bg-neutral-50 p-4 rounded-lg">
+                            <h4 className="text-sm font-medium text-neutral-500 mb-2">Verbesserungsbereiche</h4>
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span>Grammatik</span>
+                                <span className="text-amber-600 font-medium">Grundlegend</span>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <span>Aussprache</span>
+                                <span className="text-amber-600 font-medium">Grundlegend</span>
+                              </div>
                             </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="c" id="q5-c" />
-                              <Label htmlFor="q5-c">er bekommt ein Rezept.</Label>
-                            </div>
-                          </RadioGroup>
+                          </div>
+
+                          <div className="bg-neutral-50 p-4 rounded-lg">
+                            <h4 className="text-sm font-medium text-neutral-500 mb-2">Empfehlungen</h4>
+                            <ul className="text-sm space-y-1 list-disc pl-5">
+                              <li>Fokus auf medizinische Fachsprache</li>
+                              <li>Übungen zur Patientenkommunikation</li>
+                              <li>Praxis der Aussprache medizinischer Begriffe</li>
+                            </ul>
+                          </div>
                         </div>
-                      )}
+                      </div>
 
                       <div className="pt-4">
-                        <Button onClick={handleNextAssessmentStep}>
-                          {assessmentStep < 5 ? "Weiter" : "Bewertung abschließen"}
+                        <Button
+                          onClick={() => {
+                            setAssessmentComplete(false);
+                            setCurrentAssessmentQuestion(0);
+                            setAssessmentAnswers({});
+                          }}
+                        >
+                          Neue Bewertung starten
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeTab === "goals" && (
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+                  <h2 className="text-xl font-semibold mb-6">Lernziele</h2>
+
+                  <div className="space-y-8">
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium">Tagesziel</h3>
+                      <p className="text-neutral-600">
+                        Legen Sie fest, wie viel Zeit Sie täglich für das Deutschlernen aufwenden möchten.
+                      </p>
+
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-3 gap-3">
+                          {[10, 20, 30].map((minutes) => (
+                            <button
+                              key={minutes}
+                              className={`p-4 rounded-lg border text-center transition-colors ${
+                                dailyGoal === minutes
+                                  ? "bg-medical-50 border-medical-200 text-medical-700"
+                                  : "bg-white border-neutral-200 hover:bg-neutral-50"
+                              }`}
+                              onClick={() => handleChangeDailyGoal(minutes)}
+                            >
+                              <div className="text-xl font-semibold">{minutes}</div>
+                              <div className="text-sm">Minuten</div>
+                            </button>
+                          ))}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                          {[45, 60].map((minutes) => (
+                            <button
+                              key={minutes}
+                              className={`p-4 rounded-lg border text-center transition-colors ${
+                                dailyGoal === minutes
+                                  ? "bg-medical-50 border-medical-200 text-medical-700"
+                                  : "bg-white border-neutral-200 hover:bg-neutral-50"
+                              }`}
+                              onClick={() => handleChangeDailyGoal(minutes)}
+                            >
+                              <div className="text-xl font-semibold">{minutes}</div>
+                              <div className="text-sm">Minuten</div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium">Wöchentliches Ziel</h3>
+                      <p className="text-neutral-600">
+                        An wie vielen Tagen pro Woche möchten Sie lernen?
+                      </p>
+
+                      <div className="flex flex-wrap gap-2">
+                        {[1, 2, 3, 4, 5, 6, 7].map((days) => (
+                          <button
+                            key={days}
+                            className={`h-10 min-w-[40px] px-3 rounded-full transition-colors ${
+                              weeklyGoalDays === days
+                                ? "bg-medical-100 text-medical-700"
+                                : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
+                            }`}
+                            onClick={() => handleChangeWeeklyGoal(days)}
+                          >
+                            {days}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium">Langfristige Ziele</h3>
+                      <p className="text-neutral-600">
+                        Was möchten Sie mit dem Deutschlernen erreichen?
+                      </p>
+
+                      <div className="space-y-3">
+                        <div className="flex items-center space-x-2 bg-neutral-50 hover:bg-neutral-100 p-3 rounded-lg transition-colors">
+                          <CheckCircle className="h-5 w-5 text-medical-500" />
+                          <Label className="flex-1 cursor-pointer">
+                            Zertifikat B2 innerhalb von 6 Monaten erreichen
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2 bg-neutral-50 hover:bg-neutral-100 p-3 rounded-lg transition-colors">
+                          <CheckCircle className="h-5 w-5 text-medical-500" />
+                          <Label className="flex-1 cursor-pointer">
+                            Selbstbewusste Kommunikation mit Patienten und Kollegen
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2 bg-neutral-50 hover:bg-neutral-100 p-3 rounded-lg transition-colors">
+                          <CheckCircle className="h-5 w-5 text-medical-500" />
+                          <Label className="flex-1 cursor-pointer">
+                            Medizinische Fachsprache sicher beherrschen
+                          </Label>
+                        </div>
+
+                        <Button variant="outline" className="w-full mt-2">
+                          <Trophy className="h-4 w-4 mr-2" />
+                          Neues Ziel hinzufügen
                         </Button>
                       </div>
                     </div>
                   </div>
-                ) : (
-                  <div className="text-center py-8 space-y-6">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                      <CheckCircle className="h-8 w-8 text-green-600" />
-                    </div>
-                    <h2 className="text-2xl font-bold">Bewertung abgeschlossen!</h2>
-                    <div className="max-w-lg mx-auto">
-                      <div className="bg-white rounded-lg p-6 border border-neutral-200 mb-4">
-                        <h3 className="text-lg font-medium mb-2">Dein Sprachniveau</h3>
-                        <div className="text-3xl font-bold text-medical-600 mb-4">B1-B2 (Mittelstufe)</div>
-                        <p className="text-neutral-600">
-                          Du hast gute Grundkenntnisse in Deutsch und kannst dich in vielen Situationen verständigen. 
-                          Wir empfehlen dir, mit Übungen auf B1-B2 Niveau fortzufahren, um dein Vokabular zu erweitern 
-                          und komplexere Strukturen zu üben.
-                        </p>
-                      </div>
+                </div>
+              )}
+
+              {activeTab === "certificates" && (
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+                  <h2 className="text-xl font-semibold mb-6">Zertifikate & Prüfungen</h2>
+
+                  <Tabs defaultValue="app">
+                    <TabsList className="grid w-full grid-cols-2 mb-6">
+                      <TabsTrigger value="app">App-Zertifikate</TabsTrigger>
+                      <TabsTrigger value="official">Offizielle Sprachprüfungen</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="app" className="space-y-6">
+                      <p className="text-neutral-600">
+                        Verdienen Sie Zertifikate, indem Sie unsere Übungen abschließen und Ihre Sprachkenntnisse verbessern.
+                      </p>
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-white rounded-lg p-4 border border-neutral-200">
-                          <h4 className="font-medium mb-2">Stärken</h4>
-                          <ul className="text-sm text-neutral-600 space-y-1">
-                            <li className="flex items-center gap-1">
-                              <CheckCircle className="h-4 w-4 text-green-500" /> Grundlegendes medizinisches Vokabular
-                            </li>
-                            <li className="flex items-center gap-1">
-                              <CheckCircle className="h-4 w-4 text-green-500" /> Verständnis einfacher Texte
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="bg-white rounded-lg p-4 border border-neutral-200">
-                          <h4 className="font-medium mb-2">Verbesserungspotenzial</h4>
-                          <ul className="text-sm text-neutral-600 space-y-1">
-                            <li className="flex items-center gap-1">
-                              <Clock className="h-4 w-4 text-yellow-500" /> Komplexe grammatikalische Strukturen
-                            </li>
-                            <li className="flex items-center gap-1">
-                              <Clock className="h-4 w-4 text-yellow-500" /> Fachspezifisches Vokabular
-                            </li>
-                          </ul>
-                        </div>
+                        {certificates
+                          .filter(cert => cert.type === "app")
+                          .map(certificate => (
+                            <Card key={certificate.id} className="overflow-hidden">
+                              <CardHeader className="pb-3">
+                                <div className="flex justify-between items-start">
+                                  <div className="w-10 h-10 rounded-full bg-medical-100 text-medical-600 flex items-center justify-center mr-3">
+                                    <certificate.icon className="h-5 w-5" />
+                                  </div>
+                                  <div className="px-2 py-1 bg-neutral-100 text-neutral-600 rounded-full text-xs">
+                                    {certificate.level}
+                                  </div>
+                                </div>
+                                <CardTitle className="text-lg mt-3">{certificate.name}</CardTitle>
+                                <CardDescription>{certificate.description}</CardDescription>
+                              </CardHeader>
+                              <CardContent className="text-sm">
+                                <p className="font-medium text-neutral-700">Anforderungen:</p>
+                                <p className="text-neutral-600">{certificate.requirements}</p>
+                              </CardContent>
+                              <CardFooter className="border-t pt-4 flex justify-between">
+                                <div className="text-sm text-neutral-500 flex items-center">
+                                  <Trophy className="h-4 w-4 mr-1" />
+                                  In Arbeit
+                                </div>
+                                <Button size="sm">Üben</Button>
+                              </CardFooter>
+                            </Card>
+                          ))}
                       </div>
-                    </div>
-                    <Button onClick={() => setActiveTab("goals")}>
-                      Lernziele anpassen
-                    </Button>
-                  </div>
-                )}
-              </TabsContent>
+                    </TabsContent>
 
-              <TabsContent value="goals" className="space-y-6">
-                <div className="space-y-4">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <Target className="h-5 w-5 text-medical-500" /> Lernziele
-                  </h2>
-                  
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="language-goal">Gewünschtes Sprachniveau</Label>
-                      <Select defaultValue="b2">
-                        <SelectTrigger id="language-goal">
-                          <SelectValue placeholder="Wähle ein Ziel" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="a2">A2 (Grundlegende Kenntnisse)</SelectItem>
-                          <SelectItem value="b1">B1 (Fortgeschrittene Grundkenntnisse)</SelectItem>
-                          <SelectItem value="b2">B2 (Selbständige Sprachanwendung)</SelectItem>
-                          <SelectItem value="c1">C1 (Fachkundige Sprachkenntnisse)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="focus-area">Schwerpunktbereich</Label>
-                      <Select defaultValue="conversation">
-                        <SelectTrigger id="focus-area">
-                          <SelectValue placeholder="Wähle einen Schwerpunkt" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="vocabulary">Vokabular erweitern</SelectItem>
-                          <SelectItem value="grammar">Grammatik verbessern</SelectItem>
-                          <SelectItem value="conversation">Gesprächsfähigkeiten</SelectItem>
-                          <SelectItem value="medical">Medizinisches Fachvokabular</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <Label htmlFor="daily-goal">Tägliches Lernziel (Minuten)</Label>
-                        <span className="text-sm text-neutral-600">{dailyGoal} min</span>
+                    <TabsContent value="official" className="space-y-6">
+                      <p className="text-neutral-600">
+                        Bereiten Sie sich auf offizielle Sprachprüfungen vor, die Ihre Deutschkenntnisse bescheinigen.
+                      </p>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {certificates
+                          .filter(cert => cert.type === "official")
+                          .map(certificate => (
+                            <Card key={certificate.id} className="overflow-hidden">
+                              <CardHeader className="pb-3">
+                                <div className="flex justify-between items-start">
+                                  <div className="w-10 h-10 rounded-full bg-neutral-100 text-neutral-600 flex items-center justify-center mr-3">
+                                    <certificate.icon className="h-5 w-5" />
+                                  </div>
+                                  <div className="px-2 py-1 bg-neutral-100 text-neutral-600 rounded-full text-xs">
+                                    {certificate.level}
+                                  </div>
+                                </div>
+                                <CardTitle className="text-lg mt-3">{certificate.name}</CardTitle>
+                                <CardDescription>{certificate.description}</CardDescription>
+                              </CardHeader>
+                              <CardContent className="text-sm">
+                                <p className="font-medium text-neutral-700">Anforderungen:</p>
+                                <p className="text-neutral-600">{certificate.requirements}</p>
+                              </CardContent>
+                              <CardFooter className="border-t pt-4">
+                                <Button size="sm" className="w-full">Auf Prüfung vorbereiten</Button>
+                              </CardFooter>
+                            </Card>
+                          ))}
                       </div>
-                      <Slider 
-                        id="daily-goal"
-                        value={[dailyGoal]} 
-                        min={5} 
-                        max={60} 
-                        step={5}
-                        onValueChange={(value) => setDailyGoal(value[0])} 
-                      />
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              )}
+
+              {activeTab === "subscription" && (
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+                  <h2 className="text-xl font-semibold mb-6">Abonnement verwalten</h2>
+
+                  <div className="space-y-8">
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium">Aktuelles Abonnement</h3>
+
+                      <div className={`bg-gradient-to-r ${
+                        currentSubscription === "premium" 
+                          ? "from-purple-500 to-indigo-600" 
+                          : "from-neutral-100 to-neutral-200"
+                      } rounded-xl p-6 text-${currentSubscription === "premium" ? "white" : "neutral-800"}`}>
+                        <div className="flex items-center mb-4">
+                          {currentSubscription === "premium" ? (
+                            <Crown className="h-6 w-6 mr-2" />
+                          ) : (
+                            <User className="h-6 w-6 mr-2" />
+                          )}
+                          <h4 className="text-xl font-bold">
+                            {currentSubscription === "premium" ? "Premium" : "Basis"} Plan
+                          </h4>
+                        </div>
+
+                        <p className={`text-${currentSubscription === "premium" ? "white/80" : "neutral-600"} mb-4`}>
+                          {currentSubscription === "premium"
+                            ? "Sie genießen alle Premium-Funktionen mit unbegrenztem Zugriff auf alle Inhalte."
+                            : "Ihr Basisplan gibt Ihnen Zugriff auf grundlegende Funktionen."}
+                        </p>
+
+                        {currentSubscription === "premium" && (
+                          <div className="flex items-center mb-4">
+                            <Clock className="h-4 w-4 mr-2" />
+                            <span className="text-sm">Erneuert sich am 15. Juni 2024</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="timeline">Zeitrahmen zum Erreichen des Ziels</Label>
-                      <Select defaultValue="6months">
-                        <SelectTrigger id="timeline">
-                          <SelectValue placeholder="Wähle einen Zeitrahmen" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="1month">1 Monat</SelectItem>
-                          <SelectItem value="3months">3 Monate</SelectItem>
-                          <SelectItem value="6months">6 Monate</SelectItem>
-                          <SelectItem value="1year">1 Jahr</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-4">
-                    <Button onClick={handleSaveGoals}>Lernziele speichern</Button>
+
+                    {currentSubscription !== "premium" && (
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-medium">Auf Premium upgraden</h3>
+                        <p className="text-neutral-600">
+                          Erhalten Sie Zugriff auf alle Premium-Funktionen und -Inhalte.
+                        </p>
+
+                        <Card className="border-2 border-medical-200">
+                          <CardHeader>
+                            <div className="flex justify-between items-center">
+                              <CardTitle className="text-xl flex items-center">
+                                <Crown className="h-5 w-5 mr-2 text-medical-500" />
+                                Premium-Abonnement
+                              </CardTitle>
+                              <div className="px-3 py-1 bg-medical-100 text-medical-700 rounded-full text-sm font-medium">
+                                Empfohlen
+                              </div>
+                            </div>
+                            <CardDescription>Unbegrenzter Zugriff auf alle Premium-Funktionen</CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div className="flex items-baseline">
+                              <span className="text-3xl font-bold">€9,99</span>
+                              <span className="text-neutral-500 ml-1">/ Monat</span>
+                            </div>
+
+                            <ul className="space-y-2">
+                              <li className="flex items-start">
+                                <CheckCircle className="h-5 w-5 text-medical-500 mr-2 shrink-0 mt-0.5" />
+                                <span>Unbegrenzter Zugriff auf alle Übungen und Szenarien</span>
+                              </li>
+                              <li className="flex items-start">
+                                <CheckCircle className="h-5 w-5 text-medical-500 mr-2 shrink-0 mt-0.5" />
+                                <span>Detaillierte Sprachanalyse und Fortschrittsverfolgung</span>
+                              </li>
+                              <li className="flex items-start">
+                                <CheckCircle className="h-5 w-5 text-medical-500 mr-2 shrink-0 mt-0.5" />
+                                <span>Personalisierte Lernpläne für medizinisches Deutsch</span>
+                              </li>
+                              <li className="flex items-start">
+                                <CheckCircle className="h-5 w-5 text-medical-500 mr-2 shrink-0 mt-0.5" />
+                                <span>Prüfungsvorbereitung für offizielle Sprachzertifikate</span>
+                              </li>
+                              <li className="flex items-start">
+                                <CheckCircle className="h-5 w-5 text-medical-500 mr-2 shrink-0 mt-0.5" />
+                                <span>Keine Werbung und Offline-Zugriff</span>
+                              </li>
+                            </ul>
+                          </CardContent>
+                          <CardFooter>
+                            <Button className="w-full" onClick={handleUpgradeSubscription}>
+                              <DollarSign className="h-4 w-4 mr-2" />
+                              Jetzt upgraden
+                            </Button>
+                          </CardFooter>
+                        </Card>
+                      </div>
+                    )}
+
+                    {currentSubscription === "premium" && (
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-medium">Zahlungsinformationen</h3>
+                        <div className="bg-neutral-50 p-4 rounded-lg">
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center">
+                              <div className="w-10 h-6 bg-neutral-800 rounded mr-3"></div>
+                              <div>
+                                <p className="font-medium">VISA •••• 4242</p>
+                                <p className="text-sm text-neutral-500">Läuft ab: 12/25</p>
+                              </div>
+                            </div>
+                            <Button variant="outline" size="sm">Ändern</Button>
+                          </div>
+                        </div>
+
+                        <div className="pt-4">
+                          <Button variant="outline" className="text-neutral-500">
+                            Abonnement kündigen
+                          </Button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </TabsContent>
-
-              <TabsContent value="subscription" className="space-y-6">
-                <div className="space-y-4">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-medical-500" /> Abonnement
-                  </h2>
-                  
-                  <p className="text-neutral-600">
-                    Wähle den Plan, der am besten zu deinen Lernbedürfnissen passt. 
-                    Du kannst jederzeit zwischen den Plänen wechseln.
-                  </p>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                    <div className={`rounded-xl border p-6 space-y-4 ${subscription === 'basic' ? 'border-medical-500 bg-medical-50' : 'border-neutral-200'}`}>
-                      <div className="flex justify-between items-start">
-                        <h3 className="text-xl font-bold">Basic</h3>
-                        <div className="bg-neutral-100 px-3 py-1 rounded-full text-neutral-700 text-sm">
-                          Kostenlos
-                        </div>
-                      </div>
-                      
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                          <span>Grundlegende Vokabelübungen</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                          <span>5 Sprachszenarien pro Tag</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                          <span>Grundlegendes Fortschrittstracking</span>
-                        </li>
-                      </ul>
-                      
-                      <Button 
-                        onClick={() => handleUpdateSubscription('basic')}
-                        variant={subscription === 'basic' ? 'default' : 'outline'}
-                        className="w-full"
-                      >
-                        {subscription === 'basic' ? 'Aktueller Plan' : 'Downgraden'}
-                      </Button>
-                    </div>
-                    
-                    <div className={`rounded-xl border p-6 space-y-4 ${subscription === 'premium' ? 'border-yellow-500 bg-yellow-50' : 'border-neutral-200'}`}>
-                      <div className="flex justify-between items-start">
-                        <div className="flex items-center gap-1">
-                          <h3 className="text-xl font-bold">Premium</h3>
-                          <Crown className="h-5 w-5 text-yellow-500" />
-                        </div>
-                        <div className="bg-yellow-100 px-3 py-1 rounded-full text-yellow-700 text-sm">
-                          9,99 € / Monat
-                        </div>
-                      </div>
-                      
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                          <span>Unbegrenzter Zugriff auf alle Übungen</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                          <span>Personalisierte Lernpläne</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                          <span>Detailliertes Fortschrittstracking</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                          <span>Spezifische Fachvokabularübungen</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                          <span>Offline-Zugriff auf Inhalte</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <Sparkles className="h-5 w-5 text-yellow-500 shrink-0 mt-0.5" />
-                          <span className="font-medium">KI-basierte Konversationsübungen</span>
-                        </li>
-                      </ul>
-                      
-                      <Button 
-                        onClick={() => handleUpdateSubscription('premium')}
-                        variant={subscription === 'premium' ? 'default' : 'outline'}
-                        className={`w-full ${subscription === 'premium' ? '' : 'border-yellow-500 text-yellow-700 hover:bg-yellow-50'}`}
-                      >
-                        {subscription === 'premium' ? 'Aktueller Plan' : 'Upgrade auf Premium'}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
-            <h2 className="text-xl font-semibold mb-4">Funktionen im Überblick</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FeatureCard 
-                title="Vokabeltraining" 
-                description="Übe medizinische und pflegerische Fachbegriffe"
-                icon={<BookOpen className="h-5 w-5 text-medical-600" />}
-              />
-              <FeatureCard 
-                title="Sprachszenarien" 
-                description="Interaktive Dialogübungen für verschiedene Situationen"
-                icon={<Languages className="h-5 w-5 text-medical-600" />}
-              />
-              <FeatureCard 
-                title="Fortschrittsanalyse" 
-                description="Verfolge deinen Lernfortschritt über die Zeit"
-                icon={<Award className="h-5 w-5 text-medical-600" />}
-                premium={true}
-              />
-              <FeatureCard 
-                title="KI-Gesprächspartner" 
-                description="Übe realistische Gespräche mit einem KI-Assistenten"
-                icon={<Sparkles className="h-5 w-5 text-medical-600" />}
-                premium={true}
-              />
+              )}
             </div>
           </div>
         </div>
       </main>
+
       <Footer />
     </div>
   );
