@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define language types
@@ -51,6 +50,7 @@ interface LanguageContextType {
   supportedLanguages: Language[];
   germanDialects: GermanDialect[];
   getCurrentLanguageTranslations: () => Record<string, string>;
+  getGermanContent: (standardGerman: string) => string;
   interfaceLanguage: string;
 }
 
@@ -121,20 +121,51 @@ const translations: Record<string, Record<string, string>> = {
     learnVocabulary: 'Învață vocabular',
     progress: 'Progresul tău',
     weeklyGoal: 'Obiectiv săptămânal',
-    streak: 'Zile consecutive',
-    completedScenarios: 'Scenarii finalizate',
-    masteredVocabulary: 'Vocabular stăpânit',
+    area: 'Domeniu',
+    allAreas: 'Toate domeniile',
+    patientCare: 'Îngrijirea pacienților',
+    emergency: 'Urgențe',
+    documentation: 'Documentație',
+    teamwork: 'Lucru în echipă',
+    elderlyCare: 'Îngrijirea vârstnicilor',
+    disabilityCare: 'Îngrijirea persoanelor cu dizabilități',
+    languageLevel: 'Nivel de limbă',
+    allLevels: 'Toate nivelurile',
+    beginner: 'Începător (A1-A2)',
+    intermediate: 'Intermediar (B1-B2)',
+    advanced: 'Avansat (C1)',
     exercises: 'exerciții',
-    of: 'din',
-    days: 'zile',
-    recommendedExercises: 'Exerciții recomandate',
-    showAll: 'Arată toate',
-    medicalGerman: 'Germană medicală pentru toate nivelurile de limbă',
-    improveYour: 'Îmbunătățește-ți',
-    medicalCommunication: 'comunicarea medicală',
-    trainScenarios: 'Exersează scenarii de dialog și terminologie pentru activitatea ta profesională zilnică în domeniul sănătății, indiferent de nivelul limbii tale.',
+    exercise: 'exercițiu',
+    found: 'găsite',
+    noExercisesFound: 'Nu s-au găsit exerciții cu filtrele selectate.',
+    resetFilters: 'Resetează filtrele',
+    searchExercises: 'Caută exerciții...',
+    showFilters: 'Arată filtrele',
+    practicePronunciation: 'Exersează pronunția',
+    practiceDescription: 'Exersează germana medicală în scenarii realiste din activitatea ta profesională',
   },
-  // Add more languages as needed
+  hr: {
+    welcome: 'Dobrodošli',
+    language: 'Jezik',
+    settings: 'Postavke',
+    home: 'Početna',
+    practice: 'Vježbe',
+    vocabulary: 'Vokabular',
+    dialog: 'Dijalog',
+    profile: 'Profil',
+    startExercise: 'Započni vježbu',
+    learnVocabulary: 'Uči vokabular',
+    progress: 'Tvoj napredak',
+    weeklyGoal: 'Tjedni cilj',
+    area: 'Područje',
+    allAreas: 'Sva područja',
+    patientCare: 'Njega pacijenata',
+    emergency: 'Hitni slučajevi',
+    documentation: 'Dokumentacija',
+    teamwork: 'Timski rad',
+    elderlyCare: 'Njega starijih osoba',
+    disabilityCare: 'Njega osoba s invaliditetom',
+  },
 };
 
 // Create the context with default values
@@ -149,6 +180,7 @@ const LanguageContext = createContext<LanguageContextType>({
   supportedLanguages,
   germanDialects,
   getCurrentLanguageTranslations: () => ({}),
+  getGermanContent: (standardGerman: string) => standardGerman,
   interfaceLanguage: 'en',
 });
 
@@ -198,8 +230,17 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   // Function to get a translation - falls back to key if translation not found
   const translate = (key: string): string => {
+    if (!key) return '';
+    
     const interfaceLang = interfaceLanguage in translations ? interfaceLanguage : 'en';
-    return translations[interfaceLang]?.[key] || key;
+    const translation = translations[interfaceLang]?.[key];
+    
+    if (!translation) {
+      console.warn(`Missing translation for key "${key}" in language "${interfaceLang}"`);
+      return translations.en?.[key] || key;
+    }
+    
+    return translation;
   };
 
   // Get a language name by code
@@ -219,6 +260,38 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     return translations[interfaceLanguage] || translations.en;
   };
 
+  // Add function to get content in the selected German dialect
+  const getGermanContent = (standardGerman: string): string => {
+    // Implement dialect-specific variations
+    switch (germanDialect) {
+      case 'de-AT':
+        // Austrian German variations
+        return standardGerman.replace('ich', 'i')
+                           .replace('nicht', 'ned')
+                           .replace('ist', 'is');
+      case 'de-CH':
+        // Swiss German variations
+        return standardGerman.replace('ich', 'ig')
+                           .replace('nicht', 'nöd')
+                           .replace('ist', 'isch');
+      default:
+        return standardGerman;
+    }
+  };
+
+  useEffect(() => {
+    // Update interface language when user language changes
+    const newInterfaceLanguage = userLanguage in translations ? userLanguage : 'en';
+    setInterfaceLanguage(newInterfaceLanguage);
+    
+    // Update document language for accessibility
+    document.documentElement.lang = userLanguage;
+    
+    // Force a re-render of translated content
+    const event = new Event('languagechange');
+    window.dispatchEvent(event);
+  }, [userLanguage]);
+
   const contextValue: LanguageContextType = {
     userLanguage,
     setUserLanguage,
@@ -230,6 +303,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     supportedLanguages,
     germanDialects,
     getCurrentLanguageTranslations,
+    getGermanContent,
     interfaceLanguage,
   };
 

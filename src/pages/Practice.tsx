@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
@@ -20,8 +19,10 @@ import {
 import { cn } from "@/lib/utils";
 import scenarios, { Scenario } from "@/data/scenarios";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from '@/hooks/useTranslation';
 
 const Practice = () => {
+  const { t, getLocalizedContent } = useTranslation();
   const navigate = useNavigate();
   const { translate } = useLanguage();
   const [loadingPage, setLoadingPage] = useState(true);
@@ -104,9 +105,9 @@ const Practice = () => {
           <section className="mb-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <div>
-                <h1 className="text-3xl font-bold mb-2 text-neutral-800">{translate("practice") || "Übungen"}</h1>
+                <h1 className="text-3xl font-bold mb-2 text-neutral-800">{t("practice")}</h1>
                 <p className="text-neutral-600">
-                  {translate("practiceDescription") || "Praktiziere medizinisches Deutsch in realistischen Szenarien aus deinem Berufsalltag"}
+                  {t("practiceDescription")}
                 </p>
               </div>
               
