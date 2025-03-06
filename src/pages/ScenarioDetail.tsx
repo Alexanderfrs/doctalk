@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AppNavigation from "@/components/navigation/AppNavigation";
@@ -30,7 +30,11 @@ import {
   ChevronRight,
   Lightbulb,
   Repeat,
-  X
+  X,
+  Globe,
+  AlertTriangle,
+  Clipboard,
+  Users2
 } from "lucide-react";
 import scenarios from "@/data/scenarios";
 import { cn } from "@/lib/utils";
@@ -499,8 +503,8 @@ const ScenarioDetail = () => {
                         <div className="w-10 h-10 rounded-full bg-medical-100 flex items-center justify-center mr-3">
                           {s.category === "patient-care" ? <User className="h-5 w-5 text-medical-600" /> : 
                            s.category === "emergency" ? <AlertTriangle className="h-5 w-5 text-medical-600" /> :
-                           s.category === "documentation" ? <ClipboardList className="h-5 w-5 text-medical-600" /> :
-                           <Users className="h-5 w-5 text-medical-600" />}
+                           s.category === "documentation" ? <Clipboard className="h-5 w-5 text-medical-600" /> :
+                           <Users2 className="h-5 w-5 text-medical-600" />}
                         </div>
                         <div className="flex-1">
                           <p className="font-medium text-sm">{s.title}</p>

@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AppNavigation from "@/components/navigation/AppNavigation";
@@ -18,7 +19,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import scenarios, { Scenario } from "@/data/scenarios";
-import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Practice = () => {
