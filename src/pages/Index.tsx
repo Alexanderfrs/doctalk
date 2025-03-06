@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -197,9 +198,9 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Why MedLingua is unique - NEW SECTION */}
+        {/* Consolidated Why MedLingua is unique section */}
         <section className="container mx-auto mb-12 animate-fade-in" style={{ animationDelay: '900ms' }}>
-          <h2 className="text-2xl font-semibold mb-6 text-center">Was MedLingua von anderen Sprachlern-Apps unterscheidet</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-center">MedLingua - Spezialtraining für medizinisches Personal</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {uniqueFeatures.map((feature, index) => (
@@ -216,7 +217,7 @@ const Index = () => {
           </div>
           
           <div className="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
-            <h3 className="text-xl font-medium mb-4 text-center">Im Vergleich zu allgemeinen Sprachlern-Apps</h3>
+            <h3 className="text-xl font-medium mb-4 text-center">Warum MedLingua statt allgemeiner Sprachlern-Apps?</h3>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[600px]">
                 <thead>
@@ -249,43 +250,6 @@ const Index = () => {
                   </tr>
                 </tbody>
               </table>
-            </div>
-          </div>
-        </section>
-        
-        {/* Features section */}
-        <section className="container mx-auto mb-12 animate-fade-in" style={{ animationDelay: '1100ms' }}>
-          <h2 className="text-2xl font-semibold mb-6 text-center">Warum MedLingua?</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100 text-center">
-              <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MessageCircle className="h-6 w-6 text-yellow-600" />
-              </div>
-              <h3 className="text-lg font-medium mb-2">Realistische Szenarien</h3>
-              <p className="text-neutral-600 text-sm">
-                Übe mit authentischen Dialogen aus dem medizinischen Alltag, die speziell für B1-B2 Sprachniveau entwickelt wurden.
-              </p>
-            </div>
-            
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100 text-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="h-6 w-6 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-medium mb-2">Fachvokabular</h3>
-              <p className="text-neutral-600 text-sm">
-                Lerne und festige medizinische Fachbegriffe und Redewendungen, die du in deinem Berufsalltag benötigst.
-              </p>
-            </div>
-            
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100 text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="h-6 w-6 text-green-600" />
-              </div>
-              <h3 className="text-lg font-medium mb-2">Personalisiertes Lernen</h3>
-              <p className="text-neutral-600 text-sm">
-                Dein Lernfortschritt wird analysiert, um dir gezielt die Übungen anzubieten, die du am meisten benötigst.
-              </p>
             </div>
           </div>
         </section>

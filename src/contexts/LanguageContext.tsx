@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define language types
@@ -49,7 +50,92 @@ interface LanguageContextType {
   getDialectName: (code: string) => string;
   supportedLanguages: Language[];
   germanDialects: GermanDialect[];
+  getCurrentLanguageTranslations: () => Record<string, string>;
+  interfaceLanguage: string;
 }
+
+// More extensive translations for interface elements
+const translations: Record<string, Record<string, string>> = {
+  en: {
+    welcome: 'Welcome',
+    language: 'Language',
+    settings: 'Settings',
+    home: 'Home',
+    practice: 'Exercises',
+    vocabulary: 'Vocabulary',
+    dialog: 'Dialog',
+    profile: 'Profile',
+    startExercise: 'Start Exercise',
+    learnVocabulary: 'Learn Vocabulary',
+    progress: 'Your Progress',
+    weeklyGoal: 'Weekly Goal',
+    streak: 'Day Streak',
+    completedScenarios: 'Completed Scenarios',
+    masteredVocabulary: 'Mastered Vocabulary',
+    exercises: 'exercises',
+    of: 'of',
+    days: 'days',
+    recommendedExercises: 'Recommended Exercises',
+    showAll: 'Show All',
+    medicalGerman: 'Medical German for all language levels',
+    improveYour: 'Improve your',
+    medicalCommunication: 'medical communication',
+    trainScenarios: 'Practice dialogue scenarios and terminology for your professional everyday life in healthcare, regardless of your language level.',
+  },
+  pl: {
+    welcome: 'Witaj',
+    language: 'Język',
+    settings: 'Ustawienia',
+    home: 'Strona główna',
+    practice: 'Ćwiczenia',
+    vocabulary: 'Słownictwo',
+    dialog: 'Dialog',
+    profile: 'Profil',
+    startExercise: 'Rozpocznij ćwiczenie',
+    learnVocabulary: 'Ucz się słownictwa',
+    progress: 'Twój postęp',
+    weeklyGoal: 'Cel tygodniowy',
+    streak: 'Dni pod rząd',
+    completedScenarios: 'Ukończone scenariusze',
+    masteredVocabulary: 'Opanowane słownictwo',
+    exercises: 'ćwiczenia',
+    of: 'z',
+    days: 'dni',
+    recommendedExercises: 'Polecane ćwiczenia',
+    showAll: 'Pokaż wszystkie',
+    medicalGerman: 'Niemiecki medyczny dla wszystkich poziomów językowych',
+    improveYour: 'Popraw swoją',
+    medicalCommunication: 'komunikację medyczną',
+    trainScenarios: 'Ćwicz scenariusze dialogowe i terminologię dla codziennej pracy zawodowej w służbie zdrowia, niezależnie od poziomu znajomości języka.',
+  },
+  ro: {
+    welcome: 'Bun venit',
+    language: 'Limbă',
+    settings: 'Setări',
+    home: 'Acasă',
+    practice: 'Exerciții',
+    vocabulary: 'Vocabular',
+    dialog: 'Dialog',
+    profile: 'Profil',
+    startExercise: 'Începe exercițiul',
+    learnVocabulary: 'Învață vocabular',
+    progress: 'Progresul tău',
+    weeklyGoal: 'Obiectiv săptămânal',
+    streak: 'Zile consecutive',
+    completedScenarios: 'Scenarii finalizate',
+    masteredVocabulary: 'Vocabular stăpânit',
+    exercises: 'exerciții',
+    of: 'din',
+    days: 'zile',
+    recommendedExercises: 'Exerciții recomandate',
+    showAll: 'Arată toate',
+    medicalGerman: 'Germană medicală pentru toate nivelurile de limbă',
+    improveYour: 'Îmbunătățește-ți',
+    medicalCommunication: 'comunicarea medicală',
+    trainScenarios: 'Exersează scenarii de dialog și terminologie pentru activitatea ta profesională zilnică în domeniul sănătății, indiferent de nivelul limbii tale.',
+  },
+  // Add more languages as needed
+};
 
 // Create the context with default values
 const LanguageContext = createContext<LanguageContextType>({
@@ -62,26 +148,13 @@ const LanguageContext = createContext<LanguageContextType>({
   getDialectName: () => '',
   supportedLanguages,
   germanDialects,
+  getCurrentLanguageTranslations: () => ({}),
+  interfaceLanguage: 'en',
 });
 
 interface LanguageProviderProps {
   children: React.ReactNode;
 }
-
-// Simple translations - in a real app, this would be more sophisticated with actual translations
-const translations: Record<string, Record<string, string>> = {
-  en: {
-    welcome: 'Welcome',
-    language: 'Language',
-    settings: 'Settings',
-  },
-  de: {
-    welcome: 'Willkommen',
-    language: 'Sprache',
-    settings: 'Einstellungen',
-  },
-  // Other languages would be added here
-};
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   // Try to get initial language from localStorage, default to English
@@ -89,10 +162,21 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     localStorage.getItem('userLanguage') || 'en'
   );
   
+  // The interface language is based on the user's native language
+  const [interfaceLanguage, setInterfaceLanguage] = useState<string>(
+    userLanguage in translations ? userLanguage : 'en'
+  );
+  
   // Try to get initial German dialect from localStorage, default to Standard German
   const [germanDialect, setGermanDialectState] = useState<string>(
     localStorage.getItem('germanDialect') || 'de-DE'
   );
+
+  // Update interface language when user language changes
+  useEffect(() => {
+    const newInterfaceLanguage = userLanguage in translations ? userLanguage : 'en';
+    setInterfaceLanguage(newInterfaceLanguage);
+  }, [userLanguage]);
 
   // Save language selection to localStorage when it changes
   useEffect(() => {
@@ -114,10 +198,8 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   // Function to get a translation - falls back to key if translation not found
   const translate = (key: string): string => {
-    if (!translations[userLanguage]) {
-      return key; // Language not supported yet
-    }
-    return translations[userLanguage][key] || key;
+    const interfaceLang = interfaceLanguage in translations ? interfaceLanguage : 'en';
+    return translations[interfaceLang]?.[key] || key;
   };
 
   // Get a language name by code
@@ -132,6 +214,11 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     return dialect ? dialect.name : code;
   };
 
+  // Get all translations for the current language
+  const getCurrentLanguageTranslations = (): Record<string, string> => {
+    return translations[interfaceLanguage] || translations.en;
+  };
+
   const contextValue: LanguageContextType = {
     userLanguage,
     setUserLanguage,
@@ -142,6 +229,8 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     getDialectName,
     supportedLanguages,
     germanDialects,
+    getCurrentLanguageTranslations,
+    interfaceLanguage,
   };
 
   return (

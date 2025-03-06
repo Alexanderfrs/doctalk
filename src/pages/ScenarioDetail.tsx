@@ -1,546 +1,526 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import AppNavigation from "@/components/navigation/AppNavigation";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Mic, Volume2, CheckCircle, RefreshCw, Type, BookOpen, Lightbulb } from "lucide-react";
-import { toast } from "sonner";
-import scenarios from "@/data/scenarios";
-import useTextToSpeech from "@/hooks/useTextToSpeech";
-import useVoiceRecognition from "@/hooks/useVoiceRecognition";
-import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import VocabularyCard from "@/components/ui/VocabularyCard";
-import vocabularyCategories, { VocabularyWord } from "@/data/vocabulary";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { toast } from "@/hooks/use-toast";
+import { 
+  ArrowLeft, 
+  Play, 
+  Pause, 
+  SkipForward, 
+  Volume2, 
+  VolumeX, 
+  Mic, 
+  BookOpen, 
+  CheckCircle, 
+  Info, 
+  HelpCircle,
+  MessageCircle,
+  User,
+  ChevronRight,
+  Lightbulb,
+  Repeat,
+  X
+} from "lucide-react";
+import scenarios from "@/data/scenarios";
+import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
-import LanguageSelector from "@/components/language/LanguageSelector";
 
 const ScenarioDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [scenario, setScenario] = useState(null);
-  const [currentDialogueIndex, setCurrentDialogueIndex] = useState(0);
-  const [userResponse, setUserResponse] = useState("");
-  const [typedResponse, setTypedResponse] = useState("");
-  const [inputMethod, setInputMethod] = useState<"voice" | "text">("voice");
-  const [feedbackMessage, setFeedbackMessage] = useState("");
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [exerciseCompleted, setExerciseCompleted] = useState(false);
-  const [loadingPage, setLoadingPage] = useState(true);
-  const [relevantVocabulary, setRelevantVocabulary] = useState<VocabularyWord[]>([]);
-  const [usedVocabulary, setUsedVocabulary] = useState<string[]>([]);
-  const [suggestedVocabulary, setSuggestedVocabulary] = useState<VocabularyWord[]>([]);
-  const [micPermissionGranted, setMicPermissionGranted] = useState<boolean | null>(null);
+  const { translate } = useLanguage();
   
-  const userResponseRef = useRef<HTMLInputElement>(null);
-  const recordingPromptShown = useRef(false);
+  const [scenario, setScenario] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("dialog");
+  const [currentDialogStep, setCurrentDialogStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [showTranslation, setShowTranslation] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingFeedback, setRecordingFeedback] = useState<null | { score: number; feedback: string }>(null);
+  const [showHint, setShowHint] = useState(false);
   
-  const { userLanguage, germanDialect } = useLanguage();
-
-  const { speak, isSpeaking } = useTextToSpeech();
-  const { 
-    text, 
-    isListening, 
-    startListening, 
-    stopListening, 
-    resetText,
-    hasRecognitionSupport,
-    error: recognitionError
-  } = useVoiceRecognition({
-    language: germanDialect || 'de-DE',
-    continuous: true,
-    onResult: (result, isFinal) => {
-      console.log("Speech recognition result:", result, "isFinal:", isFinal);
-      if (isFinal) {
-        setUserResponse(prev => prev ? `${prev} ${result}` : result);
-      }
-    },
-    onError: (error) => {
-      console.error("Speech recognition error:", error);
-      if (error.includes("permission")) {
-        setMicPermissionGranted(false);
-        toast.error("Bitte erlauben Sie den Zugriff auf das Mikrofon für die Spracherkennung.");
-      } else if (!error.includes("not supported")) {
-        toast.error("Fehler bei der Spracherkennung. Bitte versuchen Sie es erneut.");
-      } else {
-        toast.error("Ihr Browser unterstützt keine Spracherkennung. Bitte verwenden Sie die Texteingabe.");
-        setInputMethod("text");
-      }
-    }
-  });
-
-  // Check for microphone permissions
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const dialogContainerRef = useRef<HTMLDivElement | null>(null);
+  
   useEffect(() => {
-    const checkMicPermission = async () => {
-      try {
-        const permissionStatus = await navigator.permissions.query({ name: 'microphone' as PermissionName });
-        setMicPermissionGranted(permissionStatus.state === 'granted');
-        
-        permissionStatus.onchange = () => {
-          setMicPermissionGranted(permissionStatus.state === 'granted');
-        };
-      } catch (error) {
-        console.error("Failed to check microphone permission:", error);
-        // Some browsers don't support permissions API, we'll check when user tries to record
-      }
-    };
-    
-    checkMicPermission();
-  }, []);
-
-  useEffect(() => {
-    if (recognitionError && recognitionError.includes("not supported") && !recordingPromptShown.current) {
-      toast.error("Ihr Browser unterstützt keine Spracherkennung. Bitte verwenden Sie die Texteingabe.");
-      setInputMethod("text");
-      recordingPromptShown.current = true;
-    }
-  }, [recognitionError]);
-
-  useEffect(() => {
+    // Find the scenario by ID
     const foundScenario = scenarios.find(s => s.id === id);
+    
     if (foundScenario) {
       setScenario(foundScenario);
-      
-      // Find relevant vocabulary for this scenario
-      if (foundScenario.vocabularyIds && foundScenario.vocabularyIds.length > 0) {
-        const vocabWords: VocabularyWord[] = [];
-        foundScenario.vocabularyIds.forEach(categoryId => {
-          const category = vocabularyCategories.find(cat => cat.id === categoryId);
-          if (category) {
-            vocabWords.push(...category.words.slice(0, 5)); // Limit to 5 words per category
-          }
-        });
-        setRelevantVocabulary(vocabWords.slice(0, 10)); // Limit to 10 words total
-        
-        // Randomly select 3 words to suggest for each dialogue
-        updateSuggestedVocabulary(vocabWords);
-      }
+      // Simulate loading delay for animation
+      setTimeout(() => {
+        setLoading(false);
+      }, 300);
     } else {
+      // Scenario not found, redirect to practice page
       navigate("/practice");
-      toast.error("Szenario nicht gefunden");
     }
-    
-    // Simulate loading delay for animation
-    const timer = setTimeout(() => {
-      setLoadingPage(false);
-    }, 300);
-    return () => clearTimeout(timer);
   }, [id, navigate]);
-
+  
   useEffect(() => {
-    if (text) {
-      setUserResponse(text);
-    }
-  }, [text]);
-
-  const updateSuggestedVocabulary = (allVocab) => {
-    if (allVocab && allVocab.length > 0) {
-      // Shuffle array and take first 3 elements
-      const shuffled = [...allVocab].sort(() => 0.5 - Math.random());
-      setSuggestedVocabulary(shuffled.slice(0, 3));
-    }
-  };
-
-  // Update suggested vocabulary when moving to the next dialogue
-  useEffect(() => {
-    if (relevantVocabulary.length > 0) {
-      updateSuggestedVocabulary(relevantVocabulary);
-    }
-  }, [currentDialogueIndex, relevantVocabulary]);
-
-  const playCurrentLine = () => {
-    if (!scenario || !scenario.dialogue[currentDialogueIndex]) return;
-    
-    const line = scenario.dialogue[currentDialogueIndex];
-    if (line.speaker !== 'user') {
-      speak(line.text);
-    }
-  };
-
-  const handleRecordAnswer = async () => {
-    if (!hasRecognitionSupport) {
-      toast.error("Spracherkennung wird von Ihrem Browser nicht unterstützt. Bitte verwenden Sie die Texteingabe.");
-      setInputMethod("text");
-      return;
-    }
-    
-    if (isListening) {
-      stopListening();
-    } else {
-      try {
-        resetText();
-        // First request microphone permission if not already granted
-        if (micPermissionGranted === false || micPermissionGranted === null) {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          stream.getTracks().forEach(track => track.stop()); // Stop the stream after getting permission
-          setMicPermissionGranted(true);
-        }
-        await startListening();
-        toast.success("Spracherkennung aktiviert. Sprechen Sie jetzt.");
-      } catch (error) {
-        console.error("Failed to start recording:", error);
-        setMicPermissionGranted(false);
-        toast.error("Konnte die Aufnahme nicht starten. Bitte erlauben Sie den Zugriff auf das Mikrofon.");
+    // Auto-scroll to current dialog step
+    if (dialogContainerRef.current && !loading) {
+      const activeElement = document.getElementById(`dialog-step-${currentDialogStep}`);
+      if (activeElement) {
+        dialogContainerRef.current.scrollTo({
+          top: activeElement.offsetTop - 100,
+          behavior: 'smooth'
+        });
       }
     }
-  };
-
-  const handleUseVocabulary = (word) => {
-    const wordText = word.german;
-    if (inputMethod === "voice") {
-      setUserResponse(prev => prev ? `${prev} ${wordText}` : wordText);
+  }, [currentDialogStep, loading]);
+  
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      audioRef.current?.pause();
     } else {
-      setTypedResponse(prev => prev ? `${prev} ${wordText}` : wordText);
+      audioRef.current?.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+  
+  const handleNext = () => {
+    if (currentDialogStep < (scenario?.dialog?.length || 0) - 1) {
+      setCurrentDialogStep(currentDialogStep + 1);
     }
   };
-
-  const handleSubmitAnswer = () => {
-    let response = inputMethod === "voice" ? userResponse : typedResponse;
-    
-    if (!response || !response.trim()) {
-      toast.error(inputMethod === "voice" ? "Bitte sprechen Sie eine Antwort ein" : "Bitte geben Sie eine Antwort ein");
-      return;
-    }
-
-    if (isListening) {
-      stopListening();
-    }
-
-    // Enhanced evaluation logic - looks for key concepts rather than exact matches
-    const correctAnswer = scenario.dialogue[currentDialogueIndex].text;
-    const userWords = response.toLowerCase().split(/\s+/);
-    
-    // Extract keywords from the correct answer
-    const keywordsFromCorrect = extractKeywords(correctAnswer.toLowerCase());
-    
-    // Count keywords that match
-    const matchingKeywords = keywordsFromCorrect.filter(keyword => 
-      userWords.some(word => word.includes(keyword) || keyword.includes(word))
-    );
-    
-    const percentageMatch = (matchingKeywords.length / Math.max(1, keywordsFromCorrect.length)) * 100;
-    
-    // Check for any irrelevant words that shouldn't be there
-    const irrelevantWords = ["um", "der", "die", "das", "ein", "eine", "und", "oder", "aber"];
-    const hasIrrelevantOnly = userWords.every(word => 
-      irrelevantWords.includes(word) || word.length < 2
-    );
-    
-    // Check if any vocabulary words were used
-    const newUsedVocabulary = [...usedVocabulary];
-    relevantVocabulary.forEach(vocabWord => {
-      const germanWord = vocabWord.german.toLowerCase();
-      if (response.toLowerCase().includes(germanWord) && !newUsedVocabulary.includes(vocabWord.id)) {
-        newUsedVocabulary.push(vocabWord.id);
-        toast.success(`Gut! Du hast das Vokabel "${vocabWord.german}" verwendet.`);
-      }
-    });
-    
-    if (newUsedVocabulary.length !== usedVocabulary.length) {
-      setUsedVocabulary(newUsedVocabulary);
-    }
-    
-    if (hasIrrelevantOnly) {
-      setFeedbackMessage("Deine Antwort enthält keine relevanten Wörter. Versuche es noch einmal mit einer vollständigen Antwort.");
-    } else if (percentageMatch > 70) {
-      setFeedbackMessage("Sehr gut! Deine Antwort enthält die wichtigsten Elemente und ist angemessen für diese Situation.");
-    } else if (percentageMatch > 40) {
-      setFeedbackMessage("Nicht schlecht, aber deine Antwort könnte verbessert werden. Versuche, spezifischere medizinische Begriffe zu verwenden.");
-    } else {
-      setFeedbackMessage("Deine Antwort passt nicht ganz zur Situation. Eine passendere Antwort wäre: " + correctAnswer);
-    }
-    
-    setShowFeedback(true);
-  };
-
-  // Helper function to extract keywords from text
-  const extractKeywords = (text) => {
-    const words = text.split(/\s+/);
-    // Filter out common words and short words
-    return words.filter(word => 
-      word.length > 3 && 
-      !["und", "oder", "aber", "der", "die", "das", "ein", "eine", "mit", "für", "von", "zum"].includes(word)
-    );
-  };
-
-  const moveToNextLine = () => {
-    if (!scenario) return;
-    
-    if (currentDialogueIndex < scenario.dialogue.length - 1) {
-      setCurrentDialogueIndex(prevIndex => prevIndex + 1);
-      setUserResponse("");
-      setTypedResponse("");
-      setShowFeedback(false);
-      resetText();
-    } else {
-      setExerciseCompleted(true);
-      toast.success("Übung abgeschlossen!");
+  
+  const handleToggleMute = () => {
+    if (audioRef.current) {
+      audioRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
     }
   };
-
-  const restartExercise = () => {
-    setCurrentDialogueIndex(0);
-    setUserResponse("");
-    setTypedResponse("");
-    setShowFeedback(false);
-    setExerciseCompleted(false);
-    resetText();
+  
+  const handleRecordingStart = () => {
+    setIsRecording(true);
+    
+    // Simulate recording for 3 seconds
+    setTimeout(() => {
+      setIsRecording(false);
+      
+      // Simulate feedback (in a real app, this would come from speech recognition API)
+      const randomScore = Math.floor(Math.random() * 30) + 70; // Random score between 70-99
+      setRecordingFeedback({
+        score: randomScore,
+        feedback: randomScore > 90 
+          ? "Ausgezeichnete Aussprache! Deine Betonung ist sehr natürlich."
+          : randomScore > 80 
+            ? "Gute Aussprache. Achte etwas mehr auf die Betonung der Umlaute."
+            : "Verständliche Aussprache. Übe weiter die 'ch' und 'r' Laute."
+      });
+    }, 3000);
   };
-
-  if (!scenario) {
+  
+  const handleDismissFeedback = () => {
+    setRecordingFeedback(null);
+  };
+  
+  if (loading) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow pt-24 px-4 flex items-center justify-center">
-          <p>Laden...</p>
-        </main>
-        <Footer />
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse flex flex-col items-center">
+          <div className="h-12 w-48 bg-neutral-200 rounded-md mb-4"></div>
+          <div className="h-4 w-64 bg-neutral-100 rounded-md"></div>
+        </div>
       </div>
     );
   }
-
+  
   return (
-    <div className={`min-h-screen flex flex-col ${loadingPage ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}`}>
+    <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-grow pt-24 px-4 md:px-8 pb-12">
+      <main className="flex-grow pt-20 px-4 md:px-8 pb-24">
         <div className="container mx-auto">
-          <div className="flex justify-between items-center mb-6">
+          {/* Back button and title */}
+          <div className="mb-6">
             <Button 
               variant="ghost" 
-              className="flex items-center"
+              className="mb-2 -ml-3 text-neutral-600 hover:text-neutral-800"
               onClick={() => navigate("/practice")}
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Zurück zu allen Übungen
+              <ArrowLeft className="mr-1 h-4 w-4" />
+              Zurück zu Übungen
             </Button>
             
-            <div className="w-36">
-              <LanguageSelector compact={true} />
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold text-neutral-800">{scenario.title}</h1>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <Badge variant="outline" className="bg-neutral-50">
+                    {scenario.category === "patient-care" ? "Patientenpflege" : 
+                     scenario.category === "emergency" ? "Notfälle" :
+                     scenario.category === "documentation" ? "Dokumentation" :
+                     scenario.category === "teamwork" ? "Teamarbeit" : scenario.category}
+                  </Badge>
+                  <Badge variant="outline" className="bg-neutral-50">
+                    {scenario.difficulty === "beginner" ? "Anfänger (A1-A2)" :
+                     scenario.difficulty === "intermediate" ? "Mittelstufe (B1-B2)" :
+                     "Fortgeschritten (C1)"}
+                  </Badge>
+                  {scenario.tags.map((tag: string) => (
+                    <Badge key={tag} variant="outline" className="bg-neutral-50">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="flex gap-2 mt-2 md:mt-0">
+                <Button variant="outline" className="flex items-center">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  Vokabeln
+                </Button>
+                <Button className="flex items-center bg-medical-500 hover:bg-medical-600">
+                  <Mic className="mr-2 h-4 w-4" />
+                  Aussprache üben
+                </Button>
+              </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-neutral-100 mb-8">
-            <h1 className="text-2xl md:text-3xl font-bold mb-2 text-neutral-800">
-              {scenario.title}
-            </h1>
-            <p className="text-neutral-600 mb-6">
-              {scenario.description}
-            </p>
-            
-            {!exerciseCompleted ? (
-              <div>
-                <div className="bg-neutral-50 rounded-lg p-4 mb-6">
-                  <div className="flex items-start gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-full bg-neutral-200 flex items-center justify-center shrink-0 mt-1">
-                      {scenario.dialogue[currentDialogueIndex].speaker === 'user' ? 'Du' : scenario.dialogue[currentDialogueIndex].speaker.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <div className="text-sm text-neutral-500 mb-1">
-                        {scenario.dialogue[currentDialogueIndex].speaker === 'user' ? 'Du' : scenario.dialogue[currentDialogueIndex].speaker}
-                      </div>
-                      <div className="bg-white rounded-lg p-3 shadow-sm border border-neutral-100">
-                        <p className="text-neutral-800">
-                          {scenario.dialogue[currentDialogueIndex].text}
-                        </p>
-                        {scenario.dialogue[currentDialogueIndex].translation && (
-                          <p className="text-neutral-500 text-sm mt-2 border-t border-neutral-100 pt-2">
-                            {scenario.dialogue[currentDialogueIndex].translation}
-                          </p>
-                        )}
+          {/* Main content */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left column - Dialog and vocabulary */}
+            <div className="lg:col-span-2">
+              <Tabs defaultValue="dialog" value={activeTab} onValueChange={setActiveTab} className="mb-6">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="dialog" className="flex items-center">
+                    <MessageCircle className="mr-2 h-4 w-4" />
+                    Dialog
+                  </TabsTrigger>
+                  <TabsTrigger value="vocabulary" className="flex items-center">
+                    <BookOpen className="mr-2 h-4 w-4" />
+                    Vokabeln
+                  </TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="dialog" className="mt-4">
+                  <Card className="p-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="mr-2"
+                          onClick={handlePlayPause}
+                        >
+                          {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="mr-2"
+                          onClick={handleNext}
+                        >
+                          <SkipForward className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="mr-4"
+                          onClick={handleToggleMute}
+                        >
+                          {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                        </Button>
+                        <Progress 
+                          value={(currentDialogStep / (scenario.dialog?.length - 1)) * 100} 
+                          className="w-24 md:w-40"
+                        />
                       </div>
                       
-                      {scenario.dialogue[currentDialogueIndex].speaker !== 'user' && (
+                      <div className="flex items-center">
                         <Button 
                           variant="ghost" 
                           size="sm" 
-                          className="text-neutral-500 mt-2"
-                          onClick={playCurrentLine}
-                          disabled={isSpeaking}
+                          className={cn(
+                            "text-xs",
+                            showTranslation ? "bg-medical-50 text-medical-700" : "text-neutral-600"
+                          )}
+                          onClick={() => setShowTranslation(!showTranslation)}
                         >
-                          <Volume2 className="h-4 w-4 mr-1" />
-                          Anhören
+                          <Globe className="h-3.5 w-3.5 mr-1" />
+                          Übersetzung {showTranslation ? "ausblenden" : "anzeigen"}
                         </Button>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                  
-                  {scenario.dialogue[currentDialogueIndex].speaker === 'user' && (
-                    <div className="mt-6">
-                      <div className="mb-4">
-                        <div className="flex justify-between items-center mb-2">
-                          <h3 className="text-lg font-medium">Deine Antwort:</h3>
-                        </div>
-                        
-                        {/* Compact Suggested Vocabulary */}
-                        {suggestedVocabulary.length > 0 && (
-                          <div className="mb-3">
-                            <div className="flex items-center gap-1 text-xs text-medical-600 mb-1">
-                              <Lightbulb className="h-3 w-3" />
-                              <span>Vorgeschlagene Vokabeln:</span>
-                            </div>
-                            <div className="flex flex-wrap gap-1 mb-2">
-                              {suggestedVocabulary.map(word => (
-                                <button 
-                                  key={word.id}
-                                  className="bg-medical-50 border border-medical-100 rounded-md px-2 py-1 text-xs flex items-center gap-1 cursor-pointer hover:bg-medical-100 transition-colors"
-                                  onClick={() => handleUseVocabulary(word)}
-                                  title={`${word.english} - ${word.example || ''}`}
-                                >
-                                  <span className="font-medium">{word.german}</span>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        
-                        <Tabs defaultValue="voice" className="w-full mb-4" 
-                          onValueChange={(value) => setInputMethod(value as "voice" | "text")}>
-                          <TabsList className="grid w-full grid-cols-2">
-                            <TabsTrigger value="voice" className="flex items-center gap-1">
-                              <Mic className="h-4 w-4" />
-                              <span>Einsprechen</span>
-                            </TabsTrigger>
-                            <TabsTrigger value="text" className="flex items-center gap-1">
-                              <Type className="h-4 w-4" />
-                              <span>Eintippen</span>
-                            </TabsTrigger>
-                          </TabsList>
-                          
-                          <TabsContent value="voice">
-                            <div className="bg-white rounded-lg p-3 min-h-[100px] shadow-sm border border-neutral-100">
-                              {userResponse || (isListening ? "Zuhören..." : "Klicke unten auf den Mikrofonknopf, um deine Antwort einzusprechen.")}
+                    
+                    <ScrollArea className="h-[calc(100vh-400px)]" ref={dialogContainerRef}>
+                      <div className="space-y-6 pr-4">
+                        {scenario.dialog?.map((item: any, index: number) => (
+                          <div 
+                            key={index}
+                            id={`dialog-step-${index}`}
+                            className={cn(
+                              "transition-all duration-300",
+                              index === currentDialogStep ? "opacity-100" : "opacity-50"
+                            )}
+                          >
+                            <div className="flex items-start gap-3 mb-2">
+                              <Avatar className={cn(
+                                "h-8 w-8",
+                                item.speaker === "doctor" ? "bg-medical-100" : 
+                                item.speaker === "patient" ? "bg-blue-100" : 
+                                item.speaker === "nurse" ? "bg-green-100" : "bg-neutral-100"
+                              )}>
+                                <AvatarFallback>
+                                  {item.speaker === "doctor" ? "A" : 
+                                   item.speaker === "patient" ? "P" : 
+                                   item.speaker === "nurse" ? "P" : "?"}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <div className="flex items-center">
+                                  <p className="font-medium text-sm">
+                                    {item.speaker === "doctor" ? "Arzt" : 
+                                     item.speaker === "patient" ? "Patient" : 
+                                     item.speaker === "nurse" ? "Pflegekraft" : item.speaker}
+                                  </p>
+                                  {index === currentDialogStep && (
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm" 
+                                      className="ml-2 h-6 px-2 text-xs text-medical-600 hover:text-medical-700 hover:bg-medical-50"
+                                      onClick={handleRecordingStart}
+                                      disabled={isRecording}
+                                    >
+                                      {isRecording ? (
+                                        <span className="flex items-center">
+                                          <span className="animate-pulse mr-1">●</span> Aufnahme...
+                                        </span>
+                                      ) : (
+                                        <span className="flex items-center">
+                                          <Mic className="h-3 w-3 mr-1" /> Nachsprechen
+                                        </span>
+                                      )}
+                                    </Button>
+                                  )}
+                                </div>
+                                <p className="text-neutral-800">{item.text}</p>
+                                {showTranslation && (
+                                  <p className="text-neutral-500 text-sm mt-1 italic">{item.translation}</p>
+                                )}
+                              </div>
                             </div>
                             
-                            {micPermissionGranted === false && (
-                              <div className="bg-yellow-50 text-yellow-800 p-2 rounded-md mt-2 text-sm">
-                                Bitte erlauben Sie den Zugriff auf das Mikrofon in Ihrem Browser, um die Spracherkennung zu nutzen.
+                            {recordingFeedback && index === currentDialogStep && (
+                              <div className="ml-11 mt-2 bg-medical-50 p-3 rounded-md relative">
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  className="absolute top-1 right-1 h-6 w-6 p-0"
+                                  onClick={handleDismissFeedback}
+                                >
+                                  <X className="h-3 w-3" />
+                                </Button>
+                                <div className="flex items-center mb-2">
+                                  <div className="font-medium text-medical-700 mr-2">Aussprache-Feedback:</div>
+                                  <div className="text-sm font-medium">
+                                    {recordingFeedback.score}%
+                                  </div>
+                                  <div className="ml-2 w-24 bg-white rounded-full h-2">
+                                    <div 
+                                      className={cn(
+                                        "h-full rounded-full",
+                                        recordingFeedback.score > 90 ? "bg-green-500" :
+                                        recordingFeedback.score > 80 ? "bg-yellow-500" : "bg-orange-500"
+                                      )}
+                                      style={{ width: `${recordingFeedback.score}%` }}
+                                    ></div>
+                                  </div>
+                                </div>
+                                <p className="text-sm text-medical-700">{recordingFeedback.feedback}</p>
                               </div>
                             )}
                             
-                            <div className="text-xs text-neutral-500 mt-2">
-                              <p>Hinweis: Reagiere frei und natürlich auf die Situation. Du musst nicht exakt wiederholen, was vorgegeben ist.</p>
-                            </div>
-                          </TabsContent>
-                          
-                          <TabsContent value="text">
-                            <div className="bg-white rounded-lg p-3 min-h-[100px] shadow-sm border border-neutral-100">
-                              <Input 
-                                ref={userResponseRef}
-                                className="w-full border-none shadow-none focus-visible:ring-0 px-0 h-auto min-h-[80px]"
-                                placeholder="Gib deine Antwort hier ein..."
-                                value={typedResponse}
-                                onChange={(e) => setTypedResponse(e.target.value)} 
-                                multiline
-                              />
-                            </div>
+                            {index === currentDialogStep && (
+                              <div className="ml-11 mt-2 flex gap-2">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  className="text-xs h-7"
+                                  onClick={() => setShowHint(!showHint)}
+                                >
+                                  <HelpCircle className="h-3 w-3 mr-1" />
+                                  Hinweis
+                                </Button>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  className="text-xs h-7"
+                                >
+                                  <Repeat className="h-3 w-3 mr-1" />
+                                  Wiederholen
+                                </Button>
+                              </div>
+                            )}
                             
-                            <div className="text-xs text-neutral-500 mt-2">
-                              <p>Hinweis: Reagiere frei und natürlich auf die Situation. Du musst nicht exakt wiederholen, was vorgegeben ist.</p>
-                            </div>
-                          </TabsContent>
-                        </Tabs>
-                      </div>
-                      
-                      {!showFeedback ? (
-                        <div className="flex gap-3">
-                          {inputMethod === "voice" && (
-                            <Button 
-                              className={`flex items-center ${isListening ? 'bg-red-500 hover:bg-red-600' : 'bg-medical-500 hover:bg-medical-600'}`}
-                              onClick={handleRecordAnswer}
-                            >
-                              <Mic className="h-4 w-4 mr-2" />
-                              {isListening ? 'Aufnahme beenden' : 'Antwort einsprechen'}
-                            </Button>
-                          )}
-                          
-                          <Button 
-                            variant={inputMethod === "voice" ? "outline" : "default"}
-                            onClick={handleSubmitAnswer}
-                            disabled={(inputMethod === "voice" && !userResponse) || 
-                                     (inputMethod === "text" && !typedResponse)}
-                          >
-                            Antwort überprüfen
-                          </Button>
-                        </div>
-                      ) : (
-                        <div>
-                          <div className={`p-4 rounded-lg mb-4 ${feedbackMessage.includes('Sehr gut') ? 'bg-green-50 text-green-800' : 'bg-yellow-50 text-yellow-800'}`}>
-                            {feedbackMessage}
+                            {showHint && index === currentDialogStep && (
+                              <div className="ml-11 mt-2 bg-blue-50 p-3 rounded-md">
+                                <div className="flex items-start">
+                                  <Lightbulb className="h-4 w-4 text-blue-500 mr-2 mt-0.5" />
+                                  <div>
+                                    <p className="text-sm font-medium text-blue-700 mb-1">Sprachlicher Hinweis:</p>
+                                    <p className="text-sm text-blue-700">
+                                      {item.hint || "Achte auf die korrekte Verwendung des Artikels und die Aussprache der medizinischen Fachbegriffe."}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                           </div>
-                          <Button onClick={moveToNextLine}>
-                            Weiter
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  
-                  {scenario.dialogue[currentDialogueIndex].speaker !== 'user' && (
-                    <div className="mt-4">
-                      <Button onClick={moveToNextLine}>
-                        Weiter
-                      </Button>
-                    </div>
-                  )}
-                </div>
+                        ))}
+                      </div>
+                    </ScrollArea>
+                  </Card>
+                </TabsContent>
                 
-                <div className="flex justify-between items-center">
-                  <div className="text-sm text-neutral-500">
-                    Dialog {currentDialogueIndex + 1} von {scenario.dialogue.length}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="text-center py-6">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="h-8 w-8 text-green-600" />
-                </div>
-                <h2 className="text-xl font-semibold mb-2">Übung abgeschlossen!</h2>
-                <p className="text-neutral-600 mb-6">
-                  Du hast diese Übung erfolgreich absolviert. Möchtest du sie wiederholen oder zu anderen Übungen zurückkehren?
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <Button onClick={restartExercise} variant="outline" className="flex items-center">
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Übung wiederholen
-                  </Button>
-                  <Button onClick={() => navigate("/practice")} className="flex items-center">
-                    Weitere Übungen
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
-          
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
-            <div className="flex items-center gap-2 mb-4">
-              <BookOpen className="h-5 w-5 text-medical-500" />
-              <h2 className="text-xl font-semibold">Relevante Vokabeln</h2>
+                <TabsContent value="vocabulary" className="mt-4">
+                  <Card className="p-4">
+                    <h3 className="text-lg font-medium mb-4">Wichtige Vokabeln in diesem Szenario</h3>
+                    
+                    <ScrollArea className="h-[calc(100vh-400px)]">
+                      <div className="space-y-4 pr-4">
+                        {scenario.vocabulary?.map((item: any, index: number) => (
+                          <div key={index} className="border-b border-neutral-100 pb-3 last:border-0">
+                            <div className="flex justify-between">
+                              <div>
+                                <p className="font-medium">{item.term}</p>
+                                <p className="text-neutral-500 text-sm">{item.translation}</p>
+                              </div>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                      <Volume2 className="h-4 w-4 text-neutral-500" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Aussprache anhören</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                            {item.example && (
+                              <div className="mt-2 text-sm">
+                                <p className="text-neutral-700">{item.example}</p>
+                                {item.exampleTranslation && (
+                                  <p className="text-neutral-500 italic">{item.exampleTranslation}</p>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </ScrollArea>
+                  </Card>
+                </TabsContent>
+              </Tabs>
             </div>
             
-            {relevantVocabulary.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {relevantVocabulary.map(word => (
-                  <VocabularyCard 
-                    key={word.id} 
-                    word={{...word, mastered: usedVocabulary.includes(word.id)}}
-                    onPractice={() => speak(word.german)} 
-                    className="h-[150px]"
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="text-neutral-600 italic">
-                Keine spezifischen Vokabeln für dieses Szenario verfügbar.
-              </p>
-            )}
+            {/* Right column - Context and info */}
+            <div>
+              <Card className="p-4 mb-6">
+                <h3 className="text-lg font-medium mb-3">Über dieses Szenario</h3>
+                <p className="text-neutral-600 mb-4">{scenario.description}</p>
+                
+                <Separator className="my-4" />
+                
+                <h4 className="font-medium mb-2">Kontext:</h4>
+                <p className="text-neutral-600 text-sm mb-4">{scenario.context}</p>
+                
+                <h4 className="font-medium mb-2">Lernziele:</h4>
+                <ul className="space-y-2 mb-4">
+                  {scenario.learningObjectives?.map((objective: string, index: number) => (
+                    <li key={index} className="flex items-start">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 mt-0.5" />
+                      <span className="text-sm text-neutral-600">{objective}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <Separator className="my-4" />
+                
+                <h4 className="font-medium mb-2">Beteiligte Personen:</h4>
+                <div className="space-y-3">
+                  {scenario.characters?.map((character: any, index: number) => (
+                    <div key={index} className="flex items-center">
+                      <Avatar className={cn(
+                        "h-8 w-8 mr-3",
+                        character.role === "doctor" ? "bg-medical-100" : 
+                        character.role === "patient" ? "bg-blue-100" : 
+                        character.role === "nurse" ? "bg-green-100" : "bg-neutral-100"
+                      )}>
+                        <AvatarFallback>
+                          {character.name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-medium text-sm">{character.name}</p>
+                        <p className="text-neutral-500 text-xs">
+                          {character.role === "doctor" ? "Arzt" : 
+                           character.role === "patient" ? "Patient" : 
+                           character.role === "nurse" ? "Pflegekraft" : character.role}
+                          {character.description && ` - ${character.description}`}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+              
+              <Card className="p-4">
+                <h3 className="text-lg font-medium mb-3">Ähnliche Szenarien</h3>
+                <div className="space-y-3">
+                  {scenarios
+                    .filter(s => s.id !== scenario.id && s.category === scenario.category)
+                    .slice(0, 3)
+                    .map(s => (
+                      <div 
+                        key={s.id} 
+                        className="flex items-center p-2 hover:bg-neutral-50 rounded-md cursor-pointer"
+                        onClick={() => navigate(`/scenario/${s.id}`)}
+                      >
+                        <div className="w-10 h-10 rounded-full bg-medical-100 flex items-center justify-center mr-3">
+                          {s.category === "patient-care" ? <User className="h-5 w-5 text-medical-600" /> : 
+                           s.category === "emergency" ? <AlertTriangle className="h-5 w-5 text-medical-600" /> :
+                           s.category === "documentation" ? <ClipboardList className="h-5 w-5 text-medical-600" /> :
+                           <Users className="h-5 w-5 text-medical-600" />}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-sm">{s.title}</p>
+                          <p className="text-neutral-500 text-xs">{s.difficulty === "beginner" ? "Anfänger" : s.difficulty === "intermediate" ? "Mittelstufe" : "Fortgeschritten"}</p>
+                        </div>
+                        <ChevronRight className="h-4 w-4 text-neutral-400" />
+                      </div>
+                    ))}
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </main>
       
+      <AppNavigation />
       <Footer />
+      
+      {/* Hidden audio element */}
+      <audio ref={audioRef} src="/audio/sample-dialog.mp3" />
     </div>
   );
 };
