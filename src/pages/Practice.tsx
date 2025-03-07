@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -26,7 +25,6 @@ const Practice = () => {
   const [filteredScenarios, setFilteredScenarios] = useState(scenarios);
 
   useEffect(() => {
-    // Filter scenarios based on search term, category, and difficulty
     let result = [...scenarios];
     
     if (activeCategory !== "all") {
@@ -51,7 +49,6 @@ const Practice = () => {
   }, [activeCategory, activeDifficulty, searchTerm]);
 
   useEffect(() => {
-    // Simulate loading delay for animation
     const timer = setTimeout(() => {
       setLoading(false);
     }, 300);
@@ -192,13 +189,7 @@ const Practice = () => {
                   <Link to={`/scenario/${scenario.id}`} key={scenario.id} className="no-underline">
                     <ScenarioCard
                       key={scenario.id}
-                      title={scenario.title}
-                      description={scenario.description}
-                      difficulty={scenario.difficulty}
-                      category={scenario.category}
-                      tags={scenario.tags}
-                      completed={scenario.completed || false}
-                      progress={scenario.progress || 0}
+                      scenario={scenario}
                     />
                   </Link>
                 ))}

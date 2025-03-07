@@ -1,14 +1,30 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Scenario } from "@/data/scenarios";
-import ProgressBar from "./ProgressBar";
 import { Heart, MessageCircle, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import ProgressBar from "./ProgressBar";
 
-interface ScenarioCardProps {
-  scenario: Scenario;
+export interface ScenarioCardProps {
+  scenario?: {
+    id: string;
+    title: string;
+    description: string;
+    difficulty: string;
+    category: string;
+    tags: string[];
+    completed?: boolean;
+    progress?: number;
+  };
+  // Also support direct props for backward compatibility
+  title?: string;
+  description?: string;
+  difficulty?: string;
+  category?: string;
+  tags?: string[];
+  completed?: boolean;
+  progress?: number;
   onClick?: () => void;
   className?: string;
 }
@@ -39,14 +55,31 @@ const getDifficultyColor = (difficulty: string) => {
 
 const ScenarioCard: React.FC<ScenarioCardProps> = ({
   scenario,
+  title,
+  description,
+  difficulty,
+  category,
+  tags,
+  completed,
+  progress,
   onClick,
   className,
 }) => {
   const navigate = useNavigate();
+  
+  // Use scenario object if provided, otherwise use direct props
+  const scenarioTitle = scenario?.title || title || "";
+  const scenarioDescription = scenario?.description || description || "";
+  const scenarioDifficulty = scenario?.difficulty || difficulty || "";
+  const scenarioCategory = scenario?.category || category || "";
+  const scenarioTags = scenario?.tags || tags || [];
+  const scenarioCompleted = scenario?.completed || completed || false;
+  const scenarioProgress = scenario?.progress || progress || 0;
+  const scenarioId = scenario?.id || "";
 
   const handleStartExercise = (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigate(`/scenario/${scenario.id}`);
+    navigate(`/scenario/${scenarioId}`);
   };
   
   return (
@@ -61,26 +94,26 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({
       
       <div className="flex justify-between items-start mb-3">
         <div className="flex items-center gap-2">
-          {getCategoryIcon(scenario.category)}
-          <span className="text-sm text-neutral-500">{scenario.category}</span>
+          {getCategoryIcon(scenarioCategory)}
+          <span className="text-sm text-neutral-500">{scenarioCategory}</span>
         </div>
         
-        <div className={cn("text-xs px-2 py-0.5 rounded-full font-medium", getDifficultyColor(scenario.difficulty))}>
-          {scenario.difficulty}
+        <div className={cn("text-xs px-2 py-0.5 rounded-full font-medium", getDifficultyColor(scenarioDifficulty))}>
+          {scenarioDifficulty}
         </div>
       </div>
       
       <h3 className="text-lg font-semibold mb-2 group-hover:text-medical-600 transition-colors">
-        {scenario.title}
+        {scenarioTitle}
       </h3>
       
       <p className="text-neutral-600 text-sm mb-4 line-clamp-2">
-        {scenario.description}
+        {scenarioDescription}
       </p>
       
-      {scenario.progress !== undefined && (
+      {typeof scenarioProgress !== 'undefined' && (
         <ProgressBar 
-          value={scenario.progress} 
+          value={scenarioProgress} 
           max={100} 
           showValue={true}
           size="sm"
@@ -90,7 +123,7 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({
       )}
       
       <div className="flex gap-1 flex-wrap mt-auto mb-3">
-        {scenario.tags.slice(0, 3).map((tag) => (
+        {scenarioTags.slice(0, 3).map((tag) => (
           <span 
             key={tag} 
             className="text-xs bg-neutral-100 text-neutral-600 px-2 py-0.5 rounded-full"

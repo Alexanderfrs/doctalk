@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
@@ -13,8 +12,8 @@ import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
-import { useVoiceRecognition } from "@/hooks/useVoiceRecognition";
-import { useTextToSpeech } from "@/hooks/useTextToSpeech";
+import useVoiceRecognition from "@/hooks/useVoiceRecognition";
+import useTextToSpeech from "@/hooks/useTextToSpeech";
 import { useTranslation } from "@/hooks/useTranslation";
 import { 
   ArrowLeft, 
@@ -62,16 +61,34 @@ const ScenarioDetail = () => {
   const [recordingFeedback, setRecordingFeedback] = useState<null | { score: number; feedback: string }>(null);
   const [showHint, setShowHint] = useState(false);
   const [scenarioVocabulary, setScenarioVocabulary] = useState<any[]>([]);
+  const [transcript, setTranscript] = useState('');
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const dialogContainerRef = useRef<HTMLDivElement | null>(null);
 
   // Use the voice recognition hook
-  const { startListening, stopListening, transcript, isListening, error: recognitionError } = useVoiceRecognition();
+  const { 
+    text: recognitionText, 
+    isListening, 
+    startListening, 
+    stopListening, 
+    error: recognitionError 
+  } = useVoiceRecognition();
   
   // Use the text-to-speech hook
-  const { speak, speaking, cancel } = useTextToSpeech();
+  const { 
+    speak, 
+    isSpeaking: speaking, 
+    stop: cancel 
+  } = useTextToSpeech();
   
+  // Update transcript when recognition text changes
+  useEffect(() => {
+    if (recognitionText) {
+      setTranscript(recognitionText);
+    }
+  }, [recognitionText]);
+
   useEffect(() => {
     // Find the scenario by ID
     const foundScenario = scenarios.find(s => s.id === id);
@@ -490,15 +507,17 @@ const ScenarioDetail = () => {
                         {scenarioVocabulary.length > 0 ? (
                           scenarioVocabulary.map((item, index) => {
                             const localizedContent = getLocalizedContent(item.id, item.english);
+                            const translationContent = typeof localizedContent === 'object' 
+                              ? localizedContent.translation 
+                              : localizedContent || item.english;
+                              
                             return (
                               <div key={index} className="border-b border-neutral-100 pb-3 last:border-0">
                                 <div className="flex justify-between">
                                   <div>
                                     <p className="font-medium">{getGermanContent(item.german)}</p>
                                     <p className="text-neutral-500 text-sm">
-                                      {typeof localizedContent === 'object' 
-                                        ? localizedContent.translation 
-                                        : localizedContent || item.english}
+                                      {translationContent}
                                     </p>
                                   </div>
                                   <TooltipProvider>
