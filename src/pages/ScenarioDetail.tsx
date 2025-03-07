@@ -1,6 +1,7 @@
+<lov-code>
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
   Card,
   CardContent,
@@ -16,6 +17,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
+import useVoiceRecognition from "@/hooks/useVoiceRecognition";
+import useTextToSpeech from "@/hooks/useTextToSpeech";
 import {
   Select,
   SelectContent,
@@ -1093,7 +1096,3 @@ import {
   CopyM875,
   CopyM876,
   CopyM877,
-  CopyM878,
-  CopyM879,
-  CopyM880,
-  CopyM88
