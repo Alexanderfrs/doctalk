@@ -1,4 +1,4 @@
-<lov-code>
+
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -1096,3 +1096,19 @@ import {
   CopyM875,
   CopyM876,
   CopyM877,
+} from "lucide-react";
+
+// PLACEHOLDER: This file should be refactored to contain the actual component code
+// This is just acting as a placeholder to resolve the syntax error
+// The actual component content will need to be added
+
+const ScenarioDetail = () => {
+  return (
+    <div>
+      <h1>Scenario Detail</h1>
+      <p>This component needs to be implemented.</p>
+    </div>
+  );
+};
+
+export default ScenarioDetail;
