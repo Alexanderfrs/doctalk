@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
 
@@ -36,7 +35,7 @@ export const useLanguageAssessment = () => {
   const [consecutiveCorrect, setConsecutiveCorrect] = useState(0);
   const [consecutiveWrong, setConsecutiveWrong] = useState(0);
 
-  // Comprehensive question bank covering various language skills
+  // Enhanced comprehensive question bank covering various language skills
   const questionBank: AssessmentQuestion[] = [
     // A1 Level Questions (Beginner)
     {
@@ -78,6 +77,45 @@ export const useLanguageAssessment = () => {
       level: 'A1',
       topic: 'greetings'
     },
+    {
+      id: 'a1_4',
+      question: 'Der Patient hat ___ Schmerzen.',
+      options: [
+        { id: 'a', text: 'ein' },
+        { id: 'b', text: 'einer' },
+        { id: 'c', text: 'eine' },
+        { id: 'd', text: 'einen' }
+      ],
+      correctAnswer: 'a',
+      level: 'A1',
+      topic: 'grammar'
+    },
+    {
+      id: 'a1_5',
+      question: 'Welches Körperteil ist unten?',
+      options: [
+        { id: 'a', text: 'Auge' },
+        { id: 'b', text: 'Ohr' },
+        { id: 'c', text: 'Fuß' },
+        { id: 'd', text: 'Nase' }
+      ],
+      correctAnswer: 'c',
+      level: 'A1',
+      topic: 'body-parts'
+    },
+    {
+      id: 'a1_6',
+      question: 'Wie spät ist es?',
+      options: [
+        { id: 'a', text: 'Ich bin müde.' },
+        { id: 'b', text: 'Es ist halb vier.' },
+        { id: 'c', text: 'Heute ist Montag.' },
+        { id: 'd', text: 'Das Wetter ist schön.' }
+      ],
+      correctAnswer: 'b',
+      level: 'A1',
+      topic: 'time'
+    },
     // A2 Level Questions (Elementary)
     {
       id: 'a2_1',
@@ -117,6 +155,45 @@ export const useLanguageAssessment = () => {
       correctAnswer: 'a',
       level: 'A2',
       topic: 'grammar'
+    },
+    {
+      id: 'a2_4',
+      question: 'Welche Mahlzeit isst man normalerweise am Morgen?',
+      options: [
+        { id: 'a', text: 'Abendessen' },
+        { id: 'b', text: 'Mittagessen' },
+        { id: 'c', text: 'Frühstück' },
+        { id: 'd', text: 'Brunch' }
+      ],
+      correctAnswer: 'c',
+      level: 'A2',
+      topic: 'daily-routine'
+    },
+    {
+      id: 'a2_5',
+      question: 'Was ist ein Thermometer?',
+      options: [
+        { id: 'a', text: 'Ein Gerät zum Messen des Blutdrucks' },
+        { id: 'b', text: 'Ein Gerät zum Messen der Temperatur' },
+        { id: 'c', text: 'Ein Gerät zum Messen des Blutzuckers' },
+        { id: 'd', text: 'Ein Gerät zum Messen des Gewichts' }
+      ],
+      correctAnswer: 'b',
+      level: 'A2',
+      topic: 'medical-equipment'
+    },
+    {
+      id: 'a2_6',
+      question: 'Was sollte man vor einer Operation tun?',
+      options: [
+        { id: 'a', text: 'Viel essen und trinken' },
+        { id: 'b', text: 'Sport machen' },
+        { id: 'c', text: 'Eine Einwilligungserklärung unterschreiben' },
+        { id: 'd', text: 'Viel schlafen' }
+      ],
+      correctAnswer: 'c',
+      level: 'A2',
+      topic: 'hospital-procedures'
     },
     // B1 Level Questions (Intermediate)
     {
@@ -158,6 +235,45 @@ export const useLanguageAssessment = () => {
       level: 'B1',
       topic: 'respiratory-issues'
     },
+    {
+      id: 'b1_4',
+      question: 'Welche Aussage zur Medikamentengabe ist korrekt?',
+      options: [
+        { id: 'a', text: 'Medikamente sollten immer mit Alkohol eingenommen werden.' },
+        { id: 'b', text: 'Die Einnahmezeit von Medikamenten ist unwichtig.' },
+        { id: 'c', text: 'Vor der Medikamentengabe muss die Identität des Patienten überprüft werden.' },
+        { id: 'd', text: 'Patienten sollten selbst entscheiden, welche Dosis sie nehmen.' }
+      ],
+      correctAnswer: 'c',
+      level: 'B1',
+      topic: 'medication-administration'
+    },
+    {
+      id: 'b1_5',
+      question: 'Wie dokumentieren Sie einen Dekubitus?',
+      options: [
+        { id: 'a', text: 'Nur mündlich an den nächsten Dienst weitergeben' },
+        { id: 'b', text: 'Größe, Lage, Aussehen und Behandlung in der Pflegedokumentation notieren' },
+        { id: 'c', text: 'Es ist nicht notwendig, einen Dekubitus zu dokumentieren' },
+        { id: 'd', text: 'Nur die Größe notieren' }
+      ],
+      correctAnswer: 'b',
+      level: 'B1',
+      topic: 'documentation'
+    },
+    {
+      id: 'b1_6',
+      question: 'Was bedeutet "hygienische Händedesinfektion"?',
+      options: [
+        { id: 'a', text: 'Kurzes Abspülen der Hände mit Wasser' },
+        { id: 'b', text: 'Händewaschen mit Seife für 10 Sekunden' },
+        { id: 'c', text: 'Einreiben der Hände mit einem alkoholischen Desinfektionsmittel für ca. 30 Sekunden' },
+        { id: 'd', text: 'Tragen von Handschuhen' }
+      ],
+      correctAnswer: 'c',
+      level: 'B1',
+      topic: 'hygiene'
+    },
     // B2 Level Questions (Upper Intermediate)
     {
       id: 'b2_1',
@@ -198,6 +314,45 @@ export const useLanguageAssessment = () => {
       level: 'B2',
       topic: 'care-terminology'
     },
+    {
+      id: 'b2_4',
+      question: 'Was ist bei der Schmerzanamnese zu berücksichtigen?',
+      options: [
+        { id: 'a', text: 'Nur die Intensität des Schmerzes ist relevant.' },
+        { id: 'b', text: 'Die Schmerzanamnese sollte Lokalisation, Qualität, Intensität, zeitlicher Verlauf und beeinflussende Faktoren umfassen.' },
+        { id: 'c', text: 'Eine Schmerzanamnese ist nur bei chirurgischen Patienten notwendig.' },
+        { id: 'd', text: 'Schmerzen sind subjektiv und können daher nicht dokumentiert werden.' }
+      ],
+      correctAnswer: 'b',
+      level: 'B2',
+      topic: 'pain-assessment'
+    },
+    {
+      id: 'b2_5',
+      question: 'Wie reagieren Sie, wenn ein Patient nach der Diagnose fragt, die aber nur der Arzt mitteilen darf?',
+      options: [
+        { id: 'a', text: 'Ich teile ihm die Diagnose mit, da er ein Recht darauf hat.' },
+        { id: 'b', text: 'Ich ignoriere die Frage und wechsle das Thema.' },
+        { id: 'c', text: 'Ich erkläre dem Patienten, dass der behandelnde Arzt mit ihm über die Diagnose sprechen wird und biete an, den Arzt zu informieren, dass der Patient ein Gespräch wünscht.' },
+        { id: 'd', text: 'Ich sage dem Patienten, dass es nicht meine Aufgabe ist, ihm die Diagnose mitzuteilen.' }
+      ],
+      correctAnswer: 'c',
+      level: 'B2',
+      topic: 'professional-boundaries'
+    },
+    {
+      id: 'b2_6',
+      question: 'Was versteht man unter dem Begriff "Prophylaxe"?',
+      options: [
+        { id: 'a', text: 'Die Behandlung einer akuten Erkrankung' },
+        { id: 'b', text: 'Die Rehabilitation nach einer Erkrankung' },
+        { id: 'c', text: 'Maßnahmen zur Linderung von Symptomen' },
+        { id: 'd', text: 'Maßnahmen zur Vorbeugung von Erkrankungen oder Komplikationen' }
+      ],
+      correctAnswer: 'd',
+      level: 'B2',
+      topic: 'preventive-care'
+    },
     // C1 Level Questions (Advanced)
     {
       id: 'c1_1',
@@ -237,6 +392,45 @@ export const useLanguageAssessment = () => {
       correctAnswer: 'b',
       level: 'C1',
       topic: 'team-leadership'
+    },
+    {
+      id: 'c1_4',
+      question: 'Was ist bei der Kommunikation mit Angehörigen von Patienten in kritischem Zustand zu beachten?',
+      options: [
+        { id: 'a', text: 'Fachbegriffe verwenden, um Kompetenz zu zeigen' },
+        { id: 'b', text: 'Möglichst wenig Informationen geben, um nicht zu beunruhigen' },
+        { id: 'c', text: 'Einfühlsam und verständlich kommunizieren, ehrlich sein, aber gleichzeitig Hoffnung nicht nehmen' },
+        { id: 'd', text: 'Die Angehörigen sollten ausschließlich mit dem Arzt sprechen' }
+      ],
+      correctAnswer: 'c',
+      level: 'C1',
+      topic: 'family-communication'
+    },
+    {
+      id: 'c1_5',
+      question: 'Ein multimorbider Patient erhält verschiedene Medikamente von unterschiedlichen Fachärzten. Was ist in dieser Situation besonders wichtig?',
+      options: [
+        { id: 'a', text: 'Die Medikamente genau nach Verordnung verabreichen, ohne diese zu hinterfragen' },
+        { id: 'b', text: 'Dem Patienten die Verantwortung für seine Medikation überlassen' },
+        { id: 'c', text: 'Auf mögliche Wechselwirkungen achten und bei Bedenken Rücksprache mit dem Arzt halten' },
+        { id: 'd', text: 'Die Dosierung eigenständig anpassen, wenn Nebenwirkungen auftreten' }
+      ],
+      correctAnswer: 'c',
+      level: 'C1',
+      topic: 'medication-management'
+    },
+    {
+      id: 'c1_6',
+      question: 'Was charakterisiert eine evidenzbasierte Pflegepraxis?',
+      options: [
+        { id: 'a', text: 'Ausschließliche Orientierung an Traditionen und bewährten Vorgehensweisen' },
+        { id: 'b', text: 'Integration aktueller Forschungsergebnisse, klinischer Expertise und Patientenpräferenzen' },
+        { id: 'c', text: 'Ausschließliche Befolgung von Anweisungen der ärztlichen Kollegen' },
+        { id: 'd', text: 'Bevorzugung kostengünstiger Maßnahmen unabhängig von ihrer Wirksamkeit' }
+      ],
+      correctAnswer: 'b',
+      level: 'C1',
+      topic: 'evidence-based-practice'
     }
   ];
 
@@ -256,6 +450,10 @@ export const useLanguageAssessment = () => {
     setCurrentDifficulty('A1');
     setConsecutiveCorrect(0);
     setConsecutiveWrong(0);
+    
+    toast.info("Der Test dauert ca. 5 Minuten und passt sich an Ihre Sprachkenntnisse an.", {
+      duration: 5000,
+    });
   };
 
   // Get random questions from a specific level
@@ -272,7 +470,7 @@ export const useLanguageAssessment = () => {
     }));
   };
 
-  // Handle next question step
+  // Improved adaptive algorithm for next question
   const handleNextStep = () => {
     const currentQuestion = activeQuestions[assessmentStep - 1];
     const isCorrect = userAnswers[currentQuestion.id] === currentQuestion.correctAnswer;
@@ -289,6 +487,7 @@ export const useLanguageAssessment = () => {
     // Check if we need to adjust difficulty for next questions
     let newDifficulty = currentDifficulty;
     
+    // More responsive difficulty adjustment
     if (consecutiveCorrect >= 2) {
       // Increase difficulty if possible
       if (currentDifficulty === 'A1') newDifficulty = 'A2';
@@ -297,6 +496,9 @@ export const useLanguageAssessment = () => {
       else if (currentDifficulty === 'B2') newDifficulty = 'C1';
       
       if (newDifficulty !== currentDifficulty) {
+        toast.info(`Die Fragen werden nun etwas schwieriger (Niveau ${newDifficulty}).`, {
+          duration: 3000,
+        });
         setConsecutiveCorrect(0);
       }
     } else if (consecutiveWrong >= 2) {
@@ -306,6 +508,9 @@ export const useLanguageAssessment = () => {
       else if (currentDifficulty === 'B1') newDifficulty = 'A2';
       
       if (newDifficulty !== currentDifficulty) {
+        toast.info(`Die Fragen werden nun etwas einfacher (Niveau ${newDifficulty}).`, {
+          duration: 3000,
+        });
         setConsecutiveWrong(0);
       }
     }
@@ -319,8 +524,11 @@ export const useLanguageAssessment = () => {
       setActiveQuestions(prev => [...prev, ...newQuestions]);
     }
     
+    // Limit assessment to maximum of 10 questions or 5 minutes
+    const maxQuestions = 10;
+    
     // Move to next question or complete assessment
-    if (assessmentStep < activeQuestions.length) {
+    if (assessmentStep < Math.min(activeQuestions.length, maxQuestions)) {
       setAssessmentStep(prev => prev + 1);
     } else {
       completeAssessment();
@@ -335,7 +543,7 @@ export const useLanguageAssessment = () => {
     const topicResults: Record<string, { correct: number, total: number }> = {};
     
     // Calculate correct answers and level statistics
-    activeQuestions.forEach(question => {
+    activeQuestions.slice(0, assessmentStep).forEach(question => {
       const userAnswer = userAnswers[question.id];
       const isCorrect = userAnswer === question.correctAnswer;
       
@@ -364,7 +572,8 @@ export const useLanguageAssessment = () => {
     else maxLevel = 'A1';
     
     // Calculate overall score
-    const score = Math.round((correctCount / activeQuestions.length) * 100);
+    const answeredQuestions = activeQuestions.slice(0, assessmentStep).length;
+    const score = Math.round((correctCount / answeredQuestions) * 100);
     
     // Identify strengths and weaknesses
     const strengths: string[] = [];
@@ -372,10 +581,10 @@ export const useLanguageAssessment = () => {
     
     Object.entries(topicResults).forEach(([topic, result]) => {
       const percentage = (result.correct / result.total) * 100;
-      if (percentage >= 70) {
-        strengths.push(topic);
+      if (percentage >= 70 && result.total >= 2) {
+        strengths.push(formatTopicName(topic));
       } else if (percentage <= 40 && result.total >= 2) {
-        weaknesses.push(topic);
+        weaknesses.push(formatTopicName(topic));
       }
     });
     
@@ -383,7 +592,7 @@ export const useLanguageAssessment = () => {
     const results: AssessmentResults = {
       level: maxLevel,
       correctCount,
-      totalQuestions: activeQuestions.length,
+      totalQuestions: answeredQuestions,
       score,
       strengths,
       weaknesses
@@ -393,8 +602,19 @@ export const useLanguageAssessment = () => {
     setCurrentLevel(maxLevel);
     
     // Display results
-    toast.success(`Assessment abgeschlossen! Ihr Niveau: ${maxLevel}`, {
-      duration: 5000,
+    const strengthsText = strengths.length > 0 
+      ? `Stärken: ${strengths.join(', ')}`
+      : '';
+      
+    const weaknessesText = weaknesses.length > 0
+      ? `Verbesserungspotential: ${weaknesses.join(', ')}`
+      : '';
+      
+    const messageDetail = `${strengthsText}\n${weaknessesText}`.trim();
+    
+    toast.success(`Assessment abgeschlossen! Ihr Niveau: ${maxLevel} (${score}% korrekt)`, {
+      duration: 7000,
+      description: messageDetail || "Machen Sie weiter so!"
     });
     
     // Reset assessment state
@@ -404,6 +624,43 @@ export const useLanguageAssessment = () => {
     localStorage.setItem('userLanguageLevel', maxLevel);
     
     return results;
+  };
+
+  // Format topic names for user display
+  const formatTopicName = (topic: string): string => {
+    const topicMap: Record<string, string> = {
+      'introduction': 'Vorstellung',
+      'vocabulary': 'Vokabular',
+      'greetings': 'Begrüßungen',
+      'body-parts': 'Körperteile',
+      'grammar': 'Grammatik',
+      'time': 'Zeitangaben',
+      'patient-communication': 'Patientenkommunikation',
+      'medical-terms': 'Medizinische Begriffe',
+      'daily-routine': 'Tagesablauf',
+      'medical-equipment': 'Medizinische Geräte',
+      'hospital-procedures': 'Krankenhausverfahren',
+      'patient-instructions': 'Patientenanweisungen',
+      'medical-departments': 'Medizinische Abteilungen',
+      'respiratory-issues': 'Atemwegsprobleme',
+      'medication-administration': 'Medikamentengabe',
+      'documentation': 'Dokumentation',
+      'hygiene': 'Hygiene',
+      'patient-consent': 'Patienteneinwilligung',
+      'clinical-assessment': 'Klinische Beurteilung',
+      'care-terminology': 'Pflegeterminologie',
+      'pain-assessment': 'Schmerzbeurteilung',
+      'professional-boundaries': 'Professionelle Grenzen',
+      'preventive-care': 'Präventive Pflege',
+      'patient-rights': 'Patientenrechte',
+      'dementia-care': 'Demenzpflege',
+      'team-leadership': 'Teamführung',
+      'family-communication': 'Familienkommunikation',
+      'medication-management': 'Medikamentenmanagement',
+      'evidence-based-practice': 'Evidenzbasierte Praxis'
+    };
+    
+    return topicMap[topic] || topic.replace(/-/g, ' ');
   };
 
   // Load saved level on component mount
