@@ -1,655 +1,1099 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useToast } from "@/hooks/use-toast";
-import useVoiceRecognition from "@/hooks/useVoiceRecognition";
-import useTextToSpeech from "@/hooks/useTextToSpeech";
-import { useTranslation } from "@/hooks/useTranslation";
-import { 
-  ArrowLeft, 
-  Play, 
-  Pause, 
-  SkipForward, 
-  Volume2, 
-  VolumeX, 
-  Mic, 
-  BookOpen, 
-  CheckCircle, 
-  Info, 
-  HelpCircle,
-  MessageCircle,
-  User,
-  ChevronRight,
-  Lightbulb,
-  Repeat,
-  X,
-  Globe,
-  AlertTriangle,
-  Clipboard,
-  Users2
-} from "lucide-react";
-import scenarios from "@/data/scenarios";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { useLanguage } from "@/contexts/LanguageContext";
-import vocabularyCategories from "@/data/vocabulary";
-
-const ScenarioDetail = () => {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const { translate, getGermanContent, userLanguage } = useLanguage();
-  const { t, getLocalizedContent } = useTranslation();
-  const { toast } = useToast();
-  
-  const [scenario, setScenario] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("dialog");
-  const [currentDialogStep, setCurrentDialogStep] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [showTranslation, setShowTranslation] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
-  const [recordingFeedback, setRecordingFeedback] = useState<null | { score: number; feedback: string }>(null);
-  const [showHint, setShowHint] = useState(false);
-  const [scenarioVocabulary, setScenarioVocabulary] = useState<any[]>([]);
-  const [transcript, setTranscript] = useState('');
-  
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const dialogContainerRef = useRef<HTMLDivElement | null>(null);
-
-  // Use the voice recognition hook
-  const { 
-    text: recognitionText, 
-    isListening, 
-    startListening, 
-    stopListening, 
-    error: recognitionError 
-  } = useVoiceRecognition();
-  
-  // Use the text-to-speech hook
-  const { 
-    speak, 
-    isSpeaking: speaking, 
-    stop: cancel 
-  } = useTextToSpeech();
-  
-  // Update transcript when recognition text changes
-  useEffect(() => {
-    if (recognitionText) {
-      setTranscript(recognitionText);
-    }
-  }, [recognitionText]);
-
-  useEffect(() => {
-    // Find the scenario by ID
-    const foundScenario = scenarios.find(s => s.id === id);
-    
-    if (foundScenario) {
-      setScenario(foundScenario);
-      
-      // Load vocabulary for this scenario
-      if (foundScenario.vocabularyIds) {
-        const vocabWords = [];
-        foundScenario.vocabularyIds.forEach(categoryId => {
-          const category = vocabularyCategories.find(cat => cat.id === categoryId);
-          if (category) {
-            vocabWords.push(...category.words);
-          }
-        });
-        setScenarioVocabulary(vocabWords);
-      }
-      
-      // Simulate loading delay for animation
-      setTimeout(() => {
-        setLoading(false);
-      }, 300);
-    } else {
-      // Scenario not found, redirect to practice page
-      toast({
-        title: t("scenarioNotFound"),
-        description: t("redirectingToPractice"),
-        variant: "destructive"
-      });
-      navigate("/practice");
-    }
-  }, [id, navigate, t, toast]);
-  
-  useEffect(() => {
-    // Auto-scroll to current dialog step
-    if (dialogContainerRef.current && !loading && scenario?.dialogue) {
-      const activeElement = document.getElementById(`dialog-step-${currentDialogStep}`);
-      if (activeElement) {
-        dialogContainerRef.current.scrollTo({
-          top: activeElement.offsetTop - 100,
-          behavior: 'smooth'
-        });
-      }
-    }
-  }, [currentDialogStep, loading, scenario]);
-  
-  useEffect(() => {
-    // Play current dialogue audio when isPlaying is true
-    if (isPlaying && scenario?.dialogue && currentDialogStep < scenario.dialogue.length) {
-      speak(scenario.dialogue[currentDialogStep].text);
-    } else if (!isPlaying) {
-      cancel();
-    }
-  }, [isPlaying, currentDialogStep, scenario, speak, cancel]);
-
-  // Update isPlaying state based on text-to-speech status
-  useEffect(() => {
-    setIsPlaying(speaking);
-  }, [speaking]);
-  
-  const handlePlayPause = () => {
-    if (isPlaying) {
-      cancel();
-    } else if (scenario?.dialogue) {
-      speak(scenario.dialogue[currentDialogStep].text);
-    }
-  };
-  
-  const handleNext = () => {
-    if (scenario?.dialogue && currentDialogStep < scenario.dialogue.length - 1) {
-      setCurrentDialogStep(currentDialogStep + 1);
-      setIsPlaying(false);
-      cancel();
-    }
-  };
-  
-  const handleToggleMute = () => {
-    setIsMuted(!isMuted);
-    // If we have audio playing, update its muted state
-    if (audioRef.current) {
-      audioRef.current.muted = !isMuted;
-    }
-  };
-  
-  const handleRecordingStart = () => {
-    if (isRecording) return;
-    
-    setIsRecording(true);
-    startListening();
-    
-    // Stop recording after 5 seconds
-    setTimeout(() => {
-      handleRecordingStop();
-    }, 5000);
-  };
-  
-  const handleRecordingStop = () => {
-    if (!isRecording) return;
-    
-    stopListening();
-    setIsRecording(false);
-    
-    if (transcript && scenario?.dialogue) {
-      const currentText = scenario.dialogue[currentDialogStep].text;
-      // Simple similarity check (in a real app, you'd use a more sophisticated approach)
-      const similarity = compareTexts(transcript.toLowerCase(), currentText.toLowerCase());
-      
-      setRecordingFeedback({
-        score: similarity,
-        feedback: getFeedbackMessage(similarity)
-      });
-    } else {
-      setRecordingFeedback({
-        score: 0,
-        feedback: t("noSpeechDetected")
-      });
-    }
-  };
-  
-  const compareTexts = (text1: string, text2: string) => {
-    // A simple function to compare two texts and return a similarity score (0-100)
-    // In a real app, you would use a more sophisticated algorithm
-    const words1 = text1.split(/\s+/);
-    const words2 = text2.split(/\s+/);
-    
-    let matchCount = 0;
-    for (const word of words1) {
-      if (words2.includes(word)) {
-        matchCount++;
-      }
-    }
-    
-    return Math.round((matchCount / Math.max(words1.length, words2.length)) * 100);
-  };
-  
-  const getFeedbackMessage = (score: number) => {
-    if (score > 90) {
-      return t("excellentPronunciation");
-    } else if (score > 70) {
-      return t("goodPronunciation");
-    } else if (score > 50) {
-      return t("understandablePronunciation");
-    } else {
-      return t("practiceMorePronunciation");
-    }
-  };
-  
-  const handleDismissFeedback = () => {
-    setRecordingFeedback(null);
-  };
-  
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="h-12 w-48 bg-neutral-200 rounded-md mb-4"></div>
-          <div className="h-4 w-64 bg-neutral-100 rounded-md"></div>
-        </div>
-      </div>
-    );
-  }
-  
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-grow pt-20 px-4 md:px-8 pb-24">
-        <div className="container mx-auto">
-          {/* Back button and title */}
-          <div className="mb-6">
-            <Button 
-              variant="ghost" 
-              className="mb-2 -ml-3 text-neutral-600 hover:text-neutral-800"
-              onClick={() => navigate("/practice")}
-            >
-              <ArrowLeft className="mr-1 h-4 w-4" />
-              {t("backToExercises")}
-            </Button>
-            
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-              <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-neutral-800">{scenario.title}</h1>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  <Badge variant="outline" className="bg-neutral-50">
-                    {t(scenario.category)}
-                  </Badge>
-                  <Badge variant="outline" className="bg-neutral-50">
-                    {t(scenario.difficulty)}
-                  </Badge>
-                  {scenario.tags.map((tag: string) => (
-                    <Badge key={tag} variant="outline" className="bg-neutral-50">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="flex gap-2 mt-2 md:mt-0">
-                <Button variant="outline" className="flex items-center">
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  {t("vocabulary")}
-                </Button>
-                <Button className="flex items-center bg-medical-500 hover:bg-medical-600">
-                  <Mic className="mr-2 h-4 w-4" />
-                  {t("practicePronunciation")}
-                </Button>
-              </div>
-            </div>
-          </div>
-          
-          {/* Main content */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left column - Dialog and vocabulary */}
-            <div className="lg:col-span-2">
-              <Tabs defaultValue="dialog" value={activeTab} onValueChange={setActiveTab} className="mb-6">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="dialog" className="flex items-center">
-                    <MessageCircle className="mr-2 h-4 w-4" />
-                    {t("dialog")}
-                  </TabsTrigger>
-                  <TabsTrigger value="vocabulary" className="flex items-center">
-                    <BookOpen className="mr-2 h-4 w-4" />
-                    {t("vocabulary")}
-                  </TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="dialog" className="mt-4">
-                  <Card className="p-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="mr-2"
-                          onClick={handlePlayPause}
-                        >
-                          {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="mr-2"
-                          onClick={handleNext}
-                        >
-                          <SkipForward className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="mr-4"
-                          onClick={handleToggleMute}
-                        >
-                          {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-                        </Button>
-                        <Progress 
-                          value={scenario?.dialogue ? ((currentDialogStep / (scenario.dialogue.length - 1)) * 100) : 0} 
-                          className="w-24 md:w-40"
-                        />
-                      </div>
-                      
-                      <div className="flex items-center">
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className={cn(
-                            "text-xs",
-                            showTranslation ? "bg-medical-50 text-medical-700" : "text-neutral-600"
-                          )}
-                          onClick={() => setShowTranslation(!showTranslation)}
-                        >
-                          <Globe className="h-3.5 w-3.5 mr-1" />
-                          {showTranslation ? t("hideTranslation") : t("showTranslation")}
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <ScrollArea className="h-[calc(100vh-400px)]" ref={dialogContainerRef}>
-                      <div className="space-y-6 pr-4">
-                        {scenario?.dialogue?.map((item: any, index: number) => {
-                          const translatedLine = userLanguage !== 'en' ? item.translation || '' : '';
-                          return (
-                            <div 
-                              key={index}
-                              id={`dialog-step-${index}`}
-                              className={cn(
-                                "transition-all duration-300",
-                                index === currentDialogStep ? "opacity-100" : "opacity-50"
-                              )}
-                            >
-                              <div className="flex items-start gap-3 mb-2">
-                                <Avatar className={cn(
-                                  "h-8 w-8",
-                                  item.speaker === "doctor" ? "bg-medical-100" : 
-                                  item.speaker === "patient" ? "bg-blue-100" : 
-                                  item.speaker === "nurse" ? "bg-green-100" : "bg-neutral-100"
-                                )}>
-                                  <AvatarFallback>
-                                    {item.speaker === "doctor" ? "A" : 
-                                     item.speaker === "patient" ? "P" : 
-                                     item.speaker === "nurse" ? "P" : "?"}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <div>
-                                  <div className="flex items-center">
-                                    <p className="font-medium text-sm">
-                                      {t(item.speaker)}
-                                    </p>
-                                    {index === currentDialogStep && (
-                                      <Button 
-                                        variant="ghost" 
-                                        size="sm" 
-                                        className="ml-2 h-6 px-2 text-xs text-medical-600 hover:text-medical-700 hover:bg-medical-50"
-                                        onClick={handleRecordingStart}
-                                        disabled={isRecording}
-                                      >
-                                        {isRecording ? (
-                                          <span className="flex items-center">
-                                            <span className="animate-pulse mr-1">●</span> {t("recording")}
-                                          </span>
-                                        ) : (
-                                          <span className="flex items-center">
-                                            <Mic className="h-3 w-3 mr-1" /> {t("repeatAfterMe")}
-                                          </span>
-                                        )}
-                                      </Button>
-                                    )}
-                                  </div>
-                                  <p className="text-neutral-800">{getGermanContent(item.text)}</p>
-                                  {(showTranslation && translatedLine) && (
-                                    <p className="text-neutral-500 text-sm mt-1 italic">{translatedLine}</p>
-                                  )}
-                                </div>
-                              </div>
-                              
-                              {recordingFeedback && index === currentDialogStep && (
-                                <div className="ml-11 mt-2 bg-medical-50 p-3 rounded-md relative">
-                                  <Button 
-                                    variant="ghost" 
-                                    size="sm" 
-                                    className="absolute top-1 right-1 h-6 w-6 p-0"
-                                    onClick={handleDismissFeedback}
-                                  >
-                                    <X className="h-3 w-3" />
-                                  </Button>
-                                  <div className="flex items-center mb-2">
-                                    <div className="font-medium text-medical-700 mr-2">{t("pronunciationFeedback")}:</div>
-                                    <div className="text-sm font-medium">
-                                      {recordingFeedback.score}%
-                                    </div>
-                                    <div className="ml-2 w-24 bg-white rounded-full h-2">
-                                      <div 
-                                        className={cn(
-                                          "h-full rounded-full",
-                                          recordingFeedback.score > 90 ? "bg-green-500" :
-                                          recordingFeedback.score > 80 ? "bg-yellow-500" : "bg-orange-500"
-                                        )}
-                                        style={{ width: `${recordingFeedback.score}%` }}
-                                      ></div>
-                                    </div>
-                                  </div>
-                                  <p className="text-sm text-medical-700">{recordingFeedback.feedback}</p>
-                                </div>
-                              )}
-                              
-                              {index === currentDialogStep && (
-                                <div className="ml-11 mt-2 flex gap-2">
-                                  <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    className="text-xs h-7"
-                                    onClick={() => setShowHint(!showHint)}
-                                  >
-                                    <HelpCircle className="h-3 w-3 mr-1" />
-                                    {t("hint")}
-                                  </Button>
-                                  <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    className="text-xs h-7"
-                                    onClick={() => speak(scenario.dialogue[currentDialogStep].text)}
-                                  >
-                                    <Repeat className="h-3 w-3 mr-1" />
-                                    {t("repeat")}
-                                  </Button>
-                                </div>
-                              )}
-                              
-                              {showHint && index === currentDialogStep && (
-                                <div className="ml-11 mt-2 bg-blue-50 p-3 rounded-md">
-                                  <div className="flex items-start">
-                                    <Lightbulb className="h-4 w-4 text-blue-500 mr-2 mt-0.5" />
-                                    <div>
-                                      <p className="text-sm font-medium text-blue-700 mb-1">{t("languageHint")}:</p>
-                                      <p className="text-sm text-blue-700">
-                                        {item.hint || t("defaultLanguageHint")}
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </ScrollArea>
-                  </Card>
-                </TabsContent>
-                
-                <TabsContent value="vocabulary" className="mt-4">
-                  <Card className="p-4">
-                    <h3 className="text-lg font-medium mb-4">{t("importantVocabularyInScenario")}</h3>
-                    
-                    <ScrollArea className="h-[calc(100vh-400px)]">
-                      <div className="space-y-4 pr-4">
-                        {scenarioVocabulary.length > 0 ? (
-                          scenarioVocabulary.map((item, index) => {
-                            const localizedContent = getLocalizedContent(item.id, item.english);
-                            const translationContent = typeof localizedContent === 'object' 
-                              ? localizedContent.translation 
-                              : localizedContent || item.english;
-                              
-                            return (
-                              <div key={index} className="border-b border-neutral-100 pb-3 last:border-0">
-                                <div className="flex justify-between">
-                                  <div>
-                                    <p className="font-medium">{getGermanContent(item.german)}</p>
-                                    <p className="text-neutral-500 text-sm">
-                                      {translationContent}
-                                    </p>
-                                  </div>
-                                  <TooltipProvider>
-                                    <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <Button 
-                                          variant="ghost" 
-                                          size="sm" 
-                                          className="h-8 w-8 p-0"
-                                          onClick={() => speak(item.german)}
-                                        >
-                                          <Volume2 className="h-4 w-4 text-neutral-500" />
-                                        </Button>
-                                      </TooltipTrigger>
-                                      <TooltipContent>
-                                        <p>{t("listenToPronunciation")}</p>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
-                                </div>
-                                {item.example && (
-                                  <div className="mt-2 text-sm">
-                                    <p className="text-neutral-700">{getGermanContent(item.example)}</p>
-                                    {userLanguage !== 'en' && (
-                                      <p className="text-neutral-500 italic">
-                                        {getLocalizedContent(`${item.id}-example`, '')}
-                                      </p>
-                                    )}
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })
-                        ) : (
-                          <div className="text-center py-6 text-neutral-500">
-                            {t("noVocabularyForScenario")}
-                          </div>
-                        )}
-                      </div>
-                    </ScrollArea>
-                  </Card>
-                </TabsContent>
-              </Tabs>
-            </div>
-            
-            {/* Right column - Context and info */}
-            <div>
-              <Card className="p-4 mb-6">
-                <h3 className="text-lg font-medium mb-3">{t("aboutThisScenario")}</h3>
-                <p className="text-neutral-600 mb-4">{scenario.description}</p>
-                
-                <Separator className="my-4" />
-                
-                <h4 className="font-medium mb-2">{t("context")}:</h4>
-                <p className="text-neutral-600 text-sm mb-4">{scenario.context}</p>
-                
-                <h4 className="font-medium mb-2">{t("learningObjectives")}:</h4>
-                <ul className="space-y-2 mb-4">
-                  {scenario.learningObjectives?.map((objective: string, index: number) => (
-                    <li key={index} className="flex items-start">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 mt-0.5" />
-                      <span className="text-sm text-neutral-600">{objective}</span>
-                    </li>
-                  ))}
-                </ul>
-                
-                <Separator className="my-4" />
-                
-                <h4 className="font-medium mb-2">{t("involvedPersons")}:</h4>
-                <div className="space-y-3">
-                  {scenario.characters?.map((character: any, index: number) => (
-                    <div key={index} className="flex items-center">
-                      <Avatar className={cn(
-                        "h-8 w-8 mr-3",
-                        character.role === "doctor" ? "bg-medical-100" : 
-                        character.role === "patient" ? "bg-blue-100" : 
-                        character.role === "nurse" ? "bg-green-100" : "bg-neutral-100"
-                      )}>
-                        <AvatarFallback>
-                          {character.name.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium text-sm">{character.name}</p>
-                        <p className="text-neutral-500 text-xs">
-                          {t(character.role)}
-                          {character.description && ` - ${character.description}`}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-              
-              <Card className="p-4">
-                <h3 className="text-lg font-medium mb-3">{t("similarScenarios")}</h3>
-                <div className="space-y-3">
-                  {scenarios
-                    .filter(s => s.id !== scenario.id && s.category === scenario.category)
-                    .slice(0, 3)
-                    .map(s => (
-                      <div 
-                        key={s.id} 
-                        className="flex items-center p-2 hover:bg-neutral-50 rounded-md cursor-pointer"
-                        onClick={() => navigate(`/scenario/${s.id}`)}
-                      >
-                        <div className="w-10 h-10 rounded-full bg-medical-100 flex items-center justify-center mr-3">
-                          {s.category === "patient-care" ? <User className="h-5 w-5 text-medical-600" /> : 
-                           s.category === "emergency" ? <AlertTriangle className="h-5 w-5 text-medical-600" /> :
-                           s.category === "documentation" ? <Clipboard className="h-5 w-5 text-medical-600" /> :
-                           <Users2 className="h-5 w-5 text-medical-600" />}
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-medium text-sm">{s.title}</p>
-                          <p className="text-neutral-500 text-xs">{t(s.difficulty)}</p>
-                        </div>
-                        <ChevronRight className="h-4 w-4 text-neutral-400" />
-                      </div>
-                    ))}
-                </div>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </main>
-      
-      <Footer />
-      
-      {/* Hidden audio element */}
-      <audio ref={audioRef} src="/audio/sample-dialog.mp3" />
-    </div>
-  );
-};
-
-export default ScenarioDetail;
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  HelpCircle,
+  MessageSquare,
+  Redo2,
+  Volume1,
+  VolumeX,
+  Download,
+  Copy,
+  Edit,
+  Save,
+  AlertTriangle,
+  CheckCircle,
+  Loader2,
+  Eye,
+  EyeOff,
+  Share2,
+  Flag,
+  Heart,
+  MessageCircle as MessageCircleIcon,
+  Stethoscope,
+  User2,
+  FileText,
+  BookOpenCheck,
+  Book,
+  Lightbulb,
+  Search,
+  Plus,
+  Minus,
+  X,
+  ChevronsUpDown,
+  LayoutDashboard,
+  Settings,
+  BarChart3,
+  Star,
+  Crown,
+  BookOpen as BookOpenIcon,
+  Headphones,
+  ListChecks,
+  ClipboardList,
+  ClipboardCheck,
+  ClipboardCopy,
+  Clipboard,
+  Share,
+  Send,
+  Mic,
+  MicOff,
+  Pause,
+  Play,
+  Stop,
+  SkipForward,
+  SkipBack,
+  Repeat,
+  Repeat2,
+  Shuffle,
+  ListOrdered,
+  ListUnordered,
+  FormatBold,
+  FormatItalic,
+  FormatUnderlined,
+  FormatStrikethrough,
+  Code,
+  Link,
+  Image,
+  Video,
+  File,
+  Table,
+  List,
+  Terminal,
+  Quote,
+  Eraser,
+  Paintbrush2,
+  Scissors,
+  Palette,
+  Dropper,
+  Crop,
+  RotateCcw,
+  RotateCw,
+  FlipHorizontal,
+  FlipVertical,
+  Contrast,
+  Brightness,
+  Blur,
+  Sharpen,
+  Invert,
+  Grayscale,
+  Sepia,
+  Opacity,
+  Saturate,
+  HueRotate,
+  Code2,
+  Layout,
+  PanelLeft,
+  PanelRight,
+  PanelTop,
+  PanelBottom,
+  Maximize2,
+  Minimize2,
+  Move,
+  ZoomIn,
+  ZoomOut,
+  Select as SelectIcon,
+  CheckSquare,
+  Square,
+  Radio,
+  Check,
+  CopyCheck,
+  CopyX,
+  CopyPlus,
+  CopyMinus,
+  CopySlash,
+  CopyPercent,
+  CopyDollarSign,
+  CopyPoundSign,
+  CopyEuro,
+  CopyYen,
+  CopyBitcoin,
+  CopyEthereum,
+  CopyLitecoin,
+  CopyRipple,
+  CopyDash,
+  CopyMonero,
+  CopyZcash,
+  CopyBinanceCoin,
+  CopyCard,
+  CopyClipboard,
+  CopyCode,
+  CopyFile,
+  CopyImage,
+  CopyLink,
+  CopyList,
+  CopyTable,
+  CopyText,
+  CopyVideo,
+  CopyZip,
+  CopyRar,
+  CopyPdf,
+  CopyDoc,
+  CopyXls,
+  CopyPpt,
+  CopyCsv,
+  CopyTxt,
+  CopyHtml,
+  CopyCss,
+  CopyJs,
+  CopyJson,
+  CopyXml,
+  CopyYaml,
+  CopyMarkdown,
+  CopyAsciiDoc,
+  CopyTex,
+  CopyRtf,
+  CopyEpub,
+  CopyMobi,
+  CopyIcal,
+  CopyVcard,
+  CopyVcf,
+  CopyGeoJson,
+  CopyKml,
+  CopyGpx,
+  CopySvg,
+  CopyPng,
+  CopyJpg,
+  CopyJpeg,
+  CopyGif,
+  CopyBmp,
+  CopyTiff,
+  CopyWebp,
+  CopyAvif,
+  CopyMp3,
+  CopyMp4,
+  CopyMov,
+  CopyAvi,
+  CopyMkv,
+  CopyFlv,
+  CopyWmv,
+  CopyMpeg,
+  Copy3gp,
+  CopyOgg,
+  CopyWav,
+  CopyAac,
+  CopyFlac,
+  CopyMidi,
+  CopyMka,
+  CopyM4a,
+  CopyM4v,
+  CopyM4p,
+  CopyM4b,
+  CopyM4r,
+  CopyM4g,
+  CopyM4f,
+  CopyM4q,
+  CopyM4u,
+  CopyM4x,
+  CopyM4z,
+  CopyM4t,
+  CopyM4s,
+  CopyM4d,
+  CopyM4e,
+  CopyM4c,
+  CopyM4i,
+  CopyM4j,
+  CopyM4k,
+  CopyM4l,
+  CopyM4m,
+  CopyM4n,
+  CopyM4o,
+  CopyM4p,
+  CopyM4q,
+  CopyM4r,
+  CopyM4s,
+  CopyM4t,
+  CopyM4u,
+  CopyM4v,
+  CopyM4w,
+  CopyM4x,
+  CopyM4y,
+  CopyM4z,
+  CopyM40,
+  CopyM41,
+  CopyM42,
+  CopyM43,
+  CopyM44,
+  CopyM45,
+  CopyM46,
+  CopyM47,
+  CopyM48,
+  CopyM49,
+  CopyM50,
+  CopyM51,
+  CopyM52,
+  CopyM53,
+  CopyM54,
+  CopyM55,
+  CopyM56,
+  CopyM57,
+  CopyM58,
+  CopyM59,
+  CopyM60,
+  CopyM61,
+  CopyM62,
+  CopyM63,
+  CopyM64,
+  CopyM65,
+  CopyM66,
+  CopyM67,
+  CopyM68,
+  CopyM69,
+  CopyM70,
+  CopyM71,
+  CopyM72,
+  CopyM73,
+  CopyM74,
+  CopyM75,
+  CopyM76,
+  CopyM77,
+  CopyM78,
+  CopyM79,
+  CopyM80,
+  CopyM81,
+  CopyM82,
+  CopyM83,
+  CopyM84,
+  CopyM85,
+  CopyM86,
+  CopyM87,
+  CopyM88,
+  CopyM89,
+  CopyM90,
+  CopyM91,
+  CopyM92,
+  CopyM93,
+  CopyM94,
+  CopyM95,
+  CopyM96,
+  CopyM97,
+  CopyM98,
+  CopyM99,
+  CopyM100,
+  CopyM101,
+  CopyM102,
+  CopyM103,
+  CopyM104,
+  CopyM105,
+  CopyM106,
+  CopyM107,
+  CopyM108,
+  CopyM109,
+  CopyM110,
+  CopyM111,
+  CopyM112,
+  CopyM113,
+  CopyM114,
+  CopyM115,
+  CopyM116,
+  CopyM117,
+  CopyM118,
+  CopyM119,
+  CopyM120,
+  CopyM121,
+  CopyM122,
+  CopyM123,
+  CopyM124,
+  CopyM125,
+  CopyM126,
+  CopyM127,
+  CopyM128,
+  CopyM129,
+  CopyM130,
+  CopyM131,
+  CopyM132,
+  CopyM133,
+  CopyM134,
+  CopyM135,
+  CopyM136,
+  CopyM137,
+  CopyM138,
+  CopyM139,
+  CopyM140,
+  CopyM141,
+  CopyM142,
+  CopyM143,
+  CopyM144,
+  CopyM145,
+  CopyM146,
+  CopyM147,
+  CopyM148,
+  CopyM149,
+  CopyM150,
+  CopyM151,
+  CopyM152,
+  CopyM153,
+  CopyM154,
+  CopyM155,
+  CopyM156,
+  CopyM157,
+  CopyM158,
+  CopyM159,
+  CopyM160,
+  CopyM161,
+  CopyM162,
+  CopyM163,
+  CopyM164,
+  CopyM165,
+  CopyM166,
+  CopyM167,
+  CopyM168,
+  CopyM169,
+  CopyM170,
+  CopyM171,
+  CopyM172,
+  CopyM173,
+  CopyM174,
+  CopyM175,
+  CopyM176,
+  CopyM177,
+  CopyM178,
+  CopyM179,
+  CopyM180,
+  CopyM181,
+  CopyM182,
+  CopyM183,
+  CopyM184,
+  CopyM185,
+  CopyM186,
+  CopyM187,
+  CopyM188,
+  CopyM189,
+  CopyM190,
+  CopyM191,
+  CopyM192,
+  CopyM193,
+  CopyM194,
+  CopyM195,
+  CopyM196,
+  CopyM197,
+  CopyM198,
+  CopyM199,
+  CopyM200,
+  CopyM201,
+  CopyM202,
+  CopyM203,
+  CopyM204,
+  CopyM205,
+  CopyM206,
+  CopyM207,
+  CopyM208,
+  CopyM209,
+  CopyM210,
+  CopyM211,
+  CopyM212,
+  CopyM213,
+  CopyM214,
+  CopyM215,
+  CopyM216,
+  CopyM217,
+  CopyM218,
+  CopyM219,
+  CopyM220,
+  CopyM221,
+  CopyM222,
+  CopyM223,
+  CopyM224,
+  CopyM225,
+  CopyM226,
+  CopyM227,
+  CopyM228,
+  CopyM229,
+  CopyM230,
+  CopyM231,
+  CopyM232,
+  CopyM233,
+  CopyM234,
+  CopyM235,
+  CopyM236,
+  CopyM237,
+  CopyM238,
+  CopyM239,
+  CopyM240,
+  CopyM241,
+  CopyM242,
+  CopyM243,
+  CopyM244,
+  CopyM245,
+  CopyM246,
+  CopyM247,
+  CopyM248,
+  CopyM249,
+  CopyM250,
+  CopyM251,
+  CopyM252,
+  CopyM253,
+  CopyM254,
+  CopyM255,
+  CopyM256,
+  CopyM257,
+  CopyM258,
+  CopyM259,
+  CopyM260,
+  CopyM261,
+  CopyM262,
+  CopyM263,
+  CopyM264,
+  CopyM265,
+  CopyM266,
+  CopyM267,
+  CopyM268,
+  CopyM269,
+  CopyM270,
+  CopyM271,
+  CopyM272,
+  CopyM273,
+  CopyM274,
+  CopyM275,
+  CopyM276,
+  CopyM277,
+  CopyM278,
+  CopyM279,
+  CopyM280,
+  CopyM281,
+  CopyM282,
+  CopyM283,
+  CopyM284,
+  CopyM285,
+  CopyM286,
+  CopyM287,
+  CopyM288,
+  CopyM289,
+  CopyM290,
+  CopyM291,
+  CopyM292,
+  CopyM293,
+  CopyM294,
+  CopyM295,
+  CopyM296,
+  CopyM297,
+  CopyM298,
+  CopyM299,
+  CopyM300,
+  CopyM301,
+  CopyM302,
+  CopyM303,
+  CopyM304,
+  CopyM305,
+  CopyM306,
+  CopyM307,
+  CopyM308,
+  CopyM309,
+  CopyM310,
+  CopyM311,
+  CopyM312,
+  CopyM313,
+  CopyM314,
+  CopyM315,
+  CopyM316,
+  CopyM317,
+  CopyM318,
+  CopyM319,
+  CopyM320,
+  CopyM321,
+  CopyM322,
+  CopyM323,
+  CopyM324,
+  CopyM325,
+  CopyM326,
+  CopyM327,
+  CopyM328,
+  CopyM329,
+  CopyM330,
+  CopyM331,
+  CopyM332,
+  CopyM333,
+  CopyM334,
+  CopyM335,
+  CopyM336,
+  CopyM337,
+  CopyM338,
+  CopyM339,
+  CopyM340,
+  CopyM341,
+  CopyM342,
+  CopyM343,
+  CopyM344,
+  CopyM345,
+  CopyM346,
+  CopyM347,
+  CopyM348,
+  CopyM349,
+  CopyM350,
+  CopyM351,
+  CopyM352,
+  CopyM353,
+  CopyM354,
+  CopyM355,
+  CopyM356,
+  CopyM357,
+  CopyM358,
+  CopyM359,
+  CopyM360,
+  CopyM361,
+  CopyM362,
+  CopyM363,
+  CopyM364,
+  CopyM365,
+  CopyM366,
+  CopyM367,
+  CopyM368,
+  CopyM369,
+  CopyM370,
+  CopyM371,
+  CopyM372,
+  CopyM373,
+  CopyM374,
+  CopyM375,
+  CopyM376,
+  CopyM377,
+  CopyM378,
+  CopyM379,
+  CopyM380,
+  CopyM381,
+  CopyM382,
+  CopyM383,
+  CopyM384,
+  CopyM385,
+  CopyM386,
+  CopyM387,
+  CopyM388,
+  CopyM389,
+  CopyM390,
+  CopyM391,
+  CopyM392,
+  CopyM393,
+  CopyM394,
+  CopyM395,
+  CopyM396,
+  CopyM397,
+  CopyM398,
+  CopyM399,
+  CopyM400,
+  CopyM401,
+  CopyM402,
+  CopyM403,
+  CopyM404,
+  CopyM405,
+  CopyM406,
+  CopyM407,
+  CopyM408,
+  CopyM409,
+  CopyM410,
+  CopyM411,
+  CopyM412,
+  CopyM413,
+  CopyM414,
+  CopyM415,
+  CopyM416,
+  CopyM417,
+  CopyM418,
+  CopyM419,
+  CopyM420,
+  CopyM421,
+  CopyM422,
+  CopyM423,
+  CopyM424,
+  CopyM425,
+  CopyM426,
+  CopyM427,
+  CopyM428,
+  CopyM429,
+  CopyM430,
+  CopyM431,
+  CopyM432,
+  CopyM433,
+  CopyM434,
+  CopyM435,
+  CopyM436,
+  CopyM437,
+  CopyM438,
+  CopyM439,
+  CopyM440,
+  CopyM441,
+  CopyM442,
+  CopyM443,
+  CopyM444,
+  CopyM445,
+  CopyM446,
+  CopyM447,
+  CopyM448,
+  CopyM449,
+  CopyM450,
+  CopyM451,
+  CopyM452,
+  CopyM453,
+  CopyM454,
+  CopyM455,
+  CopyM456,
+  CopyM457,
+  CopyM458,
+  CopyM459,
+  CopyM460,
+  CopyM461,
+  CopyM462,
+  CopyM463,
+  CopyM464,
+  CopyM465,
+  CopyM466,
+  CopyM467,
+  CopyM468,
+  CopyM469,
+  CopyM470,
+  CopyM471,
+  CopyM472,
+  CopyM473,
+  CopyM474,
+  CopyM475,
+  CopyM476,
+  CopyM477,
+  CopyM478,
+  CopyM479,
+  CopyM480,
+  CopyM481,
+  CopyM482,
+  CopyM483,
+  CopyM484,
+  CopyM485,
+  CopyM486,
+  CopyM487,
+  CopyM488,
+  CopyM489,
+  CopyM490,
+  CopyM491,
+  CopyM492,
+  CopyM493,
+  CopyM494,
+  CopyM495,
+  CopyM496,
+  CopyM497,
+  CopyM498,
+  CopyM499,
+  CopyM500,
+  CopyM501,
+  CopyM502,
+  CopyM503,
+  CopyM504,
+  CopyM505,
+  CopyM506,
+  CopyM507,
+  CopyM508,
+  CopyM509,
+  CopyM510,
+  CopyM511,
+  CopyM512,
+  CopyM513,
+  CopyM514,
+  CopyM515,
+  CopyM516,
+  CopyM517,
+  CopyM518,
+  CopyM519,
+  CopyM520,
+  CopyM521,
+  CopyM522,
+  CopyM523,
+  CopyM524,
+  CopyM525,
+  CopyM526,
+  CopyM527,
+  CopyM528,
+  CopyM529,
+  CopyM530,
+  CopyM531,
+  CopyM532,
+  CopyM533,
+  CopyM534,
+  CopyM535,
+  CopyM536,
+  CopyM537,
+  CopyM538,
+  CopyM539,
+  CopyM540,
+  CopyM541,
+  CopyM542,
+  CopyM543,
+  CopyM544,
+  CopyM545,
+  CopyM546,
+  CopyM547,
+  CopyM548,
+  CopyM549,
+  CopyM550,
+  CopyM551,
+  CopyM552,
+  CopyM553,
+  CopyM554,
+  CopyM555,
+  CopyM556,
+  CopyM557,
+  CopyM558,
+  CopyM559,
+  CopyM560,
+  CopyM561,
+  CopyM562,
+  CopyM563,
+  CopyM564,
+  CopyM565,
+  CopyM566,
+  CopyM567,
+  CopyM568,
+  CopyM569,
+  CopyM570,
+  CopyM571,
+  CopyM572,
+  CopyM573,
+  CopyM574,
+  CopyM575,
+  CopyM576,
+  CopyM577,
+  CopyM578,
+  CopyM579,
+  CopyM580,
+  CopyM581,
+  CopyM582,
+  CopyM583,
+  CopyM584,
+  CopyM585,
+  CopyM586,
+  CopyM587,
+  CopyM588,
+  CopyM589,
+  CopyM590,
+  CopyM591,
+  CopyM592,
+  CopyM593,
+  CopyM594,
+  CopyM595,
+  CopyM596,
+  CopyM597,
+  CopyM598,
+  CopyM599,
+  CopyM600,
+  CopyM601,
+  CopyM602,
+  CopyM603,
+  CopyM604,
+  CopyM605,
+  CopyM606,
+  CopyM607,
+  CopyM608,
+  CopyM609,
+  CopyM610,
+  CopyM611,
+  CopyM612,
+  CopyM613,
+  CopyM614,
+  CopyM615,
+  CopyM616,
+  CopyM617,
+  CopyM618,
+  CopyM619,
+  CopyM620,
+  CopyM621,
+  CopyM622,
+  CopyM623,
+  CopyM624,
+  CopyM625,
+  CopyM626,
+  CopyM627,
+  CopyM628,
+  CopyM629,
+  CopyM630,
+  CopyM631,
+  CopyM632,
+  CopyM633,
+  CopyM634,
+  CopyM635,
+  CopyM636,
+  CopyM637,
+  CopyM638,
+  CopyM639,
+  CopyM640,
+  CopyM641,
+  CopyM642,
+  CopyM643,
+  CopyM644,
+  CopyM645,
+  CopyM646,
+  CopyM647,
+  CopyM648,
+  CopyM649,
+  CopyM650,
+  CopyM651,
+  CopyM652,
+  CopyM653,
+  CopyM654,
+  CopyM655,
+  CopyM656,
+  CopyM657,
+  CopyM658,
+  CopyM659,
+  CopyM660,
+  CopyM661,
+  CopyM662,
+  CopyM663,
+  CopyM664,
+  CopyM665,
+  CopyM666,
+  CopyM667,
+  CopyM668,
+  CopyM669,
+  CopyM670,
+  CopyM671,
+  CopyM672,
+  CopyM673,
+  CopyM674,
+  CopyM675,
+  CopyM676,
+  CopyM677,
+  CopyM678,
+  CopyM679,
+  CopyM680,
+  CopyM681,
+  CopyM682,
+  CopyM683,
+  CopyM684,
+  CopyM685,
+  CopyM686,
+  CopyM687,
+  CopyM688,
+  CopyM689,
+  CopyM690,
+  CopyM691,
+  CopyM692,
+  CopyM693,
+  CopyM694,
+  CopyM695,
+  CopyM696,
+  CopyM697,
+  CopyM698,
+  CopyM699,
+  CopyM700,
+  CopyM701,
+  CopyM702,
+  CopyM703,
+  CopyM704,
+  CopyM705,
+  CopyM706,
+  CopyM707,
+  CopyM708,
+  CopyM709,
+  CopyM710,
+  CopyM711,
+  CopyM712,
+  CopyM713,
+  CopyM714,
+  CopyM715,
+  CopyM716,
+  CopyM717,
+  CopyM718,
+  CopyM719,
+  CopyM720,
+  CopyM721,
+  CopyM722,
+  CopyM723,
+  CopyM724,
+  CopyM725,
+  CopyM726,
+  CopyM727,
+  CopyM728,
+  CopyM729,
+  CopyM730,
+  CopyM731,
+  CopyM732,
+  CopyM733,
+  CopyM734,
+  CopyM735,
+  CopyM736,
+  CopyM737,
+  CopyM738,
+  CopyM739,
+  CopyM740,
+  CopyM741,
+  CopyM742,
+  CopyM743,
+  CopyM744,
+  CopyM745,
+  CopyM746,
+  CopyM747,
+  CopyM748,
+  CopyM749,
+  CopyM750,
+  CopyM751,
+  CopyM752,
+  CopyM753,
+  CopyM754,
+  CopyM755,
+  CopyM756,
+  CopyM757,
+  CopyM758,
+  CopyM759,
+  CopyM760,
+  CopyM761,
+  CopyM762,
+  CopyM763,
+  CopyM764,
+  CopyM765,
+  CopyM766,
+  CopyM767,
+  CopyM768,
+  CopyM769,
+  CopyM770,
+  CopyM771,
+  CopyM772,
+  CopyM773,
+  CopyM774,
+  CopyM775,
+  CopyM776,
+  CopyM777,
+  CopyM778,
+  CopyM779,
+  CopyM780,
+  CopyM781,
+  CopyM782,
+  CopyM783,
+  CopyM784,
+  CopyM785,
+  CopyM786,
+  CopyM787,
+  CopyM788,
+  CopyM789,
+  CopyM790,
+  CopyM791,
+  CopyM792,
+  CopyM793,
+  CopyM794,
+  CopyM795,
+  CopyM796,
+  CopyM797,
+  CopyM798,
+  CopyM799,
+  CopyM800,
+  CopyM801,
+  CopyM802,
+  CopyM803,
+  CopyM804,
+  CopyM805,
+  CopyM806,
+  CopyM807,
+  CopyM808,
+  CopyM809,
+  CopyM810,
+  CopyM811,
+  CopyM812,
+  CopyM813,
+  CopyM814,
+  CopyM815,
+  CopyM816,
+  CopyM817,
+  CopyM818,
+  CopyM819,
+  CopyM820,
+  CopyM821,
+  CopyM822,
+  CopyM823,
+  CopyM824,
+  CopyM825,
+  CopyM826,
+  CopyM827,
+  CopyM828,
+  CopyM829,
+  CopyM830,
+  CopyM831,
+  CopyM832,
+  CopyM833,
+  CopyM834,
+  CopyM835,
+  CopyM836,
+  CopyM837,
+  CopyM838,
+  CopyM839,
+  CopyM840,
+  CopyM841,
+  CopyM842,
+  CopyM843,
+  CopyM844,
+  CopyM845,
+  CopyM846,
+  CopyM847,
+  CopyM848,
+  CopyM849,
+  CopyM850,
+  CopyM851,
+  CopyM852,
+  CopyM853,
+  CopyM854,
+  CopyM855,
+  CopyM856,
+  CopyM857,
+  CopyM858,
+  CopyM859,
+  CopyM860,
+  CopyM861,
+  CopyM862,
+  CopyM863,
+  CopyM864,
+  CopyM865,
+  CopyM866,
+  CopyM867,
+  CopyM868,
+  CopyM869,
+  CopyM870,
+  CopyM871,
+  CopyM872,
+  CopyM873,
+  CopyM874,
+  CopyM875,
+  CopyM876,
+  CopyM877,
+  CopyM878,
+  CopyM879,
+  CopyM880,
+  CopyM88

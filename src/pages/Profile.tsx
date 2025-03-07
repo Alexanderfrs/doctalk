@@ -17,6 +17,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import LanguageSelector from "@/components/language/LanguageSelector";
 import AvatarSelector from "@/components/profile/AvatarSelector";
+import { useLanguageAssessment } from "@/hooks/useLanguageAssessment";
 
 const certificateTypes = [
   {
@@ -49,49 +50,23 @@ const Profile = () => {
   const [dailyGoal, setDailyGoal] = useState(20);
   const [notifications, setNotifications] = useState(true);
   const [soundEffects, setSoundEffects] = useState(true);
-  const [assessmentStarted, setAssessmentStarted] = useState(false);
-  const [assessmentStep, setAssessmentStep] = useState(1);
-  const [assessmentAnswers, setAssessmentAnswers] = useState({});
   const [subscription, setSubscription] = useState("basic");
   
   const { userLanguage, germanDialect } = useLanguage();
   const { theme, setTheme } = useTheme();
 
-  const assessmentQuestions = [
-    {
-      id: "q1",
-      question: "Wie würden Sie auf Deutsch nach dem Befinden eines Patienten fragen?",
-      options: [
-        { id: "a", text: "Wie heißen Sie?" },
-        { id: "b", text: "Wie geht es Ihnen heute?" },
-        { id: "c", text: "Woher kommen Sie?" },
-        { id: "d", text: "Was möchten Sie essen?" }
-      ],
-      correctAnswer: "b"
-    },
-    {
-      id: "q2",
-      question: "Was bedeutet 'der Blutdruck' auf Deutsch?",
-      options: [
-        { id: "a", text: "Blood test" },
-        { id: "b", text: "Blood type" },
-        { id: "c", text: "Blood pressure" },
-        { id: "d", text: "Blood cell" }
-      ],
-      correctAnswer: "c"
-    },
-    {
-      id: "q3",
-      question: "Welches Wort passt nicht zu den anderen?",
-      options: [
-        { id: "a", text: "Fieber" },
-        { id: "b", text: "Temperatur" },
-        { id: "c", text: "Röntgen" },
-        { id: "d", text: "Schüttelfrost" }
-      ],
-      correctAnswer: "c"
-    }
-  ];
+  const { 
+    assessmentStarted,
+    assessmentStep,
+    currentQuestion,
+    totalQuestions,
+    userAnswers,
+    currentLevel,
+    startAssessment,
+    handleAnswer,
+    handleNextStep,
+    completeAssessment
+  } = useLanguageAssessment();
 
   useEffect(() => {
     const savedAvatar = localStorage.getItem('userAvatar');
@@ -99,42 +74,6 @@ const Profile = () => {
       setAvatar(savedAvatar);
     }
   }, []);
-
-  const handleStartAssessment = () => {
-    setAssessmentStarted(true);
-    setAssessmentStep(1);
-    setAssessmentAnswers({});
-  };
-
-  const handleAssessmentAnswer = (questionId, answerId) => {
-    setAssessmentAnswers(prev => ({
-      ...prev,
-      [questionId]: answerId
-    }));
-  };
-
-  const handleNextAssessmentStep = () => {
-    if (assessmentStep < assessmentQuestions.length) {
-      setAssessmentStep(prev => prev + 1);
-    } else {
-      let correctCount = 0;
-      Object.keys(assessmentAnswers).forEach(qId => {
-        const question = assessmentQuestions.find(q => q.id === qId);
-        if (question && assessmentAnswers[qId] === question.correctAnswer) {
-          correctCount++;
-        }
-      });
-      
-      const score = Math.round((correctCount / assessmentQuestions.length) * 100);
-      
-      let level = "A1";
-      if (score >= 80) level = "B1";
-      else if (score >= 60) level = "A2";
-      
-      toast.success(`Assessment abgeschlossen! Ihr geschätztes Niveau: ${level}`);
-      setAssessmentStarted(false);
-    }
-  };
 
   const handleSaveSettings = () => {
     localStorage.setItem('userAvatar', avatar);
@@ -189,7 +128,7 @@ const Profile = () => {
                   </Badge>
                   <Badge variant="outline" className="bg-medical-50 text-medical-700 hover:bg-medical-100">
                     <Book className="h-3.5 w-3.5 mr-1" />
-                    Niveau A2-B1
+                    Niveau {currentLevel || "A2-B1"}
                   </Badge>
                   <Badge variant="outline" className="bg-neutral-50 hover:bg-neutral-100">
                     {subscription === "premium" ? (
@@ -369,9 +308,8 @@ const Profile = () => {
                           Warum ein Sprachtest?
                         </h3>
                         <p className="text-neutral-600 text-sm mb-2">
-                          Unser Sprachtest hilft uns dabei, Ihr aktuelles Sprachniveau zu ermitteln und den Lernplan 
-                          entsprechend anzupassen. Der Test dauert etwa 15-20 Minuten und umfasst Hör-, Lese-, Schreib- 
-                          und Sprechübungen.
+                          Unser adaptiver Sprachtest hilft uns dabei, Ihr aktuelles Sprachniveau zu ermitteln und den Lernplan 
+                          entsprechend anzupassen. Der Test dauert etwa 5 Minuten und passt sich Ihrem Sprachniveau an.
                         </p>
                         <ul className="text-sm text-neutral-600 space-y-1 mb-2">
                           <li className="flex items-start gap-2">
@@ -390,7 +328,7 @@ const Profile = () => {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button onClick={handleStartAssessment} className="w-full md:w-auto">
+                      <Button onClick={startAssessment} className="w-full md:w-auto">
                         Test starten
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -401,25 +339,45 @@ const Profile = () => {
                     <CardHeader>
                       <CardTitle>Sprachtest</CardTitle>
                       <CardDescription>
-                        Frage {assessmentStep} von {assessmentQuestions.length}
+                        Frage {assessmentStep} von {totalQuestions}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
+                      <div className="mb-2">
+                        <Badge className="mb-2">{currentQuestion?.level || "A1"}</Badge>
+                        <div className="w-full bg-gray-200 rounded-full h-1.5 mb-4">
+                          <div 
+                            className="bg-medical-500 h-1.5 rounded-full transition-all duration-300" 
+                            style={{ width: `${(assessmentStep / totalQuestions) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      
                       <div className="space-y-4">
                         <h3 className="font-medium text-lg">
-                          {assessmentQuestions[assessmentStep - 1].question}
+                          {currentQuestion?.question}
                         </h3>
                         
+                        {currentQuestion?.image && (
+                          <div className="rounded-lg overflow-hidden mb-4">
+                            <img 
+                              src={currentQuestion.image} 
+                              alt="Question illustration" 
+                              className="w-full h-auto"
+                            />
+                          </div>
+                        )}
+                        
                         <div className="space-y-2">
-                          {assessmentQuestions[assessmentStep - 1].options.map(option => (
+                          {currentQuestion?.options.map(option => (
                             <div
                               key={option.id}
                               className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                                assessmentAnswers[assessmentQuestions[assessmentStep - 1].id] === option.id
+                                userAnswers[currentQuestion.id] === option.id
                                   ? "border-medical-500 bg-medical-50"
                                   : "border-neutral-200 hover:border-neutral-300"
                               }`}
-                              onClick={() => handleAssessmentAnswer(assessmentQuestions[assessmentStep - 1].id, option.id)}
+                              onClick={() => handleAnswer(currentQuestion.id, option.id)}
                             >
                               {option.text}
                             </div>
@@ -429,10 +387,10 @@ const Profile = () => {
                     </CardContent>
                     <CardFooter>
                       <Button
-                        onClick={handleNextAssessmentStep}
-                        disabled={!assessmentAnswers[assessmentQuestions[assessmentStep - 1].id]}
+                        onClick={handleNextStep}
+                        disabled={!userAnswers[currentQuestion?.id]}
                       >
-                        {assessmentStep === assessmentQuestions.length ? "Test abschließen" : "Weiter"}
+                        {assessmentStep === totalQuestions ? "Test abschließen" : "Weiter"}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </CardFooter>
