@@ -1,8 +1,8 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import AppNavigation from "@/components/navigation/AppNavigation";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,7 +12,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { useVoiceRecognition } from "@/hooks/useVoiceRecognition";
+import { useTextToSpeech } from "@/hooks/useTextToSpeech";
+import { useTranslation } from "@/hooks/useTranslation";
 import { 
   ArrowLeft, 
   Play, 
@@ -39,11 +42,14 @@ import {
 import scenarios from "@/data/scenarios";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
+import vocabularyCategories from "@/data/vocabulary";
 
 const ScenarioDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { translate } = useLanguage();
+  const { translate, getGermanContent, userLanguage } = useLanguage();
+  const { t, getLocalizedContent } = useTranslation();
+  const { toast } = useToast();
   
   const [scenario, setScenario] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -55,9 +61,16 @@ const ScenarioDetail = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingFeedback, setRecordingFeedback] = useState<null | { score: number; feedback: string }>(null);
   const [showHint, setShowHint] = useState(false);
+  const [scenarioVocabulary, setScenarioVocabulary] = useState<any[]>([]);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const dialogContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // Use the voice recognition hook
+  const { startListening, stopListening, transcript, isListening, error: recognitionError } = useVoiceRecognition();
+  
+  // Use the text-to-speech hook
+  const { speak, speaking, cancel } = useTextToSpeech();
   
   useEffect(() => {
     // Find the scenario by ID
@@ -65,19 +78,37 @@ const ScenarioDetail = () => {
     
     if (foundScenario) {
       setScenario(foundScenario);
+      
+      // Load vocabulary for this scenario
+      if (foundScenario.vocabularyIds) {
+        const vocabWords = [];
+        foundScenario.vocabularyIds.forEach(categoryId => {
+          const category = vocabularyCategories.find(cat => cat.id === categoryId);
+          if (category) {
+            vocabWords.push(...category.words);
+          }
+        });
+        setScenarioVocabulary(vocabWords);
+      }
+      
       // Simulate loading delay for animation
       setTimeout(() => {
         setLoading(false);
       }, 300);
     } else {
       // Scenario not found, redirect to practice page
+      toast({
+        title: t("scenarioNotFound"),
+        description: t("redirectingToPractice"),
+        variant: "destructive"
+      });
       navigate("/practice");
     }
-  }, [id, navigate]);
+  }, [id, navigate, t, toast]);
   
   useEffect(() => {
     // Auto-scroll to current dialog step
-    if (dialogContainerRef.current && !loading) {
+    if (dialogContainerRef.current && !loading && scenario?.dialogue) {
       const activeElement = document.getElementById(`dialog-step-${currentDialogStep}`);
       if (activeElement) {
         dialogContainerRef.current.scrollTo({
@@ -86,48 +117,107 @@ const ScenarioDetail = () => {
         });
       }
     }
-  }, [currentDialogStep, loading]);
+  }, [currentDialogStep, loading, scenario]);
+  
+  useEffect(() => {
+    // Play current dialogue audio when isPlaying is true
+    if (isPlaying && scenario?.dialogue && currentDialogStep < scenario.dialogue.length) {
+      speak(scenario.dialogue[currentDialogStep].text);
+    } else if (!isPlaying) {
+      cancel();
+    }
+  }, [isPlaying, currentDialogStep, scenario, speak, cancel]);
+
+  // Update isPlaying state based on text-to-speech status
+  useEffect(() => {
+    setIsPlaying(speaking);
+  }, [speaking]);
   
   const handlePlayPause = () => {
     if (isPlaying) {
-      audioRef.current?.pause();
-    } else {
-      audioRef.current?.play();
+      cancel();
+    } else if (scenario?.dialogue) {
+      speak(scenario.dialogue[currentDialogStep].text);
     }
-    setIsPlaying(!isPlaying);
   };
   
   const handleNext = () => {
-    if (currentDialogStep < (scenario?.dialog?.length || 0) - 1) {
+    if (scenario?.dialogue && currentDialogStep < scenario.dialogue.length - 1) {
       setCurrentDialogStep(currentDialogStep + 1);
+      setIsPlaying(false);
+      cancel();
     }
   };
   
   const handleToggleMute = () => {
+    setIsMuted(!isMuted);
+    // If we have audio playing, update its muted state
     if (audioRef.current) {
       audioRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
     }
   };
   
   const handleRecordingStart = () => {
-    setIsRecording(true);
+    if (isRecording) return;
     
-    // Simulate recording for 3 seconds
+    setIsRecording(true);
+    startListening();
+    
+    // Stop recording after 5 seconds
     setTimeout(() => {
-      setIsRecording(false);
+      handleRecordingStop();
+    }, 5000);
+  };
+  
+  const handleRecordingStop = () => {
+    if (!isRecording) return;
+    
+    stopListening();
+    setIsRecording(false);
+    
+    if (transcript && scenario?.dialogue) {
+      const currentText = scenario.dialogue[currentDialogStep].text;
+      // Simple similarity check (in a real app, you'd use a more sophisticated approach)
+      const similarity = compareTexts(transcript.toLowerCase(), currentText.toLowerCase());
       
-      // Simulate feedback (in a real app, this would come from speech recognition API)
-      const randomScore = Math.floor(Math.random() * 30) + 70; // Random score between 70-99
       setRecordingFeedback({
-        score: randomScore,
-        feedback: randomScore > 90 
-          ? "Ausgezeichnete Aussprache! Deine Betonung ist sehr natürlich."
-          : randomScore > 80 
-            ? "Gute Aussprache. Achte etwas mehr auf die Betonung der Umlaute."
-            : "Verständliche Aussprache. Übe weiter die 'ch' und 'r' Laute."
+        score: similarity,
+        feedback: getFeedbackMessage(similarity)
       });
-    }, 3000);
+    } else {
+      setRecordingFeedback({
+        score: 0,
+        feedback: t("noSpeechDetected")
+      });
+    }
+  };
+  
+  const compareTexts = (text1: string, text2: string) => {
+    // A simple function to compare two texts and return a similarity score (0-100)
+    // In a real app, you would use a more sophisticated algorithm
+    const words1 = text1.split(/\s+/);
+    const words2 = text2.split(/\s+/);
+    
+    let matchCount = 0;
+    for (const word of words1) {
+      if (words2.includes(word)) {
+        matchCount++;
+      }
+    }
+    
+    return Math.round((matchCount / Math.max(words1.length, words2.length)) * 100);
+  };
+  
+  const getFeedbackMessage = (score: number) => {
+    if (score > 90) {
+      return t("excellentPronunciation");
+    } else if (score > 70) {
+      return t("goodPronunciation");
+    } else if (score > 50) {
+      return t("understandablePronunciation");
+    } else {
+      return t("practiceMorePronunciation");
+    }
   };
   
   const handleDismissFeedback = () => {
@@ -159,7 +249,7 @@ const ScenarioDetail = () => {
               onClick={() => navigate("/practice")}
             >
               <ArrowLeft className="mr-1 h-4 w-4" />
-              Zurück zu Übungen
+              {t("backToExercises")}
             </Button>
             
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
@@ -167,15 +257,10 @@ const ScenarioDetail = () => {
                 <h1 className="text-2xl md:text-3xl font-bold text-neutral-800">{scenario.title}</h1>
                 <div className="flex flex-wrap gap-2 mt-2">
                   <Badge variant="outline" className="bg-neutral-50">
-                    {scenario.category === "patient-care" ? "Patientenpflege" : 
-                     scenario.category === "emergency" ? "Notfälle" :
-                     scenario.category === "documentation" ? "Dokumentation" :
-                     scenario.category === "teamwork" ? "Teamarbeit" : scenario.category}
+                    {t(scenario.category)}
                   </Badge>
                   <Badge variant="outline" className="bg-neutral-50">
-                    {scenario.difficulty === "beginner" ? "Anfänger (A1-A2)" :
-                     scenario.difficulty === "intermediate" ? "Mittelstufe (B1-B2)" :
-                     "Fortgeschritten (C1)"}
+                    {t(scenario.difficulty)}
                   </Badge>
                   {scenario.tags.map((tag: string) => (
                     <Badge key={tag} variant="outline" className="bg-neutral-50">
@@ -188,11 +273,11 @@ const ScenarioDetail = () => {
               <div className="flex gap-2 mt-2 md:mt-0">
                 <Button variant="outline" className="flex items-center">
                   <BookOpen className="mr-2 h-4 w-4" />
-                  Vokabeln
+                  {t("vocabulary")}
                 </Button>
                 <Button className="flex items-center bg-medical-500 hover:bg-medical-600">
                   <Mic className="mr-2 h-4 w-4" />
-                  Aussprache üben
+                  {t("practicePronunciation")}
                 </Button>
               </div>
             </div>
@@ -206,11 +291,11 @@ const ScenarioDetail = () => {
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="dialog" className="flex items-center">
                     <MessageCircle className="mr-2 h-4 w-4" />
-                    Dialog
+                    {t("dialog")}
                   </TabsTrigger>
                   <TabsTrigger value="vocabulary" className="flex items-center">
                     <BookOpen className="mr-2 h-4 w-4" />
-                    Vokabeln
+                    {t("vocabulary")}
                   </TabsTrigger>
                 </TabsList>
                 
@@ -243,7 +328,7 @@ const ScenarioDetail = () => {
                           {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
                         </Button>
                         <Progress 
-                          value={(currentDialogStep / (scenario.dialog?.length - 1)) * 100} 
+                          value={scenario?.dialogue ? ((currentDialogStep / (scenario.dialogue.length - 1)) * 100) : 0} 
                           className="w-24 md:w-40"
                         />
                       </div>
@@ -259,136 +344,138 @@ const ScenarioDetail = () => {
                           onClick={() => setShowTranslation(!showTranslation)}
                         >
                           <Globe className="h-3.5 w-3.5 mr-1" />
-                          Übersetzung {showTranslation ? "ausblenden" : "anzeigen"}
+                          {showTranslation ? t("hideTranslation") : t("showTranslation")}
                         </Button>
                       </div>
                     </div>
                     
                     <ScrollArea className="h-[calc(100vh-400px)]" ref={dialogContainerRef}>
                       <div className="space-y-6 pr-4">
-                        {scenario.dialog?.map((item: any, index: number) => (
-                          <div 
-                            key={index}
-                            id={`dialog-step-${index}`}
-                            className={cn(
-                              "transition-all duration-300",
-                              index === currentDialogStep ? "opacity-100" : "opacity-50"
-                            )}
-                          >
-                            <div className="flex items-start gap-3 mb-2">
-                              <Avatar className={cn(
-                                "h-8 w-8",
-                                item.speaker === "doctor" ? "bg-medical-100" : 
-                                item.speaker === "patient" ? "bg-blue-100" : 
-                                item.speaker === "nurse" ? "bg-green-100" : "bg-neutral-100"
-                              )}>
-                                <AvatarFallback>
-                                  {item.speaker === "doctor" ? "A" : 
-                                   item.speaker === "patient" ? "P" : 
-                                   item.speaker === "nurse" ? "P" : "?"}
-                                </AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <div className="flex items-center">
-                                  <p className="font-medium text-sm">
-                                    {item.speaker === "doctor" ? "Arzt" : 
-                                     item.speaker === "patient" ? "Patient" : 
-                                     item.speaker === "nurse" ? "Pflegekraft" : item.speaker}
-                                  </p>
-                                  {index === currentDialogStep && (
-                                    <Button 
-                                      variant="ghost" 
-                                      size="sm" 
-                                      className="ml-2 h-6 px-2 text-xs text-medical-600 hover:text-medical-700 hover:bg-medical-50"
-                                      onClick={handleRecordingStart}
-                                      disabled={isRecording}
-                                    >
-                                      {isRecording ? (
-                                        <span className="flex items-center">
-                                          <span className="animate-pulse mr-1">●</span> Aufnahme...
-                                        </span>
-                                      ) : (
-                                        <span className="flex items-center">
-                                          <Mic className="h-3 w-3 mr-1" /> Nachsprechen
-                                        </span>
-                                      )}
-                                    </Button>
+                        {scenario?.dialogue?.map((item: any, index: number) => {
+                          const translatedLine = userLanguage !== 'en' ? item.translation || '' : '';
+                          return (
+                            <div 
+                              key={index}
+                              id={`dialog-step-${index}`}
+                              className={cn(
+                                "transition-all duration-300",
+                                index === currentDialogStep ? "opacity-100" : "opacity-50"
+                              )}
+                            >
+                              <div className="flex items-start gap-3 mb-2">
+                                <Avatar className={cn(
+                                  "h-8 w-8",
+                                  item.speaker === "doctor" ? "bg-medical-100" : 
+                                  item.speaker === "patient" ? "bg-blue-100" : 
+                                  item.speaker === "nurse" ? "bg-green-100" : "bg-neutral-100"
+                                )}>
+                                  <AvatarFallback>
+                                    {item.speaker === "doctor" ? "A" : 
+                                     item.speaker === "patient" ? "P" : 
+                                     item.speaker === "nurse" ? "P" : "?"}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div>
+                                  <div className="flex items-center">
+                                    <p className="font-medium text-sm">
+                                      {t(item.speaker)}
+                                    </p>
+                                    {index === currentDialogStep && (
+                                      <Button 
+                                        variant="ghost" 
+                                        size="sm" 
+                                        className="ml-2 h-6 px-2 text-xs text-medical-600 hover:text-medical-700 hover:bg-medical-50"
+                                        onClick={handleRecordingStart}
+                                        disabled={isRecording}
+                                      >
+                                        {isRecording ? (
+                                          <span className="flex items-center">
+                                            <span className="animate-pulse mr-1">●</span> {t("recording")}
+                                          </span>
+                                        ) : (
+                                          <span className="flex items-center">
+                                            <Mic className="h-3 w-3 mr-1" /> {t("repeatAfterMe")}
+                                          </span>
+                                        )}
+                                      </Button>
+                                    )}
+                                  </div>
+                                  <p className="text-neutral-800">{getGermanContent(item.text)}</p>
+                                  {(showTranslation && translatedLine) && (
+                                    <p className="text-neutral-500 text-sm mt-1 italic">{translatedLine}</p>
                                   )}
                                 </div>
-                                <p className="text-neutral-800">{item.text}</p>
-                                {showTranslation && (
-                                  <p className="text-neutral-500 text-sm mt-1 italic">{item.translation}</p>
-                                )}
                               </div>
+                              
+                              {recordingFeedback && index === currentDialogStep && (
+                                <div className="ml-11 mt-2 bg-medical-50 p-3 rounded-md relative">
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="absolute top-1 right-1 h-6 w-6 p-0"
+                                    onClick={handleDismissFeedback}
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </Button>
+                                  <div className="flex items-center mb-2">
+                                    <div className="font-medium text-medical-700 mr-2">{t("pronunciationFeedback")}:</div>
+                                    <div className="text-sm font-medium">
+                                      {recordingFeedback.score}%
+                                    </div>
+                                    <div className="ml-2 w-24 bg-white rounded-full h-2">
+                                      <div 
+                                        className={cn(
+                                          "h-full rounded-full",
+                                          recordingFeedback.score > 90 ? "bg-green-500" :
+                                          recordingFeedback.score > 80 ? "bg-yellow-500" : "bg-orange-500"
+                                        )}
+                                        style={{ width: `${recordingFeedback.score}%` }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                  <p className="text-sm text-medical-700">{recordingFeedback.feedback}</p>
+                                </div>
+                              )}
+                              
+                              {index === currentDialogStep && (
+                                <div className="ml-11 mt-2 flex gap-2">
+                                  <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    className="text-xs h-7"
+                                    onClick={() => setShowHint(!showHint)}
+                                  >
+                                    <HelpCircle className="h-3 w-3 mr-1" />
+                                    {t("hint")}
+                                  </Button>
+                                  <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    className="text-xs h-7"
+                                    onClick={() => speak(scenario.dialogue[currentDialogStep].text)}
+                                  >
+                                    <Repeat className="h-3 w-3 mr-1" />
+                                    {t("repeat")}
+                                  </Button>
+                                </div>
+                              )}
+                              
+                              {showHint && index === currentDialogStep && (
+                                <div className="ml-11 mt-2 bg-blue-50 p-3 rounded-md">
+                                  <div className="flex items-start">
+                                    <Lightbulb className="h-4 w-4 text-blue-500 mr-2 mt-0.5" />
+                                    <div>
+                                      <p className="text-sm font-medium text-blue-700 mb-1">{t("languageHint")}:</p>
+                                      <p className="text-sm text-blue-700">
+                                        {item.hint || t("defaultLanguageHint")}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             </div>
-                            
-                            {recordingFeedback && index === currentDialogStep && (
-                              <div className="ml-11 mt-2 bg-medical-50 p-3 rounded-md relative">
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className="absolute top-1 right-1 h-6 w-6 p-0"
-                                  onClick={handleDismissFeedback}
-                                >
-                                  <X className="h-3 w-3" />
-                                </Button>
-                                <div className="flex items-center mb-2">
-                                  <div className="font-medium text-medical-700 mr-2">Aussprache-Feedback:</div>
-                                  <div className="text-sm font-medium">
-                                    {recordingFeedback.score}%
-                                  </div>
-                                  <div className="ml-2 w-24 bg-white rounded-full h-2">
-                                    <div 
-                                      className={cn(
-                                        "h-full rounded-full",
-                                        recordingFeedback.score > 90 ? "bg-green-500" :
-                                        recordingFeedback.score > 80 ? "bg-yellow-500" : "bg-orange-500"
-                                      )}
-                                      style={{ width: `${recordingFeedback.score}%` }}
-                                    ></div>
-                                  </div>
-                                </div>
-                                <p className="text-sm text-medical-700">{recordingFeedback.feedback}</p>
-                              </div>
-                            )}
-                            
-                            {index === currentDialogStep && (
-                              <div className="ml-11 mt-2 flex gap-2">
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
-                                  className="text-xs h-7"
-                                  onClick={() => setShowHint(!showHint)}
-                                >
-                                  <HelpCircle className="h-3 w-3 mr-1" />
-                                  Hinweis
-                                </Button>
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
-                                  className="text-xs h-7"
-                                >
-                                  <Repeat className="h-3 w-3 mr-1" />
-                                  Wiederholen
-                                </Button>
-                              </div>
-                            )}
-                            
-                            {showHint && index === currentDialogStep && (
-                              <div className="ml-11 mt-2 bg-blue-50 p-3 rounded-md">
-                                <div className="flex items-start">
-                                  <Lightbulb className="h-4 w-4 text-blue-500 mr-2 mt-0.5" />
-                                  <div>
-                                    <p className="text-sm font-medium text-blue-700 mb-1">Sprachlicher Hinweis:</p>
-                                    <p className="text-sm text-blue-700">
-                                      {item.hint || "Achte auf die korrekte Verwendung des Artikels und die Aussprache der medizinischen Fachbegriffe."}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </ScrollArea>
                   </Card>
@@ -396,40 +483,60 @@ const ScenarioDetail = () => {
                 
                 <TabsContent value="vocabulary" className="mt-4">
                   <Card className="p-4">
-                    <h3 className="text-lg font-medium mb-4">Wichtige Vokabeln in diesem Szenario</h3>
+                    <h3 className="text-lg font-medium mb-4">{t("importantVocabularyInScenario")}</h3>
                     
                     <ScrollArea className="h-[calc(100vh-400px)]">
                       <div className="space-y-4 pr-4">
-                        {scenario.vocabulary?.map((item: any, index: number) => (
-                          <div key={index} className="border-b border-neutral-100 pb-3 last:border-0">
-                            <div className="flex justify-between">
-                              <div>
-                                <p className="font-medium">{item.term}</p>
-                                <p className="text-neutral-500 text-sm">{item.translation}</p>
-                              </div>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                      <Volume2 className="h-4 w-4 text-neutral-500" />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Aussprache anhören</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </div>
-                            {item.example && (
-                              <div className="mt-2 text-sm">
-                                <p className="text-neutral-700">{item.example}</p>
-                                {item.exampleTranslation && (
-                                  <p className="text-neutral-500 italic">{item.exampleTranslation}</p>
+                        {scenarioVocabulary.length > 0 ? (
+                          scenarioVocabulary.map((item, index) => {
+                            const localizedContent = getLocalizedContent(item.id, item.english);
+                            return (
+                              <div key={index} className="border-b border-neutral-100 pb-3 last:border-0">
+                                <div className="flex justify-between">
+                                  <div>
+                                    <p className="font-medium">{getGermanContent(item.german)}</p>
+                                    <p className="text-neutral-500 text-sm">
+                                      {typeof localizedContent === 'object' 
+                                        ? localizedContent.translation 
+                                        : localizedContent || item.english}
+                                    </p>
+                                  </div>
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button 
+                                          variant="ghost" 
+                                          size="sm" 
+                                          className="h-8 w-8 p-0"
+                                          onClick={() => speak(item.german)}
+                                        >
+                                          <Volume2 className="h-4 w-4 text-neutral-500" />
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p>{t("listenToPronunciation")}</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                </div>
+                                {item.example && (
+                                  <div className="mt-2 text-sm">
+                                    <p className="text-neutral-700">{getGermanContent(item.example)}</p>
+                                    {userLanguage !== 'en' && (
+                                      <p className="text-neutral-500 italic">
+                                        {getLocalizedContent(`${item.id}-example`, '')}
+                                      </p>
+                                    )}
+                                  </div>
                                 )}
                               </div>
-                            )}
+                            );
+                          })
+                        ) : (
+                          <div className="text-center py-6 text-neutral-500">
+                            {t("noVocabularyForScenario")}
                           </div>
-                        ))}
+                        )}
                       </div>
                     </ScrollArea>
                   </Card>
@@ -440,15 +547,15 @@ const ScenarioDetail = () => {
             {/* Right column - Context and info */}
             <div>
               <Card className="p-4 mb-6">
-                <h3 className="text-lg font-medium mb-3">Über dieses Szenario</h3>
+                <h3 className="text-lg font-medium mb-3">{t("aboutThisScenario")}</h3>
                 <p className="text-neutral-600 mb-4">{scenario.description}</p>
                 
                 <Separator className="my-4" />
                 
-                <h4 className="font-medium mb-2">Kontext:</h4>
+                <h4 className="font-medium mb-2">{t("context")}:</h4>
                 <p className="text-neutral-600 text-sm mb-4">{scenario.context}</p>
                 
-                <h4 className="font-medium mb-2">Lernziele:</h4>
+                <h4 className="font-medium mb-2">{t("learningObjectives")}:</h4>
                 <ul className="space-y-2 mb-4">
                   {scenario.learningObjectives?.map((objective: string, index: number) => (
                     <li key={index} className="flex items-start">
@@ -460,7 +567,7 @@ const ScenarioDetail = () => {
                 
                 <Separator className="my-4" />
                 
-                <h4 className="font-medium mb-2">Beteiligte Personen:</h4>
+                <h4 className="font-medium mb-2">{t("involvedPersons")}:</h4>
                 <div className="space-y-3">
                   {scenario.characters?.map((character: any, index: number) => (
                     <div key={index} className="flex items-center">
@@ -477,9 +584,7 @@ const ScenarioDetail = () => {
                       <div>
                         <p className="font-medium text-sm">{character.name}</p>
                         <p className="text-neutral-500 text-xs">
-                          {character.role === "doctor" ? "Arzt" : 
-                           character.role === "patient" ? "Patient" : 
-                           character.role === "nurse" ? "Pflegekraft" : character.role}
+                          {t(character.role)}
                           {character.description && ` - ${character.description}`}
                         </p>
                       </div>
@@ -489,7 +594,7 @@ const ScenarioDetail = () => {
               </Card>
               
               <Card className="p-4">
-                <h3 className="text-lg font-medium mb-3">Ähnliche Szenarien</h3>
+                <h3 className="text-lg font-medium mb-3">{t("similarScenarios")}</h3>
                 <div className="space-y-3">
                   {scenarios
                     .filter(s => s.id !== scenario.id && s.category === scenario.category)
@@ -508,7 +613,7 @@ const ScenarioDetail = () => {
                         </div>
                         <div className="flex-1">
                           <p className="font-medium text-sm">{s.title}</p>
-                          <p className="text-neutral-500 text-xs">{s.difficulty === "beginner" ? "Anfänger" : s.difficulty === "intermediate" ? "Mittelstufe" : "Fortgeschritten"}</p>
+                          <p className="text-neutral-500 text-xs">{t(s.difficulty)}</p>
                         </div>
                         <ChevronRight className="h-4 w-4 text-neutral-400" />
                       </div>
@@ -520,7 +625,6 @@ const ScenarioDetail = () => {
         </div>
       </main>
       
-      <AppNavigation />
       <Footer />
       
       {/* Hidden audio element */}

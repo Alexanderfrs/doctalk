@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import VocabularyCard from "@/components/ui/VocabularyCard";
-import AppNavigation from "@/components/navigation/AppNavigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
@@ -12,6 +11,7 @@ import VocabularySearch from "@/components/vocabulary/VocabularySearch";
 import VocabularyFilters from "@/components/vocabulary/VocabularyFilters";
 import VocabularyProgress from "@/components/vocabulary/VocabularyProgress";
 import { useVocabulary } from "@/hooks/useVocabulary";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Vocabulary = () => {
   const [loadingPage, setLoadingPage] = useState(true);
@@ -29,6 +29,8 @@ const Vocabulary = () => {
     updateMasteredStatus,
     allWords
   } = useVocabulary();
+  
+  const { t } = useTranslation();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -50,7 +52,6 @@ const Vocabulary = () => {
   return (
     <div className={`min-h-screen flex flex-col ${loadingPage ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}`}>
       <Header />
-      <AppNavigation />
       
       <main className="flex-grow pt-24 px-4 md:px-8 pb-24">
         <div className="container mx-auto">
@@ -78,7 +79,7 @@ const Vocabulary = () => {
           <section>
             <div className="mb-4">
               <p className="text-neutral-600">
-                {filteredWords.length} {filteredWords.length === 1 ? 'Vokabel' : 'Vokabeln'} gefunden
+                {filteredWords.length} {filteredWords.length === 1 ? t('singleVocab') : t('multipleVocab')} {t('found')}
               </p>
             </div>
             
@@ -96,10 +97,10 @@ const Vocabulary = () => {
               </ScrollArea>
             ) : (
               <div className="text-center py-12">
-                <p className="text-neutral-500 mb-4">Keine Vokabeln mit den gewählten Filtern gefunden.</p>
+                <p className="text-neutral-500 mb-4">{t('noVocabularyFound')}</p>
                 <Button variant="outline" onClick={resetFilters}>
                   <RefreshCw className="mr-2 h-4 w-4" />
-                  Filter zurücksetzen
+                  {t('resetFilters')}
                 </Button>
               </div>
             )}
