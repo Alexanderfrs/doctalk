@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
 import { Question, UserAnswer, AssessmentResult } from './types';
@@ -149,6 +150,12 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
   };
 
   const handleNextStep = () => {
+    // Check if an answer has been selected for the current question
+    if (currentQuestion && !userAnswers.some(a => a.questionId === currentQuestion.id)) {
+      toast.warning("Bitte wählen Sie eine Antwort aus");
+      return;
+    }
+    
     if (currentQuestionIndex >= allQuestions.length - 1) {
       completeAssessment();
     } else {
@@ -160,6 +167,9 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     const assessmentResult = calculateAssessmentResults(answers, allQuestions);
     setResult(assessmentResult);
     setIsComplete(true);
+    
+    // Show completion notification
+    toast.success(`Sprachtest abgeschlossen: Niveau ${assessmentResult.level}`);
   };
 
   const resetAssessment = () => {

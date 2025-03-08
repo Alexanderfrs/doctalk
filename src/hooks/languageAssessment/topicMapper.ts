@@ -29,17 +29,18 @@ export const topicWeights: TopicWeight = {
   etymology: 0.7,
   stylistic_devices: 0.8,
   rhetoric: 0.8,
-  latin_expressions: 0.7
+  latin_expressions: 0.7,
+  healthcare: 1.0 // Added healthcare topic with high weight
 };
 
 // Map topics to difficulty levels
 export const topicDifficultyMap: Record<string, string[]> = {
-  A1: ['personal_information', 'objects', 'time', 'colors', 'basic_verbs'],
-  A2: ['past_tense', 'transportation', 'weather', 'dates', 'food'],
-  B1: ['reasons', 'conditional', 'duration', 'grammar', 'idioms'],
-  B2: ['passive_voice', 'vocabulary', 'relative_clauses', 'prepositions'],
-  C1: ['formal_language', 'subjunctive', 'synonyms', 'proverbs', 'cases'],
-  C2: ['etymology', 'stylistic_devices', 'rhetoric', 'latin_expressions']
+  A1: ['personal_information', 'objects', 'time', 'colors', 'basic_verbs', 'healthcare'],
+  A2: ['past_tense', 'transportation', 'weather', 'dates', 'food', 'healthcare'],
+  B1: ['reasons', 'conditional', 'duration', 'grammar', 'idioms', 'healthcare'],
+  B2: ['passive_voice', 'vocabulary', 'relative_clauses', 'prepositions', 'healthcare'],
+  C1: ['formal_language', 'subjunctive', 'synonyms', 'proverbs', 'cases', 'healthcare'],
+  C2: ['etymology', 'stylistic_devices', 'rhetoric', 'latin_expressions', 'healthcare']
 };
 
 // Helper function to map a topic to its primary difficulty level

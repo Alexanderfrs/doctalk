@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { ArrowRight, Award, Book, Crown, FileText, Flag, Lightbulb, BarChart3, Save, Settings, Star, User, BookOpen as Book2 } from "lucide-react";
+import { ArrowRight, Award, Book, Crown, FileText, Flag, Lightbulb, BarChart3, Save, Settings, Star, User, BookOpen as Book2, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -62,10 +62,13 @@ const Profile = () => {
     totalQuestions,
     userAnswers,
     currentLevel,
+    isComplete,
+    result,
     startAssessment,
     handleAnswer,
     handleNextStep,
-    completeAssessment
+    completeAssessment,
+    resetAssessment
   } = useLanguageAssessment();
 
   useEffect(() => {
@@ -368,6 +371,68 @@ const Profile = () => {
                       <Button onClick={startAssessment} className="w-full md:w-auto">
                         Test starten
                         <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ) : isComplete && result ? (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Testergebnis</CardTitle>
+                      <CardDescription>
+                        Ihre Sprachkenntnisse und Empfehlungen
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-5">
+                      <div className="flex justify-center mb-2">
+                        <div className="w-32 h-32 bg-medical-100 rounded-full flex items-center justify-center">
+                          <div className="text-center">
+                            <span className="block text-3xl font-bold text-medical-700">{result.level}</span>
+                            <span className="text-sm text-medical-600">{Math.round(result.percentage)}%</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-3 gap-3 mb-4">
+                        <div className="bg-neutral-50 p-3 rounded-lg text-center">
+                          <div className="text-2xl font-bold text-medical-600">{result.correctCount}</div>
+                          <div className="text-xs text-neutral-500">Richtig</div>
+                        </div>
+                        <div className="bg-neutral-50 p-3 rounded-lg text-center">
+                          <div className="text-2xl font-bold text-medical-600">{result.totalQuestions - result.correctCount}</div>
+                          <div className="text-xs text-neutral-500">Falsch</div>
+                        </div>
+                        <div className="bg-neutral-50 p-3 rounded-lg text-center">
+                          <div className="text-2xl font-bold text-medical-600">{result.totalQuestions}</div>
+                          <div className="text-xs text-neutral-500">Gesamt</div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-neutral-50 p-4 rounded-lg">
+                        <h3 className="font-medium mb-2">Ihr Sprachniveau: {result.level}</h3>
+                        <p className="text-sm text-neutral-600 mb-3">{result.description}</p>
+                        <div className="bg-white p-3 rounded-lg border border-neutral-200">
+                          <h4 className="font-medium mb-1">Empfehlungen:</h4>
+                          <ul className="text-sm space-y-1">
+                            <li className="flex items-start gap-2">
+                              <div className="rounded-full h-5 w-5 bg-medical-100 text-medical-700 flex items-center justify-center flex-shrink-0">→</div>
+                              <span>Üben Sie medizinische Fachbegriffe auf Niveau {result.level}</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <div className="rounded-full h-5 w-5 bg-medical-100 text-medical-700 flex items-center justify-center flex-shrink-0">→</div>
+                              <span>Fokussieren Sie sich auf {result.level === 'A1' || result.level === 'A2' ? 'grundlegende Patientengespräche' : 'komplexe Arzt-Patienten-Kommunikation'}</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <div className="rounded-full h-5 w-5 bg-medical-100 text-medical-700 flex items-center justify-center flex-shrink-0">→</div>
+                              <span>Absolvieren Sie unsere {result.level}-Szenarien für den medizinischen Bereich</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button onClick={resetAssessment} variant="outline" className="w-full md:w-auto">
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Test neu starten
                       </Button>
                     </CardFooter>
                   </Card>

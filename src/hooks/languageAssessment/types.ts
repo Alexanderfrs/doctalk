@@ -9,7 +9,7 @@ export interface Question {
   difficulty: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
   level?: string; // Alias for difficulty to maintain backward compatibility
   topic?: string;
-  image?: string; // Add support for question images
+  image?: string; // Support for question images
 }
 
 export interface UserAnswer {

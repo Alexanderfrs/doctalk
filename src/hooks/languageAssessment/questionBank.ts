@@ -1,4 +1,3 @@
-
 import { Question, QuestionBank } from './types';
 
 // A1 level questions
@@ -42,6 +41,23 @@ const a1Questions: Question[] = [
     correctAnswer: 'Der Apfel ist rot.',
     difficulty: 'A1',
     topic: 'colors'
+  },
+  {
+    id: 'a1_healthcare_1',
+    text: 'Wo tut es weh?',
+    options: ['Hier tut es weh.', 'Ich bin krank.', 'Ich brauche Medikamente.', 'Ich gehe zum Arzt.'],
+    correctAnswer: 'Hier tut es weh.',
+    difficulty: 'A1',
+    topic: 'healthcare'
+  },
+  {
+    id: 'a1_healthcare_2',
+    text: 'Was ist das auf Deutsch?',
+    image: 'https://cdn-icons-png.flaticon.com/512/4486/4486026.png',
+    options: ['Eine Tablette', 'Ein Pflaster', 'Eine Spritze', 'Ein Thermometer'],
+    correctAnswer: 'Eine Tablette',
+    difficulty: 'A1',
+    topic: 'healthcare'
   }
 ];
 
@@ -86,6 +102,22 @@ const a2Questions: Question[] = [
     correctAnswer: 'Brot mit Marmelade.',
     difficulty: 'A2',
     topic: 'food'
+  },
+  {
+    id: 'a2_healthcare_1',
+    text: 'Wie oft müssen Sie die Tabletten einnehmen?',
+    options: ['Einmal täglich.', 'Zweimal wöchentlich.', 'Dreimal monatlich.', 'Viermal jährlich.'],
+    correctAnswer: 'Einmal täglich.',
+    difficulty: 'A2',
+    topic: 'healthcare'
+  },
+  {
+    id: 'a2_healthcare_2',
+    text: 'Was ist die korrekte Antwort auf die Frage: "Haben Sie Allergien?"',
+    options: ['Ja, ich bin allergisch gegen Penicillin.', 'Mein Blutdruck ist normal.', 'Ich habe Fieber.', 'Ich esse dreimal am Tag.'],
+    correctAnswer: 'Ja, ich bin allergisch gegen Penicillin.',
+    difficulty: 'A2',
+    topic: 'healthcare'
   }
 ];
 
@@ -155,6 +187,32 @@ const b1Questions: Question[] = [
     correctAnswer: 'jemandem Glück wünschen',
     difficulty: 'B1',
     topic: 'idioms'
+  },
+  {
+    id: 'b1_healthcare_1',
+    text: 'Ein Patient klagt über Schmerzen. Was ist die beste Antwort?',
+    options: [
+      'Können Sie mir bitte sagen, wo genau der Schmerz ist und wie stark er ist?',
+      'Haben Sie heute gut geschlafen?',
+      'Möchten Sie etwas essen?',
+      'Wie alt sind Sie?'
+    ],
+    correctAnswer: 'Können Sie mir bitte sagen, wo genau der Schmerz ist und wie stark er ist?',
+    difficulty: 'B1',
+    topic: 'healthcare'
+  },
+  {
+    id: 'b1_healthcare_2',
+    text: 'Wie lautet die korrekte Anweisung für eine Blutabnahme?',
+    options: [
+      'Bitte ziehen Sie Ihre Jacke aus.',
+      'Bitte machen Sie Ihren Arm frei und ballen Sie die Hand zur Faust.',
+      'Bitte essen Sie vor der Untersuchung nichts.',
+      'Bitte trinken Sie viel Wasser.'
+    ],
+    correctAnswer: 'Bitte machen Sie Ihren Arm frei und ballen Sie die Hand zur Faust.',
+    difficulty: 'B1',
+    topic: 'healthcare'
   }
 ];
 
@@ -214,6 +272,27 @@ const b2Questions: Question[] = [
     correctAnswer: 'viel Glück',
     difficulty: 'B2',
     topic: 'idioms'
+  },
+  {
+    id: 'b2_healthcare_1',
+    text: 'Welcher Ausdruck gehört nicht zur medizinischen Fachsprache?',
+    options: ['Anamnese', 'Diagnose', 'Therapie', 'Rezension'],
+    correctAnswer: 'Rezension',
+    difficulty: 'B2',
+    topic: 'healthcare'
+  },
+  {
+    id: 'b2_healthcare_2',
+    text: 'Wie erklären Sie einem Patienten, dass er nüchtern zur Untersuchung kommen soll?',
+    options: [
+      'Sie müssen vor der Untersuchung 8 Stunden auf Essen und Trinken verzichten.',
+      'Sie dürfen vor der Untersuchung keinen Alkohol trinken.',
+      'Sie sollten vor der Untersuchung viel Wasser trinken.',
+      'Sie müssen vor der Untersuchung duschen.'
+    ],
+    correctAnswer: 'Sie müssen vor der Untersuchung 8 Stunden auf Essen und Trinken verzichten.',
+    difficulty: 'B2',
+    topic: 'healthcare'
   }
 ];
 
@@ -278,6 +357,32 @@ const c1Questions: Question[] = [
     correctAnswer: 'Aufgrund des starken Regens wurde das Fest abgesagt.',
     difficulty: 'C1',
     topic: 'cases'
+  },
+  {
+    id: 'c1_healthcare_1',
+    text: 'Welcher der folgenden Begriffe beschreibt keine Erkrankung des Herz-Kreislauf-Systems?',
+    options: [
+      'Hypertonie',
+      'Tachykardie',
+      'Myokardinfarkt',
+      'Pneumonie'
+    ],
+    correctAnswer: 'Pneumonie',
+    difficulty: 'C1',
+    topic: 'healthcare'
+  },
+  {
+    id: 'c1_healthcare_2',
+    text: 'Wie würden Sie einem Patienten erklären, dass er ein MRT benötigt?',
+    options: [
+      'Wir müssen Ihr Blut untersuchen, um die Ursache festzustellen.',
+      'Wir müssen eine Röntgenaufnahme machen, um einen Knochenbruch auszuschließen.',
+      'Wir benötigen eine bildgebende Untersuchung mit einem Magnetresonanztomographen, um detaillierte Bilder Ihres Gewebes zu erhalten.',
+      'Wir werden Ihre Haut mit Ultraschall untersuchen.'
+    ],
+    correctAnswer: 'Wir benötigen eine bildgebende Untersuchung mit einem Magnetresonanztomographen, um detaillierte Bilder Ihres Gewebes zu erhalten.',
+    difficulty: 'C1',
+    topic: 'healthcare'
   }
 ];
 
@@ -332,6 +437,32 @@ const c2Questions: Question[] = [
     correctAnswer: 'direkt zur Sache kommen',
     difficulty: 'C2',
     topic: 'latin_expressions'
+  },
+  {
+    id: 'c2_healthcare_1',
+    text: 'Wie lautet die korrekte Bezeichnung für die Zellschicht, die die Blutgefäße von innen auskleidet?',
+    options: [
+      'Endothel',
+      'Epithel',
+      'Peritoneum',
+      'Perikard'
+    ],
+    correctAnswer: 'Endothel',
+    difficulty: 'C2',
+    topic: 'healthcare'
+  },
+  {
+    id: 'c2_healthcare_2',
+    text: 'Welche der folgenden Aussagen zu einer informierten Einwilligung (Informed Consent) ist korrekt?',
+    options: [
+      'Die Einwilligung muss immer schriftlich erfolgen.',
+      'Bei bewusstlosen Patienten ist keine Einwilligung erforderlich.',
+      'Die Einwilligung muss freiwillig, nach angemessener Aufklärung und bei bestehender Einwilligungsfähigkeit erfolgen.',
+      'Für Routineuntersuchungen ist keine Einwilligung erforderlich.'
+    ],
+    correctAnswer: 'Die Einwilligung muss freiwillig, nach angemessener Aufklärung und bei bestehender Einwilligungsfähigkeit erfolgen.',
+    difficulty: 'C2',
+    topic: 'healthcare'
   }
 ];
 
