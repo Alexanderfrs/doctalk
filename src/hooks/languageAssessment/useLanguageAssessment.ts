@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
 import { Question, UserAnswer, AssessmentResult } from './types';
@@ -18,16 +17,22 @@ interface LanguageAssessmentHook {
   handleSelectAnswer: (answer: string) => void;
   resetAssessment: () => void;
   goToNextQuestion: () => void;
+
+  assessmentStarted: boolean;
+  assessmentStep: number;
+  currentLevel: string;
+  startAssessment: () => void;
+  handleAnswer: (questionId: string, answerId: string) => void;
+  handleNextStep: () => void;
+  completeAssessment: (answers?: UserAnswer[]) => void;
 }
 
 export function useLanguageAssessment(): LanguageAssessmentHook {
-  // Configuration
   const MIN_QUESTIONS = 5;
   const MAX_QUESTIONS = 15;
   const CONFIDENCE_THRESHOLD = 0.7;
   const TIME_LIMIT_MINUTES = 5;
 
-  // State
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [currentLevel, setCurrentLevel] = useState<string>('A1');
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
@@ -36,13 +41,12 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
   const [isComplete, setIsComplete] = useState<boolean>(false);
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [startTime, setStartTime] = useState<number>(0);
+  const [assessmentStarted, setAssessmentStarted] = useState<boolean>(false);
 
-  // Initialize assessment with first set of questions
   useEffect(() => {
     initializeAssessment();
   }, []);
 
-  // Check time limit
   useEffect(() => {
     if (startTime > 0 && !isComplete) {
       const timerId = setInterval(() => {
@@ -57,7 +61,6 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     }
   }, [startTime, isComplete]);
 
-  // Initialize the assessment with first set of questions
   const initializeAssessment = () => {
     setIsLoading(true);
     setUserAnswers([]);
@@ -65,32 +68,48 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     setIsComplete(false);
     setResult(null);
     setStartTime(Date.now());
+    setAssessmentStarted(false);
     
-    // Start with questions from A1 level
     const initialQuestions = selectAdaptiveQuestions('A1', [], MAX_QUESTIONS);
     setAllQuestions(initialQuestions);
     setCurrentLevel('A1');
     setIsLoading(false);
   };
 
-  // Current question based on index
   const currentQuestion = useMemo(() => {
     if (allQuestions.length === 0 || currentQuestionIndex >= allQuestions.length) {
       return null;
     }
-    return allQuestions[currentQuestionIndex];
+    
+    const question = allQuestions[currentQuestionIndex];
+    
+    if (question && !question.level && question.difficulty) {
+      question.level = question.difficulty;
+    }
+    
+    if (question && !question.question && question.text) {
+      question.question = question.text;
+    }
+    
+    return question;
   }, [allQuestions, currentQuestionIndex]);
 
-  // Calculate progress percentage
   const progress = useMemo(() => {
     if (isComplete) return 100;
     if (userAnswers.length === 0) return 0;
-    // Progress is based on minimum questions or adaptive assessment
     const estimatedTotal = Math.max(MIN_QUESTIONS, userAnswers.length);
     return Math.min(100, Math.round((userAnswers.length / estimatedTotal) * 100));
   }, [userAnswers.length, isComplete]);
 
-  // Handle user selecting an answer
+  const startAssessment = () => {
+    setAssessmentStarted(true);
+    setUserAnswers([]);
+    setCurrentQuestionIndex(0);
+    setIsComplete(false);
+    setResult(null);
+    setStartTime(Date.now());
+  };
+
   const handleSelectAnswer = (answer: string) => {
     if (!currentQuestion || isComplete) return;
     
@@ -104,7 +123,6 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     const updatedAnswers = [...userAnswers, newAnswer];
     setUserAnswers(updatedAnswers);
     
-    // Check if we should end the assessment or continue to next question
     if (shouldEndAssessment(updatedAnswers, MAX_QUESTIONS, MIN_QUESTIONS, CONFIDENCE_THRESHOLD) ||
         currentQuestionIndex >= allQuestions.length - 1) {
       completeAssessment(updatedAnswers);
@@ -113,22 +131,42 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     }
   };
 
-  // Move to next question
+  const handleAnswer = (questionId: string, answerId: string) => {
+    if (!currentQuestion || isComplete) return;
+    
+    const isCorrect = answerId === currentQuestion.correctAnswer;
+    const newAnswer: UserAnswer = {
+      questionId,
+      selectedAnswer: answerId,
+      isCorrect
+    };
+    
+    setUserAnswers(prev => [...prev, newAnswer]);
+  };
+
   const goToNextQuestion = () => {
     setCurrentQuestionIndex(prev => prev + 1);
   };
 
-  // Complete the assessment and calculate results
+  const handleNextStep = () => {
+    if (currentQuestionIndex >= allQuestions.length - 1) {
+      completeAssessment();
+    } else {
+      goToNextQuestion();
+    }
+  };
+
   const completeAssessment = (answers = userAnswers) => {
     const assessmentResult = calculateAssessmentResults(answers, allQuestions);
     setResult(assessmentResult);
     setIsComplete(true);
   };
 
-  // Reset the assessment
   const resetAssessment = () => {
     initializeAssessment();
   };
+
+  const assessmentStep = currentQuestionIndex + 1;
 
   return {
     currentQuestion,
@@ -141,6 +179,13 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     progress,
     handleSelectAnswer,
     resetAssessment,
-    goToNextQuestion
+    goToNextQuestion,
+    assessmentStarted,
+    assessmentStep,
+    currentLevel,
+    startAssessment,
+    handleAnswer,
+    handleNextStep,
+    completeAssessment
   };
 }

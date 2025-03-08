@@ -97,6 +97,43 @@ const Profile = () => {
     toast.info(`Test für ${certId} wird vorbereitet...`);
   };
 
+  const renderQuestionOptions = () => {
+    if (!currentQuestion) return null;
+    
+    const isOptionsObjects = currentQuestion.options.length > 0 && 
+      typeof currentQuestion.options[0] !== 'string';
+    
+    if (isOptionsObjects) {
+      return (currentQuestion.options as Array<{id: string; text: string}>).map(option => (
+        <div
+          key={option.id}
+          className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+            userAnswers.some(a => a.questionId === currentQuestion.id && a.selectedAnswer === option.id)
+              ? "border-medical-500 bg-medical-50"
+              : "border-neutral-200 hover:border-neutral-300"
+          }`}
+          onClick={() => handleAnswer(currentQuestion.id, option.id)}
+        >
+          {option.text}
+        </div>
+      ));
+    } else {
+      return (currentQuestion.options as string[]).map((option, index) => (
+        <div
+          key={index}
+          className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+            userAnswers.some(a => a.questionId === currentQuestion.id && a.selectedAnswer === option)
+              ? "border-medical-500 bg-medical-50"
+              : "border-neutral-200 hover:border-neutral-300"
+          }`}
+          onClick={() => handleAnswer(currentQuestion.id, option)}
+        >
+          {option}
+        </div>
+      ));
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -355,7 +392,7 @@ const Profile = () => {
                       
                       <div className="space-y-4">
                         <h3 className="font-medium text-lg">
-                          {currentQuestion?.question}
+                          {currentQuestion?.question || currentQuestion?.text}
                         </h3>
                         
                         {currentQuestion?.image && (
@@ -369,26 +406,14 @@ const Profile = () => {
                         )}
                         
                         <div className="space-y-2">
-                          {currentQuestion?.options.map(option => (
-                            <div
-                              key={option.id}
-                              className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                                userAnswers[currentQuestion.id] === option.id
-                                  ? "border-medical-500 bg-medical-50"
-                                  : "border-neutral-200 hover:border-neutral-300"
-                              }`}
-                              onClick={() => handleAnswer(currentQuestion.id, option.id)}
-                            >
-                              {option.text}
-                            </div>
-                          ))}
+                          {renderQuestionOptions()}
                         </div>
                       </div>
                     </CardContent>
                     <CardFooter>
                       <Button
                         onClick={handleNextStep}
-                        disabled={!userAnswers[currentQuestion?.id]}
+                        disabled={!userAnswers.some(a => a.questionId === currentQuestion?.id)}
                       >
                         {assessmentStep === totalQuestions ? "Test abschließen" : "Weiter"}
                         <ArrowRight className="ml-2 h-4 w-4" />
