@@ -13,6 +13,8 @@ import ConversationTab from "./tabs/ConversationTab";
 import ResourcesTab from "./tabs/ResourcesTab";
 import NotesTab from "./tabs/NotesTab";
 import ConversationInput from "./ConversationInput";
+import SwipeableContainer from "@/components/ui/SwipeableContainer";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ScenarioContentProps {
   scenario: any;
@@ -31,6 +33,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       content: "This is a simulated medical scenario. I'll be acting as your patient. What questions would you like to ask?"
     }
   ]);
+  const isMobile = useIsMobile();
 
   const handleSendMessage = (message: string) => {
     // Add user message to conversation
@@ -53,6 +56,11 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     }, 1000);
   };
 
+  const handleSwipe = (index: number) => {
+    const tabs = ["conversation", "resources", "notes"];
+    setActiveTab(tabs[index]);
+  };
+
   if (loading) {
     return (
       <Card>
@@ -66,32 +74,60 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     );
   }
 
+  // Index of current tab
+  const tabIndex = activeTab === "conversation" ? 0 : (activeTab === "resources" ? 1 : 2);
+
   return (
     <Card className="h-full">
       <CardHeader>
         <CardTitle>{t("scenario.interactive_session")}</CardTitle>
       </CardHeader>
       
-      <Tabs defaultValue="conversation" value={activeTab} onValueChange={setActiveTab}>
-        <CardContent>
-          <TabNavigation activeTab={activeTab} />
+      {isMobile ? (
+        <>
+          <CardContent>
+            <TabNavigation activeTab={activeTab} onChange={setActiveTab} />
+            
+            <div className="mt-4">
+              <SwipeableContainer
+                initialIndex={tabIndex}
+                onSwipe={handleSwipe}
+                showIndicators={false}
+                className="min-h-[300px]"
+              >
+                <ConversationTab conversation={conversation} />
+                <ResourcesTab />
+                <NotesTab />
+              </SwipeableContainer>
+            </div>
+          </CardContent>
           
-          <TabsContent value="conversation" className="mt-0">
-            <ConversationTab conversation={conversation} />
-          </TabsContent>
+          {activeTab === "conversation" && (
+            <ConversationInput onSendMessage={handleSendMessage} />
+          )}
+        </>
+      ) : (
+        <Tabs defaultValue="conversation" value={activeTab} onValueChange={setActiveTab}>
+          <CardContent>
+            <TabNavigation activeTab={activeTab} />
+            
+            <TabsContent value="conversation" className="mt-0">
+              <ConversationTab conversation={conversation} />
+            </TabsContent>
+            
+            <TabsContent value="resources" className="mt-0">
+              <ResourcesTab />
+            </TabsContent>
+            
+            <TabsContent value="notes" className="mt-0">
+              <NotesTab />
+            </TabsContent>
+          </CardContent>
           
-          <TabsContent value="resources" className="mt-0">
-            <ResourcesTab />
-          </TabsContent>
-          
-          <TabsContent value="notes" className="mt-0">
-            <NotesTab />
-          </TabsContent>
-        </CardContent>
-      </Tabs>
-      
-      {activeTab === "conversation" && (
-        <ConversationInput onSendMessage={handleSendMessage} />
+          {activeTab === "conversation" && (
+            <ConversationInput onSendMessage={handleSendMessage} />
+          )}
+        </Tabs>
       )}
     </Card>
   );
