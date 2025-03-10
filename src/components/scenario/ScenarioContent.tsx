@@ -109,7 +109,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       ) : (
         <Tabs defaultValue="conversation" value={activeTab} onValueChange={setActiveTab}>
           <CardContent>
-            <TabNavigation activeTab={activeTab} />
+            <TabNavigation activeTab={activeTab} onChange={setActiveTab} />
             
             <TabsContent value="conversation" className="mt-0">
               <ConversationTab conversation={conversation} />
