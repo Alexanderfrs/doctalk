@@ -10,6 +10,8 @@ export interface Question {
   level?: string; // Alias for difficulty to maintain backward compatibility
   topic?: string;
   image?: string; // Support for question images
+  healthcareContext?: string; // Added for healthcare-specific context
+  specialization?: 'nursing' | 'diagnosis' | 'emergency' | 'general'; // For categorizing healthcare terms
 }
 
 export interface UserAnswer {
@@ -24,10 +26,21 @@ export interface AssessmentResult {
   totalQuestions: number;
   percentage: number;
   description: string;
+  strengths?: string[]; // Added to highlight user's strong areas
+  recommendedContent?: string[]; // Added to suggest next learning modules
+  certificationEligible?: boolean; // Added for certification program
 }
 
 export type QuestionBank = Record<string, Question[]>;
 
 export interface TopicWeight {
   [key: string]: number;
+}
+
+export interface HealthcareVocabularyCategory {
+  id: string;
+  name: string;
+  description: string;
+  level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+  terms: Array<{term: string, definition: string}>;
 }

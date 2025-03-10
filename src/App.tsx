@@ -12,6 +12,8 @@ import Vocabulary from "./pages/Vocabulary";
 import ScenarioDetail from "./pages/ScenarioDetail";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import LanguageCertification from "./pages/LanguageCertification";
+import BrandBanner from "./components/brand/BrandBanner";
 
 const queryClient = new QueryClient();
 
@@ -23,12 +25,14 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <BrandBanner />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/practice" element={<Practice />} />
               <Route path="/vocabulary" element={<Vocabulary />} />
               <Route path="/scenario/:id" element={<ScenarioDetail />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/certification" element={<LanguageCertification />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
