@@ -1,3 +1,4 @@
+
 import { Question, QuestionBank } from './types';
 
 // A1 level questions
@@ -244,7 +245,7 @@ const b2QuestionsAdditions: Question[] = [
   }
 ];
 
-const b2Questions = [
+const b2Questions: Question[] = [
   {
     id: 'b2_1',
     text: 'Welche dieser Aussagen verwendet das Passiv korrekt?',
@@ -367,7 +368,7 @@ const c1QuestionsAdditions: Question[] = [
   }
 ];
 
-const c1Questions = [
+const c1Questions: Question[] = [
   {
     id: 'c1_1',
     text: 'Welche dieser Formulierungen ist für einen formellen Brief am besten geeignet?',
@@ -487,7 +488,7 @@ const c2QuestionsAdditions: Question[] = [
   }
 ];
 
-const c2Questions = [
+const c2Questions: Question[] = [
   {
     id: 'c2_1',
     text: 'Welches dieser Wörter ist ein Fremdwort lateinischen Ursprungs?',
