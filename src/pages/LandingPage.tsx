@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,11 @@ import {
   Heart,
   Award,
   CheckCircle,
-  ArrowRight
+  ArrowRight,
+  Wifi,
+  Clock,
+  FileCheck,
+  Star
 } from "lucide-react";
 
 const LandingPage = () => {
@@ -406,12 +409,20 @@ const LandingPage = () => {
                     <span>Unbegrenzte Dialogszenarien</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Aussprachetraining</span>
+                    <Wifi className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Offline-Modus für unterwegs</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Personalisierte Lernempfehlungen</span>
+                    <Clock className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>FSP-Prüfungsvorbereitung mit Zeitoptionen</span>
+                  </li>
+                  <li className="flex items-start">
+                    <FileCheck className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Detaillierte Ergebnisanalysen</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Star className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>1 Monat gratis nach 3-Monats-Streak</span>
                   </li>
                 </ul>
                 <Link to="/register">
@@ -447,12 +458,45 @@ const LandingPage = () => {
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
                     <span>Fortschrittsberichte für das Team</span>
                   </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Mündliche Prüfungssimulationen</span>
+                  </li>
                 </ul>
                 <Link to="/contact">
                   <Button className="w-full" variant="outline">
                     Kontakt aufnehmen
                   </Button>
                 </Link>
+              </div>
+            </div>
+            
+            {/* Loyalty Program */}
+            <div className="mt-12 max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-neutral-100 overflow-hidden">
+              <div className="bg-medical-500 p-4 text-white text-center">
+                <h3 className="text-xl font-semibold">Treue-Programm: 3+1</h3>
+              </div>
+              <div className="p-6">
+                <div className="flex items-center mb-6">
+                  <div className="w-16 h-16 bg-medical-50 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                    <Award className="h-8 w-8 text-medical-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-medium">Nutze MedLingua 3 Monate regelmäßig</h4>
+                    <p className="text-neutral-600">Und erhalte den 4. Monat Premium kostenlos!</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-neutral-50 p-4 rounded-lg">
+                    <p className="text-center font-medium">90 Tage Streak</p>
+                  </div>
+                  <div className="bg-neutral-50 p-4 rounded-lg">
+                    <p className="text-center font-medium">= 1 Monat Premium gratis</p>
+                  </div>
+                  <div className="bg-neutral-50 p-4 rounded-lg">
+                    <p className="text-center font-medium">Unbegrenzt wiederholbar</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -26,13 +26,23 @@ interface LanguageAssessmentHook {
   handleAnswer: (questionId: string, answerId: string) => void;
   handleNextStep: () => void;
   completeAssessment: (answers?: UserAnswer[]) => void;
+  
+  // New properties for timed tests
+  isTimedTest: boolean;
+  setTimedTest: (isTimed: boolean) => void;
+  timeRemaining: number;
+  timeElapsed: number;
+  timeLimitMinutes: number;
+  setTimeLimitMinutes: (minutes: number) => void;
+  showAnswerExplanations: boolean;
+  toggleAnswerExplanations: () => void;
 }
 
 export function useLanguageAssessment(): LanguageAssessmentHook {
   const MIN_QUESTIONS = 5;
   const MAX_QUESTIONS = 15;
   const CONFIDENCE_THRESHOLD = 0.7;
-  const TIME_LIMIT_MINUTES = 5;
+  const DEFAULT_TIME_LIMIT_MINUTES = 5;
 
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [currentLevel, setCurrentLevel] = useState<string>('A1');
@@ -43,24 +53,29 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [startTime, setStartTime] = useState<number>(0);
   const [assessmentStarted, setAssessmentStarted] = useState<boolean>(false);
+  
+  // New state for timed tests
+  const [isTimedTest, setIsTimedTest] = useState<boolean>(false);
+  const [timeLimitMinutes, setTimeLimitMinutes] = useState<number>(DEFAULT_TIME_LIMIT_MINUTES);
+  const [timeElapsed, setTimeElapsed] = useState<number>(0);
+  const [showAnswerExplanations, setShowAnswerExplanations] = useState<boolean>(true);
 
+  // Timer effect
   useEffect(() => {
-    initializeAssessment();
-  }, []);
-
-  useEffect(() => {
-    if (startTime > 0 && !isComplete) {
+    if (startTime > 0 && !isComplete && isTimedTest) {
       const timerId = setInterval(() => {
-        const elapsedMinutes = (Date.now() - startTime) / (1000 * 60);
-        if (elapsedMinutes >= TIME_LIMIT_MINUTES) {
+        const elapsed = (Date.now() - startTime) / (1000 * 60);
+        setTimeElapsed(elapsed);
+        
+        if (elapsed >= timeLimitMinutes) {
           completeAssessment();
-          toast.info(`Time limit of ${TIME_LIMIT_MINUTES} minutes reached.`);
+          toast.info(`Zeitlimit von ${timeLimitMinutes} Minuten erreicht.`);
         }
-      }, 10000); // Check every 10 seconds
+      }, 1000); // Update every second for smoother countdown
       
       return () => clearInterval(timerId);
     }
-  }, [startTime, isComplete]);
+  }, [startTime, isComplete, isTimedTest, timeLimitMinutes]);
 
   const initializeAssessment = () => {
     setIsLoading(true);
@@ -70,6 +85,7 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     setResult(null);
     setStartTime(Date.now());
     setAssessmentStarted(false);
+    setTimeElapsed(0);
     
     const initialQuestions = selectAdaptiveQuestions('A1', [], MAX_QUESTIONS);
     setAllQuestions(initialQuestions);
@@ -102,6 +118,12 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     return Math.min(100, Math.round((userAnswers.length / estimatedTotal) * 100));
   }, [userAnswers.length, isComplete]);
 
+  const timeRemaining = useMemo(() => {
+    if (!isTimedTest || !startTime) return timeLimitMinutes * 60;
+    const remainingSeconds = Math.max(0, timeLimitMinutes * 60 - timeElapsed * 60);
+    return Math.floor(remainingSeconds);
+  }, [isTimedTest, startTime, timeLimitMinutes, timeElapsed]);
+
   const startAssessment = () => {
     setAssessmentStarted(true);
     setUserAnswers([]);
@@ -109,6 +131,15 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     setIsComplete(false);
     setResult(null);
     setStartTime(Date.now());
+    setTimeElapsed(0);
+  };
+
+  const setTimedTest = (isTimed: boolean) => {
+    setIsTimedTest(isTimed);
+  };
+
+  const toggleAnswerExplanations = () => {
+    setShowAnswerExplanations(prev => !prev);
   };
 
   const handleSelectAnswer = (answer: string) => {
@@ -169,7 +200,11 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     setIsComplete(true);
     
     // Show completion notification
-    toast.success(`Sprachtest abgeschlossen: Niveau ${assessmentResult.level}`);
+    if (isTimedTest) {
+      toast.success(`FSP-Test abgeschlossen: Niveau ${assessmentResult.level}, Zeit: ${Math.floor(timeElapsed)} Minuten`);
+    } else {
+      toast.success(`Sprachtest abgeschlossen: Niveau ${assessmentResult.level}`);
+    }
   };
 
   const resetAssessment = () => {
@@ -196,6 +231,14 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     startAssessment,
     handleAnswer,
     handleNextStep,
-    completeAssessment
+    completeAssessment,
+    isTimedTest,
+    setTimedTest,
+    timeRemaining,
+    timeElapsed,
+    timeLimitMinutes,
+    setTimeLimitMinutes,
+    showAnswerExplanations,
+    toggleAnswerExplanations
   };
 }
