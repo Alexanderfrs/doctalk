@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -30,8 +29,18 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       setIsSubmitting(false);
       
       if (email && password) {
+        // Log the user in
         onLogin();
-        navigate("/dashboard");
+        
+        // Check if onboarding is complete
+        const onboardingComplete = localStorage.getItem("onboardingComplete") === "true";
+        
+        // Navigate to appropriate page
+        if (onboardingComplete) {
+          navigate("/dashboard");
+        } else {
+          navigate("/onboarding");
+        }
       } else {
         setError("Bitte geben Sie Ihre E-Mail-Adresse und Ihr Passwort ein.");
       }

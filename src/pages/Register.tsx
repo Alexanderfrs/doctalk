@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -31,8 +30,14 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
       setIsSubmitting(false);
       
       if (name && email && password) {
+        // Call the register callback
         onRegister();
-        navigate("/dashboard");
+        
+        // Reset onboarding status to false for new users
+        localStorage.setItem("onboardingComplete", "false");
+        
+        // Navigate to onboarding
+        navigate("/onboarding");
       } else {
         setError("Bitte füllen Sie alle Felder aus.");
       }

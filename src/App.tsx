@@ -17,6 +17,7 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import LanguageCertification from "./pages/LanguageCertification";
 import BrandBanner from "./components/brand/BrandBanner";
+import Onboarding from "./pages/Onboarding";
 import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
@@ -25,11 +26,15 @@ const queryClient = new QueryClient();
 const useAuth = () => {
   // For demo purposes, we're using localStorage
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [onboardingComplete, setOnboardingComplete] = useState(true);
 
   useEffect(() => {
     // Check if user is authenticated from localStorage
     const authStatus = localStorage.getItem("isAuthenticated") === "true";
+    const onboardingStatus = localStorage.getItem("onboardingComplete") === "true";
+    
     setIsAuthenticated(authStatus);
+    setOnboardingComplete(onboardingStatus);
   }, []);
 
   const login = () => {
@@ -42,7 +47,18 @@ const useAuth = () => {
     setIsAuthenticated(false);
   };
 
-  return { isAuthenticated, login, logout };
+  const completeOnboarding = () => {
+    localStorage.setItem("onboardingComplete", "true");
+    setOnboardingComplete(true);
+  };
+
+  return { 
+    isAuthenticated, 
+    login, 
+    logout, 
+    onboardingComplete,
+    completeOnboarding
+  };
 };
 
 // Protected route component
@@ -56,8 +72,23 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+// Route that checks if onboarding is complete
+const OnboardingProtectedRoute = ({ children }) => {
+  const { isAuthenticated, onboardingComplete } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+  
+  if (!onboardingComplete) {
+    return <Navigate to="/onboarding" replace />;
+  }
+  
+  return children;
+};
+
 const App = () => {
-  const { isAuthenticated, login, logout } = useAuth();
+  const { isAuthenticated, login, logout, onboardingComplete } = useAuth();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -83,53 +114,63 @@ const App = () => {
                   element={isAuthenticated ? <Navigate to="/dashboard" /> : <Register onRegister={login} />} 
                 />
                 
-                {/* Protected routes */}
+                {/* Onboarding route */}
+                <Route 
+                  path="/onboarding" 
+                  element={
+                    <ProtectedRoute>
+                      <Onboarding />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                {/* Protected routes that require onboarding */}
                 <Route 
                   path="/dashboard" 
                   element={
-                    <ProtectedRoute>
+                    <OnboardingProtectedRoute>
                       <Dashboard onLogout={logout} />
-                    </ProtectedRoute>
+                    </OnboardingProtectedRoute>
                   } 
                 />
                 <Route 
                   path="/practice" 
                   element={
-                    <ProtectedRoute>
+                    <OnboardingProtectedRoute>
                       <Practice />
-                    </ProtectedRoute>
+                    </OnboardingProtectedRoute>
                   } 
                 />
                 <Route 
                   path="/vocabulary" 
                   element={
-                    <ProtectedRoute>
+                    <OnboardingProtectedRoute>
                       <Vocabulary />
-                    </ProtectedRoute>
+                    </OnboardingProtectedRoute>
                   } 
                 />
                 <Route 
                   path="/scenario/:id" 
                   element={
-                    <ProtectedRoute>
+                    <OnboardingProtectedRoute>
                       <ScenarioDetail />
-                    </ProtectedRoute>
+                    </OnboardingProtectedRoute>
                   } 
                 />
                 <Route 
                   path="/profile" 
                   element={
-                    <ProtectedRoute>
+                    <OnboardingProtectedRoute>
                       <Profile />
-                    </ProtectedRoute>
+                    </OnboardingProtectedRoute>
                   } 
                 />
                 <Route 
                   path="/certification" 
                   element={
-                    <ProtectedRoute>
+                    <OnboardingProtectedRoute>
                       <LanguageCertification />
-                    </ProtectedRoute>
+                    </OnboardingProtectedRoute>
                   } 
                 />
                 
