@@ -27,6 +27,7 @@ const Index = () => {
       console.log("Redirecting to onboarding");
       return <Navigate to="/onboarding" replace />;
     }
+    
     // If authenticated and onboarding complete, redirect to dashboard
     console.log("Redirecting to dashboard");
     return <Navigate to="/dashboard" replace />;

@@ -8,6 +8,7 @@ import { Eye, EyeOff, Stethoscope, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/contexts/AuthContext";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Register: React.FC = () => {
   const [name, setName] = useState("");
@@ -16,9 +17,10 @@ const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [skipOnboardingFlow, setSkipOnboardingFlow] = useState(false);
   
   const navigate = useNavigate();
-  const { signUp } = useAuth();
+  const { signUp, skipOnboarding } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,17 +32,23 @@ const Register: React.FC = () => {
       
       if (error) {
         setError(error.message || "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.");
+        setIsSubmitting(false);
         return;
       }
       
       toast.success("Registrierung erfolgreich. Willkommen bei MedLingua!");
       
-      // Navigate to Index, which will redirect to onboarding
-      navigate("/index");
+      // Skip onboarding if checkbox is checked
+      if (skipOnboardingFlow) {
+        await skipOnboarding();
+        navigate("/dashboard");
+      } else {
+        // Navigate to onboarding
+        navigate("/onboarding");
+      }
     } catch (error) {
       console.error("Registration error:", error);
       setError("Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -114,6 +122,20 @@ const Register: React.FC = () => {
                 </button>
               </div>
               <p className="text-xs text-gray-500 mt-1">Passwort muss mindestens 6 Zeichen lang sein</p>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="skipOnboarding" 
+                checked={skipOnboardingFlow}
+                onCheckedChange={(checked) => setSkipOnboardingFlow(checked === true)}
+              />
+              <Label 
+                htmlFor="skipOnboarding" 
+                className="text-sm cursor-pointer"
+              >
+                Einrichtungsassistent überspringen (kann später in den Einstellungen durchgeführt werden)
+              </Label>
             </div>
 
             <div>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,15 +13,11 @@ import {
   MessageCircle, 
   Calendar, 
   ArrowRight,
-  Home, 
-  Book, 
-  Activity, 
-  User 
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { NavBar } from "@/components/ui/tubelight-navbar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
+import AppNavigation from "@/components/navigation/AppNavigation";
 
 interface DashboardProps {
   onLogout?: () => void;
@@ -53,13 +50,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
     weeklyGoal: 5,
     weeklyProgress: 3,
   };
-
-  const navItems = [
-    { name: "Dashboard", url: "/dashboard", icon: Home },
-    { name: "Übungen", url: "/practice", icon: Activity },
-    { name: "Vokabeln", url: "/vocabulary", icon: Book },
-    { name: "Profil", url: "/profile", icon: User }
-  ];
 
   const handleSwipe = (index: number) => {
     setCurrentScenarioIndex(index);
@@ -299,7 +289,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
         </div>
       </main>
       
-      <NavBar items={navItems} className="z-50" />
+      <AppNavigation />
       <Footer />
     </div>
   );

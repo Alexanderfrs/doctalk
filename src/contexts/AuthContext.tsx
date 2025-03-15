@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Session, User } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 interface AuthContextType {
   session: Session | null;
@@ -21,6 +22,11 @@ interface AuthContextType {
   isAuthenticated: boolean;
   onboardingComplete: boolean;
   completeOnboarding: () => void;
+  skipOnboarding: () => void;
+  updateProfile: (data: Partial<{name: string, email: string}>) => Promise<{
+    error: any | null;
+    data: any | null;
+  }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -173,6 +179,87 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const skipOnboarding = async () => {
+    if (!user) return;
+    
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          preferences: {
+            ...profile?.preferences,
+            onboardingComplete: true
+          }
+        })
+        .eq('id', user.id);
+        
+      if (error) {
+        console.error('Error updating profile:', error);
+        return;
+      }
+      
+      // Update local state
+      setOnboardingComplete(true);
+      setProfile({
+        ...profile,
+        preferences: {
+          ...profile?.preferences,
+          onboardingComplete: true
+        }
+      });
+
+      toast.success("Onboarding übersprungen. Sie können es später in den Einstellungen durchführen.");
+    } catch (error) {
+      console.error('Error skipping onboarding:', error);
+    }
+  };
+
+  const updateProfile = async (data: Partial<{name: string, email: string}>) => {
+    if (!user) return { data: null, error: 'Not authenticated' };
+    
+    try {
+      // Update name in profile if provided
+      if (data.name) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({
+            name: data.name
+          })
+          .eq('id', user.id);
+          
+        if (profileError) {
+          console.error('Error updating profile name:', profileError);
+          return { data: null, error: profileError };
+        }
+        
+        // Update local state
+        setProfile({
+          ...profile,
+          name: data.name
+        });
+      }
+      
+      // Update email if provided
+      if (data.email && data.email !== user.email) {
+        const { error: emailError } = await supabase.auth.updateUser({
+          email: data.email
+        });
+        
+        if (emailError) {
+          console.error('Error updating email:', emailError);
+          return { data: null, error: emailError };
+        }
+        
+        toast.success("E-Mail-Adresse wurde aktualisiert. Bitte prüfen Sie Ihre E-Mails für eine Bestätigungslink.");
+      }
+      
+      return { data: true, error: null };
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      return { data: null, error };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -186,6 +273,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthenticated: !!user,
         onboardingComplete,
         completeOnboarding,
+        skipOnboarding,
+        updateProfile,
       }}
     >
       {children}

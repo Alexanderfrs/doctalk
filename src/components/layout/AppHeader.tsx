@@ -66,6 +66,9 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
     navigate('/register');
   };
 
+  // Determine where the logo should navigate to
+  const logoPath = isAuthenticated ? "/dashboard" : "/";
+
   return (
     <header
       className={cn(
@@ -79,7 +82,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link 
-            to={isAuthenticated ? "/dashboard" : "/"}
+            to={logoPath}
             className="flex items-center space-x-2"
           >
             <div className="bg-medical-500 text-white p-1.5 rounded-lg">

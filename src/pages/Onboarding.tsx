@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CheckCircle, ChevronRight, Stethoscope } from "lucide-react";
+import { CheckCircle, ChevronRight, Stethoscope, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import OnboardingAssessment from "@/components/onboarding/OnboardingAssessment";
@@ -17,7 +17,7 @@ const Onboarding: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const { userLanguage } = useLanguage();
-  const { user, completeOnboarding } = useAuth();
+  const { user, completeOnboarding, skipOnboarding } = useAuth();
   
   const totalSteps = 3;
   
@@ -64,6 +64,11 @@ const Onboarding: React.FC = () => {
     } else {
       setCurrentStep(stepNumber + 1);
     }
+  };
+
+  const handleSkipOnboarding = async () => {
+    await skipOnboarding();
+    navigate("/dashboard");
   };
   
   const steps = [
@@ -116,28 +121,39 @@ const Onboarding: React.FC = () => {
         </div>
         
         <div className="w-full">
-          <div className="flex flex-wrap gap-4 mb-8">
-            {steps.map((step, index) => (
-              <div 
-                key={index}
-                className={`flex items-center px-4 py-2 rounded-full border ${
-                  currentStep === index + 1
-                    ? "border-medical-500 bg-medical-50 text-medical-800"
-                    : completedSteps.includes(index + 1)
-                    ? "border-green-500 bg-green-50 text-green-800"
-                    : "border-gray-200 text-gray-400"
-                }`}
-              >
-                {completedSteps.includes(index + 1) ? (
-                  <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                ) : (
-                  <span className="flex items-center justify-center h-5 w-5 rounded-full bg-current text-white mr-2 text-xs">
-                    {index + 1}
-                  </span>
-                )}
-                <span>{step.title}</span>
-              </div>
-            ))}
+          <div className="flex flex-wrap justify-between gap-4 mb-8">
+            <div className="flex flex-wrap gap-4">
+              {steps.map((step, index) => (
+                <div 
+                  key={index}
+                  className={`flex items-center px-4 py-2 rounded-full border ${
+                    currentStep === index + 1
+                      ? "border-medical-500 bg-medical-50 text-medical-800"
+                      : completedSteps.includes(index + 1)
+                      ? "border-green-500 bg-green-50 text-green-800"
+                      : "border-gray-200 text-gray-400"
+                  }`}
+                >
+                  {completedSteps.includes(index + 1) ? (
+                    <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                  ) : (
+                    <span className="flex items-center justify-center h-5 w-5 rounded-full bg-current text-white mr-2 text-xs">
+                      {index + 1}
+                    </span>
+                  )}
+                  <span>{step.title}</span>
+                </div>
+              ))}
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={handleSkipOnboarding}
+              className="text-neutral-600"
+            >
+              Überspringen
+              <ArrowRight className="ml-1 h-4 w-4" />
+            </Button>
           </div>
           
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
