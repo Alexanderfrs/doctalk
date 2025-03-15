@@ -42,14 +42,12 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    // Simulate loading delay for animation
     const timer = setTimeout(() => {
       setLoadingPage(false);
     }, 300);
     return () => clearTimeout(timer);
   }, []);
 
-  // Placeholder stats for the demo
   const userStats = {
     lastActivity: "2023-06-15",
     weeklyGoal: 5,
@@ -73,7 +71,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
       
       <main className="flex-grow pt-24 px-4 md:px-8 pb-20">
         <div className="container mx-auto">
-          {/* Welcome section */}
           <section className="mb-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
             <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -96,7 +93,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
             </div>
           </section>
           
-          {/* Progress overview section */}
           <section className="mb-10 animate-fade-in" style={{ animationDelay: '500ms' }}>
             <h2 className="text-xl font-semibold mb-4 flex items-center">
               <Calendar className="mr-2 h-5 w-5 text-medical-600" />
@@ -165,7 +161,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
             </div>
           </section>
           
-          {/* Recent scenarios section */}
           <section className="mb-10 animate-fade-in" style={{ animationDelay: '700ms' }}>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold flex items-center">
@@ -218,7 +213,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
             )}
           </section>
           
-          {/* Recent activity and statistics */}
           <section className="mb-10 animate-fade-in" style={{ animationDelay: '900ms' }}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">

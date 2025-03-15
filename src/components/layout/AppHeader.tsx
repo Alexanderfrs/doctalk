@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -7,9 +8,10 @@ import { useAuth } from "@/contexts/AuthContext";
 
 interface AppHeaderProps {
   onLogin?: () => void;
+  onLogout?: () => void;
 }
 
-const AppHeader: React.FC<AppHeaderProps> = ({ onLogin }) => {
+const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -46,11 +48,17 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin }) => {
   const navItems = getNavItems();
 
   const handleLogout = async () => {
+    if (onLogout) {
+      onLogout();
+    }
     await signOut();
     navigate('/');
   };
 
   const handleLogin = () => {
+    if (onLogin) {
+      onLogin();
+    }
     navigate('/login');
   };
 
