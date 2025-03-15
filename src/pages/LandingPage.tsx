@@ -3,46 +3,32 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/Footer";
 import AppHeader from "@/components/layout/AppHeader";
-import { 
-  Stethoscope, 
-  Shield, 
-  Users, 
-  Globe, 
-  GraduationCap,
-  Heart,
-  Award,
-  CheckCircle,
-  ArrowRight,
-  Wifi,
-  Clock,
-  FileCheck,
-  Star
-} from "lucide-react";
+import { Stethoscope, Shield, Users, Globe, GraduationCap, Heart, Award, CheckCircle, ArrowRight, Wifi, Clock, FileCheck, Star } from "lucide-react";
 import SideNavigator from "@/components/navigation/SideNavigator";
-
 interface LandingPageProps {
   onLogin?: () => void;
 }
-
-const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
+const LandingPage: React.FC<LandingPageProps> = ({
+  onLogin
+}) => {
   const navigate = useNavigate();
-
   const handleRegister = () => {
     navigate('/register');
   };
-
   const handleLogin = () => {
     navigate('/login');
   };
-
-  const sections = [
-    { id: "hero", label: "Start" },
-    { id: "features", label: "Funktionen" },
-    { id: "pricing", label: "Preise" }
-  ];
-
-  return (
-    <div className="min-h-screen flex flex-col relative">
+  const sections = [{
+    id: "hero",
+    label: "Start"
+  }, {
+    id: "features",
+    label: "Funktionen"
+  }, {
+    id: "pricing",
+    label: "Preise"
+  }];
+  return <div className="min-h-screen flex flex-col relative">
       <AppHeader onLogin={handleLogin} />
       
       <SideNavigator sections={sections} />
@@ -59,11 +45,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   Die spezialisierte Sprachlern-Plattform für medizinisches Fachpersonal. Verbessere deine Kommunikation im Gesundheitswesen - von A1 bis C1.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button 
-                    size="lg" 
-                    className="bg-medical-500 hover:bg-medical-600"
-                    onClick={handleRegister}
-                  >
+                  <Button size="lg" className="bg-medical-500 hover:bg-medical-600" onClick={handleRegister}>
                     Kostenlos starten
                   </Button>
                   <a href="#features">
@@ -76,22 +58,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
               
               <div className="md:w-1/2">
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
-                  <img 
-                    src="https://images.unsplash.com/photo-1527613426441-4da17471b66d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                    alt="Medizinisches Personal in Deutschland"
-                    className="w-full h-[400px] object-cover"
-                  />
+                  <img src="https://images.unsplash.com/photo-1527613426441-4da17471b66d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Medizinisches Personal in Deutschland" className="w-full h-[400px] object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-medical-900/30 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow-lg">
                     <p className="text-sm font-medium text-neutral-700">
                       "Mit MedLingua konnte ich meine Sprachbarrieren im medizinischen Alltag überwinden und fühle mich nun viel sicherer in der Kommunikation mit Patienten und Kollegen."
                     </p>
                     <div className="mt-2 flex items-center">
-                      <img 
-                        src="https://images.unsplash.com/photo-1569913486515-b74bf7751574?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
-                        alt="Elena Petrescu"
-                        className="w-8 h-8 rounded-full mr-2"
-                      />
+                      <img src="https://images.unsplash.com/photo-1569913486515-b74bf7751574?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Elena Petrescu" className="w-8 h-8 rounded-full mr-2" />
                       <div>
                         <p className="text-xs font-semibold">Elena Petrescu</p>
                         <p className="text-xs text-neutral-500">Pflegekraft aus Rumänien</p>
@@ -184,7 +158,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   <thead>
                     <tr className="border-b border-neutral-200">
                       <th className="py-3 px-4 text-left">Feature</th>
-                      <th className="py-3 px-4 text-center">Allgemeine Apps<br/>(Duolingo, Babbel, usw.)</th>
+                      <th className="py-3 px-4 text-center">Allgemeine Apps<br />(Duolingo, Babbel, usw.)</th>
                       <th className="py-3 px-4 text-center bg-medical-50 font-medium">MedLingua</th>
                     </tr>
                   </thead>
@@ -250,11 +224,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                     <span>Fortschrittsübersicht</span>
                   </li>
                 </ul>
-                <Button 
-                  className="w-full" 
-                  variant="outline"
-                  onClick={handleRegister}
-                >
+                <Button className="w-full" variant="outline" onClick={handleRegister}>
                   Kostenlos starten
                 </Button>
               </div>
@@ -268,7 +238,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   <p className="text-neutral-500 mt-1">Für aktive Lerner</p>
                 </div>
                 <div className="mb-6">
-                  <span className="text-3xl font-bold">€9,99</span>
+                  <span className="text-3xl font-bold">€4,99</span>
                   <span className="text-neutral-500"> / Monat</span>
                 </div>
                 <ul className="space-y-3 mb-8">
@@ -297,10 +267,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                     <span>1 Monat gratis nach 3-Monats-Streak</span>
                   </li>
                 </ul>
-                <Button 
-                  className="w-full bg-medical-500 hover:bg-medical-600"
-                  onClick={handleRegister}
-                >
+                <Button className="w-full bg-medical-500 hover:bg-medical-600" onClick={handleRegister}>
                   Jetzt starten
                 </Button>
               </div>
@@ -311,7 +278,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   <p className="text-neutral-500 mt-1">Für Institutionen</p>
                 </div>
                 <div className="mb-6">
-                  <span className="text-3xl font-bold">€499</span>
+                  <span className="text-3xl font-bold">€399</span>
                   <span className="text-neutral-500"> / Jahr</span>
                 </div>
                 <ul className="space-y-3 mb-8">
@@ -321,7 +288,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Bis zu 20 Benutzerkonten</span>
+                    <span>Bis zu 10 Benutzerkonten</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
@@ -381,11 +348,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
               <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
                 Starte noch heute und mache dich fit für deinen beruflichen Alltag im deutschen Gesundheitswesen.
               </p>
-              <Button 
-                size="lg" 
-                className="bg-white text-medical-600 hover:bg-white/90"
-                onClick={handleRegister}
-              >
+              <Button size="lg" className="bg-white text-medical-600 hover:bg-white/90" onClick={handleRegister}>
                 Kostenlos registrieren
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -395,8 +358,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default LandingPage;
