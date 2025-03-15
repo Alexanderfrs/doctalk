@@ -21,8 +21,8 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   isAuthenticated: boolean;
   onboardingComplete: boolean;
-  completeOnboarding: () => void;
-  skipOnboarding: () => void;
+  completeOnboarding: () => Promise<void>;
+  skipOnboarding: () => Promise<void>;
   updateProfile: (data: Partial<{name: string, email: string}>) => Promise<{
     error: any | null;
     data: any | null;
@@ -126,6 +126,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
       });
       
+      // If signup is successful, automatically set onboarding as optional by default
+      if (data?.user) {
+        // Create profile with onboardingComplete set to false by default
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .upsert({
+            id: data.user.id,
+            name: name,
+            preferences: {
+              onboardingComplete: false
+            }
+          });
+
+        if (profileError) {
+          console.error('Error creating profile:', profileError);
+        }
+      }
+      
       return { data, error };
     } catch (error) {
       console.error('Error signing up:', error);
@@ -174,6 +192,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           onboardingComplete: true
         }
       });
+      
+      toast.success("Onboarding abgeschlossen!");
     } catch (error) {
       console.error('Error completing onboarding:', error);
     }
@@ -219,7 +239,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     try {
       // Update name in profile if provided
-      if (data.name) {
+      if (data.name && data.name !== profile?.name) {
         const { error: profileError } = await supabase
           .from('profiles')
           .update({
@@ -237,6 +257,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           ...profile,
           name: data.name
         });
+        
+        toast.success("Name wurde aktualisiert.");
       }
       
       // Update email if provided
@@ -250,7 +272,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return { data: null, error: emailError };
         }
         
-        toast.success("E-Mail-Adresse wurde aktualisiert. Bitte prüfen Sie Ihre E-Mails für eine Bestätigungslink.");
+        toast.success("E-Mail-Adresse wurde aktualisiert. Bitte prüfen Sie Ihre E-Mails für einen Bestätigungslink.");
       }
       
       return { data: true, error: null };

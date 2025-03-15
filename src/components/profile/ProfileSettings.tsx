@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +12,16 @@ const ProfileSettings = () => {
   const [email, setEmail] = useState(user?.email || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+
+  // Update form values when profile or user changes
+  useEffect(() => {
+    if (profile) {
+      setName(profile.name || "");
+    }
+    if (user) {
+      setEmail(user.email || "");
+    }
+  }, [profile, user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +36,6 @@ const ProfileSettings = () => {
       return;
     }
 
-    toast.success("Profil erfolgreich aktualisiert");
     setIsSubmitting(false);
   };
 

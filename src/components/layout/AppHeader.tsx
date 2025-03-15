@@ -32,7 +32,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
   const getNavItems = () => {
     if (isAuthenticated) {
       return [
-        { path: "/dashboard", label: "Dashboard", icon: <Home className="h-5 w-5" /> },
+        { path: "/dashboard", label: "Home", icon: <Home className="h-5 w-5" /> },
         { path: "/practice", label: "Übungen", icon: <MessageCircle className="h-5 w-5" /> },
         { path: "/vocabulary", label: "Vokabeln", icon: <BookOpen className="h-5 w-5" /> },
         { path: "/profile", label: "Profil", icon: <User className="h-5 w-5" /> },
@@ -108,8 +108,11 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
                 <span className="ml-2">{item.label}</span>
               </Link>
             ))}
+          </nav>
 
-            {isAuthenticated && (
+          {/* Auth buttons */}
+          <div className="hidden md:flex items-center space-x-2">
+            {isAuthenticated ? (
               <Button
                 variant="ghost"
                 className="text-neutral-600 hover:bg-neutral-100"
@@ -118,26 +121,23 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
                 <LogOut className="h-5 w-5 mr-2" />
                 <span>Abmelden</span>
               </Button>
+            ) : (
+              <>
+                <Button 
+                  variant="outline"
+                  onClick={handleLogin}
+                >
+                  Anmelden
+                </Button>
+                <Button
+                  className="bg-medical-500 hover:bg-medical-600"
+                  onClick={handleRegister}
+                >
+                  Registrieren
+                </Button>
+              </>
             )}
-          </nav>
-
-          {/* Auth buttons for non-authenticated users */}
-          {!isAuthenticated && (
-            <div className="hidden md:flex items-center space-x-2">
-              <Button 
-                variant="outline"
-                onClick={handleLogin}
-              >
-                Anmelden
-              </Button>
-              <Button
-                className="bg-medical-500 hover:bg-medical-600"
-                onClick={handleRegister}
-              >
-                Registrieren
-              </Button>
-            </div>
-          )}
+          </div>
 
           {/* Mobile menu button */}
           <Button
@@ -173,7 +173,19 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
               </Link>
             ))}
 
-            {!isAuthenticated ? (
+            {isAuthenticated ? (
+              <Button
+                variant="ghost"
+                className="flex items-center px-4 py-3 rounded-lg transition-colors text-neutral-600 hover:bg-neutral-100 justify-start"
+                onClick={() => {
+                  handleLogout();
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                <LogOut className="h-5 w-5 mr-2" />
+                <span className="text-lg">Abmelden</span>
+              </Button>
+            ) : (
               <div className="flex flex-col space-y-2 mt-4">
                 <Button
                   variant="outline"
@@ -195,18 +207,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
                   Registrieren
                 </Button>
               </div>
-            ) : (
-              <Button
-                variant="ghost"
-                className="flex items-center px-4 py-3 rounded-lg transition-colors text-neutral-600 hover:bg-neutral-100 justify-start"
-                onClick={() => {
-                  handleLogout();
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <LogOut className="h-5 w-5 mr-2" />
-                <span className="text-lg">Abmelden</span>
-              </Button>
             )}
           </nav>
         </div>
