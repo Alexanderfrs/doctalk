@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, CheckCircle, Globe, Search } from "lucide-react";
@@ -6,7 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Input } from "@/components/ui/input";
 
 interface OnboardingLanguageSelectProps {
-  onComplete: () => void;
+  onComplete: (data: any) => void;
 }
 
 const OnboardingLanguageSelect: React.FC<OnboardingLanguageSelectProps> = ({ onComplete }) => {
@@ -23,7 +22,7 @@ const OnboardingLanguageSelect: React.FC<OnboardingLanguageSelectProps> = ({ onC
   };
   
   const handleContinue = () => {
-    onComplete();
+    onComplete({ language: userLanguage });
   };
   
   return (

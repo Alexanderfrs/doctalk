@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,54 +7,37 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Stethoscope } from "lucide-react";
 import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
+import { useAuth } from "@/contexts/AuthContext";
 
-interface LoginProps {
-  onLogin?: () => void;
-}
-
-const Login: React.FC<LoginProps> = ({ onLogin }) => {
+const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError("");
 
-    // Demo login logic (no real authentication)
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const { error } = await signIn(email, password);
       
-      if (email && password) {
-        // Set authentication in localStorage
-        localStorage.setItem("isAuthenticated", "true");
-        
-        // Call the login callback if provided
-        if (onLogin) {
-          onLogin();
-        }
-        
-        // Check if onboarding is complete
-        const onboardingComplete = localStorage.getItem("onboardingComplete") === "true";
-        
-        // Show success message using sonner toast
-        toast.success("Erfolgreich angemeldet. Willkommen zurück bei MedLingua!");
-        
-        // Navigate to appropriate page
-        if (onboardingComplete) {
-          navigate("/dashboard");
-        } else {
-          navigate("/onboarding");
-        }
-      } else {
-        setError("Bitte geben Sie Ihre E-Mail-Adresse und Ihr Passwort ein.");
+      if (error) {
+        toast.error(error.message || "Login fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten.");
+        return;
       }
-    }, 1000);
+      
+      toast.success("Erfolgreich angemeldet. Willkommen zurück bei MedLingua!");
+      navigate("/index"); // Let the Index component handle routing
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -73,12 +57,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </p>
           </div>
 
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg">
-              {error}
-            </div>
-          )}
-
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email">E-Mail</Label>
@@ -88,6 +66,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 placeholder="ihre.email@beispiel.de"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
 
@@ -105,6 +84,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
                 <button
                   type="button"

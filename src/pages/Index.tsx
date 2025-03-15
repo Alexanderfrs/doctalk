@@ -1,16 +1,24 @@
 
 import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
-  // Check localStorage for authentication status (temporary solution)
-  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-  const onboardingComplete = localStorage.getItem("onboardingComplete") === "true";
+  const { isAuthenticated, onboardingComplete, isLoading } = useAuth();
 
   useEffect(() => {
     // Log auth status for debugging
-    console.log("Auth status:", { isAuthenticated, onboardingComplete });
-  }, []);
+    console.log("Auth status:", { isAuthenticated, onboardingComplete, isLoading });
+  }, [isAuthenticated, onboardingComplete, isLoading]);
+
+  // Show loading state while checking auth
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-medical-500"></div>
+      </div>
+    );
+  }
 
   // Logic for redirection
   if (isAuthenticated) {

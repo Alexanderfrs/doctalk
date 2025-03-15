@@ -1,21 +1,14 @@
-
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, BookOpen, Mic, User, MessageCircle, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
-interface AppNavigationProps {
-  isAuthenticated?: boolean;
-  onLogout?: () => void;
-}
-
-const AppNavigation: React.FC<AppNavigationProps> = ({ 
-  isAuthenticated = true,
-  onLogout
-}) => {
+const AppNavigation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
+  const { isAuthenticated, signOut } = useAuth();
   
   // Only show navigation for authenticated users
   if (!isAuthenticated) {
@@ -30,11 +23,9 @@ const AppNavigation: React.FC<AppNavigationProps> = ({
     { name: "Profil", url: "/profile", icon: User }
   ];
 
-  const handleLogout = () => {
-    if (onLogout) {
-      onLogout();
-      navigate('/');
-    }
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/');
   };
 
   return (

@@ -1,25 +1,20 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Home, BookOpen, MessageCircle, User, Menu, X, Stethoscope, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface AppHeaderProps {
-  isAuthenticated?: boolean;
   onLogin?: () => void;
-  onLogout?: () => void;
 }
 
-const AppHeader: React.FC<AppHeaderProps> = ({ 
-  isAuthenticated = false, 
-  onLogin, 
-  onLogout 
-}) => {
+const AppHeader: React.FC<AppHeaderProps> = ({ onLogin }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated, signOut } = useAuth();
 
   // Handle scroll effect
   useEffect(() => {
@@ -50,11 +45,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({
 
   const navItems = getNavItems();
 
-  const handleLogout = () => {
-    localStorage.setItem("isAuthenticated", "false");
-    if (onLogout) {
-      onLogout();
-    }
+  const handleLogout = async () => {
+    await signOut();
     navigate('/');
   };
 

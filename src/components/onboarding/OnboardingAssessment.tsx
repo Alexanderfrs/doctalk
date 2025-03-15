@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,7 +7,7 @@ import useLanguageAssessment from "@/hooks/useLanguageAssessment";
 import { toast } from "sonner";
 
 interface OnboardingAssessmentProps {
-  onComplete: () => void;
+  onComplete: (data: any) => void;
 }
 
 const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete }) => {
@@ -45,14 +44,8 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
 
   const handleFinish = () => {
     if (result) {
-      // Save the assessed level to localStorage
-      localStorage.setItem("userLanguageLevel", result.level);
-      toast.success(`Ihr Sprachniveau: ${result.level}`, {
-        description: "Wir haben Ihren Lernplan angepasst"
-      });
+      onComplete({ level: result.level });
     }
-    
-    onComplete();
   };
 
   if (!assessmentStarted) {

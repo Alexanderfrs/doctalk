@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,12 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Stethoscope, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
+import { useAuth } from "@/contexts/AuthContext";
 
-interface RegisterProps {
-  onRegister?: () => void;
-}
-
-const Register: React.FC<RegisterProps> = ({ onRegister }) => {
+const Register: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,37 +18,31 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const navigate = useNavigate();
+  const { signUp } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
 
-    // Demo registration logic (no real authentication)
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const { error } = await signUp(email, password, name);
       
-      if (name && email && password) {
-        // Set authentication in localStorage
-        localStorage.setItem("isAuthenticated", "true");
-        
-        // Reset onboarding status to false for new users
-        localStorage.setItem("onboardingComplete", "false");
-        
-        // Call the register callback if provided
-        if (onRegister) {
-          onRegister();
-        }
-        
-        // Show success message using sonner toast
-        toast.success("Registrierung erfolgreich. Willkommen bei MedLingua!");
-        
-        // Navigate to onboarding
-        navigate("/onboarding");
-      } else {
-        setError("Bitte füllen Sie alle Felder aus.");
+      if (error) {
+        setError(error.message || "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.");
+        return;
       }
-    }, 1000);
+      
+      toast.success("Registrierung erfolgreich. Willkommen bei MedLingua!");
+      
+      // Navigate to Index, which will redirect to onboarding
+      navigate("/index");
+    } catch (error) {
+      console.error("Registration error:", error);
+      setError("Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -85,6 +77,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
                 placeholder="Ihr vollständiger Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
               />
             </div>
             
@@ -96,6 +89,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
                 placeholder="ihre.email@beispiel.de"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
 
@@ -108,6 +102,8 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
                 />
                 <button
                   type="button"
@@ -117,6 +113,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
               </div>
+              <p className="text-xs text-gray-500 mt-1">Passwort muss mindestens 6 Zeichen lang sein</p>
             </div>
 
             <div>

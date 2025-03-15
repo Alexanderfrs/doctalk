@@ -8,35 +8,58 @@ import OnboardingAssessment from "@/components/onboarding/OnboardingAssessment";
 import OnboardingLanguageSelect from "@/components/onboarding/OnboardingLanguageSelect";
 import OnboardingPersonalization from "@/components/onboarding/OnboardingPersonalization";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
-interface OnboardingProps {
-  onComplete?: () => void;
-}
-
-const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
+const Onboarding: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const { userLanguage } = useLanguage();
+  const { user, completeOnboarding } = useAuth();
   
   const totalSteps = 3;
   
-  const handleStepComplete = (stepNumber: number) => {
+  const handleStepComplete = async (stepNumber: number, data?: any) => {
     if (!completedSteps.includes(stepNumber)) {
       setCompletedSteps([...completedSteps, stepNumber]);
     }
     
-    if (stepNumber === totalSteps) {
-      // Save onboarding complete status
-      localStorage.setItem("onboardingComplete", "true");
-      toast.success("Einrichtung abgeschlossen!");
-      
-      // Call the onComplete callback if provided
-      if (onComplete) {
-        onComplete();
+    // Save step data to profile
+    if (user && data) {
+      try {
+        let updateData = {};
+        
+        if (stepNumber === 1 && data.level) {
+          updateData = { german_level: data.level };
+        } else if (stepNumber === 2 && data.language) {
+          updateData = { native_language: data.language };
+        } else if (stepNumber === 3 && data.preferences) {
+          updateData = { 
+            preferences: data.preferences
+          };
+        }
+        
+        if (Object.keys(updateData).length > 0) {
+          const { error } = await supabase
+            .from('profiles')
+            .update(updateData)
+            .eq('id', user.id);
+            
+          if (error) {
+            console.error('Error updating profile:', error);
+          }
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
       }
-      
+    }
+    
+    if (stepNumber === totalSteps) {
+      // Complete onboarding
+      completeOnboarding();
+      toast.success("Einrichtung abgeschlossen!");
       navigate("/dashboard");
     } else {
       setCurrentStep(stepNumber + 1);
@@ -46,21 +69,21 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
   const steps = [
     {
       title: userLanguage === 'de' ? "Sprachniveau" : "Language Level",
-      component: <OnboardingAssessment onComplete={() => handleStepComplete(1)} />,
+      component: <OnboardingAssessment onComplete={(data) => handleStepComplete(1, data)} />,
       description: userLanguage === 'de' 
         ? "Wir ermitteln Ihr aktuelles Deutschniveau" 
         : "We'll assess your current German level"
     },
     {
       title: userLanguage === 'de' ? "Muttersprache" : "Native Language",
-      component: <OnboardingLanguageSelect onComplete={() => handleStepComplete(2)} />,
+      component: <OnboardingLanguageSelect onComplete={(data) => handleStepComplete(2, data)} />,
       description: userLanguage === 'de' 
         ? "Wählen Sie Ihre Muttersprache aus" 
         : "Select your native language"
     },
     {
       title: userLanguage === 'de' ? "Personalisierung" : "Personalization",
-      component: <OnboardingPersonalization onComplete={() => handleStepComplete(3)} />,
+      component: <OnboardingPersonalization onComplete={(data) => handleStepComplete(3, data)} />,
       description: userLanguage === 'de' 
         ? "Passen Sie Ihre Lernziele an" 
         : "Customize your learning goals"

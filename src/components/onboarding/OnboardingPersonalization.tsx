@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ChevronRight, Target } from "lucide-react";
@@ -7,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 
 interface OnboardingPersonalizationProps {
-  onComplete: () => void;
+  onComplete: (data: any) => void;
 }
 
 const OnboardingPersonalization: React.FC<OnboardingPersonalizationProps> = ({ onComplete }) => {
@@ -50,12 +49,14 @@ const OnboardingPersonalization: React.FC<OnboardingPersonalizationProps> = ({ o
   };
   
   const handleComplete = () => {
-    // Save personalization settings to localStorage
-    localStorage.setItem("userGoals", JSON.stringify(selectedGoals));
-    localStorage.setItem("practiceDuration", practiceMinutes.toString());
-    localStorage.setItem("studyDays", JSON.stringify(studyDays));
+    const preferences = {
+      goals: selectedGoals,
+      practiceDuration: practiceMinutes,
+      studyDays: studyDays,
+      onboardingComplete: true
+    };
     
-    onComplete();
+    onComplete({ preferences });
   };
   
   return (
