@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -70,7 +69,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
 
   return (
     <div className={`min-h-screen flex flex-col ${loadingPage ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}`}>
-      <AppHeader isAuthenticated={true} onLogout={onLogout} />
+      <AppHeader onLogout={onLogout} />
       
       <main className="flex-grow pt-24 px-4 md:px-8 pb-20">
         <div className="container mx-auto">

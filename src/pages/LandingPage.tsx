@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -22,11 +21,10 @@ import {
 import SideNavigator from "@/components/navigation/SideNavigator";
 
 interface LandingPageProps {
-  isAuthenticated?: boolean;
   onLogin?: () => void;
 }
 
-const LandingPage: React.FC<LandingPageProps> = ({ isAuthenticated = false, onLogin }) => {
+const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   const navigate = useNavigate();
 
   const handleRegister = () => {
@@ -45,7 +43,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isAuthenticated = false, onLo
 
   return (
     <div className="min-h-screen flex flex-col relative">
-      <AppHeader isAuthenticated={isAuthenticated} onLogin={onLogin} />
+      <AppHeader onLogin={handleLogin} />
       
       <SideNavigator sections={sections} />
       
