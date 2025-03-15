@@ -18,6 +18,7 @@ import NotFound from "./pages/NotFound";
 import LanguageCertification from "./pages/LanguageCertification";
 import BrandBanner from "./components/brand/BrandBanner";
 import Onboarding from "./pages/Onboarding";
+import Index from "./pages/Index";
 import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
@@ -26,7 +27,7 @@ const queryClient = new QueryClient();
 const useAuth = () => {
   // For demo purposes, we're using localStorage
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [onboardingComplete, setOnboardingComplete] = useState(true);
+  const [onboardingComplete, setOnboardingComplete] = useState(false);
 
   useEffect(() => {
     // Check if user is authenticated from localStorage
@@ -66,7 +67,7 @@ const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
   
   if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
   
   return children;
@@ -77,7 +78,7 @@ const OnboardingProtectedRoute = ({ children }) => {
   const { isAuthenticated, onboardingComplete } = useAuth();
   
   if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
   
   if (!onboardingComplete) {
@@ -88,7 +89,7 @@ const OnboardingProtectedRoute = ({ children }) => {
 };
 
 const App = () => {
-  const { isAuthenticated, login, logout, onboardingComplete } = useAuth();
+  const { isAuthenticated, login, logout, onboardingComplete, completeOnboarding } = useAuth();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -100,6 +101,9 @@ const App = () => {
             <BrowserRouter>
               <BrandBanner />
               <Routes>
+                {/* Index route for routing logic */}
+                <Route path="/index" element={<Index />} />
+                
                 {/* Public routes */}
                 <Route 
                   path="/" 
@@ -119,7 +123,7 @@ const App = () => {
                   path="/onboarding" 
                   element={
                     <ProtectedRoute>
-                      <Onboarding />
+                      <Onboarding onComplete={completeOnboarding} />
                     </ProtectedRoute>
                   } 
                 />

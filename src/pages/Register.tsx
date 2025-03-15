@@ -1,13 +1,15 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Stethoscope, CheckCircle } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 import Footer from "@/components/layout/Footer";
 
 interface RegisterProps {
-  onRegister: () => void;
+  onRegister?: () => void;
 }
 
 const Register: React.FC<RegisterProps> = ({ onRegister }) => {
@@ -19,6 +21,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,11 +33,23 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
       setIsSubmitting(false);
       
       if (name && email && password) {
-        // Call the register callback
-        onRegister();
+        // Set authentication in localStorage
+        localStorage.setItem("isAuthenticated", "true");
         
         // Reset onboarding status to false for new users
         localStorage.setItem("onboardingComplete", "false");
+        
+        // Call the register callback if provided
+        if (onRegister) {
+          onRegister();
+        }
+        
+        // Show success message
+        toast({
+          title: "Registrierung erfolgreich",
+          description: "Willkommen bei MedLingua!",
+          variant: "success",
+        });
         
         // Navigate to onboarding
         navigate("/onboarding");

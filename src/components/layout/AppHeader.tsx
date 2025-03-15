@@ -43,7 +43,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
     } else {
       return [
         { path: "/#features", label: "Funktionen", icon: <MessageCircle className="h-5 w-5" /> },
-        { path: "/#testimonials", label: "Erfolgsgeschichten", icon: <User className="h-5 w-5" /> },
         { path: "/#pricing", label: "Preise", icon: <BookOpen className="h-5 w-5" /> },
       ];
     }
@@ -52,17 +51,19 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   const navItems = getNavItems();
 
   const handleLogout = () => {
+    localStorage.setItem("isAuthenticated", "false");
     if (onLogout) {
       onLogout();
-      navigate('/');
     }
+    navigate('/');
   };
 
   const handleLogin = () => {
-    if (onLogin) {
-      onLogin();
-      navigate('/dashboard');
-    }
+    navigate('/login');
+  };
+
+  const handleRegister = () => {
+    navigate('/register');
   };
 
   return (
@@ -128,7 +129,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
               </Button>
               <Button
                 className="bg-medical-500 hover:bg-medical-600"
-                onClick={handleLogin}
+                onClick={handleRegister}
               >
                 Registrieren
               </Button>
@@ -184,7 +185,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
                 <Button
                   className="bg-medical-500 hover:bg-medical-600 w-full justify-center"
                   onClick={() => {
-                    handleLogin();
+                    handleRegister();
                     setIsMobileMenuOpen(false);
                   }}
                 >

@@ -1,5 +1,6 @@
+
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/Footer";
 import AppHeader from "@/components/layout/AppHeader";
@@ -18,6 +19,7 @@ import {
   FileCheck,
   Star
 } from "lucide-react";
+import SideNavigator from "@/components/navigation/SideNavigator";
 
 interface LandingPageProps {
   isAuthenticated?: boolean;
@@ -25,68 +27,30 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ isAuthenticated = false, onLogin }) => {
-  const testimonials = [
-    {
-      name: "Dr. Sarah Schmidt",
-      position: "Ärztin, Universitätsklinikum Berlin",
-      text: "MedLingua hat mir geholfen, meine Deutschkenntnisse für den medizinischen Alltag deutlich zu verbessern. Besonders die spezialisierten Dialogübungen waren sehr hilfreich.",
-      avatar: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
-    },
-    {
-      name: "Andrei Popescu",
-      position: "Pflegefachkraft, Charité Berlin",
-      text: "Als ich nach Deutschland kam, hatte ich große Schwierigkeiten mit der medizinischen Fachsprache. Mit MedLingua konnte ich gezielt das lernen, was ich täglich brauche.",
-      avatar: "https://images.unsplash.com/photo-1639149888905-fb39731f2e6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
-    },
-    {
-      name: "Maria Gonzalez",
-      position: "Krankenschwester, Helios Klinikum",
-      text: "Die App ist perfekt für alle, die im medizinischen Bereich arbeiten. Die Inhalte sind praxisnah und ich konnte mein Lerntempo selbst bestimmen.",
-      avatar: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
-    }
-  ];
-
-  const partnersAndInstitutions = [
-    {
-      name: "Universitätsklinikum Berlin",
-      logo: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      type: "institution"
-    },
-    {
-      name: "Deutsche Gesellschaft für Pflege",
-      logo: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      type: "institution"
-    },
-    {
-      name: "Bundesverband ausländischer Pflegekräfte",
-      logo: "https://images.unsplash.com/photo-1560131653-539eb351ce42?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      type: "institution"
-    },
-    {
-      name: "Helios Kliniken",
-      logo: "https://images.unsplash.com/photo-1516549655169-df83a0774514?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      type: "partner"
-    }
-  ];
+  const navigate = useNavigate();
 
   const handleRegister = () => {
-    if (onLogin) {
-      onLogin();
-    }
+    navigate('/register');
   };
 
   const handleLogin = () => {
-    if (onLogin) {
-      onLogin();
-    }
+    navigate('/login');
   };
 
+  const sections = [
+    { id: "hero", label: "Start" },
+    { id: "features", label: "Funktionen" },
+    { id: "pricing", label: "Preise" }
+  ];
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative">
       <AppHeader isAuthenticated={isAuthenticated} onLogin={onLogin} />
       
+      <SideNavigator sections={sections} />
+      
       <main className="flex-grow pt-24">
-        <section className="py-16 md:py-24 px-4">
+        <section id="hero" className="py-16 md:py-24 px-4">
           <div className="container mx-auto">
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/2 mb-10 md:mb-0 md:pr-10">
@@ -109,22 +73,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ isAuthenticated = false, onLo
                       Mehr erfahren
                     </Button>
                   </a>
-                </div>
-                
-                <div className="mt-8 flex items-center space-x-4">
-                  <div className="flex -space-x-2">
-                    {testimonials.map((testimonial, index) => (
-                      <img 
-                        key={index}
-                        src={testimonial.avatar} 
-                        alt={testimonial.name}
-                        className="w-8 h-8 rounded-full border-2 border-white"
-                      />
-                    ))}
-                  </div>
-                  <p className="text-sm text-neutral-600">
-                    <span className="font-semibold">4.9/5</span> von mehr als 2.400 medizinischen Fachkräften
-                  </p>
                 </div>
               </div>
               
@@ -270,69 +218,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ isAuthenticated = false, onLo
           </div>
         </section>
         
-        <section id="testimonials" className="py-16 px-4">
-          <div className="container mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-800">
-                Erfolgsgeschichten
-              </h2>
-              <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-                Erfahre, wie MedLingua medizinischen Fachkräften dabei hilft, sprachliche Barrieren zu überwinden.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {testimonials.map((testimonial, index) => (
-                <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-neutral-100">
-                  <div className="flex items-center mb-4">
-                    <img 
-                      src={testimonial.avatar} 
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full mr-4"
-                    />
-                    <div>
-                      <h4 className="font-semibold">{testimonial.name}</h4>
-                      <p className="text-sm text-neutral-500">{testimonial.position}</p>
-                    </div>
-                  </div>
-                  <p className="text-neutral-600 italic">"{testimonial.text}"</p>
-                  <div className="mt-4 flex">
-                    {[...Array(5)].map((_, i) => (
-                      <CheckCircle key={i} className="h-4 w-4 text-medical-500 mr-1" />
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        
-        <section id="partners" className="py-16 bg-neutral-50 px-4">
-          <div className="container mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-800">
-                Vertrauen von führenden Institutionen
-              </h2>
-              <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-                MedLingua wird von führenden medizinischen Einrichtungen und Organisationen empfohlen.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {partnersAndInstitutions.map((partner, index) => (
-                <div key={index} className="bg-white rounded-lg p-6 flex flex-col items-center justify-center h-32 shadow-sm border border-neutral-100">
-                  <img 
-                    src={partner.logo} 
-                    alt={partner.name}
-                    className="h-10 object-contain opacity-80 hover:opacity-100 transition-opacity"
-                  />
-                  <p className="mt-3 text-xs text-center text-neutral-500">{partner.name}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        
         <section id="pricing" className="py-16 px-4">
           <div className="container mx-auto">
             <div className="text-center mb-16">
@@ -367,11 +252,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ isAuthenticated = false, onLo
                     <span>Fortschrittsübersicht</span>
                   </li>
                 </ul>
-                <Link to="/register">
-                  <Button className="w-full" variant="outline">
-                    Kostenlos starten
-                  </Button>
-                </Link>
+                <Button 
+                  className="w-full" 
+                  variant="outline"
+                  onClick={handleRegister}
+                >
+                  Kostenlos starten
+                </Button>
               </div>
               
               <div className="bg-medical-50 p-6 rounded-xl shadow-md border border-medical-200 relative">
@@ -412,11 +299,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ isAuthenticated = false, onLo
                     <span>1 Monat gratis nach 3-Monats-Streak</span>
                   </li>
                 </ul>
-                <Link to="/register">
-                  <Button className="w-full bg-medical-500 hover:bg-medical-600">
-                    Jetzt starten
-                  </Button>
-                </Link>
+                <Button 
+                  className="w-full bg-medical-500 hover:bg-medical-600"
+                  onClick={handleRegister}
+                >
+                  Jetzt starten
+                </Button>
               </div>
               
               <div className="bg-white p-6 rounded-xl shadow-sm border border-neutral-100">
