@@ -2,17 +2,32 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import AppHeader from "@/components/layout/AppHeader";
 import ScenarioCard from "@/components/ui/ScenarioCard";
 import ProgressBar from "@/components/ui/ProgressBar";
 import scenarios from "@/data/scenarios";
-import { BookOpen, CheckCircle, MessageCircle, Calendar, ArrowRight } from "lucide-react";
+import { 
+  BookOpen, 
+  CheckCircle, 
+  MessageCircle, 
+  Calendar, 
+  ArrowRight,
+  Home, 
+  Book, 
+  Activity, 
+  User 
+} from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { NavBar } from "@/components/ui/tubelight-navbar";
-import { Home, Book, Activity, User } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import SwipeableContainer from "@/components/ui/SwipeableContainer";
 
-const Dashboard = () => {
+interface DashboardProps {
+  onLogout?: () => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   const [activeScenarios, setActiveScenarios] = useState(scenarios.slice(0, 3));
   const [loadingPage, setLoadingPage] = useState(true);
   const [userProgress, setUserProgress] = useState({
@@ -22,8 +37,10 @@ const Dashboard = () => {
     totalVocabulary: 38,
     streak: 3,
   });
+  const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
 
   const { translate } = useLanguage();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Simulate loading delay for animation
@@ -47,14 +64,18 @@ const Dashboard = () => {
     { name: "Profil", url: "/profile", icon: User }
   ];
 
+  const handleSwipe = (index: number) => {
+    setCurrentScenarioIndex(index);
+  };
+
   return (
     <div className={`min-h-screen flex flex-col ${loadingPage ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}`}>
-      <Header />
+      <AppHeader isAuthenticated={true} onLogout={onLogout} />
       
       <main className="flex-grow pt-24 px-4 md:px-8 pb-20">
         <div className="container mx-auto">
           {/* Welcome section */}
-          <section className="mb-10">
+          <section className="mb-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
             <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -76,8 +97,8 @@ const Dashboard = () => {
             </div>
           </section>
           
-          {/* Progress overview */}
-          <section className="mb-10">
+          {/* Progress overview section */}
+          <section className="mb-10 animate-fade-in" style={{ animationDelay: '500ms' }}>
             <h2 className="text-xl font-semibold mb-4 flex items-center">
               <Calendar className="mr-2 h-5 w-5 text-medical-600" />
               Dein Fortschritt
@@ -145,8 +166,8 @@ const Dashboard = () => {
             </div>
           </section>
           
-          {/* Recent scenarios */}
-          <section className="mb-10">
+          {/* Recent scenarios section */}
+          <section className="mb-10 animate-fade-in" style={{ animationDelay: '700ms' }}>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold flex items-center">
                 <MessageCircle className="mr-2 h-5 w-5 text-medical-600" />
@@ -160,19 +181,46 @@ const Dashboard = () => {
               </Button>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {activeScenarios.map((scenario) => (
-                <ScenarioCard 
-                  key={scenario.id} 
-                  scenario={scenario} 
-                  onClick={() => console.log(`Navigate to scenario: ${scenario.id}`)}
-                />
-              ))}
-            </div>
+            {isMobile ? (
+              <div className="px-4 py-2">
+                <SwipeableContainer
+                  onSwipe={handleSwipe}
+                  showIndicators={true}
+                  className="h-[350px] mb-4"
+                >
+                  {activeScenarios.map((scenario) => (
+                    <div key={scenario.id} className="px-2 w-full h-full">
+                      <ScenarioCard 
+                        scenario={scenario} 
+                        onClick={() => console.log(`Navigate to scenario: ${scenario.id}`)}
+                        className="h-full"
+                      />
+                    </div>
+                  ))}
+                </SwipeableContainer>
+                
+                <div className="text-center text-sm text-medical-600 mt-2">
+                  <span className="inline-flex items-center">
+                    Swipen Sie, um mehr zu sehen
+                    <ArrowRight className="ml-1 h-3 w-3" />
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {activeScenarios.map((scenario) => (
+                  <ScenarioCard 
+                    key={scenario.id} 
+                    scenario={scenario} 
+                    onClick={() => console.log(`Navigate to scenario: ${scenario.id}`)}
+                  />
+                ))}
+              </div>
+            )}
           </section>
           
           {/* Recent activity and statistics */}
-          <section className="mb-10">
+          <section className="mb-10 animate-fade-in" style={{ animationDelay: '900ms' }}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
                 <h3 className="text-lg font-semibold mb-4">Letzte Aktivitäten</h3>

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/Footer";
+import AppHeader from "@/components/layout/AppHeader";
 import { 
   Stethoscope, 
   Shield, 
@@ -18,7 +19,12 @@ import {
   Star
 } from "lucide-react";
 
-const LandingPage = () => {
+interface LandingPageProps {
+  isAuthenticated?: boolean;
+  onLogin?: () => void;
+}
+
+const LandingPage: React.FC<LandingPageProps> = ({ isAuthenticated = false, onLogin }) => {
   const testimonials = [
     {
       name: "Dr. Sarah Schmidt",
@@ -63,39 +69,22 @@ const LandingPage = () => {
     }
   ];
 
+  const handleRegister = () => {
+    if (onLogin) {
+      onLogin();
+    }
+  };
+
+  const handleLogin = () => {
+    if (onLogin) {
+      onLogin();
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navigation */}
-      <header className="bg-white/90 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50 py-4 px-4 md:px-8">
-        <div className="container mx-auto">
-          <div className="flex justify-between items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="bg-medical-500 text-white p-1.5 rounded-lg">
-                <Stethoscope className="h-5 w-5" />
-              </div>
-              <span className="text-xl font-semibold text-medical-800">MedLingua</span>
-            </Link>
-            
-            <nav className="hidden md:flex space-x-6">
-              <a href="#features" className="text-neutral-700 hover:text-medical-600 transition-colors">Funktionen</a>
-              <a href="#testimonials" className="text-neutral-700 hover:text-medical-600 transition-colors">Erfolgsgeschichten</a>
-              <a href="#partners" className="text-neutral-700 hover:text-medical-600 transition-colors">Partner</a>
-              <a href="#pricing" className="text-neutral-700 hover:text-medical-600 transition-colors">Preise</a>
-            </nav>
-            
-            <div className="flex items-center space-x-3">
-              <Link to="/login">
-                <Button variant="outline" className="hidden sm:inline-flex">Anmelden</Button>
-              </Link>
-              <Link to="/register">
-                <Button className="bg-medical-500 hover:bg-medical-600">Registrieren</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AppHeader isAuthenticated={isAuthenticated} onLogin={onLogin} />
       
-      {/* Hero section */}
       <main className="flex-grow pt-24">
         <section className="py-16 md:py-24 px-4">
           <div className="container mx-auto">
@@ -108,11 +97,13 @@ const LandingPage = () => {
                   Die spezialisierte Sprachlern-Plattform für medizinisches Fachpersonal. Verbessere deine Kommunikation im Gesundheitswesen - von A1 bis C1.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Link to="/register">
-                    <Button size="lg" className="bg-medical-500 hover:bg-medical-600">
-                      Kostenlos starten
-                    </Button>
-                  </Link>
+                  <Button 
+                    size="lg" 
+                    className="bg-medical-500 hover:bg-medical-600"
+                    onClick={handleRegister}
+                  >
+                    Kostenlos starten
+                  </Button>
                   <a href="#features">
                     <Button size="lg" variant="outline">
                       Mehr erfahren
@@ -167,7 +158,6 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* Features */}
         <section id="features" className="py-16 bg-neutral-50 px-4">
           <div className="container mx-auto">
             <div className="text-center mb-16">
@@ -280,7 +270,6 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* Testimonials */}
         <section id="testimonials" className="py-16 px-4">
           <div className="container mx-auto">
             <div className="text-center mb-16">
@@ -318,7 +307,6 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* Partners and institutions */}
         <section id="partners" className="py-16 bg-neutral-50 px-4">
           <div className="container mx-auto">
             <div className="text-center mb-16">
@@ -345,7 +333,6 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* Pricing */}
         <section id="pricing" className="py-16 px-4">
           <div className="container mx-auto">
             <div className="text-center mb-16">
@@ -471,7 +458,6 @@ const LandingPage = () => {
               </div>
             </div>
             
-            {/* Loyalty Program */}
             <div className="mt-12 max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-neutral-100 overflow-hidden">
               <div className="bg-medical-500 p-4 text-white text-center">
                 <h3 className="text-xl font-semibold">Treue-Programm: 3+1</h3>
@@ -502,7 +488,6 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* CTA section */}
         <section className="py-16 px-4">
           <div className="container mx-auto">
             <div className="bg-gradient-to-r from-medical-600 to-medical-500 rounded-2xl p-8 md:p-12 text-white text-center">
@@ -510,12 +495,14 @@ const LandingPage = () => {
               <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
                 Starte noch heute und mache dich fit für deinen beruflichen Alltag im deutschen Gesundheitswesen.
               </p>
-              <Link to="/register">
-                <Button size="lg" className="bg-white text-medical-600 hover:bg-white/90">
-                  Kostenlos registrieren
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+              <Button 
+                size="lg" 
+                className="bg-white text-medical-600 hover:bg-white/90"
+                onClick={handleRegister}
+              >
+                Kostenlos registrieren
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
             </div>
           </div>
         </section>

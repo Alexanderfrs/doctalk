@@ -1,20 +1,41 @@
 
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Home, BookOpen, Mic, User, MessageCircle } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Home, BookOpen, Mic, User, MessageCircle, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const AppNavigation: React.FC = () => {
+interface AppNavigationProps {
+  isAuthenticated?: boolean;
+  onLogout?: () => void;
+}
+
+const AppNavigation: React.FC<AppNavigationProps> = ({ 
+  isAuthenticated = true,
+  onLogout
+}) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPath = location.pathname;
   
+  // Only show navigation for authenticated users
+  if (!isAuthenticated) {
+    return null;
+  }
+  
   const navItems = [
-    { name: "Home", url: "/", icon: Home },
+    { name: "Home", url: "/dashboard", icon: Home },
     { name: "Übungen", url: "/practice", icon: BookOpen },
     { name: "Vokabeln", url: "/vocabulary", icon: Mic },
     { name: "Dialog", url: "/scenario", icon: MessageCircle },
     { name: "Profil", url: "/profile", icon: User }
   ];
+
+  const handleLogout = () => {
+    if (onLogout) {
+      onLogout();
+      navigate('/');
+    }
+  };
 
   return (
     <div className="fixed bottom-8 sm:bottom-auto sm:top-24 left-1/2 -translate-x-1/2 z-40">
