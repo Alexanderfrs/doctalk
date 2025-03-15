@@ -31,13 +31,14 @@ export const useVocabulary = () => {
     }
     
     const domainCategories = {
-      'hospital': ['vital-signs', 'emergency', 'medications', 'pain-scale'],
+      'hospital': ['vital-signs', 'emergency', 'medications', 'pain-scale', 'diagnoses', 'abbreviations', 'equipment'],
+      'daily-care': ['ward-routines', 'documentation', 'mobility', 'general-care'],
       'elderly-care': ['elderly-care', 'dementia', 'mobility', 'general-care'],
       'disability-care': ['disability-care', 'communication', 'mobility']
     };
     
     const relevantCategories = domainCategories[activeDomain] || [];
-    if (relevantCategories.length > 0) {
+    if (activeDomain !== 'all' && relevantCategories.length > 0) {
       result = result.filter(word => relevantCategories.includes(word.category));
     }
     
@@ -47,7 +48,9 @@ export const useVocabulary = () => {
         word => 
           word.german.toLowerCase().includes(term) || 
           word.english.toLowerCase().includes(term) ||
-          (word.example && word.example.toLowerCase().includes(term))
+          (word.example && word.example.toLowerCase().includes(term)) ||
+          (word.notes && word.notes.toLowerCase().includes(term)) ||
+          (word.abbreviation && word.abbreviation.toLowerCase().includes(term))
       );
     }
     

@@ -114,6 +114,15 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
             {word.german}
           </h3>
           
+          {/* Display abbreviation if available */}
+          {word.abbreviation && (
+            <div className="mt-1 flex justify-center">
+              <span className="px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded-full">
+                {word.abbreviation}
+              </span>
+            </div>
+          )}
+          
           <div className="mt-auto flex justify-center gap-2">
             <button 
               className={cn(
@@ -166,6 +175,12 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
                 "{word.example}"
               </p>
             </div>
+          )}
+          
+          {word.notes && (
+            <p className="text-xs text-neutral-500 mt-1">
+              {word.notes}
+            </p>
           )}
           
           {mastered && (

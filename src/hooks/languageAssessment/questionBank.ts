@@ -217,7 +217,34 @@ const b1Questions: Question[] = [
 ];
 
 // B2 level questions
-const b2Questions: Question[] = [
+const b2QuestionsAdditions: Question[] = [
+  {
+    id: 'b2_medical_1',
+    text: 'Was bedeutet die Abkürzung "DK" im klinischen Alltag?',
+    options: ['Dokumentation', 'Dauerkatheter', 'Druckkontrolle', 'Diabeteskontrollen'],
+    correctAnswer: 'Dauerkatheter',
+    difficulty: 'B2',
+    topic: 'healthcare'
+  },
+  {
+    id: 'b2_medical_2',
+    text: 'Welches der folgenden medizinischen Geräte wird für die künstliche Beatmung eingesetzt?',
+    options: ['Infusionspumpe', 'Defibrillator', 'Beatmungsgerät', 'Endoskop'],
+    correctAnswer: 'Beatmungsgerät',
+    difficulty: 'B2',
+    topic: 'healthcare'
+  },
+  {
+    id: 'b2_medical_3',
+    text: 'Was ist die korrekte Übersetzung für "Appendizitis"?',
+    options: ['Mandelentzündung', 'Blinddarmentzündung', 'Lungenentzündung', 'Nierenentzündung'],
+    correctAnswer: 'Blinddarmentzündung',
+    difficulty: 'B2',
+    topic: 'healthcare'
+  }
+];
+
+const b2Questions = [
   {
     id: 'b2_1',
     text: 'Welche dieser Aussagen verwendet das Passiv korrekt?',
@@ -293,11 +320,54 @@ const b2Questions: Question[] = [
     correctAnswer: 'Sie müssen vor der Untersuchung 8 Stunden auf Essen und Trinken verzichten.',
     difficulty: 'B2',
     topic: 'healthcare'
-  }
+  },
+  ...b2QuestionsAdditions
 ];
 
 // C1 level questions
-const c1Questions: Question[] = [
+const c1QuestionsAdditions: Question[] = [
+  {
+    id: 'c1_medical_1',
+    text: 'Was bedeutet die Abkürzung "COPD"?',
+    options: [
+      'Chronisch obstruktive Prostataerkrankung',
+      'Chronisch obstruktive Lungenerkrankung',
+      'Chronische Osteoporose mit peripherer Deformation',
+      'Chronische Otitis mit pulmonaler Disposition'
+    ],
+    correctAnswer: 'Chronisch obstruktive Lungenerkrankung',
+    difficulty: 'C1',
+    topic: 'healthcare'
+  },
+  {
+    id: 'c1_medical_2',
+    text: 'Was bedeuten die Abkürzungen "RR" und "BZ" in der Patientendokumentation?',
+    options: [
+      'Rheumafaktor und Blutzucker',
+      'Blutdruck und Blutzucker',
+      'Rückenreflex und Blutzucker',
+      'Blutdruck und Blutungszeit'
+    ],
+    correctAnswer: 'Blutdruck und Blutzucker',
+    difficulty: 'C1',
+    topic: 'healthcare'
+  },
+  {
+    id: 'c1_medical_3',
+    text: 'Welche dieser Formulierungen würde man in einer professionellen Pflegedokumentation verwenden?',
+    options: [
+      'Patient kann nicht laufen.',
+      'Patient braucht viel Hilfe.',
+      'Patient ist bettlägerig.',
+      'Patient ist nur mit Hilfsmitteln und unter Aufsicht mobilisierbar.'
+    ],
+    correctAnswer: 'Patient ist nur mit Hilfsmitteln und unter Aufsicht mobilisierbar.',
+    difficulty: 'C1',
+    topic: 'healthcare'
+  }
+];
+
+const c1Questions = [
   {
     id: 'c1_1',
     text: 'Welche dieser Formulierungen ist für einen formellen Brief am besten geeignet?',
@@ -383,11 +453,41 @@ const c1Questions: Question[] = [
     correctAnswer: 'Wir benötigen eine bildgebende Untersuchung mit einem Magnetresonanztomographen, um detaillierte Bilder Ihres Gewebes zu erhalten.',
     difficulty: 'C1',
     topic: 'healthcare'
-  }
+  },
+  ...c1QuestionsAdditions
 ];
 
 // C2 level questions
-const c2Questions: Question[] = [
+const c2QuestionsAdditions: Question[] = [
+  {
+    id: 'c2_medical_1',
+    text: 'Was ist ein "Stroke Patient"?',
+    options: [
+      'Ein Patient mit Schlaganfall',
+      'Ein Patient mit Hitzschlag',
+      'Ein Patient mit Herzinfarkt',
+      'Ein Patient mit Lähmungserscheinungen'
+    ],
+    correctAnswer: 'Ein Patient mit Schlaganfall',
+    difficulty: 'C2',
+    topic: 'healthcare'
+  },
+  {
+    id: 'c2_medical_2',
+    text: 'Welche dieser Aussagen zur Dokumentation einer Wunde ist am präzisesten?',
+    options: [
+      'Die Wunde sieht gut aus.',
+      'Die Wunde ist 2x3 cm groß, mit seröser Sekretion, Wundränder leicht gerötet.',
+      'Die Wunde hat sich verbessert.',
+      'Die Wunde ist groß und rot.'
+    ],
+    correctAnswer: 'Die Wunde ist 2x3 cm groß, mit seröser Sekretion, Wundränder leicht gerötet.',
+    difficulty: 'C2',
+    topic: 'healthcare'
+  }
+];
+
+const c2Questions = [
   {
     id: 'c2_1',
     text: 'Welches dieser Wörter ist ein Fremdwort lateinischen Ursprungs?',
@@ -463,7 +563,8 @@ const c2Questions: Question[] = [
     correctAnswer: 'Die Einwilligung muss freiwillig, nach angemessener Aufklärung und bei bestehender Einwilligungsfähigkeit erfolgen.',
     difficulty: 'C2',
     topic: 'healthcare'
-  }
+  },
+  ...c2QuestionsAdditions
 ];
 
 // Export a complete question bank organized by difficulty level

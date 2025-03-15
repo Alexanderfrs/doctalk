@@ -1,4 +1,3 @@
-
 export interface VocabularyWord {
   id: string;
   german: string;
@@ -8,6 +7,7 @@ export interface VocabularyWord {
   category: string;
   notes?: string;
   mastered?: boolean;
+  abbreviation?: string;
 }
 
 export interface VocabularyCategory {
@@ -208,7 +208,6 @@ const vocabularyCategories: VocabularyCategory[] = [
       }
     ]
   },
-  // New vocabulary categories
   {
     id: 'elderly-care',
     name: 'Altenpflege',
@@ -488,6 +487,260 @@ const vocabularyCategories: VocabularyCategory[] = [
         pronunciation: 'non-vair-bah-leh kom-moo-nee-kah-tsee-ohn',
         example: 'Achten Sie auch auf nonverbale Kommunikation wie Gesichtsausdruck und Körperhaltung.',
         category: 'communication'
+      }
+    ]
+  },
+  {
+    id: 'diagnoses',
+    name: 'Diagnosen',
+    description: 'Häufige medizinische Diagnosen und Krankheiten',
+    words: [
+      {
+        id: 'appendicitis',
+        german: 'die Appendizitis',
+        english: 'appendicitis',
+        pronunciation: 'ap-pen-di-tsee-tis',
+        example: 'Der Patient wurde mit akuter Appendizitis eingeliefert.',
+        category: 'diagnoses',
+        notes: 'Entzündung des Wurmfortsatzes des Blinddarms'
+      },
+      {
+        id: 'pneumonia',
+        german: 'die Pneumonie',
+        english: 'pneumonia',
+        pronunciation: 'pnoy-mo-nee',
+        example: 'Die Röntgenaufnahme bestätigt eine Pneumonie im rechten Lungenflügel.',
+        category: 'diagnoses',
+        notes: 'Lungenentzündung'
+      },
+      {
+        id: 'myocardial-infarction',
+        german: 'der Myokardinfarkt',
+        english: 'myocardial infarction',
+        pronunciation: 'myo-kard-in-farkt',
+        example: 'Der Patient hat einen akuten Myokardinfarkt erlitten.',
+        category: 'diagnoses',
+        notes: 'Herzinfarkt'
+      },
+      {
+        id: 'stroke',
+        german: 'der Schlaganfall',
+        english: 'stroke',
+        pronunciation: 'schlahg-an-fahl',
+        example: 'Bei Verdacht auf Schlaganfall sofort den Notarzt rufen.',
+        category: 'diagnoses',
+        notes: 'Auch: Apoplex, Stroke'
+      },
+      {
+        id: 'fracture',
+        german: 'die Fraktur',
+        english: 'fracture',
+        pronunciation: 'frak-toor',
+        example: 'Die Patientin hat eine Fraktur des rechten Handgelenks.',
+        category: 'diagnoses',
+        notes: 'Knochenbruch'
+      }
+    ]
+  },
+  {
+    id: 'abbreviations',
+    name: 'Medizinische Abkürzungen',
+    description: 'Häufig verwendete medizinische Abkürzungen im Klinikalltag',
+    words: [
+      {
+        id: 'bp',
+        german: 'RR (Riva-Rocci)',
+        english: 'BP (blood pressure)',
+        pronunciation: 'err-err',
+        example: 'RR: 120/80 mmHg',
+        category: 'abbreviations',
+        notes: 'Blutdruck',
+        abbreviation: 'RR'
+      },
+      {
+        id: 'bs',
+        german: 'BZ',
+        english: 'BS (blood sugar)',
+        pronunciation: 'bay-tzett',
+        example: 'BZ vor dem Essen messen.',
+        category: 'abbreviations',
+        notes: 'Blutzucker',
+        abbreviation: 'BZ'
+      },
+      {
+        id: 'ecg',
+        german: 'EKG',
+        english: 'ECG/EKG',
+        pronunciation: 'ay-kah-gay',
+        example: 'Das EKG zeigt eine Sinustachykardie.',
+        category: 'abbreviations',
+        notes: 'Elektrokardiogramm',
+        abbreviation: 'EKG'
+      },
+      {
+        id: 'copd',
+        german: 'COPD',
+        english: 'COPD',
+        pronunciation: 'tzay-oh-pay-day',
+        example: 'Der Patient leidet seit Jahren an COPD.',
+        category: 'abbreviations',
+        notes: 'Chronisch obstruktive Lungenerkrankung ("Raucherlunge")',
+        abbreviation: 'COPD'
+      },
+      {
+        id: 'icu',
+        german: 'ITS',
+        english: 'ICU',
+        pronunciation: 'ee-tay-ess',
+        example: 'Der Patient wird auf die ITS verlegt.',
+        category: 'abbreviations',
+        notes: 'Intensivstation',
+        abbreviation: 'ITS'
+      }
+    ]
+  },
+  {
+    id: 'ward-routines',
+    name: 'Stationsalltag',
+    description: 'Begriffe und Abläufe im täglichen Stationsalltag',
+    words: [
+      {
+        id: 'foley',
+        german: 'der Dauerkatheter (DK)',
+        english: 'indwelling catheter (Foley)',
+        pronunciation: 'dow-er-ka-tay-ter',
+        example: 'Der Patient hat einen DK seit drei Tagen.',
+        category: 'ward-routines',
+        notes: 'Blasenkatheter zur langfristigen Harnableitung',
+        abbreviation: 'DK'
+      },
+      {
+        id: 'iv-line',
+        german: 'der periphere Venenkatheter (PVK)',
+        english: 'peripheral venous catheter (IV line)',
+        pronunciation: 'pay-vay-kah',
+        example: 'Der PVK muss gewechselt werden.',
+        category: 'ward-routines',
+        notes: 'Venenzugang',
+        abbreviation: 'PVK'
+      },
+      {
+        id: 'wound-care',
+        german: 'die Wundversorgung',
+        english: 'wound care',
+        pronunciation: 'voond-fair-zor-goong',
+        example: 'Die Wundversorgung erfolgt zweimal täglich.',
+        category: 'ward-routines'
+      },
+      {
+        id: 'vital-signs',
+        german: 'die Vitalzeichenkontrolle',
+        english: 'vital signs monitoring',
+        pronunciation: 'vee-tal-tsai-chen-kon-trol-eh',
+        example: 'Bitte führen Sie eine Vitalzeichenkontrolle durch.',
+        category: 'ward-routines'
+      },
+      {
+        id: 'med-admin',
+        german: 'die Medikamentengabe',
+        english: 'medication administration',
+        pronunciation: 'meh-dee-kah-men-ten-gah-beh',
+        example: 'Die Medikamentengabe erfolgt nach Plan.',
+        category: 'ward-routines'
+      }
+    ]
+  },
+  {
+    id: 'equipment',
+    name: 'Medizinische Geräte',
+    description: 'Medizintechnische Geräte und Ausstattung',
+    words: [
+      {
+        id: 'monitor',
+        german: 'der Monitor',
+        english: 'monitor',
+        pronunciation: 'mo-nee-tohr',
+        example: 'Der Monitor zeigt die Vitalparameter des Patienten an.',
+        category: 'equipment'
+      },
+      {
+        id: 'ventilator',
+        german: 'das Beatmungsgerät',
+        english: 'ventilator',
+        pronunciation: 'beh-aht-mungs-geh-räht',
+        example: 'Der Patient ist an das Beatmungsgerät angeschlossen.',
+        category: 'equipment'
+      },
+      {
+        id: 'infusion-pump',
+        german: 'die Infusionspumpe',
+        english: 'infusion pump',
+        pronunciation: 'in-foo-zee-ohns-poom-peh',
+        example: 'Die Infusionspumpe ist auf 60 ml/h eingestellt.',
+        category: 'equipment'
+      },
+      {
+        id: 'ecg-machine',
+        german: 'das EKG-Gerät',
+        english: 'ECG machine',
+        pronunciation: 'ay-kah-gay geh-räht',
+        example: 'Bitte bereiten Sie das EKG-Gerät vor.',
+        category: 'equipment'
+      },
+      {
+        id: 'suction',
+        german: 'das Absauggerät',
+        english: 'suction device',
+        pronunciation: 'ab-zoug-geh-räht',
+        example: 'Für die Bronchialtoilette benötigen wir das Absauggerät.',
+        category: 'equipment'
+      }
+    ]
+  },
+  {
+    id: 'documentation',
+    name: 'Dokumentation',
+    description: 'Typische Formulierungen für die Pflegedokumentation',
+    words: [
+      {
+        id: 'doc-admission',
+        german: 'Patient wurde aufgenommen mit...',
+        english: 'Patient was admitted with...',
+        pronunciation: 'pah-tsi-ent vur-deh ouf-geh-nom-men mit',
+        example: 'Patient wurde aufgenommen mit akuten Bauchschmerzen.',
+        category: 'documentation'
+      },
+      {
+        id: 'doc-orientation',
+        german: 'Patient ist zeitlich/örtlich/zur Person orientiert.',
+        english: 'Patient is oriented to time/place/person.',
+        pronunciation: 'pah-tsi-ent ist tseit-lich/ört-lich/tsoor pair-sohn ori-en-teert',
+        example: 'Patient ist zeitlich, örtlich und zur Person voll orientiert.',
+        category: 'documentation'
+      },
+      {
+        id: 'doc-mobility',
+        german: 'Patient ist selbstständig mobil.',
+        english: 'Patient is independently mobile.',
+        pronunciation: 'pah-tsi-ent ist selbst-sten-dig mo-beel',
+        example: 'Patient ist selbstständig mobil mit Gehstock.',
+        category: 'documentation'
+      },
+      {
+        id: 'doc-wound',
+        german: 'Wunde ist reizlos, ohne Sekretion.',
+        english: 'Wound is clean, without secretion.',
+        pronunciation: 'voon-deh ist reits-lohs, oh-neh seh-kreh-tsi-ohn',
+        example: 'OP-Wunde ist reizlos, ohne Sekretion, Nahtmaterial in situ.',
+        category: 'documentation'
+      },
+      {
+        id: 'doc-medication',
+        german: 'Medikamente wurden laut Anordnung verabreicht.',
+        english: 'Medications were administered as prescribed.',
+        pronunciation: 'meh-dee-kah-men-teh voor-den lout an-ord-nung fair-ab-reicht',
+        example: 'Medikamente wurden laut Anordnung verabreicht, ohne Komplikationen.',
+        category: 'documentation'
       }
     ]
   }
