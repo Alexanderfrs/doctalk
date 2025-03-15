@@ -10,7 +10,11 @@ import OnboardingPersonalization from "@/components/onboarding/OnboardingPersona
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
 
-const Onboarding = () => {
+interface OnboardingProps {
+  onComplete?: () => void;
+}
+
+const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
@@ -27,6 +31,12 @@ const Onboarding = () => {
       // Save onboarding complete status
       localStorage.setItem("onboardingComplete", "true");
       toast.success("Einrichtung abgeschlossen!");
+      
+      // Call the onComplete callback if provided
+      if (onComplete) {
+        onComplete();
+      }
+      
       navigate("/dashboard");
     } else {
       setCurrentStep(stepNumber + 1);

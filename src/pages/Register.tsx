@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Stethoscope, CheckCircle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
 
 interface RegisterProps {
@@ -21,7 +20,6 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,12 +42,8 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
           onRegister();
         }
         
-        // Show success message
-        toast({
-          title: "Registrierung erfolgreich",
-          description: "Willkommen bei MedLingua!",
-          variant: "success",
-        });
+        // Show success message using sonner toast
+        toast.success("Registrierung erfolgreich. Willkommen bei MedLingua!");
         
         // Navigate to onboarding
         navigate("/onboarding");

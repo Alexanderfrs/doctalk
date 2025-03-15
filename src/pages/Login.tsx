@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Stethoscope } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
 
 interface LoginProps {
@@ -20,7 +19,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,12 +41,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         // Check if onboarding is complete
         const onboardingComplete = localStorage.getItem("onboardingComplete") === "true";
         
-        // Show success message
-        toast({
-          title: "Erfolgreich angemeldet",
-          description: "Willkommen zurück bei MedLingua!",
-          variant: "success",
-        });
+        // Show success message using sonner toast
+        toast.success("Erfolgreich angemeldet. Willkommen zurück bei MedLingua!");
         
         // Navigate to appropriate page
         if (onboardingComplete) {
