@@ -30,8 +30,14 @@ export const ThemeProvider: React.FC<{children: React.ReactNode}> = ({ children 
         ? 'dark'
         : 'light';
       root.classList.add(systemTheme);
+      if (systemTheme === 'dark') {
+        root.classList.add('dark');
+      }
     } else {
       root.classList.add(theme);
+      if (theme === 'dark') {
+        root.classList.add('dark');
+      }
     }
     
     // Save theme to localStorage
@@ -47,11 +53,41 @@ export const ThemeProvider: React.FC<{children: React.ReactNode}> = ({ children 
     const handleChange = () => {
       const root = window.document.documentElement;
       root.classList.remove('light', 'dark');
-      root.classList.add(mediaQuery.matches ? 'dark' : 'light');
+      const newTheme = mediaQuery.matches ? 'dark' : 'light';
+      root.classList.add(newTheme);
+      if (newTheme === 'dark') {
+        root.classList.add('dark');
+      }
     };
     
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [theme]);
+
+  // Add effect to remove dark theme on landing page after logout
+  useEffect(() => {
+    const handleRouteChange = () => {
+      const path = window.location.pathname;
+      const isAuthPage = path === '/' || path === '/login' || path === '/register';
+      
+      if (isAuthPage && theme === 'dark') {
+        // Temporarily remove dark mode on landing page
+        const root = window.document.documentElement;
+        if (root.classList.contains('dark')) {
+          root.classList.remove('dark');
+        }
+      }
+    };
+
+    // Call it once on initial load
+    handleRouteChange();
+
+    // Add event listener for route changes
+    window.addEventListener('popstate', handleRouteChange);
+    
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
   }, [theme]);
 
   const setTheme = (newTheme: Theme) => {
