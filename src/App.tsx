@@ -61,6 +61,23 @@ const OnboardingProtectedRoute = ({ children }) => {
   return children;
 };
 
+// Route that's only accessible for non-authenticated users
+const PublicOnlyRoute = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth();
+  
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-medical-500"></div>
+    </div>;
+  }
+  
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  
+  return children;
+};
+
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -76,10 +93,31 @@ const App = () => {
                   {/* Index route for routing logic */}
                   <Route path="/index" element={<Index />} />
                   
-                  {/* Public routes */}
-                  <Route path="/" element={<LandingPage />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
+                  {/* Public routes - only accessible when NOT authenticated */}
+                  <Route 
+                    path="/" 
+                    element={
+                      <PublicOnlyRoute>
+                        <LandingPage />
+                      </PublicOnlyRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/login" 
+                    element={
+                      <PublicOnlyRoute>
+                        <Login />
+                      </PublicOnlyRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/register" 
+                    element={
+                      <PublicOnlyRoute>
+                        <Register />
+                      </PublicOnlyRoute>
+                    } 
+                  />
                   
                   {/* Onboarding route */}
                   <Route 
