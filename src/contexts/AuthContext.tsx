@@ -1,8 +1,6 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Session, User } from '@supabase/supabase-js';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 interface AuthContextType {
@@ -21,9 +19,9 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   isAuthenticated: boolean;
   onboardingComplete: boolean;
-  completeOnboarding: () => Promise<void>;
+  completeOnboarding: (data?: { name?: string }) => Promise<void>;
   skipOnboarding: () => Promise<void>;
-  updateProfile: (data: Partial<{name: string, email: string}>) => Promise<{
+  updateProfile: (data: Partial<{name: string, email: string, profession: string}>) => Promise<{
     error: any | null;
     data: any | null;
   }>;
@@ -39,7 +37,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [onboardingComplete, setOnboardingComplete] = useState(false);
   
   useEffect(() => {
-    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -49,7 +46,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     });
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       console.log("Auth state changed:", _event, session);
       setSession(session);
@@ -69,7 +65,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, []);
 
-  // Check if onboarding is complete from preferences in the profile
   useEffect(() => {
     if (profile) {
       const preferences = profile.preferences || {};
@@ -126,9 +121,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
       });
       
-      // If signup is successful, automatically set onboarding as optional by default
       if (data?.user) {
-        // Create profile with onboardingComplete set to false by default
         const { error: profileError } = await supabase
           .from('profiles')
           .upsert({
@@ -164,18 +157,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const completeOnboarding = async () => {
+  const completeOnboarding = async (data?: { name?: string }) => {
     if (!user) return;
     
     try {
+      const updateData: any = {
+        preferences: {
+          ...profile?.preferences,
+          onboardingComplete: true
+        }
+      };
+      
+      if (data?.name) {
+        updateData.name = data.name;
+      }
+      
       const { error } = await supabase
         .from('profiles')
-        .update({
-          preferences: {
-            ...profile?.preferences,
-            onboardingComplete: true
-          }
-        })
+        .update(updateData)
         .eq('id', user.id);
         
       if (error) {
@@ -183,10 +182,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return;
       }
       
-      // Update local state
       setOnboardingComplete(true);
       setProfile({
         ...profile,
+        ...data,
         preferences: {
           ...profile?.preferences,
           onboardingComplete: true
@@ -218,7 +217,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return;
       }
       
-      // Update local state
       setOnboardingComplete(true);
       setProfile({
         ...profile,
@@ -234,34 +232,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const updateProfile = async (data: Partial<{name: string, email: string}>) => {
+  const updateProfile = async (data: Partial<{name: string, email: string, profession: string}>) => {
     if (!user) return { data: null, error: 'Not authenticated' };
     
     try {
-      // Update name in profile if provided
-      if (data.name && data.name !== profile?.name) {
+      const profileUpdates: any = {};
+      let hasProfileUpdates = false;
+      
+      if (data.name !== undefined && data.name !== profile?.name) {
+        profileUpdates.name = data.name;
+        hasProfileUpdates = true;
+      }
+      
+      if (data.profession !== undefined && data.profession !== profile?.profession) {
+        profileUpdates.profession = data.profession;
+        hasProfileUpdates = true;
+      }
+      
+      if (hasProfileUpdates) {
         const { error: profileError } = await supabase
           .from('profiles')
-          .update({
-            name: data.name
-          })
+          .update(profileUpdates)
           .eq('id', user.id);
           
         if (profileError) {
-          console.error('Error updating profile name:', profileError);
+          console.error('Error updating profile:', profileError);
           return { data: null, error: profileError };
         }
         
-        // Update local state
         setProfile({
           ...profile,
-          name: data.name
+          ...profileUpdates
         });
         
-        toast.success("Name wurde aktualisiert.");
+        console.log('Profile updated successfully:', profileUpdates);
       }
       
-      // Update email if provided
       if (data.email && data.email !== user.email) {
         const { error: emailError } = await supabase.auth.updateUser({
           email: data.email

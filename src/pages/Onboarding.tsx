@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CheckCircle, ChevronRight, Stethoscope, ArrowRight } from "lucide-react";
@@ -18,12 +17,18 @@ const Onboarding: React.FC = () => {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const { userLanguage } = useLanguage();
   const { user, completeOnboarding, skipOnboarding } = useAuth();
+  const [userData, setUserData] = useState<any>({});
   
   const totalSteps = 3;
   
   const handleStepComplete = async (stepNumber: number, data?: any) => {
     if (!completedSteps.includes(stepNumber)) {
       setCompletedSteps([...completedSteps, stepNumber]);
+    }
+    
+    // Save step data for later use
+    if (data) {
+      setUserData(prev => ({ ...prev, ...data }));
     }
     
     // Save step data to profile
@@ -36,9 +41,8 @@ const Onboarding: React.FC = () => {
         } else if (stepNumber === 2 && data.language) {
           updateData = { native_language: data.language };
         } else if (stepNumber === 3 && data.preferences) {
-          updateData = { 
-            preferences: data.preferences
-          };
+          // Don't save preferences here, we'll do it in completeOnboarding
+          // Just keep the data for later
         }
         
         if (Object.keys(updateData).length > 0) {
@@ -57,8 +61,10 @@ const Onboarding: React.FC = () => {
     }
     
     if (stepNumber === totalSteps) {
-      // Complete onboarding
-      completeOnboarding();
+      // Complete onboarding with collected data
+      await completeOnboarding({
+        name: userData.name || data?.name
+      });
       toast.success("Einrichtung abgeschlossen!");
       navigate("/dashboard");
     } else {

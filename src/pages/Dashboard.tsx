@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import AppNavigation from "@/components/navigation/AppNavigation";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface DashboardProps {
   onLogout?: () => void;
@@ -34,6 +36,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   });
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
 
+  const { profile } = useAuth();
   const { translate } = useLanguage();
   const isMobile = useIsMobile();
 
@@ -54,6 +57,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
     setCurrentScenarioIndex(index);
   };
 
+  const userName = profile?.name || "User";
+  const firstName = userName.split(" ")[0];
+
   return (
     <div className={`min-h-screen flex flex-col ${loadingPage ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}`}>
       <AppHeader onLogout={onLogout} />
@@ -65,7 +71,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                   <h1 className="text-2xl md:text-3xl font-bold text-neutral-800">
-                    Willkommen zurück, Elena!
+                    Willkommen zurück, {firstName}!
                   </h1>
                   <p className="text-neutral-600 mt-2">
                     Du hast eine Lernserie von 3 Tagen. Weiter so!

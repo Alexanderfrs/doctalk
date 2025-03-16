@@ -5,11 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const ProfileSettings = () => {
   const { user, profile, updateProfile } = useAuth();
   const [name, setName] = useState(profile?.name || "");
   const [email, setEmail] = useState(user?.email || "");
+  const [profession, setProfession] = useState(profile?.profession || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -17,6 +19,7 @@ const ProfileSettings = () => {
   useEffect(() => {
     if (profile) {
       setName(profile.name || "");
+      setProfession(profile.profession || "");
     }
     if (user) {
       setEmail(user.email || "");
@@ -28,15 +31,22 @@ const ProfileSettings = () => {
     setIsSubmitting(true);
     setError("");
 
-    const { error } = await updateProfile({ name, email });
-    
-    if (error) {
-      setError(typeof error === 'string' ? error : error.message || "Fehler beim Aktualisieren des Profils");
+    try {
+      const { error } = await updateProfile({ name, email, profession });
+      
+      if (error) {
+        setError(typeof error === 'string' ? error : error.message || "Fehler beim Aktualisieren des Profils");
+        toast.error("Fehler beim Aktualisieren des Profils");
+      } else {
+        toast.success("Profil erfolgreich aktualisiert");
+      }
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      setError("Ein unerwarteter Fehler ist aufgetreten");
+      toast.error("Ein unerwarteter Fehler ist aufgetreten");
+    } finally {
       setIsSubmitting(false);
-      return;
     }
-
-    setIsSubmitting(false);
   };
 
   return (
@@ -72,13 +82,31 @@ const ProfileSettings = () => {
           />
           <p className="text-xs text-gray-500">Änderungen der E-Mail-Adresse erfordern eine Bestätigung per E-Mail.</p>
         </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="profession">Beruf</Label>
+          <Input
+            id="profession"
+            type="text"
+            value={profession}
+            onChange={(e) => setProfession(e.target.value)}
+            placeholder="Ihr Beruf"
+          />
+        </div>
         
         <Button 
           type="submit" 
           className="bg-medical-500 hover:bg-medical-600"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Speichern..." : "Speichern"}
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Speichern...
+            </>
+          ) : (
+            "Speichern"
+          )}
         </Button>
       </form>
     </div>
