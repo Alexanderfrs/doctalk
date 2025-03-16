@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Save } from "lucide-react";
+import { useSwipeable } from "react-swipeable";
 
 const ProfileSettings = () => {
   const { user, profile, updateProfile } = useAuth();
@@ -14,6 +15,7 @@ const ProfileSettings = () => {
   const [profession, setProfession] = useState(profile?.profession || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [changesMade, setChangesMade] = useState(false);
 
   // Update form values when profile or user changes
   useEffect(() => {
@@ -25,6 +27,21 @@ const ProfileSettings = () => {
       setEmail(user.email || "");
     }
   }, [profile, user]);
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+    setChangesMade(true);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setChangesMade(true);
+  };
+
+  const handleProfessionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProfession(e.target.value);
+    setChangesMade(true);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +56,7 @@ const ProfileSettings = () => {
         toast.error("Fehler beim Aktualisieren des Profils");
       } else {
         toast.success("Profil erfolgreich aktualisiert");
+        setChangesMade(false);
       }
     } catch (err) {
       console.error("Error updating profile:", err);
@@ -49,8 +67,19 @@ const ProfileSettings = () => {
     }
   };
 
+  // Add swipe gesture for form submission
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (changesMade && !isSubmitting) {
+        handleSubmit(new Event('swipe') as any);
+      }
+    },
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: false
+  });
+
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6" {...swipeHandlers}>
       <h3 className="text-xl font-semibold mb-6">Persönliche Informationen</h3>
       
       {error && (
@@ -59,15 +88,16 @@ const ProfileSettings = () => {
         </div>
       )}
       
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-2">
           <Label htmlFor="name">Name</Label>
           <Input
             id="name"
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleNameChange}
             placeholder="Ihr Name"
+            className="touch-manipulation"
           />
         </div>
         
@@ -77,8 +107,9 @@ const ProfileSettings = () => {
             id="email"
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange}
             placeholder="ihre.email@beispiel.de"
+            className="touch-manipulation"
           />
           <p className="text-xs text-gray-500">Änderungen der E-Mail-Adresse erfordern eine Bestätigung per E-Mail.</p>
         </div>
@@ -89,25 +120,34 @@ const ProfileSettings = () => {
             id="profession"
             type="text"
             value={profession}
-            onChange={(e) => setProfession(e.target.value)}
+            onChange={handleProfessionChange}
             placeholder="Ihr Beruf"
+            className="touch-manipulation"
           />
         </div>
         
-        <Button 
-          type="submit" 
-          className="bg-medical-500 hover:bg-medical-600"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Speichern...
-            </>
-          ) : (
-            "Speichern"
-          )}
-        </Button>
+        <div className="flex justify-end">
+          <Button 
+            type="submit" 
+            className={`${changesMade ? 'bg-medical-500 hover:bg-medical-600' : 'bg-gray-300'} transition-colors relative overflow-hidden`}
+            disabled={isSubmitting || !changesMade}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Speichern...
+              </>
+            ) : (
+              <>
+                <Save className="mr-2 h-4 w-4" />
+                Speichern
+              </>
+            )}
+            {changesMade && (
+              <span className="absolute bottom-0 left-0 h-1 bg-medical-300 animate-pulse" style={{ width: '100%' }}></span>
+            )}
+          </Button>
+        </div>
       </form>
     </div>
   );

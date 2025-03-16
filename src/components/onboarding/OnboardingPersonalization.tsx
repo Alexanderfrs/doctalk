@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { ArrowRight, Check } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useSwipeable } from "react-swipeable";
 
 interface OnboardingPersonalizationProps {
   onComplete: (data: any) => void;
@@ -35,6 +36,14 @@ const OnboardingPersonalization: React.FC<OnboardingPersonalizationProps> = ({
     });
   };
 
+  // Add swipe gesture for slider
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => setDailyGoal(Math.max(5, dailyGoal - 5)),
+    onSwipedRight: () => setDailyGoal(Math.min(60, dailyGoal + 5)),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true
+  });
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -58,7 +67,7 @@ const OnboardingPersonalization: React.FC<OnboardingPersonalizationProps> = ({
         <Label>
           {userLanguage === 'de' ? "Tägliches Lernziel (Minuten)" : "Daily Learning Goal (minutes)"}
         </Label>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" {...swipeHandlers}>
           <Button 
             variant="outline" 
             size="sm" 
