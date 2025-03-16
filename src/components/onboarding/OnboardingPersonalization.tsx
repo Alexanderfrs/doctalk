@@ -40,7 +40,7 @@ const OnboardingPersonalization: React.FC<OnboardingPersonalizationProps> = ({
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => setDailyGoal(Math.max(5, dailyGoal - 5)),
     onSwipedRight: () => setDailyGoal(Math.min(60, dailyGoal + 5)),
-    preventDefaultTouchmoveEvent: true,
+    trackTouch: true,
     trackMouse: true
   });
 

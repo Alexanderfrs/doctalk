@@ -74,7 +74,7 @@ const ProfileSettings = () => {
         handleSubmit(new Event('swipe') as any);
       }
     },
-    preventDefaultTouchmoveEvent: true,
+    trackTouch: true,
     trackMouse: false
   });
 
