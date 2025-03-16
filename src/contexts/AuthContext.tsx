@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Session, User } from '@supabase/supabase-js';
@@ -37,27 +38,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [onboardingComplete, setOnboardingComplete] = useState(false);
   
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        fetchProfile(session.user.id);
+    const fetchInitialSession = async () => {
+      try {
+        setIsLoading(true);
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          await fetchProfile(session.user.id);
+        }
+      } catch (error) {
+        console.error("Error fetching session:", error);
+      } finally {
+        setIsLoading(false);
       }
-    });
+    };
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    fetchInitialSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       console.log("Auth state changed:", _event, session);
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        fetchProfile(session.user.id);
+        await fetchProfile(session.user.id);
       } else {
         setProfile(null);
+        setOnboardingComplete(false);
       }
-
-      setIsLoading(false);
     });
 
     return () => {
@@ -86,6 +97,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       
       setProfile(data);
+      
+      // Set onboarding status based on profile data
+      const preferences = data?.preferences || {};
+      setOnboardingComplete(preferences.onboardingComplete === true);
+      console.log("Onboarding status:", preferences.onboardingComplete);
     } catch (error) {
       console.error('Error fetching profile:', error);
     }

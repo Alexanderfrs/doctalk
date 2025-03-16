@@ -9,13 +9,14 @@ const AppNavigation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
-  const { isAuthenticated, signOut } = useAuth();
+  const { isAuthenticated, onboardingComplete, signOut } = useAuth();
   
-  // Hide navigation on landing page and dashboard
-  const shouldHideNavigation = currentPath === "/" || currentPath === "/dashboard";
+  // Hide navigation on landing page, dashboard, and during onboarding
+  const hiddenPaths = ["/", "/onboarding"];
+  const shouldHideNavigation = hiddenPaths.includes(currentPath) || currentPath === "/dashboard";
   
-  // Only show navigation for authenticated users and not on dashboard
-  if (!isAuthenticated || shouldHideNavigation) {
+  // Only show navigation for authenticated users who have completed onboarding
+  if (!isAuthenticated || !onboardingComplete || shouldHideNavigation) {
     return null;
   }
   

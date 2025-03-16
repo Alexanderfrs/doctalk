@@ -23,7 +23,7 @@ const Index = () => {
   // Logic for redirection
   if (isAuthenticated) {
     // If authenticated, check if onboarding is complete
-    if (!onboardingComplete) {
+    if (onboardingComplete === false) {
       console.log("Redirecting to onboarding");
       return <Navigate to="/onboarding" replace />;
     }
