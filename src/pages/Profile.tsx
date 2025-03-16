@@ -11,13 +11,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { ArrowRight, Award, Book, Crown, FileText, Flag, Lightbulb, BarChart3, Save, Settings, Star, User, BookOpen as Book2, RefreshCw } from "lucide-react";
+import { ArrowRight, Award, Book, Crown, FileText, Flag, Lightbulb, BarChart3, Settings, Star, User, BookOpen as Book2, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import LanguageSelector from "@/components/language/LanguageSelector";
 import AvatarSelector from "@/components/profile/AvatarSelector";
 import { useLanguageAssessment } from "@/hooks/useLanguageAssessment";
+import { useAuth } from "@/contexts/AuthContext";
+import ProfileSettings from "@/components/profile/ProfileSettings";
+
 const certificateTypes = [{
   id: "app-achievement",
   name: "App Achievement",
@@ -60,7 +63,9 @@ const certificateTypes = [{
     completed: false
   }]
 }];
+
 const Profile = () => {
+  const { profile, user } = useAuth();
   const [email, setEmail] = useState("user@example.com");
   const [name, setName] = useState("Maria Schmidt");
   const [profession, setProfession] = useState("Krankenschwester");
@@ -92,29 +97,36 @@ const Profile = () => {
     completeAssessment,
     resetAssessment
   } = useLanguageAssessment();
+
   useEffect(() => {
     const savedAvatar = localStorage.getItem('userAvatar');
     if (savedAvatar) {
       setAvatar(savedAvatar);
     }
   }, []);
+
   const handleSaveSettings = () => {
     localStorage.setItem('userAvatar', avatar);
     toast.success("Einstellungen gespeichert");
   };
+
   const handleAvatarChange = (newAvatar: string) => {
     setAvatar(newAvatar);
   };
+
   const handleSaveGoals = () => {
     toast.success("Ziele gespeichert");
   };
+
   const handleUpgradeSubscription = () => {
     setSubscription("premium");
     toast.success("Upgrade auf Premium erfolgreich!");
   };
+
   const handleTakeCertificateTest = certId => {
     toast.info(`Test für ${certId} wird vorbereitet...`);
   };
+
   const renderQuestionOptions = () => {
     if (!currentQuestion) return null;
     const isOptionsObjects = currentQuestion.options.length > 0 && typeof currentQuestion.options[0] !== 'string';
@@ -131,6 +143,7 @@ const Profile = () => {
         </div>);
     }
   };
+
   return <div className="min-h-screen flex flex-col">
       <Header />
       
@@ -141,8 +154,8 @@ const Profile = () => {
               <AvatarSelector currentAvatar={avatar} onChange={handleAvatarChange} />
               
               <div className="flex-grow">
-                <h1 className="text-2xl font-bold mb-1">{name}</h1>
-                <p className="text-neutral-600 mb-2">{profession}</p>
+                <h1 className="text-2xl font-bold mb-1">{profile?.name || "Gast"}</h1>
+                <p className="text-neutral-600 mb-2">{profile?.profession || "Beruf nicht angegeben"}</p>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="outline" className="bg-medical-50 text-medical-700 hover:bg-medical-100">
                     <Flag className="h-3.5 w-3.5 mr-1" />
@@ -152,7 +165,7 @@ const Profile = () => {
                   </Badge>
                   <Badge variant="outline" className="bg-medical-50 text-medical-700 hover:bg-medical-100">
                     <Book className="h-3.5 w-3.5 mr-1" />
-                    Niveau {currentLevel || "A2-B1"}
+                    Niveau {profile?.german_level || "A2-B1"}
                   </Badge>
                   <Badge variant="outline" className="bg-neutral-50 hover:bg-neutral-100">
                     {subscription === "premium" ? <>
@@ -211,20 +224,7 @@ const Profile = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Name</Label>
-                        <Input id="name" placeholder="Ihr Name" value={name} onChange={e => setName(e.target.value)} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="email">E-Mail</Label>
-                        <Input id="email" type="email" placeholder="Ihre E-Mail" value={email} onChange={e => setEmail(e.target.value)} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="profession">Beruf</Label>
-                        <Input id="profession" placeholder="Ihre Beruf" value={profession} onChange={e => setProfession(e.target.value)} />
-                      </div>
-                    </div>
+                    <ProfileSettings />
                   </CardContent>
                 </Card>
                 
@@ -638,4 +638,6 @@ const Profile = () => {
       <Footer />
     </div>;
 };
-export default Profile;
+
+
+
