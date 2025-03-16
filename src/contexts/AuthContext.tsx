@@ -28,6 +28,12 @@ interface AuthContextType {
   }>;
 }
 
+// Define a type for the preferences object
+interface ProfilePreferences {
+  onboardingComplete?: boolean;
+  [key: string]: any; // Allow other properties
+}
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -79,7 +85,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (profile) {
       const preferences = profile.preferences || {};
-      setOnboardingComplete(preferences.onboardingComplete === true);
+      // Safely check if preferences is an object and has onboardingComplete property
+      setOnboardingComplete(
+        typeof preferences === 'object' && 
+        preferences !== null && 
+        'onboardingComplete' in preferences && 
+        Boolean(preferences.onboardingComplete)
+      );
     }
   }, [profile]);
 
@@ -100,8 +112,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       // Set onboarding status based on profile data
       const preferences = data?.preferences || {};
-      setOnboardingComplete(preferences.onboardingComplete === true);
-      console.log("Onboarding status:", preferences.onboardingComplete);
+      // Type check before accessing property
+      const isOnboardingComplete = 
+        typeof preferences === 'object' && 
+        preferences !== null && 
+        'onboardingComplete' in preferences && 
+        Boolean(preferences.onboardingComplete);
+      
+      setOnboardingComplete(isOnboardingComplete);
+      console.log("Onboarding status:", isOnboardingComplete);
     } catch (error) {
       console.error('Error fetching profile:', error);
     }
