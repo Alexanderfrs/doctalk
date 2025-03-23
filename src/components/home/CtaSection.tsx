@@ -5,19 +5,31 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useSwipeable } from "react-swipeable";
 
 const CtaSection = () => {
   const isMobile = useIsMobile();
   const { translate } = useLanguage();
+  
+  const swipeHandlers = useSwipeable({
+    onSwipedRight: () => {
+      // Navigate to practice page on swipe right
+      window.location.href = "/practice";
+    },
+    trackMouse: false
+  });
 
   return (
     <section className="container mx-auto mb-16 animate-fade-in" style={{ animationDelay: '1300ms' }}>
-      <div className="bg-gradient-to-r from-medical-600 to-medical-500 rounded-2xl p-8 text-white text-center relative overflow-hidden">
+      <div 
+        {...(isMobile ? swipeHandlers : {})}
+        className="bg-gradient-to-r from-medical-600 to-medical-500 rounded-2xl p-8 text-white text-center relative overflow-hidden transition-transform"
+      >
         {/* Mobile swipe indicator */}
         {isMobile && (
           <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex items-center justify-center text-white/80 text-xs">
             <span className="bg-white/20 rounded-full px-3 py-1 flex items-center">
-              <span className="mr-1">Tap</span>
+              <span className="mr-1">{translate('swipeToSwitch') || "Swipe right"}</span>
               <ChevronRight className="h-3 w-3" />
             </span>
           </div>
