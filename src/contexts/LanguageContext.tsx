@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define language types
@@ -584,4 +585,149 @@ const translations: Record<string, Record<string, string>> = {
     learningGoal: 'Cel nauki',
     generalLanguageSkills: 'Ogólne umiejętności językowe',
     professionalCommunication: 'Komunikacja zawodowa',
-    professionalSupport: 'W
+    professionalSupport: 'Wsparcie dla profesjonalistów',
+    minimal: 'Minimalny',
+    specificPreparation: 'Konkretne przygotowanie do życia zawodowego',
+    pricingTitle: 'Proste i przejrzyste ceny',
+    pricingDescription: 'Wybierz plan, który najlepiej odpowiada Twoim celom edukacyjnym.',
+    basic: 'Podstawowy',
+    forBeginners: 'Dla początkujących',
+    free: 'Darmowy',
+    professional: 'Profesjonalny',
+    forActiveLearners: 'Dla aktywnych uczniów',
+    team: 'Zespół',
+    forInstitutions: 'Dla instytucji',
+    basicFeature1: 'Podstawowe słownictwo medyczne',
+    basicFeature2: '5 scenariuszy dialogowych miesięcznie',
+    basicFeature3: 'Przegląd postępów',
+    proFeature1: 'Pełny dostęp do specjalistycznego słownictwa',
+    proFeature2: 'Nieograniczone scenariusze dialogowe',
+    proFeature3: 'Tryb offline do nauki w podróży',
+    proFeature4: 'Przygotowanie do egzaminu z języka medycznego z opcjami czasowymi',
+    proFeature5: 'Szczegółowe analizy wyników',
+    proFeature6: '1 miesiąc za darmo po serii 3 miesięcy',
+    teamFeature1: 'Wszystko z planu Profesjonalnego',
+    teamFeature2: 'Do 10 kont użytkowników',
+    teamFeature3: 'Obszar administratora',
+    teamFeature4: 'Raporty postępu dla zespołu',
+    teamFeature5: 'Symulacje egzaminów ustnych',
+    contactUs: 'Skontaktuj się z nami',
+    loyaltyProgram: 'Program lojalnościowy: 3+1',
+    loyaltyDescription: 'Korzystaj regularnie z MedLingua przez 3 miesiące',
+    loyaltyBenefit: 'I otrzymaj 4. miesiąc Premium za darmo!',
+    streak90: '90-dniowa seria',
+    oneFreeMonth: '= 1 miesiąc Premium za darmo',
+    unlimitedRepeatable: 'Nieograniczenie powtarzalny',
+    readyToImprove: 'Gotowy na poprawę swoich medycznych umiejętności językowych?',
+    startTodayCta: 'Zacznij dzisiaj i przygotuj się do swojego zawodowego życia codziennego w niemieckiej służbie zdrowia.',
+    registerFree: 'Zarejestruj się za darmo',
+    languageSelection: 'Wybierz język',
+    month: 'miesiąc',
+    year: 'rok',
+    recommended: 'Polecane',
+    selectLanguage: 'Wybierz język',
+    ctaHeading: 'Gotowy na poprawę swoich umiejętności językowych?',
+    ctaText: 'Zacznij teraz ćwiczenia i popraw swoją zawodową komunikację w obszarze medycznym - dla wszystkich poziomów językowych od A1 do C1.',
+    startWithExercises: 'Rozpocznij ćwiczenia',
+    swipeToSwitch: 'Przesuń w lewo lub prawo, aby przełączyć zakładki'
+  },
+};
+
+// Create context
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+// Context provider component
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Default language
+  const [userLanguage, setUserLanguage] = useState('en');
+  const [interfaceLanguage, setInterfaceLanguage] = useState('en');
+  const [germanDialect, setGermanDialect] = useState('de-DE');
+
+  // Load saved language preferences from localStorage
+  useEffect(() => {
+    const savedUserLang = localStorage.getItem('userLanguage');
+    const savedInterfaceLang = localStorage.getItem('interfaceLanguage');
+    const savedDialect = localStorage.getItem('germanDialect');
+    
+    if (savedUserLang) setUserLanguage(savedUserLang);
+    if (savedInterfaceLang) setInterfaceLanguage(savedInterfaceLang);
+    if (savedDialect) setGermanDialect(savedDialect);
+  }, []);
+
+  // Save language preferences to localStorage on change
+  useEffect(() => {
+    localStorage.setItem('userLanguage', userLanguage);
+    localStorage.setItem('interfaceLanguage', interfaceLanguage);
+    localStorage.setItem('germanDialect', germanDialect);
+  }, [userLanguage, interfaceLanguage, germanDialect]);
+
+  // Get name of language based on code
+  const getLanguageName = (code: string): string => {
+    const language = supportedLanguages.find(lang => lang.code === code);
+    return language ? language.nativeName : code;
+  };
+
+  // Get name of dialect based on code
+  const getDialectName = (code: string): string => {
+    const dialect = germanDialects.find(d => d.code === code);
+    return dialect ? `${dialect.name} (${dialect.region})` : code;
+  };
+
+  // Function to get translations for current language
+  const getCurrentLanguageTranslations = () => {
+    return translations[interfaceLanguage] || translations.en;
+  };
+
+  // Translate function
+  const translate = (key: string): string => {
+    // Get translations for current language or fallback to English
+    const currentTranslations = getCurrentLanguageTranslations();
+    
+    // Return the translation or the key if translation not found
+    return currentTranslations[key] || key;
+  };
+
+  // Function to get German dialect content when needed
+  const getGermanContent = (standardGerman: string): string => {
+    // In a real app, this would handle dialect-specific variations
+    // For now, we'll just return the standard German content
+    return standardGerman;
+  };
+
+  // Handler for changing the UI language
+  const changeUILanguage = (code: string) => {
+    setInterfaceLanguage(code);
+  };
+
+  // Context value
+  const contextValue: LanguageContextType = {
+    userLanguage,
+    setUserLanguage,
+    germanDialect,
+    setGermanDialect,
+    translate,
+    getLanguageName,
+    getDialectName,
+    supportedLanguages,
+    germanDialects,
+    getCurrentLanguageTranslations,
+    getGermanContent,
+    interfaceLanguage,
+    changeUILanguage
+  };
+
+  return (
+    <LanguageContext.Provider value={contextValue}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+// Custom hook to use the language context
+export const useLanguage = (): LanguageContextType => {
+  const context = useContext(LanguageContext);
+  if (context === undefined) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
+};
