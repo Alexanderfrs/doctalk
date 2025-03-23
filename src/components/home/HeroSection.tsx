@@ -3,31 +3,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useSwipeable } from "react-swipeable";
 
 const HeroSection = () => {
   const { translate } = useLanguage();
-  const isMobile = useIsMobile();
-  
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => {
-      // Navigate to vocabulary on swipe left
-      window.location.href = "/vocabulary";
-    },
-    onSwipedRight: () => {
-      // Navigate to practice on swipe right
-      window.location.href = "/practice";
-    },
-    trackMouse: false
-  });
   
   return (
     <section className="container mx-auto mb-12">
-      <div 
-        {...(isMobile ? swipeHandlers : {})}
-        className="glass-panel p-8 flex flex-col md:flex-row items-center gap-8"
-      >
+      <div className="glass-panel p-8 flex flex-col md:flex-row items-center gap-8">
         <div className="md:w-1/2 animate-fade-in" style={{ animationDelay: '100ms' }}>
           <span className="inline-block px-3 py-1 bg-medical-100 text-medical-800 rounded-full text-sm font-medium mb-4">
             {translate('medicalGerman')}
@@ -46,13 +28,6 @@ const HeroSection = () => {
               <Link to="/vocabulary">{translate('learnVocabulary')}</Link>
             </Button>
           </div>
-          
-          {/* Swipe instructions for mobile */}
-          {isMobile && (
-            <div className="mt-4 text-xs text-neutral-500 text-center">
-              {translate('swipeToSwitch') || "Swipe left or right to navigate"}
-            </div>
-          )}
         </div>
         
         <div className="md:w-1/2 animate-fade-in" style={{ animationDelay: '300ms' }}>
