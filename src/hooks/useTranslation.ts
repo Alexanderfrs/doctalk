@@ -71,6 +71,36 @@ const vocabularyTranslations: Record<string, Record<string, string>> = {
     'severe-pain': 'đau dữ dội',
     'dull-pain': 'đau âm ỉ',
     'sharp-pain': 'đau nhói'
+  },
+  es: {
+    'blood-pressure': 'presión arterial',
+    'pulse': 'pulso',
+    'temperature': 'temperatura',
+    'respiratory-rate': 'frecuencia respiratoria',
+    'oxygen-saturation': 'saturación de oxígeno',
+    'pain': 'dolor',
+    'pain-scale': 'escala de dolor',
+    'severe-pain': 'dolor severo',
+    'dull-pain': 'dolor sordo',
+    'sharp-pain': 'dolor agudo',
+    // Examples
+    'blood-pressure-example': 'La presión arterial del paciente está elevada hoy.',
+    'pulse-example': 'Su pulso es regular y fuerte.'
+  },
+  en: {
+    'blood-pressure': 'blood pressure',
+    'pulse': 'pulse',
+    'temperature': 'temperature',
+    'respiratory-rate': 'respiratory rate',
+    'oxygen-saturation': 'oxygen saturation',
+    'pain': 'pain',
+    'pain-scale': 'pain scale',
+    'severe-pain': 'severe pain',
+    'dull-pain': 'dull pain',
+    'sharp-pain': 'sharp pain',
+    // Examples
+    'blood-pressure-example': 'The patient\'s blood pressure is elevated today.',
+    'pulse-example': 'Your pulse is regular and strong.'
   }
 };
 
@@ -143,7 +173,22 @@ const uiTranslations: Record<string, Record<string, string>> = {
     'showFilters': 'Show Filters',
     'hideFilters': 'Hide Filters',
     'viewVocabulary': 'View Vocabulary',
-    'practiceDescription': 'Practice medical German in realistic scenarios from your professional activities'
+    'practiceDescription': 'Practice medical German in realistic scenarios from your professional activities',
+    // New translations for language selection
+    'nativeLanguage': 'Native Language',
+    'interfaceLanguage': 'Interface Language',
+    'searchLanguage': 'Search language',
+    'noLanguageFound': 'No language found',
+    'continue': 'Continue',
+    'swipeToSwitch': 'Swipe left or right to switch tabs',
+    'selectLanguage': 'Select Language',
+    'languageSelectionInfo': 'We adapt translations and learning aids to your native language to make it easier for you to learn medical terminology.',
+    'selectInterfaceLanguageInfo': 'Choose the language for the application interface. This will not affect your learning language.',
+    'signIn': 'Sign In',
+    'registrationFailed': 'Registration failed. Please try again.',
+    'registrationSuccessful': 'Registration successful. Welcome to MedLingua!',
+    'unexpectedError': 'An unexpected error occurred. Please try again.',
+    'name': 'Name'
   }
 };
 
@@ -154,6 +199,89 @@ const uiTranslations: Record<string, Record<string, string>> = {
     // Add specific overrides for each language as needed
   };
 });
+
+// Add translations for Spanish
+uiTranslations.es = {
+  ...uiTranslations.en,
+  'singleVocab': 'vocabulario',
+  'multipleVocab': 'vocabularios',
+  'found': 'encontrado',
+  'noVocabularyFound': 'No se encontró vocabulario con los filtros seleccionados.',
+  'resetFilters': 'Restablecer filtros',
+  'searchVocabulary': 'Buscar vocabulario...',
+  'showTranslation': 'Mostrar traducción',
+  'hideTranslation': 'Ocultar traducción',
+  'recording': 'Grabando...',
+  'repeatAfterMe': 'Repite después de mí',
+  'pronunciationFeedback': 'Retroalimentación de pronunciación',
+  'hint': 'Pista',
+  'repeat': 'Repetir',
+  'languageHint': 'Pista lingüística',
+  'defaultLanguageHint': 'Presta atención al uso correcto del artículo y a la pronunciación de términos médicos.',
+  'importantVocabularyInScenario': 'Vocabulario importante en este escenario',
+  'listenToPronunciation': 'Escuchar pronunciación',
+  'noVocabularyForScenario': 'No hay vocabulario disponible para este escenario.',
+  'aboutThisScenario': 'Acerca de este escenario',
+  'context': 'Contexto',
+  'learningObjectives': 'Objetivos de aprendizaje',
+  'involvedPersons': 'Personas involucradas',
+  'similarScenarios': 'Escenarios similares',
+  'doctor': 'Médico',
+  'patient': 'Paciente',
+  'nurse': 'Enfermero/a',
+  'colleague': 'Colega',
+  'user': 'Tú',
+  'scenarioNotFound': 'Escenario no encontrado',
+  'redirectingToPractice': 'Redirigiendo a la página de práctica...',
+  'noSpeechDetected': 'No se detectó voz. Por favor, inténtalo de nuevo.',
+  'excellentPronunciation': '¡Excelente pronunciación! Tu entonación es muy natural.',
+  'goodPronunciation': 'Buena pronunciación. Presta un poco más de atención a la pronunciación de la diéresis.',
+  'understandablePronunciation': 'Pronunciación comprensible. Continúa practicando los sonidos \'ch\' y \'r\'.',
+  'practiceMorePronunciation': '¡Sigue practicando! Concéntrate en la pronunciación de los sonidos específicos del alemán.',
+  'backToExercises': 'Volver a ejercicios',
+  'vocabulary': 'Vocabulario',
+  'practicePronunciation': 'Practicar pronunciación',
+  'dialog': 'Diálogo',
+  'patient-care': 'Atención al paciente',
+  'emergency': 'Emergencia',
+  'documentation': 'Documentación',
+  'teamwork': 'Trabajo en equipo',
+  'elderly-care': 'Cuidado de ancianos',
+  'disability-care': 'Cuidado de discapacitados',
+  'beginner': 'Principiante (A1-A2)',
+  'intermediate': 'Intermedio (B1-B2)',
+  'advanced': 'Avanzado (C1)',
+  'practice': 'Práctica',
+  'area': 'Área',
+  'allAreas': 'Todas las áreas',
+  'patientCare': 'Atención al paciente',
+  'elderlyCare': 'Cuidado de ancianos',
+  'disabilityCare': 'Cuidado de discapacitados',
+  'languageLevel': 'Nivel de idioma',
+  'allLevels': 'Todos los niveles',
+  'exercises': 'Ejercicios',
+  'exercise': 'ejercicio',
+  'noExercisesFound': 'No se encontraron ejercicios con los filtros seleccionados.',
+  'searchExercises': 'Buscar ejercicios...',
+  'showFilters': 'Mostrar filtros',
+  'hideFilters': 'Ocultar filtros',
+  'viewVocabulary': 'Ver vocabulario',
+  'practiceDescription': 'Practica alemán médico en escenarios realistas de tus actividades profesionales',
+  'nativeLanguage': 'Idioma nativo',
+  'interfaceLanguage': 'Idioma de la interfaz',
+  'searchLanguage': 'Buscar idioma',
+  'noLanguageFound': 'Idioma no encontrado',
+  'continue': 'Continuar',
+  'swipeToSwitch': 'Desliza a la izquierda o derecha para cambiar de pestaña',
+  'selectLanguage': 'Seleccionar idioma',
+  'languageSelectionInfo': 'Adaptamos traducciones y ayudas de aprendizaje a tu idioma nativo para facilitarte el aprendizaje de terminología médica.',
+  'selectInterfaceLanguageInfo': 'Elige el idioma para la interfaz de la aplicación. Esto no afectará tu idioma de aprendizaje.',
+  'signIn': 'Iniciar sesión',
+  'registrationFailed': 'Registro fallido. Por favor, inténtalo de nuevo.',
+  'registrationSuccessful': '¡Registro exitoso. ¡Bienvenido a MedLingua!',
+  'unexpectedError': 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.',
+  'name': 'Nombre'
+};
 
 // Add specific translations for Romanian
 uiTranslations.ro = {
@@ -187,32 +315,33 @@ uiTranslations.ro = {
   'colleague': 'Coleg',
   'user': 'Tu',
   'practice': 'Exerciții',
-  'practiceDescription': 'Exersează germana medicală în scenarii realiste din activitatea ta profesională'
-};
-
-// Add specific translations for Polish
-uiTranslations.pl = {
-  ...uiTranslations.en,
-  'singleVocab': 'słownictwo',
-  'multipleVocab': 'słownictwa',
-  'found': 'znalezione',
-  'noVocabularyFound': 'Nie znaleziono słownictwa z wybranymi filtrami.',
-  'resetFilters': 'Resetuj filtry',
-  'searchVocabulary': 'Szukaj słownictwa...',
-  'practice': 'Ćwiczenia',
-  'practiceDescription': 'Ćwicz niemiecki medyczny w realistycznych scenariuszach z twojej działalności zawodowej'
+  'practiceDescription': 'Exersează germana medicală în scenarii realiste din activitatea ta profesională',
+  'nativeLanguage': 'Limbă maternă',
+  'interfaceLanguage': 'Limba interfeței',
+  'searchLanguage': 'Caută limbă',
+  'noLanguageFound': 'Nicio limbă găsită',
+  'continue': 'Continuă',
+  'swipeToSwitch': 'Glisează la stânga sau la dreapta pentru a schimba filele',
+  'selectLanguage': 'Selectează limba',
+  'languageSelectionInfo': 'Adaptăm traducerile și ajutoarele de învățare la limba ta maternă pentru a-ți facilita învățarea terminologiei medicale.',
+  'selectInterfaceLanguageInfo': 'Alege limba pentru interfața aplicației. Aceasta nu va afecta limba ta de învățare.',
+  'signIn': 'Conectare',
+  'registrationFailed': 'Înregistrare eșuată. Te rugăm să încerci din nou.',
+  'registrationSuccessful': 'Înregistrare reușită. Bine ai venit la MedLingua!',
+  'unexpectedError': 'A apărut o eroare neașteptată. Te rugăm să încerci din nou.',
+  'name': 'Nume'
 };
 
 export const useTranslation = () => {
-  const { translate, getGermanContent, userLanguage } = useLanguage();
+  const { translate, getGermanContent, userLanguage, interfaceLanguage } = useLanguage();
 
   // Enhanced translate function that checks first in our local UI translations
   const t = (key: string): string => {
     if (!key) return '';
     
     // Check if we have this key in our local UI translations
-    if (uiTranslations[userLanguage]?.[key]) {
-      return uiTranslations[userLanguage][key];
+    if (uiTranslations[interfaceLanguage]?.[key]) {
+      return uiTranslations[interfaceLanguage][key];
     }
     
     // If not, fall back to the context's translate function
