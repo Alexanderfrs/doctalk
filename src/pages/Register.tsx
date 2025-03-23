@@ -9,8 +9,6 @@ import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useLanguage } from "@/contexts/LanguageContext";
-import UILanguageSelector from "@/components/language/UILanguageSelector";
 
 const Register: React.FC = () => {
   const [name, setName] = useState("");
@@ -23,7 +21,6 @@ const Register: React.FC = () => {
   
   const navigate = useNavigate();
   const { signUp, skipOnboarding } = useAuth();
-  const { translate } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,12 +31,12 @@ const Register: React.FC = () => {
       const { error } = await signUp(email, password, name);
       
       if (error) {
-        setError(error.message || translate('registrationFailed'));
+        setError(error.message || "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.");
         setIsSubmitting(false);
         return;
       }
       
-      toast.success(translate('registrationSuccessful'));
+      toast.success("Registrierung erfolgreich. Willkommen bei MedLingua!");
       
       // Skip onboarding if checkbox is checked
       if (skipOnboardingFlow) {
@@ -51,31 +48,25 @@ const Register: React.FC = () => {
       }
     } catch (error) {
       console.error("Registration error:", error);
-      setError(translate('unexpectedError'));
+      setError("Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
       setIsSubmitting(false);
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b py-3 px-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <Link to="/" className="inline-flex items-center justify-center gap-2">
-            <div className="bg-medical-500 text-white p-2 rounded-lg">
-              <Stethoscope className="h-6 w-6" />
-            </div>
-            <span className="text-2xl font-bold text-medical-800">MedLingua</span>
-          </Link>
-          <UILanguageSelector />
-        </div>
-      </header>
-      
       <main className="flex-grow flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">
-            <h1 className="text-2xl font-bold mt-6 mb-2">{translate('createAccount')}</h1>
+            <Link to="/" className="inline-flex items-center justify-center gap-2">
+              <div className="bg-medical-500 text-white p-2 rounded-lg">
+                <Stethoscope className="h-6 w-6" />
+              </div>
+              <span className="text-2xl font-bold text-medical-800">MedLingua</span>
+            </Link>
+            <h1 className="text-2xl font-bold mt-6 mb-2">Konto erstellen</h1>
             <p className="text-neutral-600">
-              {translate('startJourney')}
+              Starten Sie Ihre Reise zum medizinischen Sprachexperten
             </p>
           </div>
 
@@ -87,11 +78,11 @@ const Register: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="name">{translate('name')}</Label>
+              <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
                 type="text"
-                placeholder={translate('fullName')}
+                placeholder="Ihr vollständiger Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -99,11 +90,11 @@ const Register: React.FC = () => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="email">{translate('email')}</Label>
+              <Label htmlFor="email">E-Mail</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="your.email@example.com"
+                placeholder="ihre.email@beispiel.de"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -111,7 +102,7 @@ const Register: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">{translate('password')}</Label>
+              <Label htmlFor="password">Passwort</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -130,7 +121,7 @@ const Register: React.FC = () => {
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-1">{translate('minPasswordLength')}</p>
+              <p className="text-xs text-gray-500 mt-1">Passwort muss mindestens 6 Zeichen lang sein</p>
             </div>
 
             <div className="flex items-center space-x-2">
@@ -143,42 +134,42 @@ const Register: React.FC = () => {
                 htmlFor="skipOnboarding" 
                 className="text-sm cursor-pointer"
               >
-                {translate('skipOnboardingFlow')}
+                Einrichtungsassistent überspringen (kann später in den Einstellungen durchgeführt werden)
               </Label>
             </div>
 
             <div>
-              <h3 className="font-medium mb-2">{translate('registerBenefits')}</h3>
+              <h3 className="font-medium mb-2">Mit der Registrierung erhalten Sie:</h3>
               <ul className="space-y-2">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-medical-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>{translate('benefit1')}</span>
+                  <span>Zugang zu medizinischen Dialogszenarien</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-medical-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>{translate('benefit2')}</span>
+                  <span>Fachspezifisches Vokabeltraining</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-medical-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>{translate('benefit3')}</span>
+                  <span>Persönlichen Fortschritt verfolgen</span>
                 </li>
               </ul>
             </div>
 
             <Button type="submit" className="w-full bg-medical-500 hover:bg-medical-600" disabled={isSubmitting}>
-              {isSubmitting ? `${translate('registration')}...` : translate('register')}
+              {isSubmitting ? "Registrierung..." : "Registrieren"}
             </Button>
             
             <p className="text-sm text-neutral-500 text-center">
-              {translate('termsAndConditions')}
+              Mit der Registrierung akzeptieren Sie unsere <Link to="/terms" className="text-medical-600 hover:underline">Nutzungsbedingungen</Link> und <Link to="/privacy" className="text-medical-600 hover:underline">Datenschutzrichtlinien</Link>.
             </p>
           </form>
 
           <div className="mt-8 text-center">
             <p className="text-neutral-600">
-              {translate('alreadyRegistered')}{" "}
+              Bereits registriert?{" "}
               <Link to="/login" className="text-medical-600 hover:underline font-medium">
-                {translate('signIn')}
+                Jetzt anmelden
               </Link>
             </p>
           </div>

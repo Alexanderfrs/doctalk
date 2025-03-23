@@ -4,11 +4,9 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ChevronRight } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 const CtaSection = () => {
   const isMobile = useIsMobile();
-  const { translate } = useLanguage();
 
   return (
     <section className="container mx-auto mb-16 animate-fade-in" style={{ animationDelay: '1300ms' }}>
@@ -23,12 +21,12 @@ const CtaSection = () => {
           </div>
         )}
         
-        <h2 className="text-3xl font-bold mb-4">{translate('ctaHeading')}</h2>
+        <h2 className="text-3xl font-bold mb-4">Bereit, deine Sprachfähigkeiten zu verbessern?</h2>
         <p className="text-lg text-white/90 mb-6 max-w-2xl mx-auto">
-          {translate('ctaText')}
+          Starte jetzt mit den Übungen und verbessere deine berufliche Kommunikation im medizinischen Bereich - für alle Sprachniveaus von A1 bis C1.
         </p>
         <Button asChild size="lg" className="bg-white text-medical-600 hover:bg-white/90">
-          <Link to="/practice">{translate('startWithExercises')}</Link>
+          <Link to="/practice">Mit Übungen beginnen</Link>
         </Button>
       </div>
     </section>
