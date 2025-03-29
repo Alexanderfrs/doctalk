@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Home, BookOpen, MessageCircle, User, Menu, X, Stethoscope, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import UILanguageSelector from "@/components/language/UILanguageSelector";
 
 interface AppHeaderProps {
   onLogin?: () => void;
@@ -110,8 +111,10 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
             ))}
           </nav>
 
-          {/* Auth buttons */}
-          <div className="hidden md:flex items-center space-x-2">
+          {/* Language selector and Auth buttons */}
+          <div className="hidden md:flex items-center space-x-3">
+            <UILanguageSelector />
+            
             {isAuthenticated ? (
               <Button
                 variant="ghost"
@@ -140,15 +143,17 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
           </div>
 
           {/* Mobile menu button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-          >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </Button>
+          <div className="md:hidden flex items-center space-x-2">
+            <UILanguageSelector />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
+          </div>
         </div>
       </div>
 
