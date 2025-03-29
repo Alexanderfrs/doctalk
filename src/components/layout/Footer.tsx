@@ -2,8 +2,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Stethoscope, Heart } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer: React.FC = () => {
+  const { translate } = useLanguage();
+  
   return (
     <footer className="bg-medical-50 pt-12 pb-8 px-4 md:px-0 mt-auto">
       <div className="container mx-auto">
@@ -16,82 +19,82 @@ const Footer: React.FC = () => {
               <span className="text-xl font-semibold text-medical-800">MedLingua</span>
             </div>
             <p className="text-neutral-600 text-sm">
-              Sprachtraining für medizinisches Fachpersonal - verbessern Sie Ihre Kommunikation für eine optimale Patientenversorgung.
+              {translate("footerTagline")}
             </p>
             <div className="flex items-center mt-4 text-sm text-neutral-500">
               <Heart className="h-4 w-4 text-medical-400 mr-1" />
-              <span>Mit Liebe erstellt für alle Pflegekräfte</span>
+              <span>{translate("madeWithLove")}</span>
             </div>
           </div>
 
           <div className="col-span-1">
-            <h3 className="font-semibold text-neutral-800 mb-4">Navigation</h3>
+            <h3 className="font-semibold text-neutral-800 mb-4">{translate("navigation")}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Home
+                  {translate("home")}
                 </Link>
               </li>
               <li>
                 <Link to="/practice" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Übungen
+                  {translate("practice")}
                 </Link>
               </li>
               <li>
                 <Link to="/vocabulary" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Vokabeln
+                  {translate("vocabulary")}
                 </Link>
               </li>
               <li>
                 <Link to="/profile" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Profil
+                  {translate("profile")}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div className="col-span-1">
-            <h3 className="font-semibold text-neutral-800 mb-4">Kategorien</h3>
+            <h3 className="font-semibold text-neutral-800 mb-4">{translate("categories")}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/practice?category=patient-care" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Patientenversorgung
+                  {translate("patientCare")}
                 </Link>
               </li>
               <li>
                 <Link to="/practice?category=emergency" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Notfallsituationen
+                  {translate("emergency")}
                 </Link>
               </li>
               <li>
                 <Link to="/practice?category=documentation" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Dokumentation
+                  {translate("documentation")}
                 </Link>
               </li>
               <li>
                 <Link to="/practice?category=teamwork" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Teamarbeit
+                  {translate("teamwork")}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div className="col-span-1">
-            <h3 className="font-semibold text-neutral-800 mb-4">Niveaustufen</h3>
+            <h3 className="font-semibold text-neutral-800 mb-4">{translate("languageLevels")}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/practice?difficulty=beginner" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Anfänger (A1-A2)
+                  {translate("beginner")}
                 </Link>
               </li>
               <li>
                 <Link to="/practice?difficulty=intermediate" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Mittelstufe (B1-B2)
+                  {translate("intermediate")}
                 </Link>
               </li>
               <li>
                 <Link to="/practice?difficulty=advanced" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  Fortgeschritten (C1)
+                  {translate("advanced")}
                 </Link>
               </li>
             </ul>
@@ -100,17 +103,17 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-neutral-200 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-neutral-500 mb-4 md:mb-0">
-            © {new Date().getFullYear()} MedLingua. Alle Rechte vorbehalten.
+            © {new Date().getFullYear()} MedLingua. {translate("allRightsReserved")}
           </p>
           <div className="flex space-x-4 text-sm text-neutral-500">
             <Link to="/privacy" className="hover:text-medical-600 transition-colors">
-              Datenschutz
+              {translate("privacy")}
             </Link>
             <Link to="/terms" className="hover:text-medical-600 transition-colors">
-              Nutzungsbedingungen
+              {translate("terms")}
             </Link>
             <Link to="/contact" className="hover:text-medical-600 transition-colors">
-              Kontakt
+              {translate("contact")}
             </Link>
           </div>
         </div>

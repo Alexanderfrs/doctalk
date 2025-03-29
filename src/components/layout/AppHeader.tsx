@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Home, BookOpen, MessageCircle, User, Menu, X, Stethoscope, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import UILanguageSelector from "@/components/language/UILanguageSelector";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AppHeaderProps {
   onLogin?: () => void;
@@ -18,6 +19,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isAuthenticated, signOut } = useAuth();
+  const { translate } = useLanguage();
 
   // Handle scroll effect
   useEffect(() => {
@@ -33,15 +35,15 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
   const getNavItems = () => {
     if (isAuthenticated) {
       return [
-        { path: "/dashboard", label: "Home", icon: <Home className="h-5 w-5" /> },
-        { path: "/practice", label: "Übungen", icon: <MessageCircle className="h-5 w-5" /> },
-        { path: "/vocabulary", label: "Vokabeln", icon: <BookOpen className="h-5 w-5" /> },
-        { path: "/profile", label: "Profil", icon: <User className="h-5 w-5" /> },
+        { path: "/dashboard", label: translate("home"), icon: <Home className="h-5 w-5" /> },
+        { path: "/practice", label: translate("practice"), icon: <MessageCircle className="h-5 w-5" /> },
+        { path: "/vocabulary", label: translate("vocabulary"), icon: <BookOpen className="h-5 w-5" /> },
+        { path: "/profile", label: translate("profile"), icon: <User className="h-5 w-5" /> },
       ];
     } else {
       return [
-        { path: "/#features", label: "Funktionen", icon: <MessageCircle className="h-5 w-5" /> },
-        { path: "/#pricing", label: "Preise", icon: <BookOpen className="h-5 w-5" /> },
+        { path: "/#features", label: translate("features"), icon: <MessageCircle className="h-5 w-5" /> },
+        { path: "/#pricing", label: translate("pricingTitle"), icon: <BookOpen className="h-5 w-5" /> },
       ];
     }
   };
@@ -95,19 +97,19 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-1">
             {navItems.map((item) => (
-              <Link
+              <a
                 key={item.path}
-                to={item.path}
+                href={item.path}
                 className={cn(
                   "flex items-center px-4 py-2 rounded-lg transition-colors",
-                  location.pathname === item.path
+                  location.pathname === item.path || (location.pathname === '/' && item.path.startsWith('/#'))
                     ? "bg-medical-50 text-medical-700 font-medium"
                     : "text-neutral-600 hover:bg-neutral-100"
                 )}
               >
                 {item.icon}
                 <span className="ml-2">{item.label}</span>
-              </Link>
+              </a>
             ))}
           </nav>
 
@@ -122,7 +124,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
                 onClick={handleLogout}
               >
                 <LogOut className="h-5 w-5 mr-2" />
-                <span>Abmelden</span>
+                <span>{translate("logout")}</span>
               </Button>
             ) : (
               <>
@@ -130,13 +132,13 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
                   variant="outline"
                   onClick={handleLogin}
                 >
-                  Anmelden
+                  {translate("login")}
                 </Button>
                 <Button
                   className="bg-medical-500 hover:bg-medical-600"
                   onClick={handleRegister}
                 >
-                  Registrieren
+                  {translate("register")}
                 </Button>
               </>
             )}
@@ -162,12 +164,12 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
         <div className="fixed inset-0 top-[72px] bg-white z-40 animate-fade-in md:hidden">
           <nav className="container flex flex-col space-y-2 p-4">
             {navItems.map((item) => (
-              <Link
+              <a
                 key={item.path}
-                to={item.path}
+                href={item.path}
                 className={cn(
                   "flex items-center px-4 py-3 rounded-lg transition-colors",
-                  location.pathname === item.path
+                  location.pathname === item.path || (location.pathname === '/' && item.path.startsWith('/#'))
                     ? "bg-medical-50 text-medical-700 font-medium"
                     : "text-neutral-600 hover:bg-neutral-100"
                 )}
@@ -175,7 +177,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
               >
                 {item.icon}
                 <span className="ml-2 text-lg">{item.label}</span>
-              </Link>
+              </a>
             ))}
 
             {isAuthenticated ? (
@@ -188,7 +190,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
                 }}
               >
                 <LogOut className="h-5 w-5 mr-2" />
-                <span className="text-lg">Abmelden</span>
+                <span className="text-lg">{translate("logout")}</span>
               </Button>
             ) : (
               <div className="flex flex-col space-y-2 mt-4">
@@ -200,7 +202,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
                   }}
                   className="w-full justify-center"
                 >
-                  Anmelden
+                  {translate("login")}
                 </Button>
                 <Button
                   className="bg-medical-500 hover:bg-medical-600 w-full justify-center"
@@ -209,7 +211,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
                     setIsMobileMenuOpen(false);
                   }}
                 >
-                  Registrieren
+                  {translate("register")}
                 </Button>
               </div>
             )}

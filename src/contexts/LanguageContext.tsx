@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define language types
@@ -174,6 +173,29 @@ const translations: Record<string, Record<string, string>> = {
     ctaText: 'Starte jetzt mit den Übungen und verbessere deine berufliche Kommunikation im medizinischen Bereich - für alle Sprachniveaus von A1 bis C1.',
     startWithExercises: 'Mit Übungen beginnen',
     swipeToSwitch: 'Wischen Sie nach links oder rechts, um zwischen den Registern zu wechseln',
+    features: 'Funktionen',
+    login: 'Anmelden',
+    register: 'Registrieren',
+    logout: 'Abmelden',
+    // Footer translations
+    footerTagline: 'Sprachtraining für medizinisches Fachpersonal - verbessern Sie Ihre Kommunikation für eine optimale Patientenversorgung.',
+    madeWithLove: 'Mit Liebe erstellt für alle Pflegekräfte',
+    navigation: 'Navigation',
+    categories: 'Kategorien',
+    patientCare: 'Patientenversorgung',
+    emergency: 'Notfallsituationen',
+    documentation: 'Dokumentation',
+    teamwork: 'Teamarbeit',
+    languageLevels: 'Niveaustufen',
+    beginner: 'Anfänger (A1-A2)',
+    intermediate: 'Mittelstufe (B1-B2)',
+    advanced: 'Fortgeschritten (C1)',
+    allRightsReserved: 'Alle Rechte vorbehalten.',
+    privacy: 'Datenschutz',
+    terms: 'Nutzungsbedingungen',
+    contact: 'Kontakt',
+    swipeLeft: 'Nach links wischen',
+    swipeRight: 'Nach rechts wischen',
   },
   en: {
     welcome: 'Welcome',
@@ -289,6 +311,29 @@ const translations: Record<string, Record<string, string>> = {
     ctaText: 'Start now with the exercises and improve your professional communication in the medical field - for all language levels from A1 to C1.',
     startWithExercises: 'Start with exercises',
     swipeToSwitch: 'Swipe left or right to switch between tabs',
+    features: 'Features',
+    login: 'Sign In',
+    register: 'Register',
+    logout: 'Sign Out',
+    // Footer translations
+    footerTagline: 'Language training for medical professionals - improve your communication for optimal patient care.',
+    madeWithLove: 'Made with love for all healthcare professionals',
+    navigation: 'Navigation',
+    categories: 'Categories',
+    patientCare: 'Patient Care',
+    emergency: 'Emergency',
+    documentation: 'Documentation',
+    teamwork: 'Teamwork',
+    languageLevels: 'Language Levels',
+    beginner: 'Beginner (A1-A2)',
+    intermediate: 'Intermediate (B1-B2)',
+    advanced: 'Advanced (C1)',
+    allRightsReserved: 'All rights reserved.',
+    privacy: 'Privacy',
+    terms: 'Terms of Use',
+    contact: 'Contact',
+    swipeLeft: 'Swipe left',
+    swipeRight: 'Swipe right',
   },
   es: {
     welcome: 'Bienvenido',
@@ -404,6 +449,29 @@ const translations: Record<string, Record<string, string>> = {
     ctaText: 'Comienza ahora con los ejercicios y mejora tu comunicación profesional en el campo médico - para todos los niveles de idioma desde A1 hasta C1.',
     startWithExercises: 'Comenzar con ejercicios',
     swipeToSwitch: 'Desliza hacia la izquierda o derecha para cambiar entre pestañas',
+    features: 'Características',
+    login: 'Iniciar Sesión',
+    register: 'Registrarse',
+    logout: 'Cerrar Sesión',
+    // Footer translations
+    footerTagline: 'Entrenamiento de idiomas para profesionales médicos - mejore su comunicación para una atención óptima al paciente.',
+    madeWithLove: 'Hecho con amor para todos los profesionales de la salud',
+    navigation: 'Navegación',
+    categories: 'Categorías',
+    patientCare: 'Atención al Paciente',
+    emergency: 'Emergencia',
+    documentation: 'Documentación',
+    teamwork: 'Trabajo en Equipo',
+    languageLevels: 'Niveles de Idioma',
+    beginner: 'Principiante (A1-A2)',
+    intermediate: 'Intermedio (B1-B2)',
+    advanced: 'Avanzado (C1)',
+    allRightsReserved: 'Todos los derechos reservados.',
+    privacy: 'Privacidad',
+    terms: 'Términos de Uso',
+    contact: 'Contacto',
+    swipeLeft: 'Deslizar a la izquierda',
+    swipeRight: 'Deslizar a la derecha',
   },
   ro: {
     welcome: 'Bun venit',
@@ -519,269 +587,29 @@ const translations: Record<string, Record<string, string>> = {
     ctaText: 'Începe acum cu exercițiile și îmbunătățește-ți comunicarea profesională în domeniul medical - pentru toate nivelurile lingvistice de la A1 la C1.',
     startWithExercises: 'Începe cu exerciții',
     swipeToSwitch: 'Glisează la stânga sau la dreapta pentru a comuta între file',
+    features: 'Funcționalități',
+    login: 'Conectare',
+    register: 'Înregistrare',
+    logout: 'Deconectare',
+    // Footer translations
+    footerTagline: 'Pregătire lingvistică pentru profesioniștii din domeniul medical - îmbunătățiți comunicarea pentru îngrijirea optimă a pacientului.',
+    madeWithLove: 'Creat cu dragoste pentru toți profesioniștii din sănătate',
+    navigation: 'Navigare',
+    categories: 'Categorii',
+    patientCare: 'Îngrijirea Pacientului',
+    emergency: 'Urgență',
+    documentation: 'Documentație',
+    teamwork: 'Muncă în Echipă',
+    languageLevels: 'Niveluri de Limbă',
+    beginner: 'Începător (A1-A2)',
+    intermediate: 'Intermediar (B1-B2)',
+    advanced: 'Avansat (C1)',
+    allRightsReserved: 'Toate drepturile rezervate.',
+    privacy: 'Confidențialitate',
+    terms: 'Termeni de Utilizare',
+    contact: 'Contact',
+    swipeLeft: 'Glisează la stânga',
+    swipeRight: 'Glisează la dreapta',
   },
   pl: {
     welcome: 'Witaj',
-    language: 'Język',
-    settings: 'Ustawienia',
-    home: 'Strona główna',
-    practice: 'Ćwiczenia',
-    vocabulary: 'Słownictwo',
-    dialog: 'Dialog',
-    profile: 'Profil',
-    startExercise: 'Rozpocznij ćwiczenie',
-    learnVocabulary: 'Ucz się słownictwa',
-    progress: 'Twój postęp',
-    weeklyGoal: 'Cel tygodniowy',
-    streak: 'Dni pod rząd',
-    completedScenarios: 'Ukończone scenariusze',
-    masteredVocabulary: 'Opanowane słownictwo',
-    exercises: 'ćwiczenia',
-    of: 'z',
-    days: 'dni',
-    recommendedExercises: 'Polecane ćwiczenia',
-    showAll: 'Pokaż wszystkie',
-    medicalGerman: 'Niemiecki medyczny dla wszystkich poziomów językowych',
-    improveYour: 'Popraw swoją',
-    medicalCommunication: 'komunikację medyczną',
-    trainScenarios: 'Ćwicz scenariusze dialogowe i terminologię dla codziennej pracy zawodowej w służbie zdrowia, niezależnie od poziomu znajomości języka.',
-    // Registration page
-    createAccount: 'Utwórz konto',
-    startJourney: 'Rozpocznij swoją podróż, aby stać się ekspertem w dziedzinie języka medycznego',
-    fullName: 'Twoje imię i nazwisko',
-    email: 'Email',
-    password: 'Hasło',
-    minPasswordLength: 'Hasło musi mieć co najmniej 6 znaków',
-    skipOnboardingFlow: 'Pomiń proces onboardingu (można go ukończyć później w ustawieniach)',
-    registerBenefits: 'Po rejestracji otrzymasz:',
-    benefit1: 'Dostęp do medycznych scenariuszy dialogowych',
-    benefit2: 'Specjalistyczne szkolenie słownictwa',
-    benefit3: 'Osobiste śledzenie postępów',
-    register: 'Zarejestruj się',
-    registration: 'Rejestracja',
-    termsAndConditions: 'Rejestrując się, akceptujesz nasze Warunki świadczenia usług i Politykę prywatności.',
-    alreadyRegistered: 'Masz już konto? Zaloguj się teraz',
-    // Landing page
-    startFree: 'Zacznij za darmo',
-    learnMore: 'Dowiedz się więcej',
-    specializedForMedical: 'Specjalizacja w dziedzinie medycyny',
-    medLinguaDifference: 'MedLingua różni się od ogólnych aplikacji do nauki języków, koncentrując się na kontekście medycznym.',
-    medicalVocabulary: 'Słownictwo medyczne',
-    learnTerms: 'Naucz się ponad 2000 terminów medycznych, diagnoz i zwrotów, które są naprawdę istotne w codziennej praktyce klinicznej.',
-    practicalDialogs: 'Praktyczne scenariusze dialogowe',
-    practiceConversations: 'Ćwicz realistyczne rozmowy z codziennej rutyny szpitalnej - od przyjęcia pacjenta po obchody.',
-    allLanguageLevels: 'Dla wszystkich poziomów językowych',
-    customContent: 'Treści dostosowane do każdego poziomu językowego od A1 do C1 - możesz zacząć od razu, niezależnie od Twojego obecnego poziomu.',
-    expertDeveloped: 'Opracowany przez ekspertów',
-    contentDevelopment: 'Cała zawartość została opracowana i zweryfikowana we współpracy z lekarzami, pielęgniarkami i nauczycielami języków.',
-    nurseOptimized: 'Zoptymalizowany dla personelu pielęgniarskiego',
-    internationalNurses: 'Szczególny nacisk na potrzeby językowe międzynarodowego personelu pielęgniarskiego w Niemczech.',
-    certificationRecognition: 'Uznawanie certyfikatów',
-    examPreparation: 'Optymalne przygotowanie do egzaminów językowych w celu uzyskania uznania zawodowego w niemieckim systemie opieki zdrowotnej.',
-    comparisonTitle: 'W porównaniu z ogólnymi aplikacjami do nauki języków',
-    feature: 'Funkcja',
-    generalApps: 'Ogólne aplikacje',
-    medicalVocabularyComparison: 'Ograniczone lub nieistniejące',
-    comprehensiveSpecialized: 'Kompleksowe i specjalistyczne',
-    dialogScenarios: 'Praktyczne scenariusze dialogowe',
-    everydayConversations: 'Ogólne codzienne rozmowy',
-    realisticMedical: 'Realistyczne sytuacje medyczne',
-    learningGoal: 'Cel nauki',
-    generalLanguageSkills: 'Ogólne umiejętności językowe',
-    professionalCommunication: 'Komunikacja zawodowa',
-    professionalSupport: 'Wsparcie dla profesjonalistów',
-    minimal: 'Minimalne',
-    specificPreparation: 'Specyficzne przygotowanie do codziennej pracy zawodowej',
-    pricingTitle: 'Proste i przejrzyste ceny',
-    pricingDescription: 'Wybierz plan, który najlepiej pasuje do Twoich celów edukacyjnych.',
-    basic: 'Podstawowy',
-    forBeginners: 'Dla początkujących',
-    free: 'Bezpłatny',
-    professional: 'Profesjonalny',
-    forActiveLearners: 'Dla aktywnych uczących się',
-    team: 'Zespół',
-    forInstitutions: 'Dla instytucji',
-    basicFeature1: 'Podstawowe słownictwo medyczne',
-    basicFeature2: '5 scenariuszy dialogowych miesięcznie',
-    basicFeature3: 'Przegląd postępów',
-    proFeature1: 'Pełny dostęp do specjalistycznego słownictwa',
-    proFeature2: 'Nieograniczone scenariusze dialogowe',
-    proFeature3: 'Tryb offline do nauki w podróży',
-    proFeature4: 'Przygotowanie do egzaminu z języka medycznego z opcjami czasowymi',
-    proFeature5: 'Szczegółowe analizy wyników',
-    proFeature6: '1 miesiąc za darmo po 3-miesięcznej serii',
-    teamFeature1: 'Wszystko z planu Profesjonalnego',
-    teamFeature2: 'Do 10 kont użytkowników',
-    teamFeature3: 'Strefa administratora',
-    teamFeature4: 'Raporty postępów dla zespołu',
-    teamFeature5: 'Symulacje egzaminów ustnych',
-    contactUs: 'Skontaktuj się z nami',
-    loyaltyProgram: 'Program lojalnościowy: 3+1',
-    loyaltyDescription: 'Korzystaj z MedLingua regularnie przez 3 miesiące',
-    loyaltyBenefit: 'I otrzymaj 4. miesiąc Premium za darmo!',
-    streak90: '90 dni pod rząd',
-    oneFreeMonth: '= 1 miesiąc Premium za darmo',
-    unlimitedRepeatable: 'Możliwość nieograniczonego powtarzania',
-    readyToImprove: 'Gotowy, aby poprawić swoje medyczne umiejętności językowe?',
-    startTodayCta: 'Rozpocznij już dziś i przygotuj się do swojego zawodowego życia codziennego w niemieckiej opiece zdrowotnej.',
-    registerFree: 'Zarejestruj się za darmo',
-    languageSelection: 'Wybierz język',
-    month: 'miesiąc',
-    year: 'rok',
-    recommended: 'Polecane',
-    selectLanguage: 'Wybierz język',
-    ctaHeading: 'Gotowy, aby poprawić swoje umiejętności językowe?',
-    ctaText: 'Rozpocznij teraz ćwiczenia i popraw swoją zawodową komunikację w dziedzinie medycyny - dla wszystkich poziomów językowych od A1 do C1.',
-    startWithExercises: 'Rozpocznij ćwiczenia',
-    swipeToSwitch: 'Przesuń w lewo lub prawo, aby przełączać między zakładkami',
-  },
-};
-
-// Create the context with default values
-const LanguageContext = createContext<LanguageContextType>({
-  userLanguage: 'en',
-  setUserLanguage: () => {},
-  germanDialect: 'de-DE',
-  setGermanDialect: () => {},
-  translate: (key: string) => key,
-  getLanguageName: () => '',
-  getDialectName: () => '',
-  supportedLanguages,
-  germanDialects,
-  getCurrentLanguageTranslations: () => ({}),
-  getGermanContent: (standardGerman: string) => standardGerman,
-  interfaceLanguage: 'en',
-  changeUILanguage: () => {},
-});
-
-interface LanguageProviderProps {
-  children: React.ReactNode;
-}
-
-export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  // Try to get initial language from localStorage, default to English
-  const [userLanguage, setUserLanguageState] = useState<string>(
-    localStorage.getItem('userLanguage') || 'en'
-  );
-  
-  // The interface language is separate (for UI display)
-  const [interfaceLanguage, setInterfaceLanguage] = useState<string>(
-    localStorage.getItem('interfaceLanguage') || userLanguage in translations ? userLanguage : 'en'
-  );
-  
-  // Try to get initial German dialect from localStorage, default to Standard German
-  const [germanDialect, setGermanDialectState] = useState<string>(
-    localStorage.getItem('germanDialect') || 'de-DE'
-  );
-
-  // Save language selection to localStorage when it changes
-  useEffect(() => {
-    localStorage.setItem('userLanguage', userLanguage);
-  }, [userLanguage]);
-
-  // Save interface language selection to localStorage
-  useEffect(() => {
-    localStorage.setItem('interfaceLanguage', interfaceLanguage);
-    // Update document language for accessibility
-    document.documentElement.lang = interfaceLanguage;
-  }, [interfaceLanguage]);
-
-  // Save dialect selection to localStorage when it changes
-  useEffect(() => {
-    localStorage.setItem('germanDialect', germanDialect);
-  }, [germanDialect]);
-
-  const setUserLanguage = (code: string) => {
-    setUserLanguageState(code);
-  };
-
-  const setGermanDialect = (code: string) => {
-    setGermanDialectState(code);
-  };
-
-  const changeUILanguage = (code: string) => {
-    if (code in translations) {
-      setInterfaceLanguage(code);
-      // Force a re-render of translated content
-      const event = new Event('languagechange');
-      window.dispatchEvent(event);
-    } else {
-      console.warn(`Language ${code} is not supported for UI translations`);
-    }
-  };
-
-  // Function to get a translation - falls back to key if translation not found
-  const translate = (key: string): string => {
-    if (!key) return '';
-    
-    const lang = interfaceLanguage in translations ? interfaceLanguage : 'en';
-    const translation = translations[lang]?.[key];
-    
-    if (!translation) {
-      console.warn(`Missing translation for key "${key}" in language "${lang}"`);
-      return translations.en?.[key] || key;
-    }
-    
-    return translation;
-  };
-
-  // Get a language name by code
-  const getLanguageName = (code: string): string => {
-    const language = supportedLanguages.find(lang => lang.code === code);
-    return language ? language.name : code;
-  };
-
-  // Get a dialect name by code
-  const getDialectName = (code: string): string => {
-    const dialect = germanDialects.find(d => d.code === code);
-    return dialect ? dialect.name : code;
-  };
-
-  // Get all translations for the current language
-  const getCurrentLanguageTranslations = (): Record<string, string> => {
-    return translations[interfaceLanguage] || translations.en;
-  };
-
-  // Add function to get content in the selected German dialect
-  const getGermanContent = (standardGerman: string): string => {
-    // Implement dialect-specific variations
-    switch (germanDialect) {
-      case 'de-AT':
-        // Austrian German variations
-        return standardGerman.replace('ich', 'i')
-                           .replace('nicht', 'ned')
-                           .replace('ist', 'is');
-      case 'de-CH':
-        // Swiss German variations
-        return standardGerman.replace('ich', 'ig')
-                           .replace('nicht', 'nöd')
-                           .replace('ist', 'isch');
-      default:
-        return standardGerman;
-    }
-  };
-
-  const contextValue: LanguageContextType = {
-    userLanguage,
-    setUserLanguage,
-    germanDialect,
-    setGermanDialect,
-    translate,
-    getLanguageName,
-    getDialectName,
-    supportedLanguages,
-    germanDialects,
-    getCurrentLanguageTranslations,
-    getGermanContent,
-    interfaceLanguage,
-    changeUILanguage,
-  };
-
-  return (
-    <LanguageContext.Provider value={contextValue}>
-      {children}
-    </LanguageContext.Provider>
-  );
-};
-
-export const useLanguage = () => useContext(LanguageContext);

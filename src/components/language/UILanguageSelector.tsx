@@ -12,9 +12,10 @@ import { Globe } from 'lucide-react';
 const UILanguageSelector: React.FC = () => {
   const { changeUILanguage, supportedLanguages, interfaceLanguage } = useLanguage();
   
-  // Filter to only show the languages we want for the landing page
+  // Filter to only show the languages we want for the landing page and registration
+  // which are German, English, Spanish, Romanian
   const displayLanguages = supportedLanguages.filter(lang => 
-    ['de', 'en', 'es', 'ro'].includes(lang.code)
+    ['de', 'en', 'es', 'ro', 'pl'].includes(lang.code)
   );
   
   // Get current language display
@@ -22,15 +23,18 @@ const UILanguageSelector: React.FC = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center space-x-1 px-2 py-1 rounded hover:bg-neutral-100 transition-colors">
-        <Globe className="h-4 w-4" />
-        <span>{currentLanguage?.flag}</span>
+      <DropdownMenuTrigger className="flex items-center space-x-1 px-3 py-2 rounded-md hover:bg-neutral-100 transition-colors" aria-label="Select language">
+        <Globe className="h-4 w-4 mr-1.5" />
+        <span className="text-sm">{currentLanguage?.flag}</span>
+        <span className="text-sm hidden sm:inline">{currentLanguage?.nativeName}</span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="bg-white shadow-lg rounded-lg border border-neutral-200 p-1 min-w-[180px] z-50">
         {displayLanguages.map(language => (
           <DropdownMenuItem
             key={language.code}
-            className="flex items-center space-x-2 cursor-pointer"
+            className={`flex items-center space-x-2 cursor-pointer px-3 py-2 rounded-md ${
+              language.code === interfaceLanguage ? 'bg-medical-50 text-medical-700' : 'hover:bg-neutral-100'
+            }`}
             onClick={() => changeUILanguage(language.code)}
           >
             <span className="text-lg mr-2">{language.flag}</span>

@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/Footer";
@@ -40,6 +40,42 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       label: translate("pricingTitle")
     }
   ];
+
+  // Handle anchor links for navigation
+  useEffect(() => {
+    // Check if there's a hash in the URL
+    if (window.location.hash) {
+      const id = window.location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    
+    // Add click event listeners to anchor links
+    const handleAnchorClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const anchor = target.closest('a[href^="#"]');
+      
+      if (anchor) {
+        event.preventDefault();
+        const id = anchor.getAttribute('href')?.replace('#', '');
+        if (id) {
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+            window.history.pushState(null, '', `#${id}`);
+          }
+        }
+      }
+    };
+    
+    document.addEventListener('click', handleAnchorClick);
+    
+    return () => {
+      document.removeEventListener('click', handleAnchorClick);
+    };
+  }, []);
   
   return (
     <div className="min-h-screen flex flex-col relative">
@@ -130,7 +166,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   <thead>
                     <tr className="border-b border-neutral-200">
                       <th className="py-3 px-4 text-left">{translate("feature")}</th>
-                      <th className="py-3 px-4 text-center">{translate("generalApps")}<br />(Duolingo, Babbel, etc.)</th>
+                      <th className="py-3 px-4 text-center">{translate("generalApps")}</th>
                       <th className="py-3 px-4 text-center bg-medical-50 font-medium">MedLingua</th>
                     </tr>
                   </thead>
