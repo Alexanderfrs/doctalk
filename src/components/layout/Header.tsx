@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Home, BookOpen, MessageCircle, User, Menu, X, Stethoscope } from "lucide-react";
+import { Home, BookOpen, MessageCircle, User, Menu, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import AppLogo from "./AppLogo";
 
 interface NavItem {
   path: string;
@@ -48,15 +49,7 @@ const Header: React.FC = () => {
       <div className="container mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link 
-            to="/"
-            className="flex items-center space-x-2"
-          >
-            <div className="bg-medical-500 text-white p-1.5 rounded-lg">
-              <Stethoscope className="h-5 w-5" />
-            </div>
-            <span className="text-xl font-semibold text-medical-800">DocTalk</span>
-          </Link>
+          <AppLogo path="/" />
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-1">

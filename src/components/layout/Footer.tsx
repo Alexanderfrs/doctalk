@@ -1,8 +1,8 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
-import { Stethoscope, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import AppLogo from "./AppLogo";
 
 const Footer: React.FC = () => {
   const { translate } = useLanguage();
@@ -12,11 +12,8 @@ const Footer: React.FC = () => {
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-1">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="bg-medical-500 text-white p-1.5 rounded-lg">
-                <Stethoscope className="h-5 w-5" />
-              </div>
-              <span className="text-xl font-semibold text-medical-800">DocTalk</span>
+            <div className="mb-4">
+              <AppLogo path="/" size="medium" />
             </div>
             <p className="text-neutral-600 text-sm">
               {translate("footerTagline")}

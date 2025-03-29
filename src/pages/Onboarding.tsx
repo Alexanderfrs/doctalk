@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CheckCircle, ChevronRight, Stethoscope, ArrowRight } from "lucide-react";
+import { CheckCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import OnboardingAssessment from "@/components/onboarding/OnboardingAssessment";
@@ -10,6 +10,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import AppLogo from "@/components/layout/AppLogo";
 
 const Onboarding: React.FC = () => {
   const navigate = useNavigate();
@@ -107,12 +108,7 @@ const Onboarding: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
       <header className="py-4 px-6 flex items-center justify-center border-b">
-        <div className="flex items-center gap-2">
-          <div className="bg-medical-500 text-white p-1.5 rounded-lg">
-            <Stethoscope className="h-5 w-5" />
-          </div>
-          <span className="text-xl font-bold text-medical-800">MedLingua</span>
-        </div>
+        <AppLogo path="/" />
       </header>
       
       <main className="flex-grow flex flex-col items-center px-4 py-6 max-w-4xl mx-auto w-full">
