@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ import SideNavigator from "@/components/navigation/SideNavigator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import HeroSection from "@/components/home/HeroSection";
 import CtaSection from "@/components/home/CtaSection";
+import ScenarioDemo from "@/components/home/ScenarioDemo";
 
 interface LandingPageProps {
   onLogin?: () => void;
@@ -31,6 +31,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       id: "hero",
       label: translate("home")
     }, 
+    {
+      id: "demo",
+      label: translate("demoTitle")
+    },
     {
       id: "features",
       label: translate("features")
@@ -86,6 +90,25 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       <main className="flex-grow pt-24">
         <HeroSection />
         
+        {/* Demo Section */}
+        <section id="demo" className="py-16 px-4 bg-medical-50">
+          <div className="container mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-800">
+                {translate("demoTitle")}
+              </h2>
+              <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+                {translate("demoDescription")}
+              </p>
+            </div>
+            
+            <div className="max-w-3xl mx-auto">
+              <ScenarioDemo />
+            </div>
+          </div>
+        </section>
+        
+        {/* Existing Features Section */}
         <section id="features" className="py-16 bg-neutral-50 px-4">
           <div className="container mx-auto">
             <div className="text-center mb-16">
@@ -198,6 +221,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
           </div>
         </section>
         
+        {/* Existing Pricing Section */}
         <section id="pricing" className="py-16 px-4">
           <div className="container mx-auto">
             <div className="text-center mb-16">

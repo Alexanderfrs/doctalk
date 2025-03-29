@@ -1,6 +1,5 @@
-
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,8 +20,18 @@ const Register: React.FC = () => {
   const [skipOnboardingFlow, setSkipOnboardingFlow] = useState(false);
   
   const navigate = useNavigate();
+  const location = useLocation();
   const { signUp, skipOnboarding } = useAuth();
-  const { translate } = useLanguage();
+  const { translate, changeUILanguage, interfaceLanguage } = useLanguage();
+  
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const langParam = queryParams.get('lang');
+    
+    if (langParam && langParam !== interfaceLanguage) {
+      changeUILanguage(langParam);
+    }
+  }, [location.search, interfaceLanguage, changeUILanguage]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
