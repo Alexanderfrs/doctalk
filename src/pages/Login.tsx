@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { translate, changeUILanguage, interfaceLanguage } = useLanguage();
+  const { signIn } = useAuth();
   
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
