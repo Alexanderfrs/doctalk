@@ -13,7 +13,7 @@ const UILanguageSelector: React.FC = () => {
   const { changeUILanguage, supportedLanguages, interfaceLanguage } = useLanguage();
   
   // Filter to only show the languages we want for the landing page and registration
-  // which are German, English, Spanish, Romanian
+  // which are German, English, Spanish, Romanian, Polish
   const displayLanguages = supportedLanguages.filter(lang => 
     ['de', 'en', 'es', 'ro', 'pl'].includes(lang.code)
   );

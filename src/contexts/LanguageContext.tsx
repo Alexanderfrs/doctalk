@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define language types
@@ -613,3 +614,273 @@ const translations: Record<string, Record<string, string>> = {
   },
   pl: {
     welcome: 'Witaj',
+    language: 'Język',
+    settings: 'Ustawienia',
+    home: 'Strona główna',
+    practice: 'Ćwiczenia',
+    vocabulary: 'Słownictwo',
+    dialog: 'Dialog',
+    profile: 'Profil',
+    startExercise: 'Rozpocznij ćwiczenie',
+    learnVocabulary: 'Ucz się słownictwa',
+    progress: 'Twój postęp',
+    weeklyGoal: 'Cel tygodniowy',
+    streak: 'Dni pod rząd',
+    completedScenarios: 'Ukończone scenariusze',
+    masteredVocabulary: 'Opanowane słownictwo',
+    exercises: 'ćwiczenia',
+    of: 'z',
+    days: 'dni',
+    recommendedExercises: 'Polecane ćwiczenia',
+    showAll: 'Pokaż wszystkie',
+    medicalGerman: 'Niemiecki medyczny dla wszystkich poziomów językowych',
+    improveYour: 'Popraw swoją',
+    medicalCommunication: 'komunikację medyczną',
+    trainScenarios: 'Ćwicz scenariusze dialogowe i terminologię dla codziennej pracy zawodowej w służbie zdrowia, niezależnie od poziomu znajomości języka.',
+    // Registration page
+    createAccount: 'Utwórz konto',
+    startJourney: 'Rozpocznij swoją podróż, aby stać się ekspertem w dziedzinie języka medycznego',
+    fullName: 'Twoje imię i nazwisko',
+    email: 'Email',
+    password: 'Hasło',
+    minPasswordLength: 'Hasło musi mieć co najmniej 6 znaków',
+    skipOnboardingFlow: 'Pomiń proces onboardingu (można go ukończyć później w ustawieniach)',
+    registerBenefits: 'Po rejestracji otrzymasz:',
+    benefit1: 'Dostęp do medycznych scenariuszy dialogowych',
+    benefit2: 'Specjalistyczne szkolenie słownictwa',
+    benefit3: 'Osobiste śledzenie postępów',
+    register: 'Zarejestruj się',
+    registration: 'Rejestracja',
+    termsAndConditions: 'Rejestrując się, akceptujesz nasze Warunki świadczenia usług i Politykę prywatności.',
+    alreadyRegistered: 'Masz już konto? Zaloguj się teraz',
+    // Landing page
+    startFree: 'Zacznij za darmo',
+    learnMore: 'Dowiedz się więcej',
+    specializedForMedical: 'Specjalizacja w dziedzinie medycyny',
+    medLinguaDifference: 'MedLingua różni się od ogólnych aplikacji do nauki języków, koncentrując się na kontekście medycznym.',
+    medicalVocabulary: 'Słownictwo medyczne',
+    learnTerms: 'Naucz się ponad 2000 terminów medycznych, diagnoz i zwrotów, które są naprawdę istotne w codziennej praktyce klinicznej.',
+    practicalDialogs: 'Praktyczne scenariusze dialogowe',
+    practiceConversations: 'Ćwicz realistyczne rozmowy z codziennej rutyny szpitalnej - od przyjęcia pacjenta po obchody.',
+    allLanguageLevels: 'Dla wszystkich poziomów językowych',
+    customContent: 'Treści dostosowane do każdego poziomu językowego od A1 do C1 - możesz zacząć od razu, niezależnie od Twojego obecnego poziomu.',
+    expertDeveloped: 'Opracowany przez ekspertów',
+    contentDevelopment: 'Cała zawartość została opracowana i zweryfikowana we współpracy z lekarzami, pielęgniarkami i nauczycielami języków.',
+    nurseOptimized: 'Zoptymalizowany dla personelu pielęgniarskiego',
+    internationalNurses: 'Szczególny nacisk na potrzeby językowe międzynarodowego personelu pielęgniarskiego w Niemczech.',
+    certificationRecognition: 'Uznawanie certyfikatów',
+    examPreparation: 'Optymalne przygotowanie do egzaminów językowych w celu uzyskania uznania zawodowego w niemieckim systemie opieki zdrowotnej.',
+    comparisonTitle: 'W porównaniu z ogólnymi aplikacjami do nauki języków',
+    feature: 'Funkcja',
+    generalApps: 'Ogólne aplikacje',
+    medicalVocabularyComparison: 'Ograniczone lub nieistniejące',
+    comprehensiveSpecialized: 'Kompleksowe i specjalistyczne',
+    dialogScenarios: 'Praktyczne scenariusze dialogowe',
+    everydayConversations: 'Ogólne codzienne rozmowy',
+    realisticMedical: 'Realistyczne sytuacje medyczne',
+    learningGoal: 'Cel nauki',
+    generalLanguageSkills: 'Ogólne umiejętności językowe',
+    professionalCommunication: 'Komunikacja zawodowa',
+    professionalSupport: 'Wsparcie dla profesjonalistów',
+    minimal: 'Minimalne',
+    specificPreparation: 'Specyficzne przygotowanie do codziennego życia zawodowego',
+    pricingTitle: 'Proste i przejrzyste ceny',
+    pricingDescription: 'Wybierz plan, który najlepiej odpowiada Twoim celom nauki.',
+    basic: 'Podstawowy',
+    forBeginners: 'Dla początkujących',
+    free: 'Darmowy',
+    professional: 'Profesjonalny',
+    forActiveLearners: 'Dla aktywnych uczniów',
+    team: 'Zespół',
+    forInstitutions: 'Dla instytucji',
+    basicFeature1: 'Podstawowe słownictwo medyczne',
+    basicFeature2: '5 scenariuszy dialogowych miesięcznie',
+    basicFeature3: 'Przegląd postępów',
+    proFeature1: 'Pełny dostęp do specjalistycznego słownictwa',
+    proFeature2: 'Nieograniczone scenariusze dialogowe',
+    proFeature3: 'Tryb offline do nauki w podróży',
+    proFeature4: 'Przygotowanie do egzaminu języka medycznego z opcjami czasowymi',
+    proFeature5: 'Szczegółowe analizy wyników',
+    proFeature6: '1 miesiąc za darmo po serii 3 miesięcy',
+    teamFeature1: 'Wszystko z planu Profesjonalnego',
+    teamFeature2: 'Do 10 kont użytkowników',
+    teamFeature3: 'Obszar administratora',
+    teamFeature4: 'Raporty postępów dla zespołu',
+    teamFeature5: 'Symulacje egzaminów ustnych',
+    contactUs: 'Skontaktuj się z nami',
+    loyaltyProgram: 'Program lojalnościowy: 3+1',
+    loyaltyDescription: 'Korzystaj z MedLingua regularnie przez 3 miesiące',
+    loyaltyBenefit: 'I otrzymaj 4. miesiąc Premium za darmo!',
+    streak90: '90 dni pod rząd',
+    oneFreeMonth: '= 1 miesiąc Premium za darmo',
+    unlimitedRepeatable: 'Nieograniczona powtarzalność',
+    readyToImprove: 'Gotowy, aby poprawić swoje medyczne umiejętności językowe?',
+    startTodayCta: 'Rozpocznij dzisiaj i przygotuj się do swojego zawodowego życia codziennego w niemieckiej służbie zdrowia.',
+    registerFree: 'Zarejestruj się za darmo',
+    languageSelection: 'Wybierz język',
+    month: 'miesiąc',
+    year: 'rok',
+    recommended: 'Polecany',
+    selectLanguage: 'Wybierz język',
+    ctaHeading: 'Gotowy do poprawy swoich umiejętności językowych?',
+    ctaText: 'Rozpocznij teraz z ćwiczeniami i popraw swoją profesjonalną komunikację w dziedzinie medycznej - dla wszystkich poziomów językowych od A1 do C1.',
+    startWithExercises: 'Rozpocznij z ćwiczeniami',
+    swipeToSwitch: 'Przesuń w lewo lub prawo, aby przełączać między kartami',
+    features: 'Funkcje',
+    login: 'Zaloguj się',
+    register: 'Zarejestruj się',
+    logout: 'Wyloguj się',
+    // Footer translations
+    footerTagline: 'Szkolenie językowe dla pracowników medycznych - popraw swoją komunikację dla optymalnej opieki nad pacjentem.',
+    madeWithLove: 'Stworzone z miłością dla wszystkich pracowników służby zdrowia',
+    navigation: 'Nawigacja',
+    categories: 'Kategorie',
+    patientCare: 'Opieka nad Pacjentem',
+    emergency: 'Sytuacje Awaryjne',
+    documentation: 'Dokumentacja',
+    teamwork: 'Praca Zespołowa',
+    languageLevels: 'Poziomy Językowe',
+    beginner: 'Początkujący (A1-A2)',
+    intermediate: 'Średniozaawansowany (B1-B2)',
+    advanced: 'Zaawansowany (C1)',
+    allRightsReserved: 'Wszelkie prawa zastrzeżone.',
+    privacy: 'Prywatność',
+    terms: 'Warunki Korzystania',
+    contact: 'Kontakt',
+    swipeLeft: 'Przesuń w lewo',
+    swipeRight: 'Przesuń w prawo',
+  },
+};
+
+// Create language context
+const LanguageContext = createContext<LanguageContextType>({
+  userLanguage: 'de', // Default learning language (the language user wants to learn)
+  setUserLanguage: () => {},
+  germanDialect: 'de-DE', // Default German dialect
+  setGermanDialect: () => {},
+  translate: () => '',
+  getLanguageName: () => '',
+  getDialectName: () => '',
+  supportedLanguages,
+  germanDialects,
+  getCurrentLanguageTranslations: () => ({}),
+  getGermanContent: () => '',
+  interfaceLanguage: 'de', // Default interface language
+  changeUILanguage: () => {},
+});
+
+// Custom hook to use language context
+export const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
+};
+
+// Language provider component
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [userLanguage, setUserLanguageState] = useState<string>(() => {
+    // Get from local storage if available or use default
+    const saved = localStorage.getItem('userLanguage');
+    return saved || 'de';
+  });
+  
+  const [germanDialect, setGermanDialectState] = useState<string>(() => {
+    const saved = localStorage.getItem('germanDialect');
+    return saved || 'de-DE';
+  });
+  
+  const [interfaceLanguage, setInterfaceLanguage] = useState<string>(() => {
+    // First try to get the interface language from local storage
+    const savedInterface = localStorage.getItem('interfaceLanguage');
+    if (savedInterface) return savedInterface;
+    
+    // If not in storage, try to detect browser language
+    const browserLang = navigator.language.split('-')[0];
+    
+    // Check if the browser language is supported
+    const isSupportedLanguage = supportedLanguages.some(lang => lang.code === browserLang);
+    
+    // Return browser language if supported, otherwise default to German
+    return isSupportedLanguage ? browserLang : 'de';
+  });
+
+  useEffect(() => {
+    // Save language preferences to local storage whenever they change
+    localStorage.setItem('userLanguage', userLanguage);
+    localStorage.setItem('germanDialect', germanDialect);
+    localStorage.setItem('interfaceLanguage', interfaceLanguage);
+  }, [userLanguage, germanDialect, interfaceLanguage]);
+
+  const setUserLanguage = (code: string) => {
+    setUserLanguageState(code);
+  };
+
+  const setGermanDialect = (code: string) => {
+    setGermanDialectState(code);
+  };
+  
+  const changeUILanguage = (code: string) => {
+    setInterfaceLanguage(code);
+  };
+
+  const translate = (key: string): string => {
+    // If the key exists in the interface language, return that translation
+    if (translations[interfaceLanguage]?.[key]) {
+      return translations[interfaceLanguage][key];
+    }
+    
+    // Fallback to English if available
+    if (translations['en']?.[key]) {
+      return translations['en'][key];
+    }
+    
+    // Final fallback - return the key itself
+    return key;
+  };
+
+  const getLanguageName = (code: string): string => {
+    const language = supportedLanguages.find(lang => lang.code === code);
+    return language ? language.name : code;
+  };
+
+  const getDialectName = (code: string): string => {
+    const dialect = germanDialects.find(d => d.code === code);
+    return dialect ? dialect.name : code;
+  };
+  
+  const getCurrentLanguageTranslations = (): Record<string, string> => {
+    return translations[interfaceLanguage] || translations['en'] || {};
+  };
+  
+  // Function to get German content based on dialect (for future use)
+  const getGermanContent = (standardGerman: string): string => {
+    // In the future, implement dialect-specific variations here
+    return standardGerman;
+  };
+
+  const value = {
+    userLanguage,
+    setUserLanguage,
+    germanDialect,
+    setGermanDialect,
+    translate,
+    getLanguageName,
+    getDialectName,
+    supportedLanguages,
+    germanDialects,
+    getCurrentLanguageTranslations,
+    getGermanContent,
+    interfaceLanguage,
+    changeUILanguage,
+  };
+
+  return (
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export default LanguageContext;
