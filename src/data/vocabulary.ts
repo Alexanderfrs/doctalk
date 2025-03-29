@@ -653,46 +653,87 @@ const vocabularyCategories: VocabularyCategory[] = [
   {
     id: 'equipment',
     name: 'Medizinische Geräte',
-    description: 'Medizintechnische Geräte und Ausstattung',
+    description: 'Medizintechnische Geräte und Ausstattung für den Pflege- und Krankenhausbereich',
     words: [
       {
-        id: 'monitor',
-        german: 'der Monitor',
-        english: 'monitor',
-        pronunciation: 'mo-nee-tohr',
-        example: 'Der Monitor zeigt die Vitalparameter des Patienten an.',
+        id: 'blood-pressure-monitor',
+        german: 'das Blutdruckmessgerät',
+        english: 'blood pressure monitor',
+        pronunciation: 'bloot-drook-mess-geh-rayt',
+        example: 'Das Blutdruckmessgerät zeigt 140/90 mmHg an.',
         category: 'equipment'
       },
       {
-        id: 'ventilator',
-        german: 'das Beatmungsgerät',
-        english: 'ventilator',
-        pronunciation: 'beh-aht-mungs-geh-räht',
-        example: 'Der Patient ist an das Beatmungsgerät angeschlossen.',
+        id: 'stethoscope',
+        german: 'das Stethoskop',
+        english: 'stethoscope',
+        pronunciation: 'steh-toh-skohp',
+        example: 'Mit dem Stethoskop kann man Herz- und Lungengeräusche abhören.',
         category: 'equipment'
       },
       {
-        id: 'infusion-pump',
-        german: 'die Infusionspumpe',
-        english: 'infusion pump',
-        pronunciation: 'in-foo-zee-ohns-poom-peh',
-        example: 'Die Infusionspumpe ist auf 60 ml/h eingestellt.',
+        id: 'thermometer',
+        german: 'das Thermometer',
+        english: 'thermometer',
+        pronunciation: 'ter-mo-meh-ter',
+        example: 'Das digitale Thermometer ist hygienischer als ein Quecksilberthermometer.',
         category: 'equipment'
       },
       {
-        id: 'ecg-machine',
-        german: 'das EKG-Gerät',
-        english: 'ECG machine',
-        pronunciation: 'ay-kah-gay geh-räht',
-        example: 'Bitte bereiten Sie das EKG-Gerät vor.',
+        id: 'hospital-bed',
+        german: 'das Pflegebett',
+        english: 'hospital/nursing bed',
+        pronunciation: 'pfleg-eh-bet',
+        example: 'Das elektrische Pflegebett lässt sich in verschiedene Positionen bringen.',
         category: 'equipment'
       },
       {
-        id: 'suction',
-        german: 'das Absauggerät',
-        english: 'suction device',
-        pronunciation: 'ab-zoug-geh-räht',
-        example: 'Für die Bronchialtoilette benötigen wir das Absauggerät.',
+        id: 'iv-stand',
+        german: 'der Infusionsständer',
+        english: 'IV stand',
+        pronunciation: 'in-foo-zee-ohns-shten-der',
+        example: 'Bitte bringen Sie den Infusionsständer ans Bett.',
+        category: 'equipment'
+      },
+      {
+        id: 'pulse-oximeter',
+        german: 'das Pulsoximeter',
+        english: 'pulse oximeter',
+        pronunciation: 'puls-ox-ee-meh-ter',
+        example: 'Das Pulsoximeter misst die Sauerstoffsättigung im Blut.',
+        category: 'equipment'
+      },
+      {
+        id: 'syringe',
+        german: 'die Spritze',
+        english: 'syringe',
+        pronunciation: 'shprit-ze',
+        example: 'Die Spritze wird für die Insulininjektion verwendet.',
+        category: 'equipment'
+      },
+      {
+        id: 'gloves',
+        german: 'die Handschuhe',
+        english: 'gloves',
+        pronunciation: 'hand-shoo-eh',
+        example: 'Bitte ziehen Sie vor dem Eingriff sterile Handschuhe an.',
+        category: 'equipment',
+        notes: 'Usually used in plural form'
+      },
+      {
+        id: 'wheelchair',
+        german: 'der Rollstuhl',
+        english: 'wheelchair',
+        pronunciation: 'roll-shtool',
+        example: 'Der Patient benötigt einen Rollstuhl für den Transport.',
+        category: 'equipment'
+      },
+      {
+        id: 'bandage',
+        german: 'die Bandage',
+        english: 'bandage',
+        pronunciation: 'ban-dah-ge',
+        example: 'Die Bandage unterstützt das verletzte Gelenk.',
         category: 'equipment'
       }
     ]

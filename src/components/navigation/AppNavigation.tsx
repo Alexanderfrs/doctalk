@@ -5,6 +5,7 @@ import { Home, BookOpen, Mic, User, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { toast } from "sonner";
 
 const AppNavigation: React.FC = () => {
   const location = useLocation();
@@ -13,9 +14,9 @@ const AppNavigation: React.FC = () => {
   const { isAuthenticated, onboardingComplete, signOut } = useAuth();
   const { translate } = useLanguage();
   
-  // Hide navigation on landing page, dashboard, and during onboarding
+  // Hide navigation on landing page and during onboarding
   const hiddenPaths = ["/", "/onboarding"];
-  const shouldHideNavigation = hiddenPaths.includes(currentPath) || currentPath === "/dashboard";
+  const shouldHideNavigation = hiddenPaths.includes(currentPath);
   
   // Only show navigation for authenticated users who have completed onboarding
   if (!isAuthenticated || !onboardingComplete || shouldHideNavigation) {
@@ -31,8 +32,14 @@ const AppNavigation: React.FC = () => {
   ];
 
   const handleLogout = async () => {
-    await signOut();
-    navigate('/');
+    try {
+      await signOut();
+      toast.success(translate("logoutSuccess"));
+      navigate('/', { replace: true });
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error(translate("logoutError"));
+    }
   };
 
   return (
