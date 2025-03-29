@@ -1,12 +1,16 @@
 
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Home, BookOpen, MessageCircle, User, Menu, X, Stethoscope, LogOut } from "lucide-react";
+import { Home, BookOpen, MessageCircle, User, Menu, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import UILanguageSelector from "@/components/language/UILanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
+import UILanguageSelector from "@/components/language/UILanguageSelector";
+import AppLogo from "./AppLogo";
+import DesktopNav from "./DesktopNav";
+import AuthButtons from "./AuthButtons";
+import MobileNavMenu from "./MobileNavMenu";
 
 interface AppHeaderProps {
   onLogin?: () => void;
@@ -72,6 +76,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
   // Determine where the logo should navigate to
   const logoPath = isAuthenticated ? "/dashboard" : "/";
 
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+
   return (
     <header
       className={cn(
@@ -84,81 +90,18 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
       <div className="container mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link 
-            to={logoPath}
-            className="flex items-center space-x-2"
-          >
-            <div className="bg-medical-500 text-white p-1.5 rounded-lg">
-              <Stethoscope className="h-5 w-5" />
-            </div>
-            <span className="text-xl font-semibold text-medical-800">DocTalk</span>
-          </Link>
+          <AppLogo path={logoPath} />
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-1">
-            {navItems.map((item) => (
-              item.path.startsWith('/#') ? (
-                <a
-                  key={item.path}
-                  href={item.path}
-                  className={cn(
-                    "flex items-center px-4 py-2 rounded-lg transition-colors",
-                    location.pathname === item.path || (location.pathname === '/' && item.path.startsWith('/#'))
-                      ? "bg-medical-50 text-medical-700 font-medium"
-                      : "text-neutral-600 hover:bg-neutral-100"
-                  )}
-                >
-                  {item.icon}
-                  <span className="ml-2">{item.label}</span>
-                </a>
-              ) : (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={cn(
-                    "flex items-center px-4 py-2 rounded-lg transition-colors",
-                    location.pathname === item.path
-                      ? "bg-medical-50 text-medical-700 font-medium"
-                      : "text-neutral-600 hover:bg-neutral-100"
-                  )}
-                >
-                  {item.icon}
-                  <span className="ml-2">{item.label}</span>
-                </Link>
-              )
-            ))}
-          </nav>
+          <DesktopNav navItems={navItems} />
 
           {/* Language selector and Auth buttons */}
-          <div className="hidden md:flex items-center space-x-3">
-            <UILanguageSelector />
-            
-            {isAuthenticated ? (
-              <Button
-                variant="ghost"
-                className="text-neutral-600 hover:bg-neutral-100"
-                onClick={handleLogout}
-              >
-                <LogOut className="h-5 w-5 mr-2" />
-                <span>{translate("logout")}</span>
-              </Button>
-            ) : (
-              <>
-                <Button 
-                  variant="outline"
-                  onClick={handleLogin}
-                >
-                  {translate("login")}
-                </Button>
-                <Button
-                  className="bg-medical-500 hover:bg-medical-600"
-                  onClick={handleRegister}
-                >
-                  {translate("register")}
-                </Button>
-              </>
-            )}
-          </div>
+          <AuthButtons 
+            isAuthenticated={isAuthenticated} 
+            onLogin={handleLogin}
+            onRegister={handleRegister}
+            onLogout={handleLogout}
+          />
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
@@ -166,7 +109,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={toggleMobileMenu}
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -176,81 +119,15 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
       </div>
 
       {/* Mobile Navigation */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 top-[72px] bg-white z-40 animate-fade-in md:hidden">
-          <nav className="container flex flex-col space-y-2 p-4">
-            {navItems.map((item) => (
-              item.path.startsWith('/#') ? (
-                <a
-                  key={item.path}
-                  href={item.path}
-                  className={cn(
-                    "flex items-center px-4 py-3 rounded-lg transition-colors",
-                    location.pathname === item.path || (location.pathname === '/' && item.path.startsWith('/#'))
-                      ? "bg-medical-50 text-medical-700 font-medium"
-                      : "text-neutral-600 hover:bg-neutral-100"
-                  )}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.icon}
-                  <span className="ml-2 text-lg">{item.label}</span>
-                </a>
-              ) : (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={cn(
-                    "flex items-center px-4 py-3 rounded-lg transition-colors",
-                    location.pathname === item.path
-                      ? "bg-medical-50 text-medical-700 font-medium"
-                      : "text-neutral-600 hover:bg-neutral-100"
-                  )}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.icon}
-                  <span className="ml-2 text-lg">{item.label}</span>
-                </Link>
-              )
-            ))}
-
-            {isAuthenticated ? (
-              <Button
-                variant="ghost"
-                className="flex items-center px-4 py-3 rounded-lg transition-colors text-neutral-600 hover:bg-neutral-100 justify-start"
-                onClick={() => {
-                  handleLogout();
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <LogOut className="h-5 w-5 mr-2" />
-                <span className="text-lg">{translate("logout")}</span>
-              </Button>
-            ) : (
-              <div className="flex flex-col space-y-2 mt-4">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    handleLogin();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="w-full justify-center"
-                >
-                  {translate("login")}
-                </Button>
-                <Button
-                  className="bg-medical-500 hover:bg-medical-600 w-full justify-center"
-                  onClick={() => {
-                    handleRegister();
-                    setIsMobileMenuOpen(false);
-                  }}
-                >
-                  {translate("register")}
-                </Button>
-              </div>
-            )}
-          </nav>
-        </div>
-      )}
+      <MobileNavMenu 
+        isOpen={isMobileMenuOpen}
+        navItems={navItems}
+        isAuthenticated={isAuthenticated}
+        handleLogin={handleLogin}
+        handleRegister={handleRegister}
+        handleLogout={handleLogout}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
     </header>
   );
 };
