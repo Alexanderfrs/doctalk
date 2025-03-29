@@ -7,6 +7,7 @@ import { ScenarioContent } from "@/components/scenario/ScenarioContent";
 import { ScenarioSidebar } from "@/components/scenario/ScenarioSidebar";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import scenarios, { Scenario } from "@/data/scenarios";
 
 /**
  * ScenarioDetail page component
@@ -17,31 +18,25 @@ const ScenarioDetail = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
-  const [scenario, setScenario] = useState(null);
+  const [scenario, setScenario] = useState<Scenario | null>(null);
 
   useEffect(() => {
     // Fetch scenario data based on ID
     const fetchScenario = async () => {
       try {
         setLoading(true);
-        // In a real implementation, this would fetch from an API
-        // For now, we'll just simulate a loading delay
-        setTimeout(() => {
-          // Mock data for demonstration
-          setScenario({
-            id: id,
-            title: "Patient with Acute Chest Pain",
-            difficulty: "intermediate",
-            category: "emergency",
-            description: "Handle a patient presenting with acute chest pain and determine the appropriate diagnosis and treatment.",
-            objectives: [
-              "Identify key symptoms of cardiac conditions",
-              "Apply proper diagnostic procedures",
-              "Determine appropriate treatment plan"
-            ]
-          });
-          setLoading(false);
-        }, 800);
+        
+        // Find the scenario in our local data
+        const foundScenario = scenarios.find(s => s.id === id);
+        
+        if (foundScenario) {
+          setScenario(foundScenario);
+        } else {
+          toast.error(t("error.scenario_not_found"));
+          navigate('/practice');
+        }
+        
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching scenario:", error);
         toast.error(t("error.loading_scenario"));
@@ -52,7 +47,7 @@ const ScenarioDetail = () => {
     if (id) {
       fetchScenario();
     }
-  }, [id, t]);
+  }, [id, t, navigate]);
 
   const handleBack = () => {
     navigate(-1);
