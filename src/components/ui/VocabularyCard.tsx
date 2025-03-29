@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { VocabularyWord } from "@/data/vocabulary";
@@ -26,7 +25,6 @@ const VocabularyCard: React.FC<VocabularyCardProps> = ({
   
   const { speak, isSpeaking } = useTextToSpeech({
     language: 'de-DE',
-    rate: 0.8, // Slightly slower to be clearer
     onStart: () => console.log('Started speaking:', word.german),
     onEnd: () => console.log('Finished speaking'),
     onError: (error) => toast.error(`Fehler bei der Aussprache: ${error}`)

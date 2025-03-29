@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 interface TextToSpeechOptions {
   language?: string;
   voice?: string;
+  rate?: number;
   onStart?: () => void;
   onEnd?: () => void;
   onError?: (error: string) => void;
@@ -21,6 +22,13 @@ interface UseTextToSpeechReturn {
   hasSpeechSupport: boolean;
   error: string | null;
 }
+
+// Voice IDs mapping
+const VOICE_IDS = {
+  'Sarah': 'EXAVITQu4vr4xnSDxMaL',
+  'Daniel': 'onwK4e9ZLuTAKqWW03F9',
+  'Charlotte': 'XB0fDUnXU5powFXDhCwa'
+};
 
 const useTextToSpeech = ({
   voice = 'Sarah',
@@ -52,7 +60,7 @@ const useTextToSpeech = ({
       setError(null);
 
       const { data, error: apiError } = await supabase.functions.invoke('text-to-speech', {
-        body: { text, voice: voices[voice] || voices['Sarah'] }
+        body: { text, voice: VOICE_IDS[voice as keyof typeof VOICE_IDS] || VOICE_IDS['Sarah'] }
       });
 
       if (apiError) throw new Error(apiError.message);
