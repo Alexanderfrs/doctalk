@@ -579,8 +579,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       "demoDescription": "Przekonaj się, jak MedLingua pomaga ćwiczyć rzeczywiste scenariusze medyczne w języku niemieckim. Zobacz interaktywną demonstrację typowej interakcji z pacjentem.",
       "scenarioDemoTitle": "Scenariusz medyczny: Instrukcje dotyczące leków",
       "scenarioDemoSubtitle": "Ćwicz wyjaśnianie pacjentom instrukcji dotyczących leków w języku niemieckim",
-      "scenarioDemoContext": "Scenariusz: Pielęgniarka musi wyjaśnić pacjentowi, jak przyjmować nowy lek.",
-      "scenarioDemoComplete": "Scenariusz ukończony! Pomyślnie wyjaśniłeś pacjentowi instrukcje dotyczące leków.",
+      "scenarioDemoContext": "Szenariusz: Pielęgniarka musi wyjaśnić pacjentowi, jak przyjmować nowy lek.",
+      "scenarioDemoComplete": "Szenariusz ukończony! Pomyślnie wyjaśniłeś pacjentowi instrukcje dotyczące leków.",
       "scenarioDemoExplanation": "Z MedLingua możesz:",
       "scenarioDemoBenefit1": "Ćwiczyć realistyczne rozmowy medyczne z pacjentami",
       "scenarioDemoBenefit2": "Uczyć się niemieckiego słownictwa medycznego w kontekście",
@@ -595,4 +595,4 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     ro: {
       "home": "Acasă",
       "practice": "Exersează",
-      "vocabulary": "
+      "vocabulary": "Vocabular
