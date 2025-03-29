@@ -19,7 +19,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isAuthenticated, signOut } = useAuth();
-  const { translate, interfaceLanguage } = useLanguage();
+  const { translate } = useLanguage();
 
   // Handle scroll effect
   useEffect(() => {
@@ -62,13 +62,11 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
     if (onLogin) {
       onLogin();
     }
-    // Add the language parameter to the login URL
-    navigate(`/login?lang=${interfaceLanguage}`);
+    navigate('/login');
   };
 
   const handleRegister = () => {
-    // Add the language parameter to the register URL
-    navigate(`/register?lang=${interfaceLanguage}`);
+    navigate('/register');
   };
 
   // Determine where the logo should navigate to
