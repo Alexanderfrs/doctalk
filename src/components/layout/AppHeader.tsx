@@ -91,7 +91,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
             <div className="bg-medical-500 text-white p-1.5 rounded-lg">
               <Stethoscope className="h-5 w-5" />
             </div>
-            <span className="text-xl font-semibold text-medical-800">MedLingua</span>
+            <span className="text-xl font-semibold text-medical-800">DocTalk</span>
           </Link>
 
           {/* Desktop Navigation */}

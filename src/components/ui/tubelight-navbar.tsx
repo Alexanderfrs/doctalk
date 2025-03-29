@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom"; // Using react-router-dom 
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NavItem {
   name: string;
@@ -22,6 +23,7 @@ export function NavBar({ items, className }: NavBarProps) {
   const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
   const { isAuthenticated } = useAuth();
+  const { translate } = useLanguage();
   
   // Hide this navigation bar on dashboard for authenticated users
   const shouldHide = isAuthenticated && location.pathname === "/dashboard";

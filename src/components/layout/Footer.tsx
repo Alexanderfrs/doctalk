@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
               <div className="bg-medical-500 text-white p-1.5 rounded-lg">
                 <Stethoscope className="h-5 w-5" />
               </div>
-              <span className="text-xl font-semibold text-medical-800">MedLingua</span>
+              <span className="text-xl font-semibold text-medical-800">DocTalk</span>
             </div>
             <p className="text-neutral-600 text-sm">
               {translate("footerTagline")}
@@ -103,7 +103,7 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-neutral-200 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-neutral-500 mb-4 md:mb-0">
-            © {new Date().getFullYear()} MedLingua. {translate("allRightsReserved")}
+            © {new Date().getFullYear()} DocTalk. {translate("allRightsReserved")}
           </p>
           <div className="flex space-x-4 text-sm text-neutral-500">
             <Link to="/privacy" className="hover:text-medical-600 transition-colors">

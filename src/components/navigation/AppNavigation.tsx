@@ -4,12 +4,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, BookOpen, Mic, User, MessageCircle, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const AppNavigation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
   const { isAuthenticated, onboardingComplete, signOut } = useAuth();
+  const { translate } = useLanguage();
   
   // Hide navigation on landing page, dashboard, and during onboarding
   const hiddenPaths = ["/", "/onboarding"];
@@ -21,11 +23,11 @@ const AppNavigation: React.FC = () => {
   }
   
   const navItems = [
-    { name: "Home", url: "/dashboard", icon: Home },
-    { name: "Übungen", url: "/practice", icon: BookOpen },
-    { name: "Vokabeln", url: "/vocabulary", icon: Mic },
-    { name: "Dialog", url: "/scenario", icon: MessageCircle },
-    { name: "Profil", url: "/profile", icon: User }
+    { name: translate("home"), url: "/dashboard", icon: Home },
+    { name: translate("practice"), url: "/practice", icon: BookOpen },
+    { name: translate("vocabulary"), url: "/vocabulary", icon: Mic },
+    { name: translate("dialog"), url: "/scenario", icon: MessageCircle },
+    { name: translate("profile"), url: "/profile", icon: User }
   ];
 
   const handleLogout = async () => {

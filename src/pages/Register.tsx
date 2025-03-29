@@ -33,12 +33,12 @@ const Register: React.FC = () => {
       const { error } = await signUp(email, password, name);
       
       if (error) {
-        setError(error.message || "Registration failed. Please try again.");
+        setError(error.message || translate("registrationFailed"));
         setIsSubmitting(false);
         return;
       }
       
-      toast.success("Registration successful. Welcome to MedLingua!");
+      toast.success(translate("registrationSuccess"));
       
       // Skip onboarding if checkbox is checked
       if (skipOnboardingFlow) {
@@ -50,7 +50,7 @@ const Register: React.FC = () => {
       }
     } catch (error) {
       console.error("Registration error:", error);
-      setError("An unexpected error occurred. Please try again.");
+      setError(translate("unexpectedError"));
       setIsSubmitting(false);
     }
   };
@@ -64,7 +64,7 @@ const Register: React.FC = () => {
               <div className="bg-medical-500 text-white p-2 rounded-lg">
                 <Stethoscope className="h-6 w-6" />
               </div>
-              <span className="text-2xl font-bold text-medical-800">MedLingua</span>
+              <span className="text-2xl font-bold text-medical-800">DocTalk</span>
             </Link>
             <h1 className="text-2xl font-bold mt-6 mb-2">{translate("createAccount")}</h1>
             <p className="text-neutral-600">
@@ -96,7 +96,7 @@ const Register: React.FC = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder="your.email@example.com"
+                placeholder={translate("emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -159,7 +159,7 @@ const Register: React.FC = () => {
             </div>
 
             <Button type="submit" className="w-full bg-medical-500 hover:bg-medical-600" disabled={isSubmitting}>
-              {isSubmitting ? translate("registration") + "..." : translate("register")}
+              {isSubmitting ? `${translate("registration")}...` : translate("register")}
             </Button>
             
             <p className="text-sm text-neutral-500 text-center">

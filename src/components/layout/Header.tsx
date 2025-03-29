@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Home, BookOpen, MessageCircle, User, Menu, X, Stethoscope } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NavItem {
   path: string;
@@ -11,17 +12,19 @@ interface NavItem {
   icon: React.ReactNode;
 }
 
-const navItems: NavItem[] = [
-  { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
-  { path: "/practice", label: "Übungen", icon: <MessageCircle className="h-5 w-5" /> },
-  { path: "/vocabulary", label: "Vokabeln", icon: <BookOpen className="h-5 w-5" /> },
-  { path: "/profile", label: "Profil", icon: <User className="h-5 w-5" /> },
-];
-
 const Header: React.FC = () => {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { translate } = useLanguage();
+
+  // Define navigation items with translations
+  const navItems: NavItem[] = [
+    { path: "/", label: translate("home"), icon: <Home className="h-5 w-5" /> },
+    { path: "/practice", label: translate("practice"), icon: <MessageCircle className="h-5 w-5" /> },
+    { path: "/vocabulary", label: translate("vocabulary"), icon: <BookOpen className="h-5 w-5" /> },
+    { path: "/profile", label: translate("profile"), icon: <User className="h-5 w-5" /> },
+  ];
 
   // Handle scroll effect
   useEffect(() => {
@@ -52,7 +55,7 @@ const Header: React.FC = () => {
             <div className="bg-medical-500 text-white p-1.5 rounded-lg">
               <Stethoscope className="h-5 w-5" />
             </div>
-            <span className="text-xl font-semibold text-medical-800">MedLingua</span>
+            <span className="text-xl font-semibold text-medical-800">DocTalk</span>
           </Link>
 
           {/* Desktop Navigation */}

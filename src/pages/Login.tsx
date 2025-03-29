@@ -8,6 +8,7 @@ import { Eye, EyeOff, Stethoscope } from "lucide-react";
 import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -17,6 +18,7 @@ const Login: React.FC = () => {
   
   const navigate = useNavigate();
   const { signIn } = useAuth();
+  const { translate } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,15 +28,15 @@ const Login: React.FC = () => {
       const { error } = await signIn(email, password);
       
       if (error) {
-        toast.error(error.message || "Login fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten.");
+        toast.error(error.message || translate("loginFailed"));
         return;
       }
       
-      toast.success("Erfolgreich angemeldet. Willkommen zurück bei MedLingua!");
+      toast.success(translate("loginSuccess"));
       navigate("/index"); // Let the Index component handle routing
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+      toast.error(translate("unexpectedError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -49,21 +51,21 @@ const Login: React.FC = () => {
               <div className="bg-medical-500 text-white p-2 rounded-lg">
                 <Stethoscope className="h-6 w-6" />
               </div>
-              <span className="text-2xl font-bold text-medical-800">MedLingua</span>
+              <span className="text-2xl font-bold text-medical-800">DocTalk</span>
             </Link>
-            <h1 className="text-2xl font-bold mt-6 mb-2">Willkommen zurück</h1>
+            <h1 className="text-2xl font-bold mt-6 mb-2">{translate("welcomeBack")}</h1>
             <p className="text-neutral-600">
-              Melden Sie sich an, um Ihre medizinischen Deutschkenntnisse zu verbessern
+              {translate("loginDescription")}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email">E-Mail</Label>
+              <Label htmlFor="email">{translate("email")}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="ihre.email@beispiel.de"
+                placeholder={translate("emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -72,9 +74,9 @@ const Login: React.FC = () => {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Passwort</Label>
+                <Label htmlFor="password">{translate("password")}</Label>
                 <Link to="/forgot-password" className="text-sm text-medical-600 hover:underline">
-                  Passwort vergessen?
+                  {translate("forgotPassword")}
                 </Link>
               </div>
               <div className="relative">
@@ -97,15 +99,15 @@ const Login: React.FC = () => {
             </div>
 
             <Button type="submit" className="w-full bg-medical-500 hover:bg-medical-600" disabled={isSubmitting}>
-              {isSubmitting ? "Anmeldung..." : "Anmelden"}
+              {isSubmitting ? `${translate("logging")}...` : translate("login")}
             </Button>
           </form>
 
           <div className="mt-8 text-center">
             <p className="text-neutral-600">
-              Noch kein Konto?{" "}
+              {translate("noAccount")}{" "}
               <Link to="/register" className="text-medical-600 hover:underline font-medium">
-                Jetzt registrieren
+                {translate("registerNow")}
               </Link>
             </p>
           </div>
