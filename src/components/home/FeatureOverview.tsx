@@ -69,7 +69,7 @@ const FeatureOverview = () => {
 
   return (
     <section className="container mx-auto mb-12 animate-fade-in" style={{ animationDelay: '900ms' }}>
-      <h2 className="text-2xl font-semibold mb-6 text-center">MedLingua - Spezialtraining für medizinisches Personal</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-center">DocTalk - Spezialtraining für medizinisches Personal</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {uniqueFeatures.map((feature, index) => (
@@ -125,14 +125,14 @@ const FeatureOverview = () => {
       </div>
       
       <div className="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
-        <h3 className="text-xl font-medium mb-4 text-center">Warum MedLingua statt allgemeiner Sprachlern-Apps?</h3>
+        <h3 className="text-xl font-medium mb-4 text-center">Warum DocTalk statt allgemeiner Sprachlern-Apps?</h3>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[600px]">
             <thead>
               <tr className="border-b border-neutral-200">
                 <th className="py-3 px-4 text-left">Feature</th>
                 <th className="py-3 px-4 text-center">Allgemeine Apps<br/>(Duolingo, Babbel, usw.)</th>
-                <th className="py-3 px-4 text-center bg-medical-50 font-medium">MedLingua</th>
+                <th className="py-3 px-4 text-center bg-medical-50 font-medium">DocTalk</th>
               </tr>
             </thead>
             <tbody>

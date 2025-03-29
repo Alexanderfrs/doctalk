@@ -16,7 +16,7 @@ const VocabularyHeader: React.FC<VocabularyHeaderProps> = ({ className }) => {
       <div>
         <div className="flex items-center gap-2">
           <h1 className="text-3xl font-bold mb-1 text-neutral-800">
-            <span className="text-gradient">MedLingua</span> Vokabeln
+            <span className="text-gradient">DocTalk</span> Vokabeln
           </h1>
           <div className="hidden md:flex bg-medical-50 text-medical-700 text-xs font-semibold px-2 py-1 rounded-full items-center">
             <Award className="h-3 w-3 mr-1" />

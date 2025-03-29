@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useLocation } from "react-router-dom"; // Using react-router-dom instead of next/link
+import { Link, useLocation } from "react-router-dom"; 
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
@@ -52,7 +52,7 @@ export function NavBar({ items, className }: NavBarProps) {
     if (currentItem) {
       setActiveTab(currentItem.name);
     }
-  }, [items]);
+  }, [items, location.pathname]);
 
   return (
     <div

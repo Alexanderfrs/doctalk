@@ -97,19 +97,35 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-1">
             {navItems.map((item) => (
-              <a
-                key={item.path}
-                href={item.path}
-                className={cn(
-                  "flex items-center px-4 py-2 rounded-lg transition-colors",
-                  location.pathname === item.path || (location.pathname === '/' && item.path.startsWith('/#'))
-                    ? "bg-medical-50 text-medical-700 font-medium"
-                    : "text-neutral-600 hover:bg-neutral-100"
-                )}
-              >
-                {item.icon}
-                <span className="ml-2">{item.label}</span>
-              </a>
+              item.path.startsWith('/#') ? (
+                <a
+                  key={item.path}
+                  href={item.path}
+                  className={cn(
+                    "flex items-center px-4 py-2 rounded-lg transition-colors",
+                    location.pathname === item.path || (location.pathname === '/' && item.path.startsWith('/#'))
+                      ? "bg-medical-50 text-medical-700 font-medium"
+                      : "text-neutral-600 hover:bg-neutral-100"
+                  )}
+                >
+                  {item.icon}
+                  <span className="ml-2">{item.label}</span>
+                </a>
+              ) : (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={cn(
+                    "flex items-center px-4 py-2 rounded-lg transition-colors",
+                    location.pathname === item.path
+                      ? "bg-medical-50 text-medical-700 font-medium"
+                      : "text-neutral-600 hover:bg-neutral-100"
+                  )}
+                >
+                  {item.icon}
+                  <span className="ml-2">{item.label}</span>
+                </Link>
+              )
             ))}
           </nav>
 
@@ -164,20 +180,37 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
         <div className="fixed inset-0 top-[72px] bg-white z-40 animate-fade-in md:hidden">
           <nav className="container flex flex-col space-y-2 p-4">
             {navItems.map((item) => (
-              <a
-                key={item.path}
-                href={item.path}
-                className={cn(
-                  "flex items-center px-4 py-3 rounded-lg transition-colors",
-                  location.pathname === item.path || (location.pathname === '/' && item.path.startsWith('/#'))
-                    ? "bg-medical-50 text-medical-700 font-medium"
-                    : "text-neutral-600 hover:bg-neutral-100"
-                )}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {item.icon}
-                <span className="ml-2 text-lg">{item.label}</span>
-              </a>
+              item.path.startsWith('/#') ? (
+                <a
+                  key={item.path}
+                  href={item.path}
+                  className={cn(
+                    "flex items-center px-4 py-3 rounded-lg transition-colors",
+                    location.pathname === item.path || (location.pathname === '/' && item.path.startsWith('/#'))
+                      ? "bg-medical-50 text-medical-700 font-medium"
+                      : "text-neutral-600 hover:bg-neutral-100"
+                  )}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.icon}
+                  <span className="ml-2 text-lg">{item.label}</span>
+                </a>
+              ) : (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={cn(
+                    "flex items-center px-4 py-3 rounded-lg transition-colors",
+                    location.pathname === item.path
+                      ? "bg-medical-50 text-medical-700 font-medium"
+                      : "text-neutral-600 hover:bg-neutral-100"
+                  )}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.icon}
+                  <span className="ml-2 text-lg">{item.label}</span>
+                </Link>
+              )
             ))}
 
             {isAuthenticated ? (
