@@ -9,19 +9,21 @@ import { Loader2, Save } from "lucide-react";
 import { useSwipeable } from "react-swipeable";
 
 const ProfileSettings = () => {
-  const { user, profile, updateProfile } = useAuth();
-  const [name, setName] = useState(profile?.name || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [profession, setProfession] = useState(profile?.profession || "");
+  const { user, profile, updateProfile, isLoading } = useAuth();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [profession, setProfession] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [changesMade, setChangesMade] = useState(false);
+  const [formInitialized, setFormInitialized] = useState(false);
 
   // Update form values when profile or user changes
   useEffect(() => {
     if (profile) {
       setName(profile.name || "");
       setProfession(profile.profession || "");
+      setFormInitialized(true);
     }
     if (user) {
       setEmail(user.email || "");
@@ -77,6 +79,14 @@ const ProfileSettings = () => {
     trackTouch: true,
     trackMouse: false
   });
+  
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-medical-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6" {...swipeHandlers}>

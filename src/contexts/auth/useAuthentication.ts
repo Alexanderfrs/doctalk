@@ -66,7 +66,13 @@ export const useAuthentication = () => {
   const signOut = async () => {
     try {
       setIsLoading(true);
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Error signing out:', error);
+      }
+      // Clear user state immediately after signout
+      setUser(null);
+      setSession(null);
     } catch (error) {
       console.error('Error signing out:', error);
     } finally {

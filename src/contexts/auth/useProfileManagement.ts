@@ -7,10 +7,11 @@ import { ProfilePreferences } from './types';
 
 export const useProfileManagement = () => {
   const [profile, setProfile] = useState<any | null>(null);
-  const [onboardingComplete, setOnboardingComplete] = useState(false);
+  const [onboardingComplete, setOnboardingComplete] = useState<boolean>(false);
 
   const fetchProfile = async (userId: string) => {
     try {
+      console.log("Fetching profile for user:", userId);
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -34,7 +35,7 @@ export const useProfileManagement = () => {
         Boolean(preferences.onboardingComplete);
       
       setOnboardingComplete(isOnboardingComplete);
-      console.log("Onboarding status:", isOnboardingComplete);
+      console.log("Profile loaded:", data, "Onboarding status:", isOnboardingComplete);
     } catch (error) {
       console.error('Error fetching profile:', error);
     }

@@ -48,20 +48,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
 
-    fetchInitialSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      console.log("Auth state changed:", _event, session);
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("Auth state changed:", event, session);
+      
+      // Only update synchronous state here
       setSession(session);
       setUser(session?.user ?? null);
       
+      // Use setTimeout to prevent potential deadlocks with Supabase client
       if (session?.user) {
-        await fetchProfile(session.user.id);
-      } else {
-        // Reset user state when signed out
-        setUser(null);
+        setTimeout(async () => {
+          await fetchProfile(session.user.id);
+        }, 0);
       }
     });
+
+    // THEN check for existing session
+    fetchInitialSession();
 
     return () => {
       subscription?.unsubscribe();
