@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
@@ -41,21 +40,23 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   const [feedback, setFeedback] = useState("");
   const isMobile = useIsMobile();
   
-  // AI feedback hook
+  const tabTitles = {
+    conversation: "Interactive Dialogue",
+    resources: "Help Resources",
+    notes: "Personal Notes"
+  };
+
   const { getFeedback, isLoading: isFeedbackLoading } = useAIFeedback({
     onError: (error) => toast.error(`Feedback error: ${error}`)
   });
   
-  // Dialogue AI generation hook for creating dynamic responses
   const { generateResponse, isLoading: isGeneratingResponse } = useSimpleLLM({
     systemPrompt: "You are a patient or healthcare colleague in a German medical scenario. Respond naturally in German, keeping responses under 3 sentences.",
     onError: (error) => toast.error(`Response error: ${error}`)
   });
   
-  // Initialize conversation from scenario when it loads
   useEffect(() => {
     if (scenario?.dialogue && scenario.dialogue.length > 0) {
-      // Start with the first 2 dialogue lines (if available)
       const initialLines = scenario.dialogue.slice(0, 2);
       setConversation(initialLines);
       setCurrentDialogueIndex(initialLines.length);
@@ -63,7 +64,6 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   }, [scenario]);
 
   const handleSendMessage = async (message: string) => {
-    // Add user message to conversation
     const userMessage: DialogueLine = {
       speaker: "user",
       text: message
@@ -73,7 +73,6 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     setConversation(updatedConversation);
     setIsProcessingResponse(true);
     
-    // Generate feedback for the user's message
     try {
       const feedbackText = await getFeedback(
         updatedConversation, 
@@ -86,9 +85,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       console.error("Error getting feedback:", error);
     }
     
-    // Check if there's a next pre-defined dialogue line
     if (scenario?.dialogue && currentDialogueIndex < scenario.dialogue.length) {
-      // Use the next pre-defined line from the scenario
       const nextDialogueLine = scenario.dialogue[currentDialogueIndex];
       
       setTimeout(() => {
@@ -97,7 +94,6 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
         setIsProcessingResponse(false);
       }, 1500);
     } else {
-      // Generate a dynamic response using AI
       try {
         const aiResponse = await generateResponse(
           message, 
@@ -107,7 +103,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
         const responseMessage: DialogueLine = {
           speaker: "patient",
           text: aiResponse,
-          translation: "" // Translation could be added here if needed
+          translation: ""
         };
         
         setConversation([...updatedConversation, responseMessage]);
@@ -121,12 +117,10 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   };
 
   const handleUserVoiceResponse = (text: string) => {
-    // Process the voice input the same way as text input
     handleSendMessage(text);
   };
 
   const handleResetConversation = () => {
-    // Reset to initial state
     if (scenario?.dialogue) {
       const initialLines = scenario.dialogue.slice(0, 2);
       setConversation(initialLines);
@@ -158,13 +152,12 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     );
   }
 
-  // Index of current tab
   const tabIndex = activeTab === "conversation" ? 0 : (activeTab === "resources" ? 1 : 2);
 
   return (
     <Card className="h-full">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>{t("scenario.interactive_session")}</CardTitle>
+        <CardTitle>{tabTitles[activeTab as keyof typeof tabTitles]}</CardTitle>
         
         {activeTab === "conversation" && (
           <Button 
@@ -173,7 +166,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
             onClick={handleResetConversation}
             disabled={conversation.length <= 2}
           >
-            <RefreshCw className="h-4 w-4 mr-1" /> {t("common.reset")}
+            <RefreshCw className="h-4 w-4 mr-1" /> Reset
           </Button>
         )}
       </CardHeader>

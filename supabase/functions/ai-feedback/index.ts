@@ -22,37 +22,36 @@ serve(async (req) => {
       throw new Error('Conversation and userResponse are required');
     }
 
+    if (!OPENAI_KEY) {
+      throw new Error('OpenAI API key is not configured');
+    }
+
     console.log("Processing AI feedback request");
 
-    // Format conversation history for the AI
     const messages = [
       {
         role: "system",
-        content: `You are a helpful German language tutor for healthcare professionals. 
-        You provide feedback on learners' responses in medical scenarios.
+        content: `You are a German language tutor specializing in medical and healthcare communication.
+        Evaluate responses considering:
+        1. Grammar and sentence structure
+        2. Medical terminology usage
+        3. Professional tone and bedside manner
+        4. Clinical accuracy
         
-        You should evaluate:
-        1. Grammar and vocabulary usage
-        2. Professional tone and appropriateness
-        3. Clinical accuracy (if applicable)
-        4. Suggest improvements
+        Provide specific, constructive feedback in German with English translations.
+        Focus on helping healthcare professionals improve their German language skills.
         
-        Be encouraging but thorough. Focus on helping the learner improve their German language skills specifically for healthcare contexts.
-        
-        Additional context about this scenario: ${scenarioContext || "A healthcare professional speaking with a patient or colleague."}`
+        Context: ${scenarioContext || "A healthcare scenario in German"}`
       }
     ];
 
-    // Add the conversation history
     conversation.forEach(message => {
-      const role = message.speaker === "user" ? "user" : "assistant";
       messages.push({
-        role,
+        role: message.speaker === "user" ? "user" : "assistant",
         content: message.text
       });
     });
 
-    // Add the user's latest response
     messages.push({
       role: "user",
       content: `Please evaluate my response in German: "${userResponse}"`
@@ -60,7 +59,6 @@ serve(async (req) => {
 
     console.log("Sending request to OpenAI");
 
-    // Send to OpenAI
     const response = await fetch(OPENAI_URL, {
       method: 'POST',
       headers: {
@@ -86,7 +84,6 @@ serve(async (req) => {
 
     console.log("Feedback generated successfully");
 
-    // Return the AI response
     return new Response(
       JSON.stringify({ feedback }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -95,7 +92,10 @@ serve(async (req) => {
     console.error("Error in AI feedback function:", error);
     
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        message: "Failed to generate feedback. Please try again." 
+      }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

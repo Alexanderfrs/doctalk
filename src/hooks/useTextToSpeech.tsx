@@ -1,12 +1,11 @@
 
 import { useState, useCallback } from 'react';
+import { toast } from 'sonner';
+import { supabase } from "@/integrations/supabase/client";
 
 interface TextToSpeechOptions {
   language?: string;
   voice?: string;
-  rate?: number;
-  pitch?: number;
-  volume?: number;
   onStart?: () => void;
   onEnd?: () => void;
   onError?: (error: string) => void;
@@ -24,11 +23,7 @@ interface UseTextToSpeechReturn {
 }
 
 const useTextToSpeech = ({
-  language = 'de-DE',
-  voice = 'Sarah', // Default ElevenLabs voice
-  rate = 1,
-  pitch = 1,
-  volume = 1,
+  voice = 'Sarah',
   onStart,
   onEnd,
   onError,
@@ -36,77 +31,75 @@ const useTextToSpeech = ({
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
 
-  const voices = {
-    'Sarah': 'EXAVITQu4vr4xnSDxMaL',
-    'Laura': 'FGY2WhTYpPnrIDTdsKH5',
-    'Charlotte': 'XB0fDUnXU5powFXDhCwa',
+  const stopCurrentAudio = () => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.remove();
+      setCurrentAudio(null);
+    }
+    setIsSpeaking(false);
+    setIsPaused(false);
   };
 
   const speak = useCallback(async (text: string) => {
     try {
-      const response = await fetch('/api/tts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text,
-          voice: voices[voice] || voices['Sarah'],
-          model: 'eleven_multilingual_v2'
-        })
+      stopCurrentAudio();
+      
+      if (onStart) onStart();
+      setIsSpeaking(true);
+      setError(null);
+
+      const { data, error: apiError } = await supabase.functions.invoke('text-to-speech', {
+        body: { text, voice: voices[voice] || voices['Sarah'] }
       });
 
-      if (!response.ok) {
-        throw new Error('Text-to-speech generation failed');
-      }
+      if (apiError) throw new Error(apiError.message);
+      if (!data?.audioContent) throw new Error('No audio content received');
 
-      const { audioContent } = await response.json();
-      const audioBlob = new Blob([Buffer.from(audioContent, 'base64')], { type: 'audio/mp3' });
-      const audioUrl = URL.createObjectURL(audioBlob);
-      
-      const audio = new Audio(audioUrl);
-      
-      audio.onplay = () => {
-        setIsSpeaking(true);
-        if (onStart) onStart();
-      };
+      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
       
       audio.onended = () => {
         setIsSpeaking(false);
-        URL.revokeObjectURL(audioUrl);
         if (onEnd) onEnd();
       };
-      
+
       audio.onerror = (e) => {
         const errorMsg = `Audio playback error: ${e}`;
         setError(errorMsg);
+        setIsSpeaking(false);
         if (onError) onError(errorMsg);
       };
 
+      setCurrentAudio(audio);
       await audio.play();
     } catch (e) {
-      const errorMsg = `Speech synthesis error: ${e.message}`;
+      const errorMsg = e instanceof Error ? e.message : 'Failed to generate speech';
       setError(errorMsg);
+      setIsSpeaking(false);
       if (onError) onError(errorMsg);
+      else toast.error(errorMsg);
     }
   }, [voice, onStart, onEnd, onError]);
 
   const stop = useCallback(() => {
-    // Implementation of stop functionality
-    setIsSpeaking(false);
-    setIsPaused(false);
+    stopCurrentAudio();
   }, []);
 
   const pause = useCallback(() => {
-    // Implementation of pause functionality
-    setIsPaused(true);
-  }, []);
+    if (currentAudio && !isPaused) {
+      currentAudio.pause();
+      setIsPaused(true);
+    }
+  }, [isPaused]);
 
   const resume = useCallback(() => {
-    // Implementation of resume functionality
-    setIsPaused(false);
-  }, []);
+    if (currentAudio && isPaused) {
+      currentAudio.play();
+      setIsPaused(false);
+    }
+  }, [isPaused]);
 
   return {
     speak,
