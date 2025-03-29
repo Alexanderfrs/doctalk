@@ -1,6 +1,5 @@
 
 import React, { useState } from "react";
-import { useTranslation } from "@/hooks/useTranslation";
 import {
   Card,
   CardContent,
@@ -30,17 +29,16 @@ export const ScenarioSidebar: React.FC<ScenarioSidebarProps> = ({
   scenario,
   loading
 }) => {
-  const { t } = useTranslation();
   const [progress, setProgress] = useState(0);
   
   const handleStartScenario = () => {
     setProgress(10);
-    toast.success(t("scenario.started"));
+    toast.success("Scenario started");
   };
   
   const handleRestartScenario = () => {
     setProgress(0);
-    toast.info(t("scenario.restarted"));
+    toast.info("Scenario restarted");
   };
   
   if (loading) {
@@ -64,7 +62,7 @@ export const ScenarioSidebar: React.FC<ScenarioSidebarProps> = ({
     <>
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>{t("scenario.objectives")}</CardTitle>
+          <CardTitle>Objectives</CardTitle>
         </CardHeader>
         <CardContent>
           {scenario?.objectives ? (
@@ -77,38 +75,38 @@ export const ScenarioSidebar: React.FC<ScenarioSidebarProps> = ({
               ))}
             </ul>
           ) : (
-            <p className="text-muted-foreground">{t("scenario.no_objectives")}</p>
+            <p className="text-muted-foreground">No objectives defined</p>
           )}
         </CardContent>
       </Card>
       
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>{t("scenario.progress")}</CardTitle>
+          <CardTitle>Progress</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <Progress value={progress} className="h-2" />
             <p className="text-center text-sm text-muted-foreground">
-              {progress}% {t("scenario.completed")}
+              {progress}% Completed
             </p>
             
             <Separator />
             
             <div className="pt-2">
-              <h3 className="font-medium mb-2">{t("scenario.status")}</h3>
+              <h3 className="font-medium mb-2">Status</h3>
               <div className="flex flex-wrap gap-2">
                 {progress === 0 ? (
                   <Badge variant="outline" className="bg-muted/50">
-                    {t("scenario.not_started")}
+                    Not Started
                   </Badge>
                 ) : progress < 100 ? (
                   <Badge variant="outline" className="bg-primary/10">
-                    {t("scenario.in_progress")}
+                    In Progress
                   </Badge>
                 ) : (
                   <Badge variant="outline" className="bg-green-500/10 text-green-500">
-                    {t("scenario.completed")}
+                    Completed
                   </Badge>
                 )}
               </div>
@@ -118,13 +116,13 @@ export const ScenarioSidebar: React.FC<ScenarioSidebarProps> = ({
         <CardFooter className="flex flex-col space-y-2">
           {progress === 0 ? (
             <Button className="w-full" onClick={handleStartScenario}>
-              {t("scenario.start_scenario")}
+              Start Scenario
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           ) : (
             <Button variant="outline" className="w-full" onClick={handleRestartScenario}>
               <Redo2 className="mr-2 h-4 w-4" />
-              {t("scenario.restart_scenario")}
+              Restart Scenario
             </Button>
           )}
         </CardFooter>
@@ -132,7 +130,7 @@ export const ScenarioSidebar: React.FC<ScenarioSidebarProps> = ({
       
       <Card>
         <CardHeader>
-          <CardTitle>{t("scenario.help_resources")}</CardTitle>
+          <CardTitle>Help Resources</CardTitle>
         </CardHeader>
         <CardContent>
           <Accordion type="single" collapsible className="w-full">
@@ -140,17 +138,17 @@ export const ScenarioSidebar: React.FC<ScenarioSidebarProps> = ({
               <AccordionTrigger>
                 <div className="flex items-center">
                   <HelpCircle className="mr-2 h-4 w-4" />
-                  {t("scenario.how_to_use")}
+                  How to Use
                 </div>
               </AccordionTrigger>
               <AccordionContent>
                 <p className="text-sm text-muted-foreground">
-                  {t("scenario.instructions_text")}
+                  Here are some tips to help you navigate the scenario:
                 </p>
                 <ul className="list-disc pl-5 mt-2 text-sm text-muted-foreground">
-                  <li>{t("scenario.instruction_1")}</li>
-                  <li>{t("scenario.instruction_2")}</li>
-                  <li>{t("scenario.instruction_3")}</li>
+                  <li>Read through the scenario carefully</li>
+                  <li>Practice your medical German communication skills</li>
+                  <li>Use the resources and notes to help you</li>
                 </ul>
               </AccordionContent>
             </AccordionItem>
