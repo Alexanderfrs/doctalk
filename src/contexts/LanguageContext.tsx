@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
 
 export interface Language {
@@ -523,54 +524,53 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       "terms": "Uvjeti korištenja",
       "contact": "Kontakt",
       "madeWithLove": "Napravljeno s ❤️ u Berlinu",
-      "footerTagline": "Osnažujemo zdravstvene djelatnike učinkovitim jezičnim vještinama.",
-      "navigation": "Navigacija",
-      "categories": "Kategorije",
-      "languageLevels": "Jezične razine",
-      "patientCare": "Njega pacijenta",
-      "emergency": "Hitnoća",
-      "documentation": "Dokumentacija",
-      "teamwork": "Timski rad",
-      "beginner": "Početnik",
-      "intermediate": "Srednji",
-      "advanced": "Napredni",
-      "medicalGerman": "Medicinski njemački",
-      "improveYour": "Poboljšajte svoj",
-      "medicalCommunication": "Medicinska komunikacija",
-      "trainScenarios": "Trenirajte realistične medicinske scenarije.",
-      "startExercise": "Započni vježbu",
-      "learnVocabulary": "Naučite vokabular",
-      "medicalStaffWorking": "Medicinsko osoblje na poslu",
-      "hospitalScene": "Scena u bolnici",
-      "medicalEducation": "Medicinsko obrazovanje",
-      "features": "Značajke",
-      "pricingTitle": "Cijene",
-      "swipeLeft": "Prijeđite prstom ulijevo",
-      "swipeRight": "Prijeđite prstom udesno",
-      "swipeToSwitch": "Prijeđite prstom za prebacivanje između sadržaja",
-      "ctaHeading": "Jeste li spremni poboljšati svoj medicinski njemački?",
-      "ctaText": "Počnite vježbati sa stvarnim medicinskim scenarijima i poboljšajte svoje komunikacijske vještine.",
-      "startWithExercises": "Započnite s vježbama",
-      "readyToImprove": "Želite pratiti svoj napredak?",
-      "startTodayCta": "Napravite besplatan račun kako biste spremili svoj napredak i pristupili više značajki.",
-      "registerFree": "Registrirajte se besplatno",
-      "skipOnboardingFlow": "Preskoči personalizaciju (idi izravno na nadzornu ploču)",
-      "createAccount": "Napravite svoj račun",
-      "startJourney": "Započnite svoje putovanje prema boljoj medicinskoj komunikaciji na njemačkom jeziku",
-      "fullName": "Puno ime",
-      "email": "E-pošta",
-      "password": "Lozinka",
-      "minPasswordLength": "Lozinka mora imati najmanje 6 znakova",
-      "registerBenefits": "Registracijom dobivate:",
-      "benefit1": "Personalizirani put učenja na temelju vaše razine",
-      "benefit2": "Praćenje napretka i statistika",
-      "benefit3": "Pristup svim osnovnim medicinskim scenarijima",
-      "registration": "Registracija",
-      "termsAndConditions": "Registracijom prihvaćate naše Uvjete pružanja usluge i Pravila privatnosti.",
-      "alreadyRegistered": "Već ste registrirani?",
-      "demoTitle": "Pogledajte MedLingua na djelu",
-      "demoDescription": "Iskusite kako vam MedLingua pomaže vježbati stvarne medicinske scenarije na njemačkom jeziku. Pogledajte ovu interaktivnu demonstraciju tipične interakcije s pacijentom.",
-      "scenarioDemoTitle": "Medicinski scenarij: Upute za lijekove",
-      "scenarioDemoSubtitle": "Vježbajte objašnjavanje pacijentima na njemačkom jeziku kako bi trebali uzimati svoje lijekove",
-      "scenarioDemoContext": "Scenarij: Medicinska sestra mora objasniti pacijentu kako uzimati novi lijek.",
-      "scenarioDemoComplete": "Scenarij je završen! Uspješno ste objasnili pacijentu upute za lijekove.",
+      "footerTagline": "Osnažujemo zdravstvene djelatnike učinkovitim jezičnim vještinama."
+    }
+  };
+
+  const translate = useCallback(
+    (key: string): string => {
+      if (!translations[interfaceLanguage] || !translations[interfaceLanguage][key]) {
+        // Fallback to English if the key doesn't exist in the current language
+        return translations.en[key] || key;
+      }
+      return translations[interfaceLanguage][key];
+    },
+    [interfaceLanguage]
+  );
+
+  const getGermanContent = useCallback((key: string): string => {
+    // Always return the German content regardless of interface language
+    return translations.de[key] || key;
+  }, []);
+
+  const contextValue = {
+    interfaceLanguage,
+    supportedLanguages,
+    translations,
+    changeUILanguage,
+    translate,
+    getGermanContent,
+    userLanguage,
+    setUserLanguage,
+    germanDialect,
+    setGermanDialect,
+    germanDialects,
+    getLanguageName,
+    getDialectName
+  };
+
+  return (
+    <LanguageContext.Provider value={contextValue}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = (): LanguageContextType => {
+  const context = useContext(LanguageContext);
+  if (context === undefined) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
+};
