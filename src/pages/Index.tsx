@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
@@ -17,16 +17,16 @@ const Index = () => {
         // If authenticated, check if onboarding is complete
         if (onboardingComplete === false) {
           console.log("Redirecting to onboarding");
-          navigate("/onboarding", { replace: true });
+          navigate("/onboarding");
         } else {
           // If authenticated and onboarding complete, redirect to dashboard
           console.log("Redirecting to dashboard");
-          navigate("/dashboard", { replace: true });
+          navigate("/dashboard");
         }
       } else {
         // If not authenticated, redirect to landing page
         console.log("Redirecting to landing page");
-        navigate("/", { replace: true });
+        navigate("/");
       }
     }
   }, [isAuthenticated, onboardingComplete, isLoading, navigate]);

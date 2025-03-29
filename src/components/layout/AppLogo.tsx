@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { HeartPulse, Stethoscope } from "lucide-react";
+import { MessageCircleHeart } from "lucide-react";
 
 interface AppLogoProps {
   path: string;
@@ -15,10 +15,10 @@ const AppLogo: React.FC<AppLogoProps> = ({ path }) => {
     >
       <div className="relative">
         <div className="bg-medical-500 text-white p-1.5 rounded-lg">
-          <HeartPulse className="h-5 w-5" />
+          <MessageCircleHeart className="h-5 w-5" />
         </div>
-        <div className="absolute -right-1 -bottom-1 bg-medical-600 text-white p-0.5 rounded-full border border-white">
-          <Stethoscope className="h-3 w-3" />
+        <div className="absolute -right-1 -bottom-1 bg-white text-medical-600 p-0.5 rounded-full border border-medical-500">
+          <span className="text-[8px] font-bold">+</span>
         </div>
       </div>
       <span className="text-xl font-semibold">

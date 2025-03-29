@@ -28,15 +28,16 @@ const VocabularyFilters: React.FC<VocabularyFiltersProps> = ({
     { id: "vital-signs", label: "Vitalzeichen" },
     { id: "emergency", label: "Notfälle" },
     { id: "medications", label: "Medikamente" },
-    { id: "elderly-care", label: "Altenpflege" },
-    { id: "disability-care", label: "Behindertenbetreuung" }
+    { id: "pain-scale", label: "Schmerzskala" },
+    { id: "equipment", label: "Geräte und Ausstattung" }
   ];
 
   const domains = [
     { id: "all", label: "Alle Bereiche" },
     { id: "hospital", label: "Krankenhaus" },
     { id: "elderly-care", label: "Altenpflege" },
-    { id: "disability-care", label: "Behindertenbetreuung" }
+    { id: "disability-care", label: "Behindertenbetreuung" },
+    { id: "daily-care", label: "Tägliche Pflege" }
   ];
 
   return (
