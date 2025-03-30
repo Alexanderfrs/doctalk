@@ -26,7 +26,8 @@ export function NavBar({ items, className }: NavBarProps) {
   const { translate } = useLanguage();
   
   // Hide this navigation bar on dashboard for authenticated users
-  const shouldHide = isAuthenticated && location.pathname === "/dashboard";
+  const shouldHide = isAuthenticated && 
+    (location.pathname === "/dashboard" || location.pathname.startsWith("/dashboard/"));
   
   if (shouldHide) {
     return null;
