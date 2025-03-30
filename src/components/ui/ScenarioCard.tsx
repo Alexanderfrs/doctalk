@@ -5,6 +5,7 @@ import { Heart, MessageCircle, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export interface ScenarioCardProps {
   scenario?: {
@@ -66,6 +67,7 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({
   className,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   
   // Use scenario object if provided, otherwise use direct props
   const scenarioTitle = scenario?.title || title || "";
@@ -95,11 +97,11 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({
       <div className="flex justify-between items-start mb-3">
         <div className="flex items-center gap-2">
           {getCategoryIcon(scenarioCategory)}
-          <span className="text-sm text-neutral-500">{scenarioCategory}</span>
+          <span className="text-sm text-neutral-500">{t(scenarioCategory)}</span>
         </div>
         
         <div className={cn("text-xs px-2 py-0.5 rounded-full font-medium", getDifficultyColor(scenarioDifficulty))}>
-          {scenarioDifficulty}
+          {t(scenarioDifficulty)}
         </div>
       </div>
       
@@ -116,8 +118,7 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({
           value={scenarioProgress} 
           max={100} 
           showValue={true}
-          size="sm"
-          label="Fortschritt"
+          label={t("progress")}
           className="mb-4"
         />
       )}
@@ -138,7 +139,7 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({
         className="w-full bg-white text-medical-600 border border-medical-200 hover:bg-medical-50"
         onClick={handleStartExercise}
       >
-        Übung starten
+        {t("startScenario")}
       </Button>
     </div>
   );

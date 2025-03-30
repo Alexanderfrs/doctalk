@@ -1,61 +1,72 @@
 
 import React from "react";
-import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
-interface ProgressBarProps {
+export interface ProgressBarProps {
   value: number;
   max: number;
-  color?: "default" | "success" | "warning";
   showValue?: boolean;
   label?: string;
+  color?: "default" | "success" | "warning";
   className?: string;
-  size?: "sm" | "md" | "lg";  // Added size property
+  size?: "sm" | "md" | "lg";
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({
+const ProgressBar = ({
   value,
   max,
-  color = "default",
   showValue = false,
   label,
+  color = "default",
   className,
-  size = "md",  // Default size
-}) => {
-  const percentage = max > 0 ? Math.min(Math.round((value / max) * 100), 100) : 0;
-  
-  const colorClasses = {
-    default: "bg-medical-500",
-    success: "bg-green-500",
-    warning: "bg-yellow-500",
+  size = "md",
+}: ProgressBarProps) => {
+  // Ensure value is within bounds
+  const safeValue = Math.max(0, Math.min(value, max));
+  const percentage = (safeValue / max) * 100;
+
+  // Determine the color of the progress bar
+  const getBarColor = () => {
+    switch (color) {
+      case "success":
+        return "bg-green-500";
+      case "warning":
+        return "bg-yellow-500";
+      default:
+        return "bg-medical-500";
+    }
   };
 
-  const sizeClasses = {
-    sm: "h-1.5",
-    md: "h-2",
-    lg: "h-3",
+  // Determine height based on size
+  const getHeight = () => {
+    switch (size) {
+      case "sm":
+        return "h-1.5";
+      case "lg":
+        return "h-3";
+      default:
+        return "h-2";
+    }
   };
-
-  const progressClass = colorClasses[color] || colorClasses.default;
-  const heightClass = sizeClasses[size] || sizeClasses.md;
 
   return (
     <div className={cn("w-full", className)}>
-      <div className="flex justify-between items-center mb-1">
-        {label && <div className="text-sm text-neutral-600">{label}</div>}
-        {showValue && <div className="text-sm font-medium">{percentage}%</div>}
+      {label && (
+        <div className="flex justify-between items-center mb-1">
+          <span className="text-xs text-neutral-500">{label}</span>
+          {showValue && (
+            <span className="text-xs font-medium">
+              {Math.round(percentage)}%
+            </span>
+          )}
+        </div>
+      )}
+      <div className={cn("w-full bg-neutral-100 rounded-full", getHeight())}>
+        <div
+          className={cn("rounded-full transition-all duration-500", getBarColor(), getHeight())}
+          style={{ width: `${percentage}%` }}
+        />
       </div>
-      <Progress 
-        value={percentage} 
-        className={`${heightClass} ${color === "default" ? "" : "[&>div]:bg-transparent"}`}
-      >
-        {color !== "default" && (
-          <div 
-            className={`h-full rounded-full ${progressClass}`} 
-            style={{ width: `${percentage}%` }}
-          />
-        )}
-      </Progress>
     </div>
   );
 };

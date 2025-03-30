@@ -32,7 +32,7 @@ const ScenarioDetail = () => {
         if (foundScenario) {
           setScenario(foundScenario);
         } else {
-          toast.error(t("error.scenario_not_found"));
+          toast.error(t("scenarioNotFound"));
           navigate('/practice');
         }
         
