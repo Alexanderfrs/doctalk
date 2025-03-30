@@ -14,12 +14,18 @@ const LanguageSelector: React.FC = () => {
     germanDialect, 
     setGermanDialect,
     supportedLanguages,
-    germanDialects,
     getLanguageName,
     getDialectName
   } = useLanguage();
   const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = React.useState('native-language');
+
+  // Define the limited German dialect options
+  const limitedGermanDialects = [
+    { code: 'de-DE', name: 'Standarddeutsch', region: 'Deutschland' },
+    { code: 'de-AT', name: 'Österreichisches Deutsch', region: 'Österreich' },
+    { code: 'de-CH', name: 'Schweizerdeutsch', region: 'Schweiz' }
+  ];
 
   const handleLanguageChange = (value: string) => {
     setUserLanguage(value);
@@ -106,11 +112,11 @@ const LanguageSelector: React.FC = () => {
                 <Select value={germanDialect} onValueChange={handleDialectChange}>
                   <SelectTrigger className="w-full">
                     <SelectValue>
-                      {germanDialect && <span>{getDialectName(germanDialect)}</span>}
+                      {germanDialect && <span>{limitedGermanDialects.find(d => d.code === germanDialect)?.name || getDialectName(germanDialect)}</span>}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {germanDialects.map((dialect: GermanDialect) => (
+                    {limitedGermanDialects.map((dialect) => (
                       <SelectItem key={dialect.code} value={dialect.code}>
                         {dialect.name} ({dialect.region})
                       </SelectItem>
@@ -179,11 +185,11 @@ const LanguageSelector: React.FC = () => {
             <Select value={germanDialect} onValueChange={handleDialectChange}>
               <SelectTrigger className="w-full">
                 <SelectValue>
-                  {germanDialect && <span>{getDialectName(germanDialect)}</span>}
+                  {germanDialect && <span>{limitedGermanDialects.find(d => d.code === germanDialect)?.name || getDialectName(germanDialect)}</span>}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                {germanDialects.map((dialect: GermanDialect) => (
+                {limitedGermanDialects.map((dialect) => (
                   <SelectItem key={dialect.code} value={dialect.code}>
                     {dialect.name} ({dialect.region})
                   </SelectItem>

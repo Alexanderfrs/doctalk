@@ -14,8 +14,8 @@ const AppNavigation: React.FC = () => {
   const { isAuthenticated, onboardingComplete, signOut } = useAuth();
   const { translate } = useLanguage();
   
-  // Hide navigation on landing page and during onboarding
-  const hiddenPaths = ["/", "/onboarding", "/login", "/register"];
+  // Hide navigation on landing page, during onboarding, and on dashboard
+  const hiddenPaths = ["/", "/onboarding", "/login", "/register", "/dashboard"];
   const shouldHideNavigation = hiddenPaths.includes(currentPath);
   
   // Only show navigation for authenticated users who have completed onboarding
