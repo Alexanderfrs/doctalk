@@ -10,7 +10,6 @@ interface ProgressBarProps {
   showValue?: boolean;
   label?: string;
   className?: string;
-  size?: "sm" | "md" | "lg";  // Added size property
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({
@@ -20,7 +19,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   showValue = false,
   label,
   className,
-  size = "md",  // Default size
 }) => {
   const percentage = max > 0 ? Math.min(Math.round((value / max) * 100), 100) : 0;
   
@@ -30,14 +28,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     warning: "bg-yellow-500",
   };
 
-  const sizeClasses = {
-    sm: "h-1.5",
-    md: "h-2",
-    lg: "h-3",
-  };
-
   const progressClass = colorClasses[color] || colorClasses.default;
-  const heightClass = sizeClasses[size] || sizeClasses.md;
 
   return (
     <div className={cn("w-full", className)}>
@@ -47,7 +38,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
       </div>
       <Progress 
         value={percentage} 
-        className={`${heightClass} ${color === "default" ? "" : "[&>div]:bg-transparent"}`}
+        className={`h-2 ${color === "default" ? "" : "[&>div]:bg-transparent"}`}
       >
         {color !== "default" && (
           <div 
