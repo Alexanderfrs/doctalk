@@ -31,7 +31,7 @@ const ProgressOverview: React.FC<ProgressOverviewProps> = ({ userProgress, userS
       max: userProgress.totalScenarios,
       label: t('completedScenarios'),
       description: `${userProgress.completedScenarios} ${t('of')} ${userProgress.totalScenarios} ${t('completed')}`,
-      color: "default"
+      color: "default" as const
     },
     {
       icon: <BookOpen className="h-6 w-6 text-blue-500 mr-2" />,
@@ -54,7 +54,7 @@ const ProgressOverview: React.FC<ProgressOverviewProps> = ({ userProgress, userS
           <span className="text-sm font-medium text-medical-600 mr-1">{userProgress.streak}</span>
           <span className="text-sm text-neutral-500">{t('days')} {t('streak')}</span>
         </div>,
-      color: "default" as const
+      color: "warning" as const  // Changed from "default" to "warning" to make it more distinct
     }
   ];
 
