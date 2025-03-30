@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
@@ -42,9 +41,9 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   const isMobile = useIsMobile();
   
   const tabTitles = {
-    conversation: t("conversation"),
-    resources: t("resources"),
-    notes: t("notes")
+    conversation: "Interactive Dialogue",
+    resources: "Help Resources",
+    notes: "Personal Notes"
   };
 
   const { getFeedback, isLoading: isFeedbackLoading } = useAIFeedback({
@@ -110,7 +109,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
         setConversation([...updatedConversation, responseMessage]);
       } catch (error) {
         console.error("Error generating response:", error);
-        toast.error(t("scenario.response_error"));
+        toast.error("Failed to generate response");
       } finally {
         setIsProcessingResponse(false);
       }
@@ -132,7 +131,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       setCurrentDialogueIndex(0);
       setShowFeedback(false);
     }
-    toast.success(t("scenarioRestarted"));
+    toast.success(t("scenario.conversation_reset"));
   };
 
   const handleSwipe = (index: number) => {
@@ -167,7 +166,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
             onClick={handleResetConversation}
             disabled={conversation.length <= 2}
           >
-            <RefreshCw className="h-4 w-4 mr-1" /> {t("restartScenario")}
+            <RefreshCw className="h-4 w-4 mr-1" /> Reset
           </Button>
         )}
       </CardHeader>
@@ -196,7 +195,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
             
             {showFeedback && activeTab === "conversation" && (
               <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                <h4 className="text-sm font-medium mb-1 text-blue-800">{t("pronunciationFeedback")}:</h4>
+                <h4 className="text-sm font-medium mb-1 text-blue-800">Feedback:</h4>
                 <p className="text-sm text-blue-700">{feedback}</p>
                 <div className="flex justify-end mt-2">
                   <Button 
@@ -204,7 +203,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
                     size="sm" 
                     onClick={() => setShowFeedback(false)}
                   >
-                    {t("hideTranslation")}
+                    {t("common.dismiss")}
                   </Button>
                 </div>
               </div>
@@ -232,7 +231,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
               
               {showFeedback && (
                 <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                  <h4 className="text-sm font-medium mb-1 text-blue-800">{t("pronunciationFeedback")}:</h4>
+                  <h4 className="text-sm font-medium mb-1 text-blue-800">Feedback:</h4>
                   <p className="text-sm text-blue-700">{feedback}</p>
                   <div className="flex justify-end mt-2">
                     <Button 
@@ -240,7 +239,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
                       size="sm" 
                       onClick={() => setShowFeedback(false)}
                     >
-                      {t("hideTranslation")}
+                      {t("common.dismiss")}
                     </Button>
                   </div>
                 </div>
@@ -270,7 +269,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
           <div className="w-full flex justify-center">
             <div className="text-xs text-muted-foreground flex items-center">
               <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-              {isProcessingResponse ? t("recording") : t("pronunciationFeedback")}
+              {isProcessingResponse ? t("scenario.generating_response") : t("scenario.generating_feedback")}
             </div>
           </div>
         </CardFooter>

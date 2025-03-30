@@ -50,6 +50,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
   
+  // User progress data - in a real app, this would come from the database
   const [userProgress, setUserProgress] = useState({
     completedScenarios: profile?.preferences?.completedScenarios || 2,
     totalScenarios: scenarios.length,
@@ -58,6 +59,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
     streak: profile?.preferences?.streak || 3,
   });
   
+  // User goals/stats - in a real app, this would come from the database
   const [userStats, setUserStats] = useState({
     lastActivity: profile?.preferences?.lastActivity || format(new Date(), 'yyyy-MM-dd'),
     weeklyGoal: profile?.preferences?.weeklyGoal || 5,
@@ -78,6 +80,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   }, []);
   
   useEffect(() => {
+    // Update user progress when profile changes
     if (profile?.preferences) {
       setUserProgress(prev => ({
         ...prev,
@@ -102,15 +105,18 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   }, [profile]);
 
   useEffect(() => {
+    // Fetch user activities - in real app this would come from database
     const fetchUserActivities = async () => {
       setIsLoadingActivities(true);
       try {
+        // In a real app, we would fetch this from the database
+        // For now, let's generate some mock data based on user profile
         const mockActivities: UserActivity[] = [
           {
             type: "scenario",
             title: t('scenarioCompleted'),
             description: t('patientAdmission'),
-            timestamp: subDays(new Date(), 0.1),
+            timestamp: subDays(new Date(), 0.1), // 2 hours ago
           },
           {
             type: "vocabulary",
@@ -211,7 +217,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
                   </h1>
                   <p className="text-neutral-600 mt-2">
                     {t('streak').includes('Streak') ? 
-                      `${t('youHaveStreak')} ${userProgress.streak} ${t('days')}. ${t('keepItUp')}!` : 
+                      `You have a learning streak of ${userProgress.streak} days. Keep it up!` : 
                       `${t('youHaveStreak')} ${userProgress.streak} ${t('days')}. ${t('keepItUp')}!`}
                   </p>
                 </div>
