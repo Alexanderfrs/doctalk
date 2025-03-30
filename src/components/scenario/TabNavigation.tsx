@@ -2,7 +2,6 @@
 import React from "react";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageSquare, Book, Lightbulb } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
 
 interface TabNavigationProps {
   activeTab: string;
@@ -10,12 +9,10 @@ interface TabNavigationProps {
 }
 
 const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onChange }) => {
-  const { t } = useTranslation();
-  
   const tabTitles = {
-    conversation: t('conversation'),
-    resources: t('resources'),
-    notes: t('notes')
+    conversation: "Conversation",
+    resources: "Resources",
+    notes: "Notes"
   };
   
   return (
