@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -9,37 +8,32 @@ import SideNavigator from "@/components/navigation/SideNavigator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import HeroSection from "@/components/home/HeroSection";
 import CtaSection from "@/components/home/CtaSection";
-
 interface LandingPageProps {
   onLogin?: () => void;
 }
-
-const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
+const LandingPage: React.FC<LandingPageProps> = ({
+  onLogin
+}) => {
   const navigate = useNavigate();
-  const { translate } = useLanguage();
-  
+  const {
+    translate
+  } = useLanguage();
   const handleRegister = () => {
     navigate('/register');
   };
-  
   const handleLogin = () => {
     navigate('/login');
   };
-  
-  const sections = [
-    {
-      id: "hero",
-      label: translate("home")
-    }, 
-    {
-      id: "features",
-      label: translate("features")
-    }, 
-    {
-      id: "pricing",
-      label: translate("pricingTitle")
-    }
-  ];
+  const sections = [{
+    id: "hero",
+    label: translate("home")
+  }, {
+    id: "features",
+    label: translate("features")
+  }, {
+    id: "pricing",
+    label: translate("pricingTitle")
+  }];
 
   // Handle anchor links for navigation
   useEffect(() => {
@@ -48,37 +42,36 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       const id = window.location.hash.replace('#', '');
       const element = document.getElementById(id);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        element.scrollIntoView({
+          behavior: 'smooth'
+        });
       }
     }
-    
+
     // Add click event listeners to anchor links
     const handleAnchorClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const anchor = target.closest('a[href^="#"]');
-      
       if (anchor) {
         event.preventDefault();
         const id = anchor.getAttribute('href')?.replace('#', '');
         if (id) {
           const element = document.getElementById(id);
           if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            element.scrollIntoView({
+              behavior: 'smooth'
+            });
             window.history.pushState(null, '', `#${id}`);
           }
         }
       }
     };
-    
     document.addEventListener('click', handleAnchorClick);
-    
     return () => {
       document.removeEventListener('click', handleAnchorClick);
     };
   }, []);
-  
-  return (
-    <div className="min-h-screen flex flex-col relative">
+  return <div className="min-h-screen flex flex-col relative">
       <AppHeader onLogin={handleLogin} />
       
       <SideNavigator sections={sections} />
@@ -246,7 +239,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   <p className="text-neutral-500 mt-1">{translate("forActiveLearners")}</p>
                 </div>
                 <div className="mb-6">
-                  <span className="text-3xl font-bold">€4,99</span>
+                  <span className="text-3xl font-bold">€9,99</span>
                   <span className="text-neutral-500"> / {translate("month")}</span>
                 </div>
                 <ul className="space-y-3 mb-8">
@@ -353,8 +346,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default LandingPage;
