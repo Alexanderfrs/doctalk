@@ -1,4 +1,3 @@
-
 export interface LandingPageProps {
   onLogin?: () => void;
 }
@@ -22,8 +21,7 @@ export interface Feature {
 
 export interface ComparisonItem {
   feature: string;
-  languageSchool: string;
-  genericApp: string;
-  medlingua: string;
+  languageSchool: "full" | "limited" | "none";
+  genericApp: "full" | "limited" | "none";
+  medlingua: "full" | "limited" | "none";
 }
-
