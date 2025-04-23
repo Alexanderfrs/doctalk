@@ -8,36 +8,41 @@ const ComparisonTable = () => {
 
   const comparisons: ComparisonItem[] = [
     {
-      feature: translate("medicalVocabulary"),
-      general: translate("medicalVocabularyComparison"),
-      medlingua: translate("comprehensiveSpecialized")
+      feature: "Learning Focus",
+      general: "Generic language learning, basic vocabulary",
+      medlingua: "Specialized medical terminology and professional communication"
     },
     {
-      feature: translate("dialogScenarios"),
-      general: translate("everydayConversations"),
-      medlingua: translate("realisticMedical")
+      feature: "Practical Application",
+      general: "Limited real-world scenarios",
+      medlingua: "Real medical workplace situations and dialogues"
     },
     {
-      feature: translate("learningGoal"),
-      general: translate("generalLanguageSkills"),
-      medlingua: translate("professionalCommunication")
+      feature: "Time Efficiency",
+      general: "Long learning path with irrelevant content",
+      medlingua: "Focused learning for immediate workplace use"
     },
     {
-      feature: translate("professionalSupport"),
-      general: translate("minimal"),
-      medlingua: translate("specificPreparation")
+      feature: "Professional Support",
+      general: "Standard language tutors",
+      medlingua: "Medical field experts and specialized guidance"
+    },
+    {
+      feature: "Industry Recognition",
+      general: "General language certificates",
+      medlingua: "Healthcare-specific certifications and credentials"
     }
   ];
 
   return (
     <div className="mt-16 bg-white p-8 rounded-xl shadow-md border border-neutral-200">
-      <h3 className="text-xl font-bold mb-4 text-center">{translate("comparisonTitle")}</h3>
+      <h3 className="text-xl font-bold mb-4 text-center">Why Choose MedLingua?</h3>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[600px]">
           <thead>
             <tr className="border-b border-neutral-200">
-              <th className="py-3 px-4 text-left">{translate("feature")}</th>
-              <th className="py-3 px-4 text-center">{translate("generalApps")}</th>
+              <th className="py-3 px-4 text-left">Feature</th>
+              <th className="py-3 px-4 text-center">Traditional Options</th>
               <th className="py-3 px-4 text-center bg-medical-50 font-medium">MedLingua</th>
             </tr>
           </thead>

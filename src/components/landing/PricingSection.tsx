@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,7 @@ const PricingSection = () => {
         translate("basicFeature1"),
         translate("basicFeature2"),
         translate("basicFeature3"),
-        translate("1 month free Pro after 3-month streak")
+        "Earn free Pro trial by maintaining learning streaks"
       ],
       buttonText: translate("startFree"),
       buttonVariant: "outline"
