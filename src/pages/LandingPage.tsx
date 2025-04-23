@@ -224,6 +224,10 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
                     <span>{translate("basicFeature3")}</span>
                   </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>{translate("streakRewardFeature")}</span>
+                  </li>
                 </ul>
                 <Button className="w-full" variant="outline" onClick={handleRegister}>
                   {translate("startFree")}
@@ -278,10 +282,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
                   <h3 className="text-xl font-semibold">{translate("team")}</h3>
                   <p className="text-neutral-500 mt-1">{translate("forInstitutions")}</p>
                 </div>
-                <div className="mb-6">
-                  <span className="text-3xl font-bold">€399</span>
-                  <span className="text-neutral-500"> / {translate("year")}</span>
-                </div>
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
@@ -311,34 +311,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 </Link>
               </div>
             </div>
-            
-            <div className="mt-12 max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-neutral-100 overflow-hidden">
-              <div className="bg-medical-500 p-4 text-white text-center">
-                <h3 className="text-xl font-semibold">{translate("loyaltyProgram")}</h3>
-              </div>
-              <div className="p-6">
-                <div className="flex items-center mb-6">
-                  <div className="w-16 h-16 bg-medical-50 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
-                    <Award className="h-8 w-8 text-medical-600" />
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-medium">{translate("loyaltyDescription")}</h4>
-                    <p className="text-neutral-600">{translate("loyaltyBenefit")}</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-neutral-50 p-4 rounded-lg">
-                    <p className="text-center font-medium">{translate("streak90")}</p>
-                  </div>
-                  <div className="bg-neutral-50 p-4 rounded-lg">
-                    <p className="text-center font-medium">{translate("oneFreeMonth")}</p>
-                  </div>
-                  <div className="bg-neutral-50 p-4 rounded-lg">
-                    <p className="text-center font-medium">{translate("unlimitedRepeatable")}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
         
@@ -348,4 +320,5 @@ const LandingPage: React.FC<LandingPageProps> = ({
       <Footer />
     </div>;
 };
+
 export default LandingPage;
