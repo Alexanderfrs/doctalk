@@ -22,6 +22,8 @@ export interface Feature {
 
 export interface ComparisonItem {
   feature: string;
-  general: string;
+  languageSchool: string;
+  genericApp: string;
   medlingua: string;
 }
+
