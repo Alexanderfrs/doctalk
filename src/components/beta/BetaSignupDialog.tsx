@@ -110,7 +110,7 @@ const BetaSignupDialog = ({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         {triggerElement || (
-          <Button variant="primary" className={className}>
+          <Button variant="default" className={className}>
             {translate("joinBeta")}
           </Button>
         )}

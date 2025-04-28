@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -155,7 +156,16 @@ export const englishTranslations = {
   refresh: "Refresh",
   downloadCSV: "Download CSV",
   noSubscribersYet: "No beta subscribers yet",
-  email: "Email",
   signupDate: "Signup Date",
   failedToLoadSubscribers: "Failed to load beta subscribers",
+  
+  // General translations
+  overview: "Overview",
+  dashboard: "Dashboard",
+  welcomeBack: "Welcome Back",
+  dashboardWelcomeMessage: "Here's a summary of your beta signups and other metrics.",
+  yourProgress: "Your Progress",
+  progressDescription: "Track the progress of your beta program here.",
+  recentActivity: "Recent Activity",
+  noRecentActivity: "No recent activity to display."
 };

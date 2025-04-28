@@ -1,3 +1,4 @@
+
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -155,7 +156,16 @@ export const germanTranslations = {
   refresh: "Aktualisieren",
   downloadCSV: "CSV herunterladen",
   noSubscribersYet: "Noch keine Beta-Abonnenten",
-  email: "E-Mail",
   signupDate: "Anmeldedatum",
   failedToLoadSubscribers: "Beta-Abonnenten konnten nicht geladen werden",
+  
+  // General translations
+  overview: "Übersicht",
+  dashboard: "Dashboard",
+  welcomeBack: "Willkommen zurück",
+  dashboardWelcomeMessage: "Hier ist eine Zusammenfassung deiner Beta-Anmeldungen und anderer Metriken.",
+  yourProgress: "Dein Fortschritt",
+  progressDescription: "Verfolge den Fortschritt deines Beta-Programms hier.",
+  recentActivity: "Letzte Aktivität",
+  noRecentActivity: "Keine Aktivitäten zum Anzeigen."
 };
