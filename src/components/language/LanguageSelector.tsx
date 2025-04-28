@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { useLanguage, Language, GermanDialect } from '@/contexts/LanguageContext';
+import { useLanguage, supportedLanguages, germanDialects } from '@/contexts/LanguageContext';
+import { Language, GermanDialect } from '@/types/language';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -13,7 +14,6 @@ const LanguageSelector: React.FC = () => {
     setUserLanguage, 
     germanDialect, 
     setGermanDialect,
-    supportedLanguages,
     getLanguageName,
     getDialectName
   } = useLanguage();
