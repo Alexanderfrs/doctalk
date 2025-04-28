@@ -4,11 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, Stethoscope } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import AppLogo from "@/components/layout/AppLogo";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -47,12 +48,7 @@ const Login: React.FC = () => {
       <main className="flex-grow flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">
-            <Link to="/" className="inline-flex items-center justify-center gap-2">
-              <div className="bg-medical-500 text-white p-2 rounded-lg">
-                <Stethoscope className="h-6 w-6" />
-              </div>
-              <span className="text-2xl font-bold text-medical-800">DocTalk</span>
-            </Link>
+            <AppLogo path="/" size="large" />
             <h1 className="text-2xl font-bold mt-6 mb-2">{translate("welcomeBack")}</h1>
             <p className="text-neutral-600">
               {translate("loginDescription")}
