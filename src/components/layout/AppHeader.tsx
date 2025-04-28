@@ -15,9 +15,10 @@ import MobileNavMenu from "./MobileNavMenu";
 interface AppHeaderProps {
   onLogin?: () => void;
   onLogout?: () => void;
+  showSlogan?: boolean;
 }
 
-const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
+const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout, showSlogan = false }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -90,7 +91,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout }) => {
       <div className="container mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <AppLogo path={logoPath} />
+          <AppLogo path={logoPath} showSlogan={showSlogan} size="large" />
 
           {/* Desktop Navigation */}
           <DesktopNav navItems={navItems} />
