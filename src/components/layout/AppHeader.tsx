@@ -16,9 +16,15 @@ interface AppHeaderProps {
   onLogin?: () => void;
   onLogout?: () => void;
   showSlogan?: boolean;
+  showAuthButtons?: boolean;
 }
 
-const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout, showSlogan = false }) => {
+const AppHeader: React.FC<AppHeaderProps> = ({ 
+  onLogin, 
+  onLogout, 
+  showSlogan = false,
+  showAuthButtons = true
+}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -102,6 +108,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout, showSlogan = f
             onLogin={handleLogin}
             onRegister={handleRegister}
             onLogout={handleLogout}
+            showAuthButtons={showAuthButtons}
           />
 
           {/* Mobile menu button */}
@@ -128,6 +135,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ onLogin, onLogout, showSlogan = f
         handleRegister={handleRegister}
         handleLogout={handleLogout}
         onClose={() => setIsMobileMenuOpen(false)}
+        showAuthButtons={showAuthButtons}
       />
     </header>
   );

@@ -1,25 +1,25 @@
 
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { LogOut } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { LogOut } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-interface NavItem {
-  path: string;
-  label: string;
-  icon: React.ReactNode;
-}
+import { cn } from "@/lib/utils";
+import BetaSignupDialog from "@/components/beta/BetaSignupDialog";
 
 interface MobileNavMenuProps {
   isOpen: boolean;
-  navItems: NavItem[];
+  navItems: Array<{
+    path: string;
+    label: string;
+    icon: React.ReactNode;
+  }>;
   isAuthenticated: boolean;
   handleLogin: () => void;
   handleRegister: () => void;
   handleLogout: () => void;
   onClose: () => void;
+  showAuthButtons?: boolean;
 }
 
 const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
@@ -29,86 +29,81 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
   handleLogin,
   handleRegister,
   handleLogout,
-  onClose
+  onClose,
+  showAuthButtons = true
 }) => {
-  const location = useLocation();
   const { translate } = useLanguage();
-  
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 top-[72px] bg-white z-40 animate-fade-in md:hidden">
-      <nav className="container flex flex-col space-y-2 p-4">
-        {navItems.map((item) => (
-          item.path.startsWith('/#') ? (
-            <a
-              key={item.path}
-              href={item.path}
-              className={cn(
-                "flex items-center px-4 py-3 rounded-lg transition-colors",
-                location.pathname === item.path || (location.pathname === '/' && item.path.startsWith('/#'))
-                  ? "bg-medical-50 text-medical-700 font-medium"
-                  : "text-neutral-600 hover:bg-neutral-100"
-              )}
-              onClick={() => onClose()}
-            >
-              {item.icon}
-              <span className="ml-2 text-lg">{item.label}</span>
-            </a>
-          ) : (
+    <div className="md:hidden fixed top-[72px] left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg z-40 transition-transform duration-300 ease-in-out">
+      <div className="flex flex-col p-4">
+        <nav className="space-y-1 mb-6">
+          {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={cn(
-                "flex items-center px-4 py-3 rounded-lg transition-colors",
-                location.pathname === item.path
-                  ? "bg-medical-50 text-medical-700 font-medium"
-                  : "text-neutral-600 hover:bg-neutral-100"
-              )}
-              onClick={() => onClose()}
+              className="flex items-center px-4 py-3 text-base text-neutral-700 hover:bg-neutral-100 rounded-md"
+              onClick={onClose}
             >
-              {item.icon}
-              <span className="ml-2 text-lg">{item.label}</span>
+              <span className="mr-3">{item.icon}</span>
+              <span>{item.label}</span>
             </Link>
-          )
-        ))}
+          ))}
+        </nav>
 
-        {isAuthenticated ? (
-          <Button
-            variant="ghost"
-            className="flex items-center px-4 py-3 rounded-lg transition-colors text-neutral-600 hover:bg-neutral-100 justify-start"
-            onClick={() => {
-              handleLogout();
-              onClose();
-            }}
-          >
-            <LogOut className="h-5 w-5 mr-2" />
-            <span className="text-lg">{translate("logout")}</span>
-          </Button>
-        ) : (
-          <div className="flex flex-col space-y-2 mt-4">
+        <div className="flex flex-col space-y-3 mt-4">
+          {isAuthenticated ? (
             <Button
-              variant="outline"
+              variant="ghost"
+              className="text-neutral-600 hover:bg-neutral-100 flex justify-start"
               onClick={() => {
-                handleLogin();
-                onClose();
-              }}
-              className="w-full justify-center"
-            >
-              {translate("login")}
-            </Button>
-            <Button
-              className="bg-medical-500 hover:bg-medical-600 w-full justify-center"
-              onClick={() => {
-                handleRegister();
+                handleLogout();
                 onClose();
               }}
             >
-              {translate("register")}
+              <LogOut className="h-5 w-5 mr-3" />
+              <span>{translate("logout")}</span>
             </Button>
-          </div>
-        )}
-      </nav>
+          ) : (
+            <>
+              {showAuthButtons ? (
+                <>
+                  <Button 
+                    variant="outline"
+                    className="flex justify-center"
+                    onClick={() => {
+                      handleLogin();
+                      onClose();
+                    }}
+                  >
+                    {translate("login")}
+                  </Button>
+                  <Button
+                    className="bg-medical-500 hover:bg-medical-600 flex justify-center"
+                    onClick={() => {
+                      handleRegister();
+                      onClose();
+                    }}
+                  >
+                    {translate("register")}
+                  </Button>
+                </>
+              ) : (
+                <BetaSignupDialog 
+                  className="bg-medical-500 hover:bg-medical-600 w-full"
+                  triggerElement={
+                    <Button className="bg-medical-500 hover:bg-medical-600 w-full">
+                      {translate("joinBeta")}
+                    </Button>
+                  }
+                />
+              )}
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

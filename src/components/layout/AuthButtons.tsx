@@ -4,19 +4,22 @@ import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import UILanguageSelector from "@/components/language/UILanguageSelector";
+import BetaSignupDialog from "@/components/beta/BetaSignupDialog";
 
 interface AuthButtonsProps {
   isAuthenticated: boolean;
   onLogin: () => void;
   onRegister: () => void;
   onLogout: () => void;
+  showAuthButtons?: boolean;
 }
 
 const AuthButtons: React.FC<AuthButtonsProps> = ({
   isAuthenticated,
   onLogin,
   onRegister,
-  onLogout
+  onLogout,
+  showAuthButtons = true
 }) => {
   const { translate } = useLanguage();
 
@@ -35,18 +38,24 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({
         </Button>
       ) : (
         <>
-          <Button 
-            variant="outline"
-            onClick={onLogin}
-          >
-            {translate("login")}
-          </Button>
-          <Button
-            className="bg-medical-500 hover:bg-medical-600"
-            onClick={onRegister}
-          >
-            {translate("register")}
-          </Button>
+          {showAuthButtons ? (
+            <>
+              <Button 
+                variant="outline"
+                onClick={onLogin}
+              >
+                {translate("login")}
+              </Button>
+              <Button
+                className="bg-medical-500 hover:bg-medical-600"
+                onClick={onRegister}
+              >
+                {translate("register")}
+              </Button>
+            </>
+          ) : (
+            <BetaSignupDialog className="bg-medical-500 hover:bg-medical-600" />
+          )}
         </>
       )}
     </div>

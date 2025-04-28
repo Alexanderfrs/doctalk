@@ -60,7 +60,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
 
   return (
     <div className="min-h-screen flex flex-col relative">
-      <AppHeader onLogin={handleLogin} showSlogan={true} />
+      <AppHeader onLogin={handleLogin} showSlogan={true} showAuthButtons={false} />
       <SideNavigator sections={sections} />
       
       <main className="flex-grow pt-24">
