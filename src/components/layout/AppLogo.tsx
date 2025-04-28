@@ -18,27 +18,27 @@ const AppLogo: React.FC<AppLogoProps> = ({
   // Determine logo size based on the size prop
   const getLogoSize = () => {
     switch (size) {
-      case "small": return "h-8";
-      case "large": return "h-12";
-      default: return "h-10";
+      case "small": return "h-10";
+      case "large": return "h-16";
+      default: return "h-12";
     }
   };
   
   // Determine text size based on the size prop
   const getTextSize = () => {
     switch (size) {
-      case "small": return "text-lg";
-      case "large": return "text-2xl";
-      default: return "text-xl";
+      case "small": return "text-xl";
+      case "large": return "text-3xl";
+      default: return "text-2xl";
     }
   };
 
   return (
     <Link 
       to={path}
-      className="flex items-center space-x-2"
+      className="flex items-center space-x-3"
     >
-      <div className="bg-white rounded-md p-1 shadow-sm">
+      <div className="bg-white rounded-md p-1.5 shadow-md">
         <img 
           src="/lovable-uploads/fbff1d77-b805-4a84-9721-79292aad57c6.png"
           alt="DocTalk Logo"
@@ -54,7 +54,7 @@ const AppLogo: React.FC<AppLogoProps> = ({
         )}
         
         {showSlogan && variant !== "minimal" && (
-          <span className="text-xs text-neutral-600 mt-0.5">
+          <span className="text-xs md:text-sm text-neutral-600 mt-0.5">
             Communicate, Connect, Care
           </span>
         )}

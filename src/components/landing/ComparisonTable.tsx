@@ -14,31 +14,31 @@ const ComparisonTable = () => {
       feature: "Specialized medical vocabulary and terminology tailored for healthcare professionals",
       languageSchool: "limited",
       genericApp: "none",
-      medlingua: "full"
+      doctalk: "full"
     },
     {
       feature: "Real medical scenarios and practice dialogues from actual hospital environments",
       languageSchool: "limited",
       genericApp: "none",
-      medlingua: "full"
+      doctalk: "full"
     },
     {
       feature: "Flexible learning schedule with immediate practical workplace application",
       languageSchool: "none",
       genericApp: "limited",
-      medlingua: "full"
+      doctalk: "full"
     },
     {
       feature: "Expert guidance from medical professionals and language specialists",
       languageSchool: "limited",
       genericApp: "none",
-      medlingua: "full"
+      doctalk: "full"
     },
     {
       feature: "Healthcare-specific certification recognized in the medical field",
       languageSchool: "none",
       genericApp: "none",
-      medlingua: "full"
+      doctalk: "full"
     }
   ];
 
@@ -73,7 +73,7 @@ const ComparisonTable = () => {
                 <td className="py-3 px-4 text-center">{getIcon(item.languageSchool)}</td>
                 <td className="py-3 px-4 text-center">{getIcon(item.genericApp)}</td>
                 <td className="py-3 px-4 text-center bg-medical-50">
-                  {getIcon(item.medlingua)}
+                  {getIcon(item.doctalk)}
                 </td>
               </tr>)}
           </tbody>

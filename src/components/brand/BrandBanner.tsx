@@ -52,7 +52,7 @@ const BrandBanner: React.FC = () => {
             <HeartPulse className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="font-bold text-medical-700">MedLingua</h3>
+            <h3 className="font-bold text-medical-700">DocTalk</h3>
             <p className="text-xs text-neutral-500">Healthcare Language Excellence</p>
           </div>
         </div>

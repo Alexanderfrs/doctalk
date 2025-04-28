@@ -1,3 +1,4 @@
+
 export interface LandingPageProps {
   onLogin?: () => void;
 }
@@ -23,5 +24,5 @@ export interface ComparisonItem {
   feature: string;
   languageSchool: "full" | "limited" | "none";
   genericApp: "full" | "limited" | "none";
-  medlingua: "full" | "limited" | "none";
+  doctalk: "full" | "limited" | "none";
 }
