@@ -61,7 +61,7 @@ const Login: React.FC = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder={translate("emailPlaceholder")}
+                placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -95,15 +95,15 @@ const Login: React.FC = () => {
             </div>
 
             <Button type="submit" className="w-full bg-medical-500 hover:bg-medical-600" disabled={isSubmitting}>
-              {isSubmitting ? `${translate("logging")}...` : translate("login")}
+              {isSubmitting ? "Logging in..." : "Login"}
             </Button>
           </form>
 
           <div className="mt-8 text-center">
             <p className="text-neutral-600">
-              {translate("noAccount")}{" "}
+              Don't have an account?{" "}
               <Link to="/register" className="text-medical-600 hover:underline font-medium">
-                {translate("registerNow")}
+                Register now
               </Link>
             </p>
           </div>
