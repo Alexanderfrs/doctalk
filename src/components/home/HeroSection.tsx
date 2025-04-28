@@ -6,6 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
+import BetaSignupDialog from "@/components/beta/BetaSignupDialog";
 
 const HeroSection = () => {
   const { translate } = useLanguage();
@@ -45,9 +46,13 @@ const HeroSection = () => {
               <Button asChild size="lg" className="btn-primary">
                 <Link to="/practice">{translate("startExercise")}</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="btn-secondary">
-                <Link to="/vocabulary">{translate("learnVocabulary")}</Link>
-              </Button>
+              <BetaSignupDialog
+                triggerElement={
+                  <Button variant="outline" size="lg" className="btn-secondary">
+                    {translate("joinBeta")}
+                  </Button>
+                }
+              />
             </div>
           </div>
           
@@ -87,9 +92,13 @@ const HeroSection = () => {
             <Button asChild size="lg" className="btn-primary">
               <Link to="/practice">{translate("startExercise")}</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="btn-secondary">
-              <Link to="/vocabulary">{translate("learnVocabulary")}</Link>
-            </Button>
+            <BetaSignupDialog
+              triggerElement={
+                <Button variant="outline" size="lg" className="btn-secondary">
+                  {translate("joinBeta")}
+                </Button>
+              }
+            />
           </div>
         </div>
         

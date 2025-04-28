@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -135,4 +134,28 @@ export const englishTranslations = {
   contact: 'Contact',
   swipeLeft: 'Swipe left',
   swipeRight: 'Swipe right',
+  // Beta signup translations
+  joinBeta: "Join Beta",
+  betaAccessTitle: "Request Beta Access",
+  betaAccessDescription: "Enter your email to join our beta program. We'll notify you when access is available.",
+  emailAddress: "Email Address",
+  getEarlyAccess: "Get Early Access",
+  submitting: "Submitting...",
+  thankYouForJoining: "Thank you for joining!",
+  betaConfirmationMessage: "We'll notify you when DocTalk is ready for beta testing.",
+  alreadySignedUp: "Already Signed Up",
+  emailAlreadyRegistered: "This email is already registered for beta access.",
+  errorOccurred: "Error Occurred",
+  pleaseRetryLater: "Please try again later.",
+  
+  // Admin translations
+  betaSignups: "Beta Signups",
+  betaSubscribers: "Beta Subscribers",
+  totalSubscribers: "total subscribers",
+  refresh: "Refresh",
+  downloadCSV: "Download CSV",
+  noSubscribersYet: "No beta subscribers yet",
+  email: "Email",
+  signupDate: "Signup Date",
+  failedToLoadSubscribers: "Failed to load beta subscribers",
 };

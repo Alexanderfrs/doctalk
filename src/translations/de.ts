@@ -1,4 +1,3 @@
-
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -135,4 +134,28 @@ export const germanTranslations = {
   contact: 'Kontakt',
   swipeLeft: 'Nach links wischen',
   swipeRight: 'Nach rechts wischen',
+  // Beta signup translations
+  joinBeta: "Beta beitreten",
+  betaAccessTitle: "Beta-Zugang anfordern",
+  betaAccessDescription: "Gib deine E-Mail ein, um an unserem Beta-Programm teilzunehmen. Wir benachrichtigen dich, wenn der Zugang verfügbar ist.",
+  emailAddress: "E-Mail-Adresse",
+  getEarlyAccess: "Frühzeitigen Zugang erhalten",
+  submitting: "Wird übermittelt...",
+  thankYouForJoining: "Vielen Dank für deine Anmeldung!",
+  betaConfirmationMessage: "Wir benachrichtigen dich, wenn DocTalk für den Beta-Test bereit ist.",
+  alreadySignedUp: "Bereits angemeldet",
+  emailAlreadyRegistered: "Diese E-Mail ist bereits für den Beta-Zugang registriert.",
+  errorOccurred: "Fehler aufgetreten",
+  pleaseRetryLater: "Bitte versuche es später noch einmal.",
+  
+  // Admin translations
+  betaSignups: "Beta-Anmeldungen",
+  betaSubscribers: "Beta-Abonnenten",
+  totalSubscribers: "Abonnenten insgesamt",
+  refresh: "Aktualisieren",
+  downloadCSV: "CSV herunterladen",
+  noSubscribersYet: "Noch keine Beta-Abonnenten",
+  email: "E-Mail",
+  signupDate: "Anmeldedatum",
+  failedToLoadSubscribers: "Beta-Abonnenten konnten nicht geladen werden",
 };
