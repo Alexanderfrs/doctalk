@@ -20,7 +20,7 @@ const LanguageCertification = () => {
                 <div className="md:w-1/2">
                   <div className="flex items-center mb-4">
                     <Award className="h-6 w-6 text-medical-600 mr-2" />
-                    <span className="text-medical-600 font-semibold">MedLingua Certification</span>
+                    <span className="text-medical-600 font-semibold">DocTalk Certification</span>
                   </div>
                   <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
                     Zertifiziere deine <span className="text-gradient">medizinischen Sprachkenntnisse</span>
@@ -81,7 +81,7 @@ const LanguageCertification = () => {
           
           {/* Benefits */}
           <section className="mb-16">
-            <h2 className="text-2xl font-semibold mb-6 text-center">Vorteile der MedLingua-Zertifizierung</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-center">Vorteile der DocTalk-Zertifizierung</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 { icon: <Building className="h-6 w-6 text-medical-600" />, title: 'Anerkannt durch Kliniken', description: 'Von führenden Gesundheitseinrichtungen in Deutschland anerkannt' },

@@ -32,11 +32,13 @@ const AppLogo: React.FC<AppLogoProps> = ({ path, variant = "default", size = "me
       to={path}
       className="flex items-center space-x-2"
     >
-      <img 
-        src="/lovable-uploads/fbff1d77-b805-4a84-9721-79292aad57c6.png"
-        alt="DocTalk Logo"
-        className={`${getLogoSize()} w-auto`}
-      />
+      <div className="bg-white rounded-md p-0.5 shadow-sm">
+        <img 
+          src="/lovable-uploads/fbff1d77-b805-4a84-9721-79292aad57c6.png"
+          alt="DocTalk Logo"
+          className={`${getLogoSize()} w-auto`}
+        />
+      </div>
       
       {variant !== "minimal" && (
         <span className={`${getTextSize()} font-semibold text-medical-500`}>

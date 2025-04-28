@@ -73,7 +73,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                 {translate("specializedForMedical")}
               </h2>
               <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-                {translate("medLinguaDifference")}
+                {translate("doctalkDifference")}
               </p>
             </div>
             
