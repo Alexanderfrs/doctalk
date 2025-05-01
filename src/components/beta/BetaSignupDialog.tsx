@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSupabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -35,7 +35,6 @@ export default function BetaSignupDialog({ className, triggerElement }: BetaSign
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [errorType, setErrorType] = React.useState<"alreadyExists" | "general" | null>(null);
-  const { supabase } = useSupabase();
   const { toast } = useToast();
   const { translate } = useLanguage();
 
