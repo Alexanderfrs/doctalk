@@ -1,121 +1,116 @@
 
-import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Mail, Check, AlertCircle } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
-
+import * as React from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSupabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-type BetaSignupDialogProps = {
-  triggerElement?: React.ReactNode;
-  className?: string;
-};
-
-const emailSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+const formSchema = z.object({
+  email: z.string().email("Invalid email address"),
 });
 
-type FormValues = z.infer<typeof emailSchema>;
+type FormData = z.infer<typeof formSchema>;
 
-const BetaSignupDialog = ({ 
-  triggerElement,
-  className
-}: BetaSignupDialogProps) => {
-  const { translate } = useLanguage();
+interface BetaSignupDialogProps {
+  className?: string;
+  triggerElement?: React.ReactNode;
+}
+
+export default function BetaSignupDialog({ className, triggerElement }: BetaSignupDialogProps) {
+  const [open, setOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const [errorType, setErrorType] = React.useState<"alreadyExists" | "general" | null>(null);
+  const { supabase } = useSupabase();
   const { toast } = useToast();
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [submitSuccess, setSubmitSuccess] = React.useState(false);
+  const { translate } = useLanguage();
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(emailSchema),
-    defaultValues: {
-      email: "",
-    },
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
   });
 
-  const handleSubmit = async (values: FormValues) => {
+  const onSubmit = async (data: FormData) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    setErrorType(null);
+
     try {
-      setIsSubmitting(true);
-      
-      // Submit to Supabase
-      const { error } = await supabase
-        .from("beta_subscribers")
-        .insert([{ email: values.email }]);
-      
-      if (error) {
-        if (error.code === '23505') {
-          // Unique constraint violation (email already exists)
-          toast({
-            title: translate("alreadySignedUp"),
-            description: translate("emailAlreadyRegistered"),
-            variant: "default"
-          });
-        } else {
-          console.error("Error submitting beta signup:", error);
-          toast({
-            title: translate("errorOccurred"),
-            description: translate("pleaseRetryLater"),
-            variant: "destructive"
-          });
-        }
-        setIsSubmitting(false);
+      // Check if email already exists
+      const { data: existingEmails, error: checkError } = await supabase
+        .from('beta_signups')
+        .select('email')
+        .eq('email', data.email);
+
+      if (checkError) {
+        throw new Error(checkError.message);
+      }
+
+      if (existingEmails && existingEmails.length > 0) {
+        setErrorType("alreadyExists");
+        setIsLoading(false);
         return;
       }
-      
+
+      // Insert new signup
+      const { error: insertError } = await supabase
+        .from('beta_signups')
+        .insert([{ email: data.email }]);
+
+      if (insertError) {
+        throw new Error(insertError.message);
+      }
+
       // Success
-      setSubmitSuccess(true);
-      form.reset();
-      
-      setTimeout(() => {
-        setIsOpen(false);
-        // Reset success state after dialog closes
-        setTimeout(() => setSubmitSuccess(false), 300);
-      }, 2500);
-      
+      setIsSubmitted(true);
+      toast({
+        title: translate("thankYouForJoining"),
+        description: translate("betaConfirmationMessage"),
+      });
+
     } catch (error) {
       console.error("Error submitting beta signup:", error);
-      toast({
-        title: translate("errorOccurred"),
-        description: translate("pleaseRetryLater"),
-        variant: "destructive"
-      });
+      setErrorType("general");
     } finally {
-      setIsSubmitting(false);
+      setIsLoading(false);
+    }
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (!newOpen) {
+      // Reset form when dialog is closed
+      setTimeout(() => {
+        reset();
+        setErrorType(null);
+        setIsSubmitted(false);
+      }, 300);
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        {triggerElement || (
-          <Button variant="default" className={className}>
-            {translate("joinBeta")}
-          </Button>
-        )}
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <Button 
+        variant="default" 
+        onClick={() => setOpen(true)} 
+        className={className}
+      >
+        {triggerElement || translate("joinBeta")}
+      </Button>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{translate("betaAccessTitle")}</DialogTitle>
           <DialogDescription>
@@ -123,54 +118,61 @@ const BetaSignupDialog = ({
           </DialogDescription>
         </DialogHeader>
 
-        {submitSuccess ? (
-          <div className="flex flex-col items-center py-6 space-y-4">
-            <div className="rounded-full bg-green-100 p-3">
-              <Check className="h-6 w-6 text-green-600" />
+        {isSubmitted ? (
+          <div className="flex flex-col items-center justify-center py-6 text-center">
+            <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
             </div>
-            <p className="text-center font-medium">{translate("thankYouForJoining")}</p>
-            <p className="text-center text-sm text-muted-foreground">
-              {translate("betaConfirmationMessage")}
-            </p>
+            <h3 className="text-lg font-medium mb-2">{translate("thankYouForJoining")}</h3>
+            <p className="text-sm text-gray-600">{translate("betaConfirmationMessage")}</p>
           </div>
         ) : (
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{translate("emailAddress")}</FormLabel>
-                    <FormControl>
-                      <div className="flex items-center">
-                        <Mail className="mr-2 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          placeholder="name@example.com"
-                          {...field}
-                          className="flex-1"
-                          disabled={isSubmitting}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">{translate("emailAddress")}</Label>
+              <Input
+                id="email"
+                type="email"
+                className={cn(errors.email && "border-red-500")}
+                {...register("email")}
               />
-              <div className="flex justify-end">
-                <Button 
-                  type="submit" 
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? translate("submitting") : translate("getEarlyAccess")}
-                </Button>
-              </div>
-            </form>
-          </Form>
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
+              )}
+              {errorType === "alreadyExists" && (
+                <div className="text-amber-600 bg-amber-50 p-3 rounded-md text-sm flex items-start mt-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clipRule="evenodd" />
+                  </svg>
+                  <div>
+                    <h4 className="font-medium">{translate("alreadySignedUp")}</h4>
+                    <p className="text-xs">{translate("emailAlreadyRegistered")}</p>
+                  </div>
+                </div>
+              )}
+              {errorType === "general" && (
+                <div className="text-red-600 bg-red-50 p-3 rounded-md text-sm flex items-start mt-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clipRule="evenodd" />
+                  </svg>
+                  <div>
+                    <h4 className="font-medium">{translate("errorOccurred")}</h4>
+                    <p className="text-xs">{translate("pleaseRetryLater")}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <DialogFooter>
+              <Button type="submit" disabled={isLoading} className="w-full">
+                {isLoading ? translate("submitting") : translate("getEarlyAccess")}
+              </Button>
+            </DialogFooter>
+          </form>
         )}
       </DialogContent>
     </Dialog>
   );
-};
-
-export default BetaSignupDialog;
+}
