@@ -34,9 +34,9 @@ const HeroSection = () => {
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => setActiveIndex((prev) => Math.min(prev + 1, 2)),
     onSwipedRight: () => setActiveIndex((prev) => Math.max(prev - 1, 0)),
-    preventDefaultTouchmoveEvent: true,
     trackMouse: false,
-    trackTouch: true
+    trackTouch: true,
+    delta: 10
   });
 
   if (isMobile) {
@@ -72,41 +72,43 @@ const HeroSection = () => {
           </div>
           
           <div className="w-full animate-fade-in" style={{ animationDelay: '300ms' }}>
-            <SwipeableContainer 
-              showArrows={true} 
-              showIndicators={true}
-              customArrows={
-                <>
-                  <Button 
-                    variant="ghost" 
-                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
-                    onClick={() => setActiveIndex((prev) => Math.max(prev - 1, 0))}
-                    disabled={activeIndex === 0}
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
-                    onClick={() => setActiveIndex((prev) => Math.min(prev + 1, heroContents.length - 1))}
-                    disabled={activeIndex === heroContents.length - 1}
-                  >
-                    <ChevronRight className="h-5 w-5" />
-                  </Button>
-                </>
-              }
-            >
-              {heroContents.map((content, i) => (
-                <div key={i} className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden w-full">
-                  <img 
-                    src={content.image} 
-                    alt={content.alt} 
-                    className="w-full h-[300px] object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>
-                </div>
-              ))}
-            </SwipeableContainer>
+            <div className="relative">
+              <SwipeableContainer 
+                showArrows={false} 
+                showIndicators={true}
+                onSwipe={setActiveIndex}
+                initialIndex={activeIndex}
+              >
+                {heroContents.map((content, i) => (
+                  <div key={i} className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden w-full">
+                    <img 
+                      src={content.image} 
+                      alt={content.alt} 
+                      className="w-full h-[300px] object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>
+                  </div>
+                ))}
+              </SwipeableContainer>
+              
+              {/* Custom arrow buttons outside of SwipeableContainer */}
+              <Button 
+                variant="ghost" 
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
+                onClick={() => setActiveIndex((prev) => Math.max(prev - 1, 0))}
+                disabled={activeIndex === 0}
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
+                onClick={() => setActiveIndex((prev) => Math.min(prev + 1, heroContents.length - 1))}
+                disabled={activeIndex === heroContents.length - 1}
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>

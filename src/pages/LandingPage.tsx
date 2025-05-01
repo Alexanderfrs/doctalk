@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/layout/Footer";
@@ -55,7 +54,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         }
       }
     },
-    preventDefaultTouchmoveEvent: false,
     trackTouch: true,
     trackMouse: false,
     delta: 100
