@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -46,15 +45,15 @@ export const englishTranslations = {
   specializedForMedical: 'Specialized for the medical field',
   doctalkDifference: 'DocTalk differs from general language learning apps by focusing on the medical context.',
   medicalVocabulary: 'Medical Terminology',
-  learnTerms: 'Learn over 2,000 medical terms, diagnoses, and phrases that are truly relevant in daily clinical practice.',
+  learnTerms: 'Learn from an extensive library of medical terms, diagnoses, and phrases that are truly relevant in daily clinical practice.',
   practicalDialogs: 'Practical Dialogue Scenarios',
   practiceConversations: 'Practice with realistic conversations from hospital daily routines - from patient admission to ward rounds.',
   allLanguageLevels: 'For All Language Levels',
   customContent: 'Tailored content for every language level from A1 to C1 - you can start immediately, regardless of your current level.',
   expertDeveloped: 'Developed with Experts',
   contentDevelopment: 'All content was developed and reviewed in collaboration with doctors, nurses, and language teachers.',
-  nurseOptimized: 'Optimized for Nursing Staff',
-  internationalNurses: 'Special focus on the language needs of international nursing staff in Germany.',
+  nurseOptimized: 'Optimized for Healthcare Professionals',
+  internationalNurses: 'Special focus on the language needs of international healthcare professionals in Germany.',
   certificationRecognition: 'Certification Recognition',
   examPreparation: 'Optimal preparation for language exams for professional recognition in German healthcare.',
   comparisonTitle: 'Compared to general language learning apps',
