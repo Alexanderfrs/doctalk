@@ -11,6 +11,7 @@ import FeaturesGrid from "@/components/landing/FeaturesGrid";
 import ComparisonTable from "@/components/landing/ComparisonTable";
 import PricingSection from "@/components/landing/PricingSection";
 import { LandingPageProps } from "@/types/landing";
+import { useSwipeable } from "react-swipeable";
 
 const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -25,6 +26,40 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
     { id: "features", label: translate("features") },
     { id: "pricing", label: translate("pricingTitle") }
   ];
+
+  // Add swipe gesture to navigate between sections on mobile
+  const swipeHandlers = useSwipeable({
+    onSwipedUp: (eventData) => {
+      // Navigate to the next section on swipe up
+      const currentSection = window.location.hash.replace('#', '') || 'hero';
+      const currentIndex = sections.findIndex(s => s.id === currentSection);
+      if (currentIndex < sections.length - 1) {
+        const nextSection = sections[currentIndex + 1];
+        const element = document.getElementById(nextSection.id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          window.history.pushState(null, '', `#${nextSection.id}`);
+        }
+      }
+    },
+    onSwipedDown: (eventData) => {
+      // Navigate to the previous section on swipe down
+      const currentSection = window.location.hash.replace('#', '') || 'hero';
+      const currentIndex = sections.findIndex(s => s.id === currentSection);
+      if (currentIndex > 0) {
+        const prevSection = sections[currentIndex - 1];
+        const element = document.getElementById(prevSection.id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          window.history.pushState(null, '', `#${prevSection.id}`);
+        }
+      }
+    },
+    preventDefaultTouchmoveEvent: false,
+    trackTouch: true,
+    trackMouse: false,
+    delta: 100
+  });
 
   // Handle anchor links for navigation
   useEffect(() => {
@@ -59,12 +94,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col relative">
+    <div className="min-h-screen flex flex-col relative" {...swipeHandlers}>
       <AppHeader onLogin={handleLogin} showSlogan={true} showAuthButtons={false} />
       <SideNavigator sections={sections} />
       
       <main className="flex-grow pt-24">
-        <HeroSection />
+        <div id="hero">
+          <HeroSection />
+        </div>
         
         <section id="features" className="py-16 bg-neutral-50 px-4">
           <div className="container mx-auto">

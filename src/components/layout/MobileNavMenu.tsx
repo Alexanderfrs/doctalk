@@ -1,11 +1,12 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import BetaSignupDialog from "@/components/beta/BetaSignupDialog";
+import { useSwipeable } from "react-swipeable";
 
 interface MobileNavMenuProps {
   isOpen: boolean;
@@ -33,18 +34,57 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
   showAuthButtons = true
 }) => {
   const { translate } = useLanguage();
-
+  const [animateOut, setAnimateOut] = useState(false);
+  
+  // Handle swipe down to close the menu
+  const swipeHandlers = useSwipeable({
+    onSwipedDown: () => {
+      handleCloseWithAnimation();
+    },
+    trackMouse: false,
+    trackTouch: true,
+    delta: 50,
+  });
+  
+  // Handle closing with animation
+  const handleCloseWithAnimation = () => {
+    setAnimateOut(true);
+    setTimeout(() => {
+      onClose();
+      setAnimateOut(false);
+    }, 300);
+  };
+  
+  // Reset animation state when menu opens
+  useEffect(() => {
+    if (isOpen) {
+      setAnimateOut(false);
+    }
+  }, [isOpen]);
+  
   if (!isOpen) return null;
 
   return (
-    <div className="md:hidden fixed top-[72px] left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg z-40 transition-transform duration-300 ease-in-out">
+    <div 
+      className={cn(
+        "md:hidden fixed top-[72px] left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg z-40",
+        "transition-all duration-300 ease-in-out",
+        animateOut ? "animate-slide-out-up" : "animate-slide-in-down",
+      )}
+      {...swipeHandlers}
+    >
+      {/* Visual indicator for swipe down */}
+      <div className="flex justify-center py-1">
+        <div className="w-10 h-1 bg-neutral-300 rounded-full"></div>
+      </div>
+      
       <div className="flex flex-col p-4">
         <nav className="space-y-1 mb-6">
           {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className="flex items-center px-4 py-3 text-base text-neutral-700 hover:bg-neutral-100 rounded-md"
+              className="flex items-center px-4 py-3 text-base text-neutral-700 hover:bg-neutral-100 active:bg-neutral-200 rounded-md transition-colors duration-150"
               onClick={onClose}
             >
               <span className="mr-3">{item.icon}</span>
@@ -57,7 +97,7 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
           {isAuthenticated ? (
             <Button
               variant="ghost"
-              className="text-neutral-600 hover:bg-neutral-100 flex justify-start"
+              className="text-neutral-600 hover:bg-neutral-100 active:bg-neutral-200 flex justify-start transition-colors duration-150"
               onClick={() => {
                 handleLogout();
                 onClose();
@@ -72,7 +112,7 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
                 <>
                   <Button 
                     variant="outline"
-                    className="flex justify-center"
+                    className="flex justify-center active:scale-95 transition-transform duration-150"
                     onClick={() => {
                       handleLogin();
                       onClose();
@@ -81,7 +121,7 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
                     {translate("login")}
                   </Button>
                   <Button
-                    className="bg-medical-500 hover:bg-medical-600 flex justify-center"
+                    className="bg-medical-500 hover:bg-medical-600 active:bg-medical-700 flex justify-center active:scale-95 transition-transform duration-150"
                     onClick={() => {
                       handleRegister();
                       onClose();
@@ -93,7 +133,7 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
               ) : (
                 <BetaSignupDialog 
                   triggerElement={
-                    <Button className="bg-medical-500 hover:bg-medical-600 w-full text-white shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0">
+                    <Button className="bg-medical-500 hover:bg-medical-600 active:bg-medical-700 w-full text-white shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-95">
                       {translate("joinBeta")}
                     </Button>
                   }

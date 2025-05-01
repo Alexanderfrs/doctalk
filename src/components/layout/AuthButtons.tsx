@@ -30,7 +30,7 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({
       {isAuthenticated ? (
         <Button
           variant="ghost"
-          className="text-neutral-600 hover:bg-neutral-100"
+          className="text-neutral-600 hover:bg-neutral-100 active:bg-neutral-200 transition-all duration-150"
           onClick={onLogout}
         >
           <LogOut className="h-5 w-5 mr-2" />
@@ -43,18 +43,19 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({
               <Button 
                 variant="outline"
                 onClick={onLogin}
+                className="active:scale-95 transition-transform duration-150"
               >
                 {translate("login")}
               </Button>
               <Button
-                className="bg-medical-500 hover:bg-medical-600"
+                className="bg-medical-500 hover:bg-medical-600 active:bg-medical-700 active:scale-95 transition-all duration-150"
                 onClick={onRegister}
               >
                 {translate("register")}
               </Button>
             </>
           ) : (
-            <BetaSignupDialog className="bg-medical-500 hover:bg-medical-600 text-white shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0" />
+            <BetaSignupDialog className="bg-medical-500 hover:bg-medical-600 text-white shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-95" />
           )}
         </>
       )}
