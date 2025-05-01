@@ -92,9 +92,8 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
                 </>
               ) : (
                 <BetaSignupDialog 
-                  className="bg-medical-500 hover:bg-medical-600 w-full"
                   triggerElement={
-                    <Button className="bg-medical-500 hover:bg-medical-600 w-full">
+                    <Button className="bg-medical-500 hover:bg-medical-600 w-full text-white shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0">
                       {translate("joinBeta")}
                     </Button>
                   }

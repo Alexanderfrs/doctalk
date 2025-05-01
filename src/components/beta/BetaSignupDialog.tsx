@@ -102,13 +102,23 @@ export default function BetaSignupDialog({ className, triggerElement }: BetaSign
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <Button 
-        variant="default" 
-        onClick={() => setOpen(true)} 
-        className={className}
-      >
-        {triggerElement || translate("joinBeta")}
-      </Button>
+      {triggerElement ? (
+        <div className="cursor-pointer" onClick={() => setOpen(true)}>
+          {triggerElement}
+        </div>
+      ) : (
+        <Button
+          onClick={() => setOpen(true)}
+          className={cn(
+            "bg-medical-500 hover:bg-medical-600 text-white transition-all duration-300 shadow-md hover:shadow-lg",
+            "hover:-translate-y-0.5 active:translate-y-0 focus:ring-2 focus:ring-medical-400/50",
+            className
+          )}
+        >
+          {translate("joinBeta")}
+        </Button>
+      )}
+      
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{translate("betaAccessTitle")}</DialogTitle>
@@ -165,7 +175,15 @@ export default function BetaSignupDialog({ className, triggerElement }: BetaSign
             </div>
 
             <DialogFooter>
-              <Button type="submit" disabled={isLoading} className="w-full">
+              <Button 
+                type="submit" 
+                disabled={isLoading} 
+                className={cn(
+                  "w-full bg-medical-500 hover:bg-medical-600 text-white",
+                  "transition-all duration-300 shadow-md hover:shadow-lg",
+                  "hover:-translate-y-0.5 active:translate-y-0"
+                )}
+              >
                 {isLoading ? translate("submitting") : translate("getEarlyAccess")}
               </Button>
             </DialogFooter>
