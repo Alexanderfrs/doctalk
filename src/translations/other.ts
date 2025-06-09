@@ -1,3 +1,4 @@
+
 export const romanianTranslations = {
   welcome: 'Bun venit',
   language: 'Limba',
@@ -201,7 +202,23 @@ export const romanianTranslations = {
   practiceDescription: 'Exersează germana medicală în scenarii realiste din activitatea ta profesională',
   otherSolutions: 'Alte soluții',
   otherSolutionsSpecific: 'Școli de limbi străine, tutori privați, aplicații generice',
-  targetAudience: 'Perfect pentru medici, asistente medicale, îngrijitori și studenți din domeniile medicale care doresc să exceleze în unitățile sanitare din Germania.',
+  
+  // New comparison section translations
+  whyChooseDocTalk: "De ce să alegi DocTalk?",
+  whyChooseDocTalkDesc: "Vezi cum DocTalk oferă beneficii unice pe care alte soluții de învățare a limbilor pur și simplu nu le pot oferi.",
+  specializedMedicalContent: "Conținut medical specializat",
+  specializedMedicalContentDesc: "Vocabular și terminologie medicală cuprinzătoare dezvoltate special pentru profesioniștii din domeniul sănătății.",
+  realisticHospitalScenarios: "Scenarii realiste de spital",
+  realisticHospitalScenariosDesc: "Practică cu scenarii de dialog autentice din medii spitalicești reale și situații medicale.",
+  flexibleProfessionalFocus: "Focus profesional flexibil", 
+  flexibleProfessionalFocusDesc: "Învață în propriul ritm cu aplicare practică imediată în munca ta medicală zilnică.",
+  expertDevelopedContent: "Conținut dezvoltat de experți",
+  expertDevelopedContentDesc: "Tot conținutul creat și revizuit de profesioniști din domeniul medical și specialiști în limbi străine.",
+  limitedOrNone: "Limitat sau inexistent",
+  genericConversations: "Conversații generale zilnice",
+  rigidSchedules: "Programe rigide de clasă",
+  generalContent: "Conținut lingvistic general",
+  medicalTeamWorking: "Echipă medicală fericită lucrând împreună"
 };
 
 export const polishTranslations = {
@@ -400,9 +417,25 @@ export const polishTranslations = {
   showFilters: "Pokaż filtry",
   hideFilters: "Ukryj filtry",
   viewVocabulary: "Zobacz słownictwo",
-    practicePronunciation: "Ćwicz wymowę",
+  practicePronunciation: "Ćwicz wymowę",
   practiceDescription: 'Ćwicz niemiecki medyczny w realistycznych scenariuszach z twojej działalności zawodowej',
   otherSolutions: 'Inne rozwiązania',
   otherSolutionsSpecific: 'Szkoły językowe, prywatni korepetytorzy, ogólne aplikacje',
-  targetAudience: 'Idealny dla lekarzy, pielęgniarek, opiekunów i studentów kierunków medycznych, którzy chcą doskonalić się w niemieckich placówkach opieki zdrowotnej.',
+  
+  // New comparison section translations
+  whyChooseDocTalk: "Dlaczego wybrać DocTalk?",
+  whyChooseDocTalkDesc: "Zobacz, jak DocTalk zapewnia unikalne korzyści, których inne rozwiązania do nauki języków po prostu nie mogą zapewnić.",
+  specializedMedicalContent: "Specjalistyczna treść medyczna",
+  specializedMedicalContentDesc: "Kompleksowe słownictwo i terminologia medyczna opracowane specjalnie dla pracowników służby zdrowia.",
+  realisticHospitalScenarios: "Realistyczne scenariusze szpitalne",
+  realisticHospitalScenariosDesc: "Ćwicz z autentycznymi scenariuszami dialogowymi z rzeczywistych środowisk szpitalnych i sytuacji medycznych.",
+  flexibleProfessionalFocus: "Elastyczne skupienie zawodowe", 
+  flexibleProfessionalFocusDesc: "Ucz się we własnym tempie z natychmiastowym praktycznym zastosowaniem w codziennej pracy medycznej.",
+  expertDevelopedContent: "Treści opracowane przez ekspertów",
+  expertDevelopedContentDesc: "Wszystkie treści tworzone i sprawdzane przez profesjonalistów medycznych i specjalistów językowych.",
+  limitedOrNone: "Ograniczone lub nieistniejące",
+  genericConversations: "Ogólne codzienne rozmowy",
+  rigidSchedules: "Sztywne harmonogramy zajęć",
+  generalContent: "Ogólne treści językowe",
+  medicalTeamWorking: "Szczęśliwy zespół medyczny pracujący razem"
 };
