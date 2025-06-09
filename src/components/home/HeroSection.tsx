@@ -17,7 +17,7 @@ const HeroSection = () => {
   // For mobile swipe functionality
   const heroContents = [
     {
-      image: "/lovable-uploads/43247cd2-5d31-42bf-966b-35cdfc412dfa.png",
+      image: "/lovable-uploads/a6a5c6ac-b1d8-406a-9d33-c2f4009bf704.png",
       alt: translate("medicalTeamWorking"),
     },
     {
@@ -155,7 +155,7 @@ const HeroSection = () => {
         <div className="md:w-1/2 animate-fade-in" style={{ animationDelay: '300ms' }}>
           <div className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden">
             <img 
-              src="/lovable-uploads/43247cd2-5d31-42bf-966b-35cdfc412dfa.png" 
+              src="/lovable-uploads/a6a5c6ac-b1d8-406a-9d33-c2f4009bf704.png" 
               alt={translate("medicalTeamWorking")}
               className="w-full h-[300px] object-cover"
             />

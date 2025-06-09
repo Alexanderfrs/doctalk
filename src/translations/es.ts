@@ -1,3 +1,4 @@
+
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -23,6 +24,7 @@ export const spanishTranslations = {
   improveYour: 'Mejora tu',
   medicalCommunication: 'comunicación médica',
   trainScenarios: 'Practica escenarios de diálogo y terminología para tu vida profesional diaria en el ámbito sanitario, independientemente de tu nivel de idioma.',
+  targetAudience: 'Perfecto para médicos, enfermeras, cuidadores y estudiantes en campos médicos que desean destacar en entornos sanitarios alemanes.',
   // Registration page
   createAccount: 'Crear cuenta',
   startJourney: 'Comienza tu viaje para convertirte en un experto en idioma médico',
@@ -54,8 +56,8 @@ export const spanishTranslations = {
   contentDevelopment: 'Todo el contenido fue desarrollado y revisado en colaboración con médicos, enfermeras y profesores de idiomas.',
   nurseOptimized: 'Optimizado para profesionales de la salud',
   internationalNurses: 'Enfoque especial en las necesidades lingüísticas de los profesionales de la salud internacionales en Alemania.',
-  certificationRecognition: 'Reconocimiento de certificación',
-  examPreparation: 'Preparación óptima para exámenes de idiomas para el reconocimiento profesional en el sistema sanitario alemán.',
+  certificationRecognition: 'Preparación FSP',
+  examPreparation: 'Preparación óptima para la Fachsprachenprüfung (FSP) y otros exámenes de idiomas para el reconocimiento profesional en el sistema sanitario alemán.',
   comparisonTitle: 'En comparación con aplicaciones generales de aprendizaje de idiomas',
   feature: 'Característica',
   generalApps: 'Aplicaciones generales',
@@ -134,4 +136,24 @@ export const spanishTranslations = {
   contact: 'Contacto',
   swipeLeft: 'Deslizar a la izquierda',
   swipeRight: 'Deslizar a la derecha',
+  // Comparison section translations
+  whyChooseDocTalk: "¿Por qué elegir DocTalk?",
+  whyChooseDocTalkDesc: "Vea cómo DocTalk proporciona beneficios únicos que otras soluciones de aprendizaje de idiomas simplemente no pueden igualar.",
+  specializedMedicalContent: "Contenido Médico Especializado",
+  specializedMedicalContentDesc: "Vocabulario médico integral y terminología desarrollada específicamente para profesionales de la salud.",
+  realisticHospitalScenarios: "Escenarios Hospitalarios Realistas",
+  realisticHospitalScenariosDesc: "Practica con escenarios de diálogo auténticos de entornos hospitalarios reales y situaciones médicas.",
+  flexibleProfessionalFocus: "Enfoque Profesional Flexible",
+  flexibleProfessionalFocusDesc: "Aprende a tu propio ritmo con aplicación práctica inmediata en tu trabajo médico diario.",
+  expertDevelopedContent: "Contenido Desarrollado por Expertos",
+  expertDevelopedContentDesc: "Todo el contenido creado y revisado por profesionales médicos y especialistas en idiomas.",
+  limitedOrNone: "Limitado o inexistente",
+  genericConversations: "Conversaciones cotidianas genéricas",
+  rigidSchedules: "Horarios de clase rígidos",
+  generalContent: "Contenido de idioma general",
+  otherSolutions: 'Otras soluciones',
+  otherSolutionsSpecific: 'Escuelas de idiomas, tutores personales, aplicaciones genéricas',
+  medicalTeamWorking: "Equipo médico feliz trabajando juntos",
+  hospitalScene: "Escena hospitalaria",
+  medicalEducation: "Educación médica"
 };
