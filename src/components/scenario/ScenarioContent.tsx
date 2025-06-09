@@ -20,7 +20,7 @@ import { DialogueLine } from "@/data/scenarios";
 import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCw } from "lucide-react";
 import useAIFeedback from "@/hooks/useAIFeedback";
-import useSimpleLLM from "@/hooks/useSimpleLLM";
+import useMedicalLLM from "@/hooks/useMedicalLLM";
 import { toast } from "sonner";
 
 interface ScenarioContentProps {
@@ -51,8 +51,14 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     onError: (error) => toast.error(`Feedback error: ${error}`)
   });
   
-  const { generateResponse, isLoading: isGeneratingResponse } = useSimpleLLM({
-    systemPrompt: "You are a patient or healthcare colleague in a German medical scenario. Respond naturally in German, keeping responses under 3 sentences.",
+  const { generateResponse, isLoading: isGeneratingResponse } = useMedicalLLM({
+    scenarioType: scenario?.category || 'patient-care',
+    scenarioDescription: scenario?.description || 'Medical scenario',
+    difficultyLevel: scenario?.difficulty || 'intermediate',
+    patientContext: {
+      condition: scenario?.description,
+      mood: 'neutral'
+    },
     onError: (error) => toast.error(`Response error: ${error}`)
   });
   
@@ -75,6 +81,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     setIsProcessingResponse(true);
     
     try {
+      // Get AI feedback for the user's message
       const feedbackText = await getFeedback(
         updatedConversation, 
         message, 
@@ -86,6 +93,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       console.error("Error getting feedback:", error);
     }
     
+    // Check if we have predefined dialogue to continue with
     if (scenario?.dialogue && currentDialogueIndex < scenario.dialogue.length) {
       const nextDialogueLine = scenario.dialogue[currentDialogueIndex];
       
@@ -95,11 +103,10 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
         setIsProcessingResponse(false);
       }, 1500);
     } else {
+      // Use the new medical LLM for dynamic responses
       try {
-        const aiResponse = await generateResponse(
-          message, 
-          scenario?.description || "medical scenario"
-        );
+        console.log("Generating LLM response for:", message);
+        const aiResponse = await generateResponse(message, updatedConversation);
         
         const responseMessage: DialogueLine = {
           speaker: "patient",
@@ -109,7 +116,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
         
         setConversation([...updatedConversation, responseMessage]);
       } catch (error) {
-        console.error("Error generating response:", error);
+        console.error("Error generating LLM response:", error);
         toast.error("Failed to generate response");
       } finally {
         setIsProcessingResponse(false);
