@@ -17,7 +17,7 @@ const HeroSection = () => {
   // For mobile swipe functionality
   const heroContents = [
     {
-      image: "/lovable-uploads/4cffe1f0-e089-48d5-9649-a2aca14c2412.png",
+      image: "/lovable-uploads/43247cd2-5d31-42bf-966b-35cdfc412dfa.png",
       alt: translate("medicalTeamWorking"),
     },
     {
@@ -72,19 +72,6 @@ const HeroSection = () => {
                     </Button>
                   }
                 />
-              </div>
-              <div className="flex flex-wrap gap-2 text-sm">
-                <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
-                  <Link to="#features">{translate("features")}</Link>
-                </Button>
-                <span className="text-neutral-400">•</span>
-                <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
-                  <Link to="#comparison">{translate("whyChooseDocTalk")}</Link>
-                </Button>
-                <span className="text-neutral-400">•</span>
-                <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
-                  <Link to="#pricing">{translate("pricingTitle")}</Link>
-                </Button>
               </div>
             </div>
           </div>
@@ -162,26 +149,13 @@ const HeroSection = () => {
                 }
               />
             </div>
-            <div className="flex flex-wrap gap-2 text-sm">
-              <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
-                <Link to="#features">{translate("features")}</Link>
-              </Button>
-              <span className="text-neutral-400">•</span>
-              <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
-                <Link to="#comparison">{translate("whyChooseDocTalk")}</Link>
-              </Button>
-              <span className="text-neutral-400">•</span>
-              <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
-                <Link to="#pricing">{translate("pricingTitle")}</Link>
-              </Button>
-            </div>
           </div>
         </div>
         
         <div className="md:w-1/2 animate-fade-in" style={{ animationDelay: '300ms' }}>
           <div className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden">
             <img 
-              src="/lovable-uploads/4cffe1f0-e089-48d5-9649-a2aca14c2412.png" 
+              src="/lovable-uploads/43247cd2-5d31-42bf-966b-35cdfc412dfa.png" 
               alt={translate("medicalTeamWorking")}
               className="w-full h-[300px] object-cover"
             />

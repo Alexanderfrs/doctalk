@@ -36,10 +36,10 @@ const ComparisonTable = () => {
   return (
     <div className="mt-16">
       <div className="text-center mb-12">
-        <h3 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-800">
+        <h3 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
           {translate("whyChooseDocTalk")}
         </h3>
-        <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+        <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
           {translate("whyChooseDocTalkDesc")}
         </p>
       </div>
@@ -52,13 +52,13 @@ const ComparisonTable = () => {
                 {benefit.icon}
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-neutral-800 mb-2">
+                <h4 className="font-semibold text-neutral-800 mb-3 text-lg">
                   {benefit.title}
                 </h4>
-                <p className="text-neutral-600 text-sm mb-3">
+                <p className="text-neutral-600 text-base mb-4">
                   {benefit.description}
                 </p>
-                <div className="flex items-center gap-2 text-xs text-neutral-500">
+                <div className="flex items-center gap-2 text-sm text-neutral-500">
                   <X className="h-4 w-4 text-red-400" />
                   <span>{translate("otherSolutionsSpecific")}: {benefit.others}</span>
                 </div>
