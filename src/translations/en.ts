@@ -24,6 +24,7 @@ export const englishTranslations = {
   improveYour: 'Improve your',
   medicalCommunication: 'medical communication',
   trainScenarios: 'Practice dialogue scenarios and terminology for your professional everyday life in healthcare, regardless of your language level.',
+  targetAudience: 'Perfect for doctors, nurses, caregivers, and students in medical fields who want to excel in German healthcare settings.',
   // Registration page
   createAccount: 'Create Account',
   startJourney: 'Start your journey to becoming a medical language expert',

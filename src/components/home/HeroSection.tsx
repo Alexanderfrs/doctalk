@@ -17,15 +17,15 @@ const HeroSection = () => {
   // For mobile swipe functionality
   const heroContents = [
     {
-      image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+      image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
       alt: translate("medicalStaffWorking"),
     },
     {
-      image: "https://images.unsplash.com/photo-1584982751601-97dcc096659c?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
+      image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
       alt: translate("hospitalScene"),
     },
     {
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
+      image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
       alt: translate("medicalEducation"),
     },
   ];
@@ -54,8 +54,11 @@ const HeroSection = () => {
             <h1 className="text-3xl md:text-5xl font-bold mb-4 text-neutral-800">
               {translate("improveYour")} <span className="text-gradient">{translate("medicalCommunication")}</span>
             </h1>
-            <p className="text-lg text-neutral-600 mb-6">
+            <p className="text-lg text-neutral-600 mb-4">
               {translate("trainScenarios")}
+            </p>
+            <p className="text-md text-neutral-500 mb-6">
+              {translate("targetAudience")}
             </p>
             <div className="flex flex-wrap gap-4">
               <Button asChild size="lg" className="btn-primary active:scale-95 transition-transform duration-150">
@@ -125,8 +128,11 @@ const HeroSection = () => {
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
             {translate("improveYour")} <span className="text-gradient">{translate("medicalCommunication")}</span>
           </h1>
-          <p className="text-lg text-neutral-600 mb-6">
+          <p className="text-lg text-neutral-600 mb-4">
             {translate("trainScenarios")}
+          </p>
+          <p className="text-md text-neutral-500 mb-6">
+            {translate("targetAudience")}
           </p>
           <div className="flex flex-wrap gap-4">
             <Button asChild size="lg" className="btn-primary active:scale-95 transition-transform duration-150">
@@ -145,7 +151,7 @@ const HeroSection = () => {
         <div className="md:w-1/2 animate-fade-in" style={{ animationDelay: '300ms' }}>
           <div className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden">
             <img 
-              src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" 
+              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80" 
               alt={translate("medicalStaffWorking")}
               className="w-full h-[300px] object-cover"
             />

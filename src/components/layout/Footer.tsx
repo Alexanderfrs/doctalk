@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
@@ -10,7 +11,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-medical-50 pt-12 pb-8 px-4 md:px-0 mt-auto">
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="col-span-1 md:col-span-1">
             <div className="mb-4">
               <AppLogo path="/" size="medium" />
@@ -71,27 +72,6 @@ const Footer: React.FC = () => {
               <li>
                 <Link to="/practice?category=teamwork" className="text-neutral-600 hover:text-medical-600 transition-colors">
                   {translate("teamwork")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div className="col-span-1">
-            <h3 className="font-semibold text-neutral-800 mb-4">{translate("languageLevels")}</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/practice?difficulty=beginner" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  {translate("beginner")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/practice?difficulty=intermediate" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  {translate("intermediate")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/practice?difficulty=advanced" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  {translate("advanced")}
                 </Link>
               </li>
             </ul>

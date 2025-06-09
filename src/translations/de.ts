@@ -24,6 +24,7 @@ export const germanTranslations = {
   improveYour: 'Verbessere deine',
   medicalCommunication: 'medizinische Kommunikation',
   trainScenarios: 'Übе Dialogszenarien und Fachvokabular für deinen beruflichen Alltag im Gesundheitswesen, unabhängig von deinem Sprachniveau.',
+  targetAudience: 'Perfekt für Ärzte, Pflegekräfte, Betreuer und Studierende in medizinischen Bereichen, die in deutschen Gesundheitseinrichtungen erfolgreich sein möchten.',
   // Registration page
   createAccount: 'Konto erstellen',
   startJourney: 'Starten Sie Ihre Reise zum medizinischen Sprachexperten',
