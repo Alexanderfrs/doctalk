@@ -186,5 +186,17 @@ export const germanTranslations = {
   
   // Audio translations
   playAudio: "Audio abspielen",
-  stopAudio: "Audio stoppen"
+  stopAudio: "Audio stoppen",
+  
+  // Resources translations
+  relevantGuidelines: "Relevante Richtlinien",
+  recommendedReadings: "Empfohlene Literatur",
+  
+  // Practice page translations
+  searchExercises: "Übungen suchen...",
+  showFilters: "Filter anzeigen",
+  hideFilters: "Filter ausblenden",
+  viewVocabulary: "Vokabular anzeigen",
+  practicePronunciation: "Aussprache üben",
+  practiceDescription: "Übe medizinisches Deutsch in realistischen Szenarien aus deiner beruflichen Tätigkeit"
 };

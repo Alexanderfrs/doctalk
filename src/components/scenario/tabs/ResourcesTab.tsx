@@ -11,7 +11,7 @@ const ResourcesTab: React.FC = () => {
     <Card className="border-0 shadow-none">
       <CardContent className="p-0">
         <div className="space-y-4">
-          <h3 className="font-medium">{t("scenario.relevant_guidelines")}</h3>
+          <h3 className="font-medium">{t("relevantGuidelines")}</h3>
           <ul className="list-disc pl-5 space-y-2">
             <li>American Heart Association Guidelines for CPR and ECC</li>
             <li>ACC/AHA Guidelines for STEMI Management</li>
@@ -20,7 +20,7 @@ const ResourcesTab: React.FC = () => {
           
           <Separator />
           
-          <h3 className="font-medium">{t("scenario.recommended_readings")}</h3>
+          <h3 className="font-medium">{t("recommendedReadings")}</h3>
           <ul className="list-disc pl-5 space-y-2">
             <li>Chest Pain Triage in Emergency Medicine</li>
             <li>Differential Diagnosis of Acute Chest Pain</li>

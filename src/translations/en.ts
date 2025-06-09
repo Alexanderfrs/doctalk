@@ -186,5 +186,17 @@ export const englishTranslations = {
   
   // Audio translations
   playAudio: "Play Audio",
-  stopAudio: "Stop Audio"
+  stopAudio: "Stop Audio",
+  
+  // Resources translations
+  relevantGuidelines: "Relevant Guidelines",
+  recommendedReadings: "Recommended Readings",
+  
+  // Practice page translations
+  searchExercises: "Search exercises...",
+  showFilters: "Show Filters",
+  hideFilters: "Hide Filters",
+  viewVocabulary: "View Vocabulary",
+  practicePronunciation: "Practice Pronunciation",
+  practiceDescription: "Practice medical German in realistic scenarios from your professional activities"
 };
