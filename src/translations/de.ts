@@ -1,4 +1,3 @@
-
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -199,5 +198,24 @@ export const germanTranslations = {
   hideFilters: "Filter ausblenden",
   viewVocabulary: "Vokabular anzeigen",
   practicePronunciation: "Aussprache üben",
-  practiceDescription: "Übe medizinisches Deutsch in realistischen Szenarien aus deiner beruflichen Tätigkeit"
+  practiceDescription: "Übe medizinisches Deutsch in realistischen Szenarien aus deiner beruflichen Tätigkeit",
+  whyChooseDocTalk: "Warum DocTalk wählen?",
+  whyChooseDocTalkDesc: "Sehen Sie, wie DocTalk einzigartige Vorteile bietet, die andere Sprachlernlösungen einfach nicht erreichen können.",
+  specializedMedicalContent: "Spezialisierte medizinische Inhalte",
+  specializedMedicalContentDesc: "Umfassendes medizinisches Vokabular und Terminologie, die speziell für medizinisches Fachpersonal entwickelt wurden.",
+  realisticHospitalScenarios: "Realistische Krankenhausszenarien",
+  realisticHospitalScenariosDesc: "Üben Sie mit authentischen Dialogszenarien aus realen Krankenhausumgebungen und medizinischen Situationen.",
+  flexibleProfessionalFocus: "Flexibler beruflicher Fokus",
+  flexibleProfessionalFocusDesc: "Lernen Sie in Ihrem eigenen Tempo mit sofortiger praktischer Anwendung in Ihrer täglichen medizinischen Arbeit.",
+  expertDevelopedContent: "Von Experten entwickelter Inhalt",
+  expertDevelopedContentDesc: "Alle Inhalte werden von medizinischen Fachkräften und Sprachspezialisten erstellt und überprüft.",
+  limitedOrNone: "Begrenzt oder nicht vorhanden",
+  genericConversations: "Allgemeine Alltagsgespräche",
+  rigidSchedules: "Starre Stundenpläne",
+  generalContent: "Allgemeine Sprachinhalte",
+  otherSolutions: "Andere Lösungen",
+  bottomLine: "Das Fazit",
+  bottomLineDesc: "DocTalk ist die einzige Sprachlernlösung, die speziell für medizinisches Fachpersonal entwickelt wurde, das in deutschen Gesundheitseinrichtungen erfolgreich sein muss.",
+  medicalTeamWorking: "Glückliches medizinisches Team, das zusammenarbeitet",
+  otherSolutionsSpecific: 'Sprachschulen, Privatlehrer, allgemeine Apps'
 };

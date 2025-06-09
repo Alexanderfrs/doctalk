@@ -215,7 +215,8 @@ export const englishTranslations = {
   genericConversations: "Generic everyday conversations",
   rigidSchedules: "Rigid class schedules",
   generalContent: "General language content",
-  otherSolutions: "Other solutions",
+  otherSolutions: 'Other solutions',
+  otherSolutionsSpecific: 'Language schools, personal tutors, generic apps',
   bottomLine: "The Bottom Line",
   bottomLineDesc: "DocTalk is the only language learning solution designed specifically for medical professionals who need to excel in German healthcare environments.",
   medicalTeamWorking: "Happy medical team working together"

@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Check, X, AlertCircle } from "lucide-react";
+import { Check, X } from "lucide-react";
 
 const ComparisonTable = () => {
   const { translate } = useLanguage();
@@ -44,7 +44,7 @@ const ComparisonTable = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {benefits.map((benefit, index) => (
           <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-neutral-100 hover:shadow-md transition-shadow">
             <div className="flex items-start gap-4">
@@ -60,24 +60,12 @@ const ComparisonTable = () => {
                 </p>
                 <div className="flex items-center gap-2 text-xs text-neutral-500">
                   <X className="h-4 w-4 text-red-400" />
-                  <span>{translate("otherSolutions")}: {benefit.others}</span>
+                  <span>{translate("otherSolutionsSpecific")}: {benefit.others}</span>
                 </div>
               </div>
             </div>
           </div>
         ))}
-      </div>
-
-      <div className="bg-medical-50 p-6 rounded-xl border border-medical-100">
-        <div className="flex items-center gap-3 mb-4">
-          <AlertCircle className="h-6 w-6 text-medical-600" />
-          <h4 className="font-semibold text-medical-800">
-            {translate("bottomLine")}
-          </h4>
-        </div>
-        <p className="text-medical-700">
-          {translate("bottomLineDesc")}
-        </p>
       </div>
     </div>
   );
