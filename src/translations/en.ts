@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -136,7 +137,8 @@ export const englishTranslations = {
   swipeLeft: 'Swipe left',
   swipeRight: 'Swipe right',
   // Beta signup translations
-  joinBeta: "Join Beta",
+  joinBeta: "Sign up for beta release",
+  signupForBetaRelease: "Sign up for beta release",
   betaAccessTitle: "Request Beta Access",
   betaAccessDescription: "Enter your email to join our beta program. We'll notify you when access is available.",
   emailAddress: "Email Address",
@@ -219,5 +221,7 @@ export const englishTranslations = {
   otherSolutionsSpecific: 'Language schools, personal tutors, generic apps',
   bottomLine: "The Bottom Line",
   bottomLineDesc: "DocTalk is the only language learning solution designed specifically for medical professionals who need to excel in German healthcare environments.",
-  medicalTeamWorking: "Happy medical team working together"
+  medicalTeamWorking: "Happy medical team working together",
+  hospitalScene: "Hospital scene",
+  medicalEducation: "Medical education"
 };

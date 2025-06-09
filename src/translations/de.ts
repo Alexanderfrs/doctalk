@@ -136,7 +136,8 @@ export const germanTranslations = {
   swipeLeft: 'Nach links wischen',
   swipeRight: 'Nach rechts wischen',
   // Beta signup translations
-  joinBeta: "Beta beitreten",
+  joinBeta: "Für Beta-Version anmelden",
+  signupForBetaRelease: "Für Beta-Version anmelden",
   betaAccessTitle: "Beta-Zugang anfordern",
   betaAccessDescription: "Gib deine E-Mail ein, um an unserem Beta-Programm teilzunehmen. Wir benachrichtigen dich, wenn der Zugang verfügbar ist.",
   emailAddress: "E-Mail-Adresse",

@@ -17,7 +17,7 @@ const HeroSection = () => {
   // For mobile swipe functionality
   const heroContents = [
     {
-      image: "/lovable-uploads/a6a5c6ac-b1d8-406a-9d33-c2f4009bf704.png",
+      image: "/lovable-uploads/2cee5e65-91a5-46de-8fc0-957b2d81ef0f.png",
       alt: translate("medicalTeamWorking"),
     },
     {
@@ -68,7 +68,7 @@ const HeroSection = () => {
                 <BetaSignupDialog
                   triggerElement={
                     <Button variant="outline" size="lg" className="btn-secondary shadow-md hover:shadow-lg active:scale-95 transition-all duration-150">
-                      {translate("joinBeta")}
+                      {translate("signupForBetaRelease")}
                     </Button>
                   }
                 />
@@ -144,7 +144,7 @@ const HeroSection = () => {
               <BetaSignupDialog
                 triggerElement={
                   <Button variant="outline" size="lg" className="btn-secondary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                    {translate("joinBeta")}
+                    {translate("signupForBetaRelease")}
                   </Button>
                 }
               />
@@ -155,7 +155,7 @@ const HeroSection = () => {
         <div className="md:w-1/2 animate-fade-in" style={{ animationDelay: '300ms' }}>
           <div className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden">
             <img 
-              src="/lovable-uploads/a6a5c6ac-b1d8-406a-9d33-c2f4009bf704.png" 
+              src="/lovable-uploads/2cee5e65-91a5-46de-8fc0-957b2d81ef0f.png" 
               alt={translate("medicalTeamWorking")}
               className="w-full h-[300px] object-cover"
             />

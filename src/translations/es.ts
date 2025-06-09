@@ -1,4 +1,3 @@
-
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -155,5 +154,20 @@ export const spanishTranslations = {
   otherSolutionsSpecific: 'Escuelas de idiomas, tutores personales, aplicaciones genéricas',
   medicalTeamWorking: "Equipo médico feliz trabajando juntos",
   hospitalScene: "Escena hospitalaria",
-  medicalEducation: "Educación médica"
+  medicalEducation: "Educación médica",
+  
+  // Beta signup translations
+  joinBeta: "Registrarse para versión beta",
+  signupForBetaRelease: "Registrarse para versión beta",
+  betaAccessTitle: "Solicitar acceso beta",
+  betaAccessDescription: "Ingresa tu correo electrónico para unirte a nuestro programa beta. Te notificaremos cuando el acceso esté disponible.",
+  emailAddress: "Dirección de correo electrónico",
+  getEarlyAccess: "Obtener acceso temprano",
+  submitting: "Enviando...",
+  thankYouForJoining: "¡Gracias por unirte!",
+  betaConfirmationMessage: "Te notificaremos cuando DocTalk esté listo para las pruebas beta.",
+  alreadySignedUp: "Ya registrado",
+  emailAlreadyRegistered: "Este correo electrónico ya está registrado para acceso beta.",
+  errorOccurred: "Ocurrió un error",
+  pleaseRetryLater: "Por favor, inténtalo de nuevo más tarde."
 };

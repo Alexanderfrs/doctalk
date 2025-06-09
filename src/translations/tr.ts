@@ -1,4 +1,3 @@
-
 export const turkishTranslations = {
   welcome: 'Hoş Geldiniz',
   language: 'Dil',
@@ -137,17 +136,18 @@ export const turkishTranslations = {
   swipeLeft: 'Sola kaydır',
   swipeRight: 'Sağa kaydır',
   // Beta signup translations
-  joinBeta: "Beta'ya Katıl",
-  betaAccessTitle: "Beta Erişimi Talep Et",
+  joinBeta: "Beta sürümüne kaydol",
+  signupForBetaRelease: "Beta sürümüne kaydol",
+  betaAccessTitle: "Beta erişimi talep et",
   betaAccessDescription: "Beta programımıza katılmak için e-posta adresinizi girin. Erişim mümkün olduğunda sizi bilgilendireceğiz.",
   emailAddress: "E-posta Adresi",
-  getEarlyAccess: "Erken Erişim Al",
+  getEarlyAccess: "Erken erişim al",
   submitting: "Gönderiliyor...",
   thankYouForJoining: "Katıldığınız için teşekkürler!",
   betaConfirmationMessage: "DocTalk beta testi için hazır olduğunda sizi bilgilendireceğiz.",
-  alreadySignedUp: "Zaten Kaydoldunuz",
+  alreadySignedUp: "Zaten kayıtlı",
   emailAlreadyRegistered: "Bu e-posta adresi beta erişimi için zaten kaydedilmiş.",
-  errorOccurred: "Hata Oluştu",
+  errorOccurred: "Hata oluştu",
   pleaseRetryLater: "Lütfen daha sonra tekrar deneyin.",
   // Comparison section translations
   whyChooseDocTalk: "Neden DocTalk'ı Seçmelisiniz?",

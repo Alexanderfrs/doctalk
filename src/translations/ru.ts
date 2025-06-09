@@ -1,4 +1,3 @@
-
 export const russianTranslations = {
   welcome: 'Добро пожаловать',
   language: 'Язык',
@@ -137,7 +136,8 @@ export const russianTranslations = {
   swipeLeft: 'Провести влево',
   swipeRight: 'Провести вправо',
   // Beta signup translations
-  joinBeta: "Присоединиться к бета-версии",
+  joinBeta: "Зарегистрироваться на бета-версию",
+  signupForBetaRelease: "Зарегистрироваться на бета-версию",
   betaAccessTitle: "Запросить доступ к бета-версии",
   betaAccessDescription: "Введите вашу электронную почту, чтобы присоединиться к нашей бета-программе. Мы уведомим вас, когда доступ будет открыт.",
   emailAddress: "Электронная почта",
@@ -149,7 +149,59 @@ export const russianTranslations = {
   emailAlreadyRegistered: "Этот адрес электронной почты уже зарегистрирован для бета-доступа.",
   errorOccurred: "Произошла ошибка",
   pleaseRetryLater: "Пожалуйста, повторите попытку позже.",
-  // Comparison section translations
+  
+  // Admin translations
+  betaSignups: "Beta Signups",
+  betaSubscribers: "Beta Subscribers",
+  totalSubscribers: "total subscribers",
+  refresh: "Refresh",
+  downloadCSV: "Download CSV",
+  noSubscribersYet: "No beta subscribers yet",
+  signupDate: "Signup Date",
+  failedToLoadSubscribers: "Failed to load beta subscribers",
+  
+  // General translations
+  overview: "Overview",
+  dashboard: "Dashboard",
+  welcomeBack: "Welcome Back",
+  dashboardWelcomeMessage: "Here's a summary of your beta signups and other metrics.",
+  yourProgress: "Your Progress",
+  progressDescription: "Track the progress of your beta program here.",
+  recentActivity: "Recent Activity",
+  noRecentActivity: "No recent activity to display.",
+  
+  // Common UI translations
+  back: "Back",
+  dismiss: "Dismiss",
+  processing: "Processing",
+  
+  // Scenario translations
+  listening: "Listening",
+  startSpeaking: "Start Speaking",
+  stopListening: "Stop Listening",
+  generatingResponse: "Generating response",
+  generatingFeedback: "Generating feedback",
+  conversationReset: "Conversation reset",
+  notFound: "Not found",
+  scenarioNotFound: "Scenario not found",
+  
+  // Audio translations
+  playAudio: "Play Audio",
+  stopAudio: "Stop Audio",
+  
+  // Resources translations
+  relevantGuidelines: "Relevant Guidelines",
+  recommendedReadings: "Recommended Readings",
+  
+  // Practice page translations
+  searchExercises: "Search exercises...",
+  showFilters: "Show Filters",
+  hideFilters: "Hide Filters",
+  viewVocabulary: "View Vocabulary",
+  practicePronunciation: "Practice Pronunciation",
+  practiceDescription: "Practice medical German in realistic scenarios from your professional activities",
+  
+  // New comparison section translations
   whyChooseDocTalk: "Почему стоит выбрать DocTalk?",
   whyChooseDocTalkDesc: "Узнайте, как DocTalk предоставляет уникальные преимущества, которые другие решения для изучения языков просто не могут предложить.",
   specializedMedicalContent: "Специализированный Медицинский Контент",
