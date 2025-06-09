@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -166,5 +167,24 @@ export const englishTranslations = {
   yourProgress: "Your Progress",
   progressDescription: "Track the progress of your beta program here.",
   recentActivity: "Recent Activity",
-  noRecentActivity: "No recent activity to display."
+  noRecentActivity: "No recent activity to display.",
+  
+  // Common UI translations
+  back: "Back",
+  dismiss: "Dismiss",
+  processing: "Processing",
+  
+  // Scenario translations
+  listening: "Listening",
+  startSpeaking: "Start Speaking",
+  stopListening: "Stop Listening",
+  generatingResponse: "Generating response",
+  generatingFeedback: "Generating feedback",
+  conversationReset: "Conversation reset",
+  notFound: "Not found",
+  scenarioNotFound: "Scenario not found",
+  
+  // Audio translations
+  playAudio: "Play Audio",
+  stopAudio: "Stop Audio"
 };

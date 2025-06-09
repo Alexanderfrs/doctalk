@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
@@ -131,7 +132,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       setCurrentDialogueIndex(0);
       setShowFeedback(false);
     }
-    toast.success(t("scenario.conversation_reset"));
+    toast.success("Conversation reset");
   };
 
   const handleSwipe = (index: number) => {
@@ -203,7 +204,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
                     size="sm" 
                     onClick={() => setShowFeedback(false)}
                   >
-                    {t("common.dismiss")}
+                    Dismiss
                   </Button>
                 </div>
               </div>
@@ -239,7 +240,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
                       size="sm" 
                       onClick={() => setShowFeedback(false)}
                     >
-                      {t("common.dismiss")}
+                      Dismiss
                     </Button>
                   </div>
                 </div>
@@ -269,7 +270,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
           <div className="w-full flex justify-center">
             <div className="text-xs text-muted-foreground flex items-center">
               <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-              {isProcessingResponse ? t("scenario.generating_response") : t("scenario.generating_feedback")}
+              {isProcessingResponse ? "Generating response..." : "Generating feedback..."}
             </div>
           </div>
         </CardFooter>

@@ -29,7 +29,7 @@ export const ScenarioHeader: React.FC<ScenarioHeaderProps> = ({
           onClick={onBack}
         >
           <ArrowLeft className="h-4 w-4" />
-          <span className="sr-only">{t("common.back")}</span>
+          <span className="sr-only">Back</span>
         </Button>
         
         {!loading && scenario && (
@@ -40,9 +40,9 @@ export const ScenarioHeader: React.FC<ScenarioHeaderProps> = ({
               ) : (
                 <BookOpenCheck className="mr-1 h-3 w-3" />
               )}
-              {t(`scenario.category.${scenario.category}`)}
+              {scenario.category}
             </Badge>
-            <Badge>{t(`scenario.difficulty.${scenario.difficulty}`)}</Badge>
+            <Badge>{scenario.difficulty}</Badge>
           </div>
         )}
       </CardHeader>
@@ -52,7 +52,7 @@ export const ScenarioHeader: React.FC<ScenarioHeaderProps> = ({
           {loading ? (
             <div className="h-8 w-3/4 bg-muted animate-pulse rounded" />
           ) : (
-            scenario?.title || t("scenario.not_found")
+            scenario?.title || "Scenario not found"
           )}
         </CardTitle>
         

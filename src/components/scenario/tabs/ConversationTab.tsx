@@ -162,7 +162,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p>{isSpeaking && activeVoiceId === message.speaker ? t("common.stop_audio") : t("common.play_audio")}</p>
+                          <p>{isSpeaking && activeVoiceId === message.speaker ? "Stop Audio" : "Play Audio"}</p>
                         </TooltipContent>
                       </Tooltip>
                     </div>
@@ -188,7 +188,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-medical-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-medical-500"></span>
                 </span>
-                {recognizedText ? recognizedText : t("scenario.listening")}...
+                {recognizedText ? recognizedText : "Listening"}...
               </div>
             </div>
           )}
@@ -197,7 +197,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
             <div className="flex justify-center my-4">
               <div className="px-4 py-2 bg-muted rounded-lg flex items-center">
                 <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                {t("common.processing")}...
+                Processing...
               </div>
             </div>
           )}
@@ -216,12 +216,12 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
             {isListening ? (
               <>
                 <MicOff className="h-4 w-4 mr-2" />
-                {t("scenario.stop_listening")}
+                Stop Listening
               </>
             ) : (
               <>
                 <Mic className="h-4 w-4 mr-2" />
-                {t("scenario.start_speaking")}
+                Start Speaking
               </>
             )}
           </Button>

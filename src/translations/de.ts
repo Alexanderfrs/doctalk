@@ -1,3 +1,4 @@
+
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -166,5 +167,24 @@ export const germanTranslations = {
   yourProgress: "Dein Fortschritt",
   progressDescription: "Verfolge den Fortschritt deines Beta-Programms hier.",
   recentActivity: "Letzte Aktivität",
-  noRecentActivity: "Keine Aktivitäten zum Anzeigen."
+  noRecentActivity: "Keine Aktivitäten zum Anzeigen.",
+  
+  // Common UI translations
+  back: "Zurück",
+  dismiss: "Schließen",
+  processing: "Verarbeitung",
+  
+  // Scenario translations
+  listening: "Zuhören",
+  startSpeaking: "Sprechen beginnen",
+  stopListening: "Zuhören beenden",
+  generatingResponse: "Antwort wird generiert",
+  generatingFeedback: "Feedback wird generiert",
+  conversationReset: "Gespräch zurückgesetzt",
+  notFound: "Nicht gefunden",
+  scenarioNotFound: "Szenario nicht gefunden",
+  
+  // Audio translations
+  playAudio: "Audio abspielen",
+  stopAudio: "Audio stoppen"
 };
