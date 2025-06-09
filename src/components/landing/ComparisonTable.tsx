@@ -1,85 +1,86 @@
 
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ComparisonItem } from "@/types/landing";
-import { Check, MinusCircle, X } from "lucide-react";
+import { Check, X, AlertCircle } from "lucide-react";
 
 const ComparisonTable = () => {
-  const {
-    translate
-  } = useLanguage();
+  const { translate } = useLanguage();
   
-  const comparisons: ComparisonItem[] = [
+  const benefits = [
     {
-      feature: "Specialized medical vocabulary and terminology tailored for healthcare professionals",
-      languageSchool: "limited",
-      genericApp: "none",
-      doctalk: "full"
+      icon: <Check className="h-6 w-6 text-green-500" />,
+      title: translate("specializedMedicalContent"),
+      description: translate("specializedMedicalContentDesc"),
+      others: translate("limitedOrNone")
     },
     {
-      feature: "Real medical scenarios and practice dialogues from actual hospital environments",
-      languageSchool: "limited",
-      genericApp: "none",
-      doctalk: "full"
+      icon: <Check className="h-6 w-6 text-green-500" />,
+      title: translate("realisticHospitalScenarios"),
+      description: translate("realisticHospitalScenariosDesc"),
+      others: translate("genericConversations")
     },
     {
-      feature: "Flexible learning schedule with immediate practical workplace application",
-      languageSchool: "none",
-      genericApp: "limited",
-      doctalk: "full"
+      icon: <Check className="h-6 w-6 text-green-500" />,
+      title: translate("flexibleProfessionalFocus"),
+      description: translate("flexibleProfessionalFocusDesc"),
+      others: translate("rigidSchedules")
     },
     {
-      feature: "Expert guidance from medical professionals and language specialists",
-      languageSchool: "limited",
-      genericApp: "none",
-      doctalk: "full"
-    },
-    {
-      feature: "Healthcare-specific certification recognized in the medical field",
-      languageSchool: "none",
-      genericApp: "none",
-      doctalk: "full"
+      icon: <Check className="h-6 w-6 text-green-500" />,
+      title: translate("expertDevelopedContent"),
+      description: translate("expertDevelopedContentDesc"),
+      others: translate("generalContent")
     }
   ];
 
-  const getIcon = (level: "full" | "limited" | "none") => {
-    switch (level) {
-      case "full":
-        return <Check className="mx-auto text-green-500" size={24} />;
-      case "limited":
-        return <MinusCircle className="mx-auto text-yellow-500" size={24} />;
-      case "none":
-        return <X className="mx-auto text-red-500" size={24} />;
-      default:
-        return null;
-    }
-  };
-
-  return <div className="mt-16 bg-white p-8 rounded-xl shadow-md border border-neutral-200">
-      <h3 className="text-xl font-bold mb-4 text-center">Why choose DocTalk?</h3>
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[600px]">
-          <thead>
-            <tr className="border-b border-neutral-200">
-              <th className="py-3 px-4 text-left w-1/2">Feature</th>
-              <th className="py-3 px-4 text-center">German language schools</th>
-              <th className="py-3 px-4 text-center">Generic language learning apps</th>
-              <th className="py-3 px-4 text-center bg-medical-50 font-medium">DocTalk</th>
-            </tr>
-          </thead>
-          <tbody>
-            {comparisons.map((item, index) => <tr key={index} className={index < comparisons.length - 1 ? "border-b border-neutral-100" : ""}>
-                <td className="py-3 px-4">{item.feature}</td>
-                <td className="py-3 px-4 text-center">{getIcon(item.languageSchool)}</td>
-                <td className="py-3 px-4 text-center">{getIcon(item.genericApp)}</td>
-                <td className="py-3 px-4 text-center bg-medical-50">
-                  {getIcon(item.doctalk)}
-                </td>
-              </tr>)}
-          </tbody>
-        </table>
+  return (
+    <div className="mt-16">
+      <div className="text-center mb-12">
+        <h3 className="text-2xl md:text-3xl font-bold mb-4 text-neutral-800">
+          {translate("whyChooseDocTalk")}
+        </h3>
+        <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+          {translate("whyChooseDocTalkDesc")}
+        </p>
       </div>
-    </div>;
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        {benefits.map((benefit, index) => (
+          <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-neutral-100 hover:shadow-md transition-shadow">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 mt-1">
+                {benefit.icon}
+              </div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-800 mb-2">
+                  {benefit.title}
+                </h4>
+                <p className="text-neutral-600 text-sm mb-3">
+                  {benefit.description}
+                </p>
+                <div className="flex items-center gap-2 text-xs text-neutral-500">
+                  <X className="h-4 w-4 text-red-400" />
+                  <span>{translate("otherSolutions")}: {benefit.others}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-medical-50 p-6 rounded-xl border border-medical-100">
+        <div className="flex items-center gap-3 mb-4">
+          <AlertCircle className="h-6 w-6 text-medical-600" />
+          <h4 className="font-semibold text-medical-800">
+            {translate("bottomLine")}
+          </h4>
+        </div>
+        <p className="text-medical-700">
+          {translate("bottomLineDesc")}
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default ComparisonTable;

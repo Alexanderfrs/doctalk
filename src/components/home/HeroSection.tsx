@@ -17,8 +17,8 @@ const HeroSection = () => {
   // For mobile swipe functionality
   const heroContents = [
     {
-      image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
-      alt: translate("medicalStaffWorking"),
+      image: "/lovable-uploads/6d61da35-5028-4a16-bf23-898ec0590ec5.png",
+      alt: translate("medicalTeamWorking"),
     },
     {
       image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
@@ -60,17 +60,32 @@ const HeroSection = () => {
             <p className="text-md text-neutral-500 mb-6">
               {translate("targetAudience")}
             </p>
-            <div className="flex flex-wrap gap-4">
-              <Button asChild size="lg" className="btn-primary active:scale-95 transition-transform duration-150">
-                <Link to="/practice">{translate("startExercise")}</Link>
-              </Button>
-              <BetaSignupDialog
-                triggerElement={
-                  <Button variant="outline" size="lg" className="btn-secondary shadow-md hover:shadow-lg active:scale-95 transition-all duration-150">
-                    {translate("joinBeta")}
-                  </Button>
-                }
-              />
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-wrap gap-4">
+                <Button asChild size="lg" className="btn-primary active:scale-95 transition-transform duration-150">
+                  <Link to="/practice">{translate("startExercise")}</Link>
+                </Button>
+                <BetaSignupDialog
+                  triggerElement={
+                    <Button variant="outline" size="lg" className="btn-secondary shadow-md hover:shadow-lg active:scale-95 transition-all duration-150">
+                      {translate("joinBeta")}
+                    </Button>
+                  }
+                />
+              </div>
+              <div className="flex flex-wrap gap-2 text-sm">
+                <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
+                  <Link to="#features">{translate("features")}</Link>
+                </Button>
+                <span className="text-neutral-400">•</span>
+                <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
+                  <Link to="#comparison">{translate("whyChooseDocTalk")}</Link>
+                </Button>
+                <span className="text-neutral-400">•</span>
+                <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
+                  <Link to="#pricing">{translate("pricingTitle")}</Link>
+                </Button>
+              </div>
             </div>
           </div>
           
@@ -134,25 +149,40 @@ const HeroSection = () => {
           <p className="text-md text-neutral-500 mb-6">
             {translate("targetAudience")}
           </p>
-          <div className="flex flex-wrap gap-4">
-            <Button asChild size="lg" className="btn-primary active:scale-95 transition-transform duration-150">
-              <Link to="/practice">{translate("startExercise")}</Link>
-            </Button>
-            <BetaSignupDialog
-              triggerElement={
-                <Button variant="outline" size="lg" className="btn-secondary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                  {translate("joinBeta")}
-                </Button>
-              }
-            />
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap gap-4">
+              <Button asChild size="lg" className="btn-primary active:scale-95 transition-transform duration-150">
+                <Link to="/practice">{translate("startExercise")}</Link>
+              </Button>
+              <BetaSignupDialog
+                triggerElement={
+                  <Button variant="outline" size="lg" className="btn-secondary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
+                    {translate("joinBeta")}
+                  </Button>
+                }
+              />
+            </div>
+            <div className="flex flex-wrap gap-2 text-sm">
+              <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
+                <Link to="#features">{translate("features")}</Link>
+              </Button>
+              <span className="text-neutral-400">•</span>
+              <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
+                <Link to="#comparison">{translate("whyChooseDocTalk")}</Link>
+              </Button>
+              <span className="text-neutral-400">•</span>
+              <Button asChild variant="ghost" size="sm" className="text-medical-600 hover:text-medical-700">
+                <Link to="#pricing">{translate("pricingTitle")}</Link>
+              </Button>
+            </div>
           </div>
         </div>
         
         <div className="md:w-1/2 animate-fade-in" style={{ animationDelay: '300ms' }}>
           <div className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden">
             <img 
-              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80" 
-              alt={translate("medicalStaffWorking")}
+              src="/lovable-uploads/6d61da35-5028-4a16-bf23-898ec0590ec5.png" 
+              alt={translate("medicalTeamWorking")}
               className="w-full h-[300px] object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>

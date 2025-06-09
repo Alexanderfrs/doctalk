@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -199,5 +198,25 @@ export const englishTranslations = {
   hideFilters: "Hide Filters",
   viewVocabulary: "View Vocabulary",
   practicePronunciation: "Practice Pronunciation",
-  practiceDescription: "Practice medical German in realistic scenarios from your professional activities"
+  practiceDescription: "Practice medical German in realistic scenarios from your professional activities",
+  
+  // New comparison section translations
+  whyChooseDocTalk: "Why choose DocTalk?",
+  whyChooseDocTalkDesc: "See how DocTalk provides unique benefits that other language learning solutions simply can't match.",
+  specializedMedicalContent: "Specialized Medical Content",
+  specializedMedicalContentDesc: "Comprehensive medical vocabulary and terminology developed specifically for healthcare professionals.",
+  realisticHospitalScenarios: "Realistic Hospital Scenarios",
+  realisticHospitalScenariosDesc: "Practice with authentic dialogue scenarios from actual hospital environments and medical situations.",
+  flexibleProfessionalFocus: "Flexible Professional Focus", 
+  flexibleProfessionalFocusDesc: "Learn at your own pace with immediate practical application in your daily medical work.",
+  expertDevelopedContent: "Expert-Developed Content",
+  expertDevelopedContentDesc: "All content created and reviewed by medical professionals and language specialists.",
+  limitedOrNone: "Limited or non-existent",
+  genericConversations: "Generic everyday conversations",
+  rigidSchedules: "Rigid class schedules",
+  generalContent: "General language content",
+  otherSolutions: "Other solutions",
+  bottomLine: "The Bottom Line",
+  bottomLineDesc: "DocTalk is the only language learning solution designed specifically for medical professionals who need to excel in German healthcare environments.",
+  medicalTeamWorking: "Happy medical team working together"
 };

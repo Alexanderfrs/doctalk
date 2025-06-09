@@ -23,6 +23,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   const sections = [
     { id: "hero", label: translate("home") },
     { id: "features", label: translate("features") },
+    { id: "comparison", label: translate("whyChooseDocTalk") },
     { id: "pricing", label: translate("pricingTitle") }
   ];
 
@@ -113,11 +114,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             </div>
             
             <FeaturesGrid />
+          </div>
+        </section>
+
+        <section id="comparison" className="py-16 px-4">
+          <div className="container mx-auto">
             <ComparisonTable />
           </div>
         </section>
         
-        <section id="pricing" className="py-16 px-4">
+        <section id="pricing" className="py-16 bg-neutral-50 px-4">
           <div className="container mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-800">
