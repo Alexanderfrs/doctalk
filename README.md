@@ -1,69 +1,171 @@
-# Welcome to your Lovable project
 
-## Project info
+# DocTalk - Medical German Communication App
 
-**URL**: https://lovable.dev/projects/e4c99325-c529-497f-8a5d-2c84f475bf0f
+DocTalk is a specialized application designed for healthcare professionals to improve their German communication skills in medical settings.
 
-## How can I edit this code?
+## Project Overview
 
-There are several ways of editing your application.
+This application helps doctors, nurses, caregivers, and medical students from various countries practice German medical terminology and scenarios through interactive exercises and real-world medical conversations.
 
-**Use Lovable**
+## Technology Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e4c99325-c529-497f-8a5d-2c84f475bf0f) and start prompting.
+- **Frontend**: React 18.3.1 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **State Management**: React Context + React Query
+- **Router**: React Router DOM 6.26.2
+- **Authentication**: Supabase Auth
+- **Database**: Supabase (PostgreSQL)
+- **Mobile**: Capacitor (iOS/Android support)
+- **UI Components**: Radix UI primitives with custom theming
+- **Icons**: Lucide React
+- **Animations**: Framer Motion
+- **Charts**: Recharts
 
-Changes made via Lovable will be committed automatically to this repo.
+## Development Setup
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js 18+ and npm
+- For mobile development: 
+  - iOS: macOS with Xcode 14+
+  - Android: Android Studio with SDK
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Step 1: Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Step 2: Navigate to the project directory
+cd doctalk
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Step 3: Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 4: Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Mobile Development
 
-**Use GitHub Codespaces**
+This app supports mobile deployment using Capacitor for both iOS and Android platforms.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Initial Mobile Setup
 
-## What technologies are used for this project?
+```sh
+# Build the web app first
+npm run build
 
-This project is built with .
+# Initialize Capacitor (only needed once)
+npx cap init
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+# Add iOS platform
+npx cap add ios
 
-## How can I deploy this project?
+# Add Android platform (optional)
+npx cap add android
+```
 
-Simply open [Lovable](https://lovable.dev/projects/e4c99325-c529-497f-8a5d-2c84f475bf0f) and click on Share -> Publish.
+### Mobile Development Workflow
 
-## I want to use a custom domain - is that possible?
+```sh
+# 1. Build the web app
+npm run build
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+# 2. Sync changes to mobile platforms
+npx cap sync
+
+# 3. Open in native IDE
+npx cap open ios     # Opens Xcode
+npx cap open android # Opens Android Studio
+
+# 4. Run on device/simulator
+npx cap run ios
+npx cap run android
+```
+
+### iOS App Store Deployment Requirements
+
+1. **Apple Developer Account** ($99/year)
+2. **macOS with Xcode 14+**
+3. **iOS device or simulator** for testing
+4. **App Store Connect** account setup
+
+### Mobile-Specific Features
+
+- Touch-optimized interface with gesture support
+- Responsive design that scales from mobile to desktop
+- Swipe navigation for scenarios and content
+- Touch-friendly interactive elements
+- Optimized for thumb zones on mobile devices
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npx cap sync` - Sync web app to mobile platforms
+- `npx cap run ios` - Run on iOS device/simulator
+- `npx cap run android` - Run on Android device/emulator
+
+## Project Structure
+
+```
+src/
+├── components/         # Reusable UI components
+├── pages/             # Route components
+├── hooks/             # Custom React hooks
+├── contexts/          # React contexts
+├── translations/      # Internationalization
+├── data/             # Static data and mock content
+├── integrations/     # External service integrations
+└── lib/              # Utility functions
+
+public/               # Static assets
+supabase/            # Supabase configuration and functions
+```
+
+## Features
+
+- **Multi-language Support**: English, German, Spanish, Russian, Turkish
+- **Interactive Medical Scenarios**: Practice real-world medical conversations
+- **Vocabulary Management**: Learn and track medical German terminology
+- **Progress Tracking**: Monitor learning progress and achievements
+- **Authentication**: Secure user accounts and data
+- **Responsive Design**: Works seamlessly on mobile and desktop
+- **Offline Capability**: Core features work without internet connection
+
+## Deployment Options
+
+### Web Deployment
+- **Lovable**: One-click deployment via the Publish button
+- **Netlify/Vercel**: Connect your Git repository for automatic deployments
+- **Custom Domain**: Configure custom domains in project settings
+
+### Mobile App Stores
+- **iOS App Store**: Deploy using Xcode and App Store Connect
+- **Google Play Store**: Deploy using Android Studio and Play Console
+
+## Environment Variables
+
+The app uses Supabase for backend services. The configuration is automatically set up through the Lovable-Supabase integration.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly on both web and mobile
+5. Submit a pull request
+
+## Support
+
+For questions about mobile deployment, refer to the [Capacitor documentation](https://capacitorjs.com/docs) or the [Lovable mobile development guide](https://lovable.dev/blogs/TODO).
+
+## License
+
+This project is built for healthcare education and professional development.
