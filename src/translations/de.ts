@@ -55,8 +55,8 @@ export const germanTranslations = {
   contentDevelopment: 'Alle Inhalte wurden in Zusammenarbeit mit Ärzten, Pflegekräften und Sprachlehrern entwickelt und geprüft.',
   nurseOptimized: 'Für medizinisches Fachpersonal optimiert',
   internationalNurses: 'Besonderer Fokus auf die sprachlichen Bedürfnisse von internationalem medizinischem Fachpersonal in Deutschland.',
-  certificationRecognition: 'Zertifikatsanerkennung',
-  examPreparation: 'Optimale Vorbereitung auf Sprachprüfungen für die berufliche Anerkennung im deutschen Gesundheitswesen.',
+  certificationRecognition: 'FSP-Vorbereitung',
+  examPreparation: 'Optimale Vorbereitung auf die Fachsprachenprüfung (FSP) und andere Sprachprüfungen für die berufliche Anerkennung im deutschen Gesundheitswesen.',
   comparisonTitle: 'Im Vergleich zu allgemeinen Sprachlern-Apps',
   feature: 'Feature',
   generalApps: 'Allgemeine Apps',
@@ -214,8 +214,6 @@ export const germanTranslations = {
   rigidSchedules: "Starre Stundenpläne",
   generalContent: "Allgemeine Sprachinhalte",
   otherSolutions: "Andere Lösungen",
-  bottomLine: "Das Fazit",
-  bottomLineDesc: "DocTalk ist die einzige Sprachlernlösung, die speziell für medizinisches Fachpersonal entwickelt wurde, das in deutschen Gesundheitseinrichtungen erfolgreich sein muss.",
   medicalTeamWorking: "Glückliches medizinisches Team, das zusammenarbeitet",
   otherSolutionsSpecific: 'Sprachschulen, Privatlehrer, allgemeine Apps'
 };
