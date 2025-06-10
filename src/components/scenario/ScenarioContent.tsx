@@ -18,7 +18,8 @@ import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { DialogueLine } from "@/data/scenarios";
 import { Button } from "@/components/ui/button";
-import { Loader2, RefreshCw } from "lucide-react";
+import { Loader2, RefreshCw, TestTube, User, Stethoscope } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import useAIFeedback from "@/hooks/useAIFeedback";
 import useMedicalLLM from "@/hooks/useMedicalLLM";
 import { toast } from "sonner";
@@ -27,6 +28,53 @@ interface ScenarioContentProps {
   scenario: any;
   loading: boolean;
 }
+
+const createPatientProfile = (scenarioType: string, scenario: any) => {
+  const profiles = {
+    'patient-care': {
+      name: 'Frau Müller',
+      age: 65,
+      condition: scenario?.description || 'Routineuntersuchung',
+      mood: 'leicht besorgt',
+      personality: 'höflich aber ängstlich',
+      communicationStyle: 'direkt aber respektvoll'
+    },
+    'emergency': {
+      name: 'Herr Schmidt',
+      age: 45,
+      condition: 'Brustschmerzen',
+      mood: 'panisch',
+      personality: 'gestresst und ängstlich',
+      communicationStyle: 'kurz und abgehackt durch Schmerz'
+    },
+    'handover': {
+      name: 'Dr. Weber',
+      age: 38,
+      condition: 'Schichtübergabe',
+      mood: 'konzentriert',
+      personality: 'professionell und sachlich',
+      communicationStyle: 'medizinisch präzise'
+    },
+    'elderly-care': {
+      name: 'Herr Hoffmann',
+      age: 82,
+      condition: 'Demenz, leichte Verwirrung',
+      mood: 'verwirrt aber freundlich',
+      personality: 'freundlich aber vergesslich',
+      communicationStyle: 'langsam und manchmal wiederholt'
+    },
+    'disability-care': {
+      name: 'Lisa',
+      age: 28,
+      condition: 'geistige Behinderung',
+      mood: 'unsicher aber kooperativ',
+      personality: 'freundlich aber hilfesuchend',
+      communicationStyle: 'einfach und direkt'
+    }
+  };
+
+  return profiles[scenarioType] || profiles['patient-care'];
+};
 
 export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   scenario,
@@ -39,26 +87,41 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   const [isProcessingResponse, setIsProcessingResponse] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [patientProfile, setPatientProfile] = useState<any>(null);
+  const [connectionStatus, setConnectionStatus] = useState<'unknown' | 'testing' | 'connected' | 'failed'>('unknown');
   const isMobile = useIsMobile();
   
   const tabTitles = {
     conversation: "Interactive Dialogue",
-    resources: "Help Resources",
+    resources: "Help Resources", 
     notes: "Personal Notes"
   };
+
+  // Initialize patient profile when scenario changes
+  useEffect(() => {
+    if (scenario) {
+      const profile = createPatientProfile(scenario.category || 'patient-care', scenario);
+      setPatientProfile(profile);
+      console.log("Patient profile set:", profile);
+    }
+  }, [scenario]);
 
   const { getFeedback, isLoading: isFeedbackLoading } = useAIFeedback({
     onError: (error) => toast.error(`Feedback error: ${error}`)
   });
   
-  const { generateResponse, isLoading: isGeneratingResponse } = useMedicalLLM({
+  const { 
+    generateResponse, 
+    currentPatientProfile,
+    isLoading: isGeneratingResponse,
+    error: llmError,
+    testConnection,
+    reset: resetLLM
+  } = useMedicalLLM({
     scenarioType: scenario?.category || 'patient-care',
     scenarioDescription: scenario?.description || 'Medical scenario',
     difficultyLevel: scenario?.difficulty || 'intermediate',
-    patientContext: {
-      condition: scenario?.description,
-      mood: 'neutral'
-    },
+    patientContext: patientProfile,
     onError: (error) => toast.error(`Response error: ${error}`)
   });
   
@@ -69,6 +132,18 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       setCurrentDialogueIndex(initialLines.length);
     }
   }, [scenario]);
+
+  const handleTestConnection = async () => {
+    setConnectionStatus('testing');
+    const isConnected = await testConnection();
+    setConnectionStatus(isConnected ? 'connected' : 'failed');
+    
+    if (isConnected) {
+      toast.success("OpenAI connection successful!");
+    } else {
+      toast.error("OpenAI connection failed. Check logs for details.");
+    }
+  };
 
   const handleSendMessage = async (message: string) => {
     const userMessage: DialogueLine = {
@@ -103,13 +178,13 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
         setIsProcessingResponse(false);
       }, 1500);
     } else {
-      // Use the new medical LLM for dynamic responses
+      // Use the medical LLM for dynamic responses
       try {
         console.log("Generating LLM response for:", message);
         const aiResponse = await generateResponse(message, updatedConversation);
         
         const responseMessage: DialogueLine = {
-          speaker: "patient",
+          speaker: patientProfile?.name === 'Dr. Weber' ? "doctor" : "patient",
           text: aiResponse,
           translation: ""
         };
@@ -133,12 +208,12 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       const initialLines = scenario.dialogue.slice(0, 2);
       setConversation(initialLines);
       setCurrentDialogueIndex(initialLines.length);
-      setShowFeedback(false);
     } else {
       setConversation([]);
       setCurrentDialogueIndex(0);
-      setShowFeedback(false);
     }
+    setShowFeedback(false);
+    resetLLM();
     toast.success("Conversation reset");
   };
 
@@ -165,19 +240,89 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   return (
     <Card className="h-full">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>{tabTitles[activeTab as keyof typeof tabTitles]}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          {tabTitles[activeTab as keyof typeof tabTitles]}
+          {activeTab === "conversation" && patientProfile && (
+            <div className="flex items-center gap-1 text-sm font-normal text-muted-foreground">
+              <User className="h-3 w-3" />
+              {patientProfile.name}
+            </div>
+          )}
+        </CardTitle>
         
         {activeTab === "conversation" && (
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={handleResetConversation}
-            disabled={conversation.length <= 2}
-          >
-            <RefreshCw className="h-4 w-4 mr-1" /> Reset
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleTestConnection}
+              disabled={connectionStatus === 'testing'}
+            >
+              {connectionStatus === 'testing' ? (
+                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+              ) : (
+                <TestTube className="h-4 w-4 mr-1" />
+              )}
+              Test AI
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleResetConversation}
+              disabled={conversation.length <= 2}
+            >
+              <RefreshCw className="h-4 w-4 mr-1" /> 
+              Reset
+            </Button>
+          </div>
         )}
       </CardHeader>
+      
+      {/* Connection Status Alert */}
+      {activeTab === "conversation" && connectionStatus !== 'unknown' && (
+        <CardContent className="pt-0">
+          <Alert className={connectionStatus === 'connected' ? 'border-green-200 bg-green-50' : 
+                          connectionStatus === 'failed' ? 'border-red-200 bg-red-50' : 
+                          'border-yellow-200 bg-yellow-50'}>
+            <Stethoscope className="h-4 w-4" />
+            <AlertTitle>
+              {connectionStatus === 'connected' && "AI Connected"}
+              {connectionStatus === 'failed' && "AI Connection Failed"}
+              {connectionStatus === 'testing' && "Testing AI Connection..."}
+            </AlertTitle>
+            <AlertDescription>
+              {connectionStatus === 'connected' && "OpenAI integration is working. You can now have realistic medical conversations."}
+              {connectionStatus === 'failed' && "Could not connect to OpenAI. Check if OPENAI_API_KEY is properly configured in Supabase secrets."}
+              {connectionStatus === 'testing' && "Verifying OpenAI API connection..."}
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      )}
+
+      {/* Patient Profile Display */}
+      {activeTab === "conversation" && patientProfile && (
+        <CardContent className="pt-0">
+          <div className="bg-medical-50 border border-medical-200 rounded-lg p-3 mb-4">
+            <h4 className="text-sm font-medium text-medical-800 mb-2">Patient Profile</h4>
+            <div className="grid grid-cols-2 gap-2 text-xs text-medical-700">
+              <div><strong>Name:</strong> {patientProfile.name}</div>
+              <div><strong>Alter:</strong> {patientProfile.age}</div>
+              <div><strong>Zustand:</strong> {patientProfile.condition}</div>
+              <div><strong>Stimmung:</strong> {patientProfile.mood}</div>
+            </div>
+          </div>
+        </CardContent>
+      )}
+
+      {/* Error Display */}
+      {llmError && activeTab === "conversation" && (
+        <CardContent className="pt-0">
+          <Alert className="border-red-200 bg-red-50">
+            <AlertTitle>AI Error</AlertTitle>
+            <AlertDescription>{llmError}</AlertDescription>
+          </Alert>
+        </CardContent>
+      )}
       
       {isMobile ? (
         <>
