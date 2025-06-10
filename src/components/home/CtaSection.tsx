@@ -27,22 +27,22 @@ const CtaSection = () => {
 
   if (isMobile) {
     return (
-      <section className="container mx-auto mb-16 animate-fade-in" style={{ animationDelay: '1300ms' }}>
+      <section className="container mx-auto mb-16 animate-fade-in landing-mobile-section" style={{ animationDelay: '1300ms' }}>
         <SwipeableContainer 
           showArrows={false} 
           showIndicators={true}
-          className="mb-2"
+          className="mb-2 swipeable-mobile"
         >
           {ctaContents.map((content, index) => (
             <div 
               key={index}
-              className="bg-gradient-to-r from-medical-600 to-medical-500 rounded-2xl p-8 text-white text-center relative overflow-hidden w-full"
+              className="bg-gradient-to-r from-medical-600 to-medical-500 rounded-2xl cta-mobile-fix text-white text-center relative overflow-hidden w-full"
             >
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">{content.heading}</h2>
+              <h2 className="text-2xl font-bold mb-4">{content.heading}</h2>
               <p className="text-lg text-white/90 mb-6 max-w-2xl mx-auto">
                 {content.text}
               </p>
-              <Button asChild size="lg" className="bg-white text-medical-600 hover:bg-white/90">
+              <Button asChild size="lg" className="bg-white text-medical-600 hover:bg-white/90 w-full">
                 <Link to={index === 0 ? "/practice" : "/register"}>
                   {content.buttonText}
                 </Link>

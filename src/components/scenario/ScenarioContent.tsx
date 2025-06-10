@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
@@ -150,7 +149,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   // Set initial suggestion when conversation starts
   useEffect(() => {
     if (conversation.length <= 2 && !suggestion) {
-      setSuggestion("Greet the patient and introduce yourself professionally");
+      setSuggestion("Start by greeting the patient professionally and introducing yourself");
     }
   }, [conversation.length, suggestion]);
 
@@ -251,7 +250,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     }
     setShowFeedback(false);
     setFeedback("");
-    setSuggestion("Greet the patient and introduce yourself professionally");
+    setSuggestion("Start by greeting the patient professionally and introducing yourself");
     setShowInsights(false);
     setPerformanceInsights("");
     setProgressData({
@@ -305,7 +304,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       <Card className="h-full">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="flex items-center gap-2">
-            {tabTitles[activeTab as keyof typeof tabTitles]}
+            {activeTab === "conversation" ? "Interactive Dialogue" : (activeTab === "resources" ? "Help Resources" : "Personal Notes")}
             {activeTab === "conversation" && patientProfile && (
               <div className="flex items-center gap-1 text-sm font-normal text-muted-foreground">
                 <User className="h-3 w-3" />
@@ -419,6 +418,8 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
                     onQuickReply={handleQuickReply}
                     feedback={showFeedback ? feedback : undefined}
                     onDismissFeedback={() => setShowFeedback(false)}
+                    conversationHistory={conversation}
+                    scenarioType={scenario?.category || 'patient-care'}
                   />
                   <ResourcesTab />
                   <NotesTab />
@@ -447,6 +448,8 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
                   onQuickReply={handleQuickReply}
                   feedback={showFeedback ? feedback : undefined}
                   onDismissFeedback={() => setShowFeedback(false)}
+                  conversationHistory={conversation}
+                  scenarioType={scenario?.category || 'patient-care'}
                 />
               </TabsContent>
               
