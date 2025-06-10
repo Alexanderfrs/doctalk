@@ -12,17 +12,27 @@ import useTextToSpeech from "@/hooks/useTextToSpeech";
 import useVoiceRecognition from "@/hooks/useVoiceRecognition";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import ResponseGuidance from "../ResponseGuidance";
+import FeedbackDisplay from "../FeedbackDisplay";
 
 interface ConversationTabProps {
   conversation: Array<DialogueLine>;
   onUserResponse?: (text: string) => void;
   isProcessingResponse?: boolean;
+  suggestion?: string;
+  onQuickReply?: (text: string) => void;
+  feedback?: string;
+  onDismissFeedback?: () => void;
 }
 
 const ConversationTab: React.FC<ConversationTabProps> = ({ 
   conversation, 
   onUserResponse,
-  isProcessingResponse = false
+  isProcessingResponse = false,
+  suggestion,
+  onQuickReply,
+  feedback,
+  onDismissFeedback
 }) => {
   const { t } = useTranslation();
   const [activeVoiceId, setActiveVoiceId] = useState<string | null>(null);
@@ -108,6 +118,12 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
     }
   };
 
+  // Determine current scenario type for suggestions
+  const getCurrentScenarioType = (): string => {
+    // You can determine this from conversation context or pass it as prop
+    return 'patient-care'; // Default fallback
+  };
+
   return (
     <Card className="border-0 shadow-none">
       <CardContent className="p-0">
@@ -180,6 +196,27 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
               </div>
             </div>
           ))}
+          
+          {/* Show suggestions within chat when it's user's turn */}
+          {!isProcessingResponse && !isListening && suggestion && conversation.length > 0 && (
+            <div className="mb-4">
+              <ResponseGuidance 
+                suggestion={suggestion}
+                scenarioType={getCurrentScenarioType()}
+                onQuickReply={onQuickReply}
+              />
+            </div>
+          )}
+          
+          {/* Show feedback within chat */}
+          {feedback && (
+            <div className="mb-4">
+              <FeedbackDisplay 
+                feedback={feedback}
+                onDismiss={onDismissFeedback || (() => {})}
+              />
+            </div>
+          )}
           
           {isListening && (
             <div className="flex justify-center my-4">

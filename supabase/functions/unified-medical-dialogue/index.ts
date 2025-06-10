@@ -98,9 +98,10 @@ const getDialogueSystemPrompt = (
   scenarioType: string, 
   scenarioDescription: string, 
   difficultyLevel: string, 
-  patientProfile: PatientProfile
+  patientProfile: PatientProfile,
+  conversationHistory: DialogueLine[]
 ) => {
-  const basePrompt = `Du bist ein erfahrener Schauspieler, der verschiedene Rollen in deutschen medizinischen Szenarien spielt. Du antwortest IMMER auf Deutsch und bleibst konsequent in deiner Rolle.
+  const basePrompt = `Du bist ein erfahrener Schauspieler, der verschiedene Rollen in deutschen medizinischen Szenarien spielt. Du antwortest IMMER auf Deutsch und bleibst KONSEQUENT in deiner Rolle während des GESAMTEN Gesprächs.
 
 SZENARIO: ${scenarioDescription}
 SCHWIERIGKEITSGRAD: ${difficultyLevel}
@@ -115,11 +116,11 @@ PATIENTENPROFIL:
 - Aktuelle Stimmung: ${patientProfile.mood}`;
 
   const rolePrompts = {
-    'patient-care': `Du spielst einen Patienten in einem deutschen Krankenhaus. Du bist ${patientProfile.personality}. Stelle gelegentlich Fragen über deine Behandlung oder Medikamente.`,
-    'emergency': `Du spielst einen Patienten in einer Notfallsituation. Du bist ${patientProfile.personality} und antwortest ${patientProfile.communicationStyle}.`,
-    'handover': `Du spielst einen Kollegen (Arzt oder Pflegekraft) bei der Schichtübergabe. Du bist ${patientProfile.personality} und kommunizierst ${patientProfile.communicationStyle}.`,
-    'elderly-care': `Du spielst einen älteren Bewohner (${patientProfile.age} Jahre) in einem Pflegeheim. Du bist ${patientProfile.personality} und sprichst ${patientProfile.communicationStyle}.`,
-    'disability-care': `Du spielst einen Bewohner mit geistiger Behinderung. Du bist ${patientProfile.personality} und kommunizierst ${patientProfile.communicationStyle}.`
+    'patient-care': `Du spielst einen Patienten in einem deutschen Krankenhaus. Du bist ${patientProfile.personality}. Stelle gelegentlich Fragen über deine Behandlung oder Medikamente. WICHTIG: Du bleibst IMMER ein Patient, nie ein Arzt oder Kollege.`,
+    'emergency': `Du spielst einen Patienten in einer Notfallsituation. Du bist ${patientProfile.personality} und antwortest ${patientProfile.communicationStyle}. WICHTIG: Du bleibst IMMER ein Patient in Not, nie ein medizinischer Fachmann.`,
+    'handover': `Du spielst einen Kollegen (Arzt oder Pflegekraft) bei der Schichtübergabe. Du bist ${patientProfile.personality} und kommunizierst ${patientProfile.communicationStyle}. WICHTIG: Du bleibst IMMER ein medizinischer Kollege, nie ein Patient.`,
+    'elderly-care': `Du spielst einen älteren Bewohner (${patientProfile.age} Jahre) in einem Pflegeheim. Du bist ${patientProfile.personality} und sprichst ${patientProfile.communicationStyle}. WICHTIG: Du bleibst IMMER ein älterer Bewohner, nie Personal.`,
+    'disability-care': `Du spielst einen Bewohner mit geistiger Behinderung. Du bist ${patientProfile.personality} und kommunizierst ${patientProfile.communicationStyle}. WICHTIG: Du bleibst IMMER ein Bewohner mit Behinderung, nie Personal.`
   };
 
   const difficultyInstructions = {
@@ -127,6 +128,13 @@ PATIENTENPROFIL:
     'intermediate': 'Verwende normales medizinisches Fachvokabular.',
     'advanced': 'Verwende authentisches medizinisches Fachvokabular und komplexere Satzstrukturen.'
   };
+
+  // Add persona consistency reminder based on conversation history
+  let consistencyReminder = '';
+  if (conversationHistory.length > 2) {
+    const firstRole = conversationHistory[1]?.speaker || 'patient';
+    consistencyReminder = `\nWICHTIG: Du hast als ${firstRole} begonnen und MUSST diese Rolle bis zum Ende des Gesprächs beibehalten. Wechsle NIEMALS die Rolle!`;
+  }
 
   return `${basePrompt}
 
@@ -140,15 +148,31 @@ WICHTIGE REGELN:
 - Antworte IMMER auf Deutsch
 - Bleibe konsequent in deiner Rolle
 - Halte Antworten zwischen 1-2 Sätzen
-- Sei authentisch und natürlich`;
+- Sei authentisch und natürlich
+- Wechsle NIEMALS die Rolle während des Gesprächs${consistencyReminder}`;
 };
 
-const getFeedbackSystemPrompt = (userLanguage: string = 'en') => {
+const getFeedbackSystemPrompt = (userLanguage: string = 'en', wasQuickReply: boolean = false) => {
   const prompts = {
-    'en': `You are a German language tutor specializing in medical communication. Provide VERY BRIEF feedback (maximum 2 sentences) on the user's German response. Focus only on significant errors. If the response is good, provide positive reinforcement. Use English for feedback.`,
-    'de': `Du bist ein Deutschlehrer für medizinische Kommunikation. Gib SEHR KURZES Feedback (maximal 2 Sätze) zur deutschen Antwort des Nutzers. Konzentriere dich nur auf wichtige Fehler. Bei guten Antworten gib positive Verstärkung. Verwende Deutsch für das Feedback.`,
-    'es': `Eres un tutor de alemán especializado en comunicación médica. Proporciona comentarios MUY BREVES (máximo 2 oraciones) sobre la respuesta en alemán del usuario. Concéntrate solo en errores significativos. Si la respuesta es buena, proporciona refuerzo positivo. Usa español para los comentarios.`,
-    'tr': `Tıbbi iletişim konusunda uzmanlaşmış bir Almanca öğretmenisiniz. Kullanıcının Almanca yanıtı hakkında ÇOK KISA geri bildirim verin (maksimum 2 cümle). Sadece önemli hatalara odaklanın. Yanıt iyiyse olumlu pekiştirme sağlayın. Geri bildirim için Türkçe kullanın.`
+    'en': `You are a German language tutor for medical professionals. Provide VERY BRIEF feedback (maximum 1 sentence) ONLY for significant grammatical errors or medical communication issues. 
+    
+IMPORTANT RULES:
+- If the response is grammatically correct, say "Good German!" or give brief positive feedback
+- Do NOT provide feedback on punctuation unless it's a serious error
+- Do NOT suggest improvements to phrases that are already correct
+- If this was a suggested quick reply${wasQuickReply ? ' (which it was)' : ''}, do NOT criticize it
+- Focus only on major errors that would confuse meaning
+- Use English for feedback.`,
+    
+    'de': `Du bist ein Deutschlehrer für medizinische Fachkräfte. Gib NUR SEHR KURZES Feedback (maximal 1 Satz) und NUR bei wichtigen grammatischen Fehlern oder medizinischen Kommunikationsproblemen.
+    
+WICHTIGE REGELN:
+- Bei korrekten Antworten sage "Gutes Deutsch!" oder gib kurze positive Rückmeldung
+- Gib KEINE Rückmeldung zu Interpunktion, außer bei schweren Fehlern
+- Schlage KEINE Verbesserungen für bereits korrekte Phrasen vor
+- Falls dies eine vorgeschlagene Schnellantwort war${wasQuickReply ? ' (was der Fall war)' : ''}, kritisiere sie NICHT
+- Konzentriere dich nur auf große Fehler, die die Bedeutung verwirren würden
+- Verwende Deutsch für das Feedback.`
   };
   
   return prompts[userLanguage] || prompts['en'];
@@ -189,7 +213,7 @@ const getSuggestionForNext = (scenarioType: string, conversationHistory: Dialogu
 };
 
 const calculateProgress = (conversationHistory: DialogueLine[], scenarioType: string) => {
-  const totalGoals = 7; // Standard scenario length
+  const totalGoals = 7;
   const completedGoals = Math.min(Math.floor(conversationHistory.length / 2), totalGoals);
   
   const objectives = {
@@ -245,15 +269,22 @@ serve(async (req) => {
     const patientProfile = createPatientProfile(scenarioType, patientContext);
     console.log("Patient profile created");
 
-    // Prepare both dialogue and feedback requests in parallel
-    const dialogueSystemPrompt = getDialogueSystemPrompt(scenarioType, scenarioDescription, difficultyLevel, patientProfile);
-    const feedbackSystemPrompt = getFeedbackSystemPrompt(userLanguage);
+    // Check if this was a quick reply suggestion
+    const wasQuickReply = userMessage.includes("Wie fühlen Sie sich") || 
+                         userMessage.includes("Können Sie mir") || 
+                         userMessage.includes("Haben Sie noch") ||
+                         userMessage.includes("Wo tut es") ||
+                         userMessage.includes("Bleiben Sie ruhig") ||
+                         userMessage.includes("Brauchen Sie Hilfe");
+
+    const dialogueSystemPrompt = getDialogueSystemPrompt(scenarioType, scenarioDescription, difficultyLevel, patientProfile, conversationHistory);
+    const feedbackSystemPrompt = getFeedbackSystemPrompt(userLanguage, wasQuickReply);
 
     const dialogueMessages = [
       { role: "system", content: dialogueSystemPrompt }
     ];
 
-    // Add recent conversation history
+    // Add recent conversation history with role consistency
     const recentHistory = conversationHistory.slice(-6);
     recentHistory.forEach(line => {
       if (line.speaker === 'user') {
@@ -267,7 +298,7 @@ serve(async (req) => {
 
     const feedbackMessages = [
       { role: "system", content: feedbackSystemPrompt },
-      { role: "user", content: `User's German response: "${userMessage}"\n\nScenario context: ${scenarioDescription}\n\nProvide brief feedback (max 2 sentences).` }
+      { role: "user", content: `User's German response: "${userMessage}"\n\nScenario context: ${scenarioDescription}\n\nProvide brief feedback (max 1 sentence) or positive reinforcement.` }
     ];
 
     console.log("Making parallel OpenAI requests");
@@ -298,8 +329,8 @@ serve(async (req) => {
         body: JSON.stringify({
           model: "gpt-4o-mini",
           messages: feedbackMessages,
-          temperature: 0.3,
-          max_tokens: 100
+          temperature: 0.2,
+          max_tokens: 80
         })
       })
     ]);

@@ -4,9 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ScenarioHeader } from "@/components/scenario/ScenarioHeader";
 import { ScenarioContent } from "@/components/scenario/ScenarioContent";
-import { ScenarioSidebar } from "@/components/scenario/ScenarioSidebar";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 import scenarios, { Scenario } from "@/data/scenarios";
 
 /**
@@ -62,20 +60,11 @@ const ScenarioDetail = () => {
           onBack={handleBack} 
         />
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
-            <ScenarioContent 
-              scenario={scenario} 
-              loading={loading} 
-            />
-          </div>
-          
-          <div className="md:col-span-1">
-            <ScenarioSidebar 
-              scenario={scenario} 
-              loading={loading} 
-            />
-          </div>
+        <div className="w-full flex justify-center">
+          <ScenarioContent 
+            scenario={scenario} 
+            loading={loading} 
+          />
         </div>
       </div>
     </div>
