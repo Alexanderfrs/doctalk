@@ -14,14 +14,16 @@ import ConversationTab from "./tabs/ConversationTab";
 import ResourcesTab from "./tabs/ResourcesTab";
 import NotesTab from "./tabs/NotesTab";
 import ConversationInput from "./ConversationInput";
+import ProgressTracker from "./ProgressTracker";
+import ResponseGuidance from "./ResponseGuidance";
+import FeedbackDisplay from "./FeedbackDisplay";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { DialogueLine } from "@/data/scenarios";
 import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCw, TestTube, User, Stethoscope } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import useAIFeedback from "@/hooks/useAIFeedback";
-import useMedicalLLM from "@/hooks/useMedicalLLM";
+import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
 import { toast } from "sonner";
 
 interface ScenarioContentProps {
@@ -84,11 +86,16 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   const [activeTab, setActiveTab] = useState("conversation");
   const [conversation, setConversation] = useState<DialogueLine[]>([]);
   const [currentDialogueIndex, setCurrentDialogueIndex] = useState(0);
-  const [isProcessingResponse, setIsProcessingResponse] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [feedback, setFeedback] = useState("");
   const [patientProfile, setPatientProfile] = useState<any>(null);
   const [connectionStatus, setConnectionStatus] = useState<'unknown' | 'testing' | 'connected' | 'failed'>('unknown');
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [suggestion, setSuggestion] = useState("");
+  const [progressData, setProgressData] = useState({
+    completedGoals: 0,
+    totalGoals: 7,
+    currentObjective: "Start the conversation"
+  });
   const isMobile = useIsMobile();
   
   const tabTitles = {
@@ -106,22 +113,22 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     }
   }, [scenario]);
 
-  const { getFeedback, isLoading: isFeedbackLoading } = useAIFeedback({
-    onError: (error) => toast.error(`Feedback error: ${error}`)
-  });
+  // Detect user language from browser
+  const userLanguage = navigator.language.split('-')[0] || 'en';
   
   const { 
-    generateResponse, 
+    generateUnifiedResponse, 
     currentPatientProfile,
-    isLoading: isGeneratingResponse,
+    isLoading,
     error: llmError,
     testConnection,
     reset: resetLLM
-  } = useMedicalLLM({
+  } = useUnifiedMedicalLLM({
     scenarioType: scenario?.category || 'patient-care',
     scenarioDescription: scenario?.description || 'Medical scenario',
     difficultyLevel: scenario?.difficulty || 'intermediate',
     patientContext: patientProfile,
+    userLanguage,
     onError: (error) => toast.error(`Response error: ${error}`)
   });
   
@@ -153,20 +160,6 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     
     const updatedConversation = [...conversation, userMessage];
     setConversation(updatedConversation);
-    setIsProcessingResponse(true);
-    
-    try {
-      // Get AI feedback for the user's message
-      const feedbackText = await getFeedback(
-        updatedConversation, 
-        message, 
-        scenario?.description
-      );
-      setFeedback(feedbackText);
-      setShowFeedback(true);
-    } catch (error) {
-      console.error("Error getting feedback:", error);
-    }
     
     // Check if we have predefined dialogue to continue with
     if (scenario?.dialogue && currentDialogueIndex < scenario.dialogue.length) {
@@ -175,28 +168,43 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       setTimeout(() => {
         setConversation([...updatedConversation, nextDialogueLine]);
         setCurrentDialogueIndex(currentDialogueIndex + 1);
-        setIsProcessingResponse(false);
       }, 1500);
     } else {
-      // Use the medical LLM for dynamic responses
+      // Use the unified LLM for dynamic responses with feedback and guidance
       try {
-        console.log("Generating LLM response for:", message);
-        const aiResponse = await generateResponse(message, updatedConversation);
+        console.log("Generating unified LLM response for:", message);
+        const response = await generateUnifiedResponse(message, updatedConversation);
         
         const responseMessage: DialogueLine = {
           speaker: patientProfile?.name === 'Dr. Weber' ? "doctor" : "patient",
-          text: aiResponse,
+          text: response.patientReply,
           translation: ""
         };
         
         setConversation([...updatedConversation, responseMessage]);
+        
+        // Update feedback and guidance
+        if (response.briefFeedback) {
+          setFeedback(response.briefFeedback);
+          setShowFeedback(true);
+        }
+        
+        if (response.suggestionForNext) {
+          setSuggestion(response.suggestionForNext);
+        }
+        
+        // Update progress
+        setProgressData(response.progressUpdate);
+        
       } catch (error) {
-        console.error("Error generating LLM response:", error);
+        console.error("Error generating unified LLM response:", error);
         toast.error("Failed to generate response");
-      } finally {
-        setIsProcessingResponse(false);
       }
     }
+  };
+
+  const handleQuickReply = (text: string) => {
+    handleSendMessage(text);
   };
 
   const handleUserVoiceResponse = (text: string) => {
@@ -213,6 +221,13 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       setCurrentDialogueIndex(0);
     }
     setShowFeedback(false);
+    setFeedback("");
+    setSuggestion("");
+    setProgressData({
+      completedGoals: 0,
+      totalGoals: 7,
+      currentObjective: "Start the conversation"
+    });
     resetLLM();
     toast.success("Conversation reset");
   };
@@ -299,6 +314,17 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
         </CardContent>
       )}
 
+      {/* Progress Tracker */}
+      {activeTab === "conversation" && (
+        <CardContent className="pt-0">
+          <ProgressTracker 
+            completedGoals={progressData.completedGoals}
+            totalGoals={progressData.totalGoals}
+            currentObjective={progressData.currentObjective}
+          />
+        </CardContent>
+      )}
+
       {/* Patient Profile Display */}
       {activeTab === "conversation" && patientProfile && (
         <CardContent className="pt-0">
@@ -311,6 +337,17 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
               <div><strong>Stimmung:</strong> {patientProfile.mood}</div>
             </div>
           </div>
+        </CardContent>
+      )}
+
+      {/* Response Guidance */}
+      {activeTab === "conversation" && suggestion && !isLoading && (
+        <CardContent className="pt-0">
+          <ResponseGuidance 
+            suggestion={suggestion}
+            scenarioType={scenario?.category || 'patient-care'}
+            onQuickReply={handleQuickReply}
+          />
         </CardContent>
       )}
 
@@ -339,34 +376,23 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
                 <ConversationTab 
                   conversation={conversation} 
                   onUserResponse={handleUserVoiceResponse}
-                  isProcessingResponse={isProcessingResponse}
+                  isProcessingResponse={isLoading}
                 />
                 <ResourcesTab />
                 <NotesTab />
               </SwipeableContainer>
             </div>
             
-            {showFeedback && activeTab === "conversation" && (
-              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                <h4 className="text-sm font-medium mb-1 text-blue-800">Feedback:</h4>
-                <p className="text-sm text-blue-700">{feedback}</p>
-                <div className="flex justify-end mt-2">
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => setShowFeedback(false)}
-                  >
-                    Dismiss
-                  </Button>
-                </div>
-              </div>
-            )}
+            <FeedbackDisplay 
+              feedback={showFeedback ? feedback : undefined}
+              onDismiss={() => setShowFeedback(false)}
+            />
           </CardContent>
           
           {activeTab === "conversation" && (
             <ConversationInput 
               onSendMessage={handleSendMessage} 
-              disabled={isProcessingResponse || isFeedbackLoading}
+              disabled={isLoading}
             />
           )}
         </>
@@ -379,24 +405,13 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
               <ConversationTab 
                 conversation={conversation} 
                 onUserResponse={handleUserVoiceResponse}
-                isProcessingResponse={isProcessingResponse}
+                isProcessingResponse={isLoading}
               />
               
-              {showFeedback && (
-                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                  <h4 className="text-sm font-medium mb-1 text-blue-800">Feedback:</h4>
-                  <p className="text-sm text-blue-700">{feedback}</p>
-                  <div className="flex justify-end mt-2">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={() => setShowFeedback(false)}
-                    >
-                      Dismiss
-                    </Button>
-                  </div>
-                </div>
-              )}
+              <FeedbackDisplay 
+                feedback={showFeedback ? feedback : undefined}
+                onDismiss={() => setShowFeedback(false)}
+              />
             </TabsContent>
             
             <TabsContent value="resources" className="mt-0">
@@ -411,18 +426,18 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
           {activeTab === "conversation" && (
             <ConversationInput 
               onSendMessage={handleSendMessage} 
-              disabled={isProcessingResponse || isFeedbackLoading}
+              disabled={isLoading}
             />
           )}
         </Tabs>
       )}
       
-      {(isProcessingResponse || isFeedbackLoading) && (
+      {isLoading && (
         <CardFooter className="pt-0 pb-2">
           <div className="w-full flex justify-center">
             <div className="text-xs text-muted-foreground flex items-center">
               <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-              {isProcessingResponse ? "Generating response..." : "Generating feedback..."}
+              Generating response and feedback...
             </div>
           </div>
         </CardFooter>
