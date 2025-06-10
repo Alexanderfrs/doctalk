@@ -44,7 +44,10 @@ interface UnifiedResponse {
     completedGoals: number;
     totalGoals: number;
     currentObjective: string;
+    isComplete: boolean;
   };
+  conversationComplete?: boolean;
+  performanceInsights?: string;
   patientProfile?: {
     name: string;
     mood: string;
@@ -129,6 +132,14 @@ PATIENTENPROFIL:
     'advanced': 'Verwende authentisches medizinisches Fachvokabular und komplexere Satzstrukturen.'
   };
 
+  // Check conversation length and add ending instructions
+  const turnCount = conversationHistory.length;
+  let endingInstructions = '';
+  
+  if (turnCount >= 8) {
+    endingInstructions = '\nWICHTIG: Das Gespräch nähert sich seinem natürlichen Ende. Wenn alle wichtigen Punkte besprochen wurden, bringe das Gespräch zu einem angemessenen Abschluss (z.B. "Vielen Dank für das Gespräch" oder "Ich denke, wir haben alles Wichtige besprochen").';
+  }
+
   // Add persona consistency reminder based on conversation history
   let consistencyReminder = '';
   if (conversationHistory.length > 2) {
@@ -149,7 +160,7 @@ WICHTIGE REGELN:
 - Bleibe konsequent in deiner Rolle
 - Halte Antworten zwischen 1-2 Sätzen
 - Sei authentisch und natürlich
-- Wechsle NIEMALS die Rolle während des Gesprächs${consistencyReminder}`;
+- Wechsle NIEMALS die Rolle während des Gesprächs${consistencyReminder}${endingInstructions}`;
 };
 
 const getFeedbackSystemPrompt = (userLanguage: string = 'en', wasQuickReply: boolean = false) => {
@@ -178,57 +189,127 @@ WICHTIGE REGELN:
   return prompts[userLanguage] || prompts['en'];
 };
 
-const getSuggestionForNext = (scenarioType: string, conversationHistory: DialogueLine[]): string => {
-  const suggestions = {
-    'patient-care': [
-      "Ask about their symptoms or pain level",
-      "Offer reassurance and explain the next steps",
-      "Check if they have any questions about their treatment"
-    ],
-    'emergency': [
-      "Assess vital signs and pain level immediately",
-      "Provide clear, calming instructions",
-      "Ask about allergies or current medications"
-    ],
-    'handover': [
-      "Request specific patient information",
-      "Clarify any medical procedures done",
-      "Ask about patient's current status"
-    ],
-    'elderly-care': [
-      "Speak slowly and check understanding",
-      "Ask about their comfort and needs",
-      "Offer assistance with daily activities"
-    ],
-    'disability-care': [
-      "Use simple, clear language",
-      "Ask if they need help understanding",
-      "Offer step-by-step assistance"
-    ]
+const getContextAwareSuggestion = (scenarioType: string, conversationHistory: DialogueLine[]): string => {
+  const turnCount = conversationHistory.length;
+  const lastUserMessage = conversationHistory[conversationHistory.length - 1]?.text || '';
+  const lastPatientMessage = conversationHistory[conversationHistory.length - 2]?.text || '';
+
+  // Dynamic suggestions based on conversation phase and content
+  const suggestionsByPhase = {
+    'patient-care': {
+      opening: ["Begrüßen Sie den Patienten höflich", "Stellen Sie sich vor", "Fragen Sie nach dem Befinden"],
+      middle: ["Fragen Sie nach spezifischen Symptomen", "Hören Sie empathisch zu", "Erklären Sie die nächsten Schritte"],
+      closing: ["Fassen Sie das Gespräch zusammen", "Fragen Sie nach offenen Fragen", "Verabschieden Sie sich freundlich"]
+    },
+    'emergency': {
+      opening: ["Beruhigen Sie den Patienten", "Erfassen Sie die Situation schnell", "Fragen Sie nach Schmerzen"],
+      middle: ["Priorisieren Sie Lebenswichtige Funktionen", "Geben Sie klare Anweisungen", "Überprüfen Sie Allergien"],
+      closing: ["Informieren Sie über weitere Schritte", "Übergeben Sie an Kollegen", "Dokumentieren Sie wichtige Infos"]
+    },
+    'handover': {
+      opening: ["Beginnen Sie mit Patientendaten", "Nennen Sie den aktuellen Zustand", "Erwähnen Sie wichtige Ereignisse"],
+      middle: ["Diskutieren Sie Medikation", "Besprechen Sie Besonderheiten", "Klären Sie offene Punkte"],
+      closing: ["Fassen Sie Aufgaben zusammen", "Besprechen Sie Prioritäten", "Bestätigen Sie Übergabe"]
+    },
+    'elderly-care': {
+      opening: ["Sprechen Sie langsam und deutlich", "Zeigen Sie Geduld und Respekt", "Fragen Sie nach Wohlbefinden"],
+      middle: ["Erklären Sie Dinge einfach", "Wiederholen Sie wichtige Punkte", "Hören Sie aufmerksam zu"],
+      closing: ["Versichern Sie sich des Verständnisses", "Bieten Sie Hilfe an", "Verabschieden Sie sich warmherzig"]
+    },
+    'disability-care': {
+      opening: ["Verwenden Sie einfache Sprache", "Sprechen Sie direkt mit der Person", "Zeigen Sie Respekt und Geduld"],
+      middle: ["Fragen Sie nach, ob alles verstanden wurde", "Bieten Sie Hilfe an", "Erklären Sie Schritt für Schritt"],
+      closing: ["Überprüfen Sie das Verständnis", "Bieten Sie weitere Unterstützung an", "Verabschieden Sie sich freundlich"]
+    }
   };
+
+  const phase = turnCount <= 4 ? 'opening' : (turnCount <= 10 ? 'middle' : 'closing');
+  const suggestions = suggestionsByPhase[scenarioType]?.[phase] || suggestionsByPhase['patient-care'][phase];
   
-  const scenarioSuggestions = suggestions[scenarioType] || suggestions['patient-care'];
-  const randomIndex = Math.floor(Math.random() * scenarioSuggestions.length);
-  return scenarioSuggestions[randomIndex];
+  // Additional context-aware logic
+  if (lastPatientMessage.includes('Schmerz') || lastPatientMessage.includes('weh')) {
+    return "Fragen Sie nach der Schmerzstärke von 1-10";
+  }
+  if (lastPatientMessage.includes('Angst') || lastPatientMessage.includes('Sorge')) {
+    return "Bieten Sie Beruhigung und Erklärungen an";
+  }
+  if (lastPatientMessage.includes('Medikament') || lastPatientMessage.includes('Tablette')) {
+    return "Erklären Sie Wirkung und Nebenwirkungen";
+  }
+  
+  const randomIndex = Math.floor(Math.random() * suggestions.length);
+  return suggestions[randomIndex];
 };
 
 const calculateProgress = (conversationHistory: DialogueLine[], scenarioType: string) => {
-  const totalGoals = 7;
-  const completedGoals = Math.min(Math.floor(conversationHistory.length / 2), totalGoals);
+  const turnCount = conversationHistory.length;
+  
+  // Define expected conversation length by scenario type
+  const expectedLengths = {
+    'patient-care': 12,
+    'emergency': 8,
+    'handover': 10,
+    'elderly-care': 14,
+    'disability-care': 12
+  };
+  
+  const expectedLength = expectedLengths[scenarioType] || 12;
+  const completedGoals = Math.min(Math.floor(turnCount / 2), 7);
+  const isComplete = turnCount >= expectedLength;
   
   const objectives = {
-    'patient-care': "Build rapport and assess patient needs",
-    'emergency': "Quickly assess and stabilize patient",
-    'handover': "Exchange complete patient information",
-    'elderly-care': "Provide compassionate, patient care",
-    'disability-care': "Communicate clearly and offer support"
+    'patient-care': isComplete ? "Gespräch erfolgreich abgeschlossen" : "Bauen Sie Vertrauen auf und erfassen Sie Patientenbedürfnisse",
+    'emergency': isComplete ? "Notfall erfolgreich bearbeitet" : "Stabilisieren Sie den Patienten schnell und effektiv",
+    'handover': isComplete ? "Übergabe erfolgreich abgeschlossen" : "Tauschen Sie vollständige Patienteninformationen aus",
+    'elderly-care': isComplete ? "Gespräch erfolgreich beendet" : "Bieten Sie einfühlsame, geduldige Betreuung",
+    'disability-care': isComplete ? "Betreuung erfolgreich abgeschlossen" : "Kommunizieren Sie klar und bieten Sie Unterstützung"
   };
   
   return {
     completedGoals,
-    totalGoals,
-    currentObjective: objectives[scenarioType] || objectives['patient-care']
+    totalGoals: 7,
+    currentObjective: objectives[scenarioType] || objectives['patient-care'],
+    isComplete
   };
+};
+
+const generatePerformanceInsights = async (conversationHistory: DialogueLine[], scenarioType: string): Promise<string> => {
+  const userMessages = conversationHistory.filter(msg => msg.speaker === 'user').map(msg => msg.text);
+  
+  const insightsPrompt = `Analyze this medical conversation in German and provide a brief performance summary (2-3 sentences) in English:
+
+Scenario Type: ${scenarioType}
+User's German responses: ${userMessages.join(' | ')}
+
+Focus on:
+- Communication effectiveness
+- Medical appropriateness  
+- German language quality
+- Professional behavior
+
+Provide constructive, encouraging feedback with specific examples.`;
+
+  try {
+    const response = await fetch(OPENAI_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENAI_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: insightsPrompt }],
+        temperature: 0.3,
+        max_tokens: 150
+      })
+    });
+
+    const result = await response.json();
+    return result.choices?.[0]?.message?.content || "Great job completing this scenario! Your communication was professional and appropriate.";
+  } catch (error) {
+    console.error("Error generating performance insights:", error);
+    return "Excellent work! You successfully completed this medical dialogue scenario.";
+  }
 };
 
 serve(async (req) => {
@@ -269,6 +350,9 @@ serve(async (req) => {
     const patientProfile = createPatientProfile(scenarioType, patientContext);
     console.log("Patient profile created");
 
+    // Check if conversation should end
+    const progressUpdate = calculateProgress(conversationHistory, scenarioType);
+    
     // Check if this was a quick reply suggestion
     const wasQuickReply = userMessage.includes("Wie fühlen Sie sich") || 
                          userMessage.includes("Können Sie mir") || 
@@ -302,6 +386,12 @@ serve(async (req) => {
     ];
 
     console.log("Making parallel OpenAI requests");
+
+    // Generate performance insights if conversation is complete
+    let performanceInsights: string | undefined;
+    if (progressUpdate.isComplete) {
+      performanceInsights = await generatePerformanceInsights([...conversationHistory, { speaker: 'user', text: userMessage }], scenarioType);
+    }
 
     // Make both requests in parallel for better performance
     const [dialogueResponse, feedbackResponse] = await Promise.all([
@@ -354,8 +444,7 @@ serve(async (req) => {
 
     const patientReply = dialogueResult.choices[0].message.content;
     const briefFeedback = feedbackResult.choices?.[0]?.message?.content || undefined;
-    const suggestionForNext = getSuggestionForNext(scenarioType, conversationHistory);
-    const progressUpdate = calculateProgress(conversationHistory, scenarioType);
+    const suggestionForNext = progressUpdate.isComplete ? undefined : getContextAwareSuggestion(scenarioType, [...conversationHistory, { speaker: 'user', text: userMessage }]);
 
     console.log("Unified response generated successfully");
 
@@ -364,6 +453,8 @@ serve(async (req) => {
       briefFeedback,
       suggestionForNext,
       progressUpdate,
+      conversationComplete: progressUpdate.isComplete,
+      performanceInsights,
       patientProfile: {
         name: patientProfile.name!,
         mood: patientProfile.mood!,

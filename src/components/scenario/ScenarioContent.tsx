@@ -15,8 +15,7 @@ import ResourcesTab from "./tabs/ResourcesTab";
 import NotesTab from "./tabs/NotesTab";
 import ConversationInput from "./ConversationInput";
 import ProgressTracker from "./ProgressTracker";
-import ResponseGuidance from "./ResponseGuidance";
-import FeedbackDisplay from "./FeedbackDisplay";
+import PerformanceInsights from "./PerformanceInsights";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { DialogueLine } from "@/data/scenarios";
@@ -91,10 +90,13 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [suggestion, setSuggestion] = useState("");
+  const [performanceInsights, setPerformanceInsights] = useState<string>("");
+  const [showInsights, setShowInsights] = useState(false);
   const [progressData, setProgressData] = useState({
     completedGoals: 0,
     totalGoals: 7,
-    currentObjective: "Start the conversation"
+    currentObjective: "Start the conversation",
+    isComplete: false
   });
   const isMobile = useIsMobile();
   
@@ -122,14 +124,19 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     isLoading,
     error: llmError,
     testConnection,
-    reset: resetLLM
+    reset: resetLLM,
+    isConversationComplete
   } = useUnifiedMedicalLLM({
     scenarioType: scenario?.category || 'patient-care',
     scenarioDescription: scenario?.description || 'Medical scenario',
     difficultyLevel: scenario?.difficulty || 'intermediate',
     patientContext: patientProfile,
     userLanguage,
-    onError: (error) => toast.error(`Response error: ${error}`)
+    onError: (error) => toast.error(`Response error: ${error}`),
+    onConversationComplete: (insights) => {
+      setPerformanceInsights(insights);
+      setShowInsights(true);
+    }
   });
   
   useEffect(() => {
@@ -139,6 +146,13 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       setCurrentDialogueIndex(initialLines.length);
     }
   }, [scenario]);
+
+  // Set initial suggestion when conversation starts
+  useEffect(() => {
+    if (conversation.length <= 2 && !suggestion) {
+      setSuggestion("Greet the patient and introduce yourself professionally");
+    }
+  }, [conversation.length, suggestion]);
 
   const handleTestConnection = async () => {
     setConnectionStatus('testing');
@@ -153,6 +167,11 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   };
 
   const handleSendMessage = async (message: string) => {
+    if (isConversationComplete) {
+      toast.warning("This conversation has ended. Please restart to continue.");
+      return;
+    }
+
     const userMessage: DialogueLine = {
       speaker: "user",
       text: message
@@ -162,7 +181,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     setConversation(updatedConversation);
     
     // Check if we have predefined dialogue to continue with
-    if (scenario?.dialogue && currentDialogueIndex < scenario.dialogue.length) {
+    if (scenario?.dialogue && currentDialogueIndex < scenario.dialogue.length && updatedConversation.length <= 4) {
       const nextDialogueLine = scenario.dialogue[currentDialogueIndex];
       
       setTimeout(() => {
@@ -191,6 +210,8 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
         
         if (response.suggestionForNext) {
           setSuggestion(response.suggestionForNext);
+        } else {
+          setSuggestion(""); // Clear suggestion if conversation is ending
         }
         
         // Update progress
@@ -204,10 +225,18 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   };
 
   const handleQuickReply = (text: string) => {
+    if (isConversationComplete) {
+      toast.warning("This conversation has ended. Please restart to continue.");
+      return;
+    }
     handleSendMessage(text);
   };
 
   const handleUserVoiceResponse = (text: string) => {
+    if (isConversationComplete) {
+      toast.warning("This conversation has ended. Please restart to continue.");
+      return;
+    }
     handleSendMessage(text);
   };
 
@@ -222,11 +251,14 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     }
     setShowFeedback(false);
     setFeedback("");
-    setSuggestion("");
+    setSuggestion("Greet the patient and introduce yourself professionally");
+    setShowInsights(false);
+    setPerformanceInsights("");
     setProgressData({
       completedGoals: 0,
       totalGoals: 7,
-      currentObjective: "Start the conversation"
+      currentObjective: "Start the conversation",
+      isComplete: false
     });
     resetLLM();
     toast.success("Conversation reset");
@@ -254,6 +286,22 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
 
   return (
     <div className="w-full max-w-4xl mx-auto">
+      {/* Performance Insights Modal */}
+      {showInsights && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="max-w-md w-full">
+            <PerformanceInsights
+              insights={performanceInsights}
+              completedGoals={progressData.completedGoals}
+              totalGoals={progressData.totalGoals}
+              scenarioType={scenario?.category || 'patient-care'}
+              onClose={() => setShowInsights(false)}
+              onRestart={handleResetConversation}
+            />
+          </div>
+        </div>
+      )}
+
       <Card className="h-full">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="flex items-center gap-2">
@@ -378,7 +426,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
               </div>
             </CardContent>
             
-            {activeTab === "conversation" && (
+            {activeTab === "conversation" && !isConversationComplete && (
               <ConversationInput 
                 onSendMessage={handleSendMessage} 
                 disabled={isLoading}
@@ -411,7 +459,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
               </TabsContent>
             </CardContent>
             
-            {activeTab === "conversation" && (
+            {activeTab === "conversation" && !isConversationComplete && (
               <ConversationInput 
                 onSendMessage={handleSendMessage} 
                 disabled={isLoading}
@@ -427,6 +475,23 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
                 <Loader2 className="h-3 w-3 mr-1 animate-spin" />
                 Generating response and feedback...
               </div>
+            </div>
+          </CardFooter>
+        )}
+
+        {isConversationComplete && activeTab === "conversation" && (
+          <CardFooter className="pt-0 pb-4">
+            <div className="w-full text-center">
+              <p className="text-sm text-medical-700 mb-2">
+                Conversation completed! 🎉
+              </p>
+              <Button 
+                onClick={() => setShowInsights(true)}
+                variant="outline"
+                size="sm"
+              >
+                View Performance Report
+              </Button>
             </div>
           </CardFooter>
         )}

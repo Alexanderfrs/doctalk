@@ -15,11 +15,37 @@ const ResponseGuidance: React.FC<ResponseGuidanceProps> = ({
   scenarioType,
   onQuickReply
 }) => {
-  const getQuickReplies = (type: string): string[] => {
-    const replies = {
+  const getContextualQuickReplies = (type: string, suggestionText?: string): string[] => {
+    // Dynamic replies based on the current suggestion context
+    if (suggestionText?.includes('Schmerz') || suggestionText?.includes('pain')) {
+      return [
+        "Können Sie mir zeigen, wo es weh tut?",
+        "Wie stark sind die Schmerzen von 1 bis 10?",
+        "Seit wann haben Sie diese Schmerzen?"
+      ];
+    }
+    
+    if (suggestionText?.includes('Beruhig') || suggestionText?.includes('calm')) {
+      return [
+        "Alles wird gut, ich bin hier um zu helfen.",
+        "Bleiben Sie ruhig, wir kümmern uns um Sie.",
+        "Atmen Sie tief ein und aus."
+      ];
+    }
+    
+    if (suggestionText?.includes('Begrüß') || suggestionText?.includes('greet')) {
+      return [
+        "Guten Tag, ich bin Ihre Pflegekraft.",
+        "Hallo, wie geht es Ihnen heute?",
+        "Schön Sie kennenzulernen."
+      ];
+    }
+
+    // Default replies by scenario type
+    const defaultReplies = {
       'patient-care': [
         "Wie fühlen Sie sich heute?",
-        "Können Sie mir Ihre Schmerzen beschreiben?",
+        "Können Sie mir Ihre Beschwerden beschreiben?",
         "Haben Sie noch Fragen?"
       ],
       'emergency': [
@@ -44,10 +70,10 @@ const ResponseGuidance: React.FC<ResponseGuidanceProps> = ({
       ]
     };
     
-    return replies[type] || replies['patient-care'];
+    return defaultReplies[type] || defaultReplies['patient-care'];
   };
 
-  const quickReplies = getQuickReplies(scenarioType);
+  const quickReplies = getContextualQuickReplies(scenarioType, suggestion);
 
   return (
     <Card className="border-blue-200 bg-blue-50">
@@ -55,7 +81,7 @@ const ResponseGuidance: React.FC<ResponseGuidanceProps> = ({
         <div className="flex items-start gap-2 mb-3">
           <Lightbulb className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
           <div>
-            <h5 className="text-sm font-medium text-blue-800 mb-1">Suggestion</h5>
+            <h5 className="text-sm font-medium text-blue-800 mb-1">Next Step</h5>
             <p className="text-xs text-blue-700">
               {suggestion || "Continue the conversation naturally"}
             </p>

@@ -21,6 +21,7 @@ interface UnifiedMedicalLLMOptions {
   patientContext?: PatientProfile;
   userLanguage?: string;
   onError?: (error: string) => void;
+  onConversationComplete?: (insights: string) => void;
 }
 
 interface UnifiedResponse {
@@ -31,7 +32,10 @@ interface UnifiedResponse {
     completedGoals: number;
     totalGoals: number;
     currentObjective: string;
+    isComplete: boolean;
   };
+  conversationComplete?: boolean;
+  performanceInsights?: string;
   patientProfile?: {
     name: string;
     mood: string;
@@ -48,6 +52,7 @@ interface UseUnifiedMedicalLLMReturn {
   error: string | null;
   reset: () => void;
   testConnection: () => Promise<boolean>;
+  isConversationComplete: boolean;
 }
 
 const useUnifiedMedicalLLM = ({
@@ -57,10 +62,12 @@ const useUnifiedMedicalLLM = ({
   patientContext,
   userLanguage = 'en',
   onError,
+  onConversationComplete,
 }: UnifiedMedicalLLMOptions): UseUnifiedMedicalLLMReturn => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [currentPatientProfile, setCurrentPatientProfile] = useState<PatientProfile | null>(null);
+  const [isConversationComplete, setIsConversationComplete] = useState<boolean>(false);
 
   const testConnection = useCallback(async (): Promise<boolean> => {
     try {
@@ -95,6 +102,10 @@ const useUnifiedMedicalLLM = ({
     userInput: string,
     conversationHistory: DialogueLine[] = []
   ): Promise<UnifiedResponse> => {
+    if (isConversationComplete) {
+      throw new Error('Conversation has already ended');
+    }
+
     setIsLoading(true);
     setError(null);
 
@@ -138,6 +149,15 @@ const useUnifiedMedicalLLM = ({
         setCurrentPatientProfile(data.patientProfile);
       }
 
+      // Handle conversation completion
+      if (data.conversationComplete && data.performanceInsights) {
+        setIsConversationComplete(true);
+        if (onConversationComplete) {
+          onConversationComplete(data.performanceInsights);
+        }
+        toast.success("Gespräch abgeschlossen! Leistungsbericht verfügbar.");
+      }
+
       console.log("Unified medical dialogue response received successfully");
       setIsLoading(false);
       return data;
@@ -168,17 +188,19 @@ const useUnifiedMedicalLLM = ({
         progressUpdate: {
           completedGoals: 0,
           totalGoals: 7,
-          currentObjective: "Continue the conversation"
+          currentObjective: "Continue the conversation",
+          isComplete: false
         },
         scenarioType,
         timestamp: new Date().toISOString()
       };
     }
-  }, [scenarioType, scenarioDescription, difficultyLevel, patientContext, userLanguage, onError]);
+  }, [scenarioType, scenarioDescription, difficultyLevel, patientContext, userLanguage, onError, onConversationComplete, isConversationComplete]);
 
   const reset = useCallback(() => {
     setError(null);
     setCurrentPatientProfile(null);
+    setIsConversationComplete(false);
   }, []);
 
   return {
@@ -187,7 +209,8 @@ const useUnifiedMedicalLLM = ({
     isLoading,
     error,
     reset,
-    testConnection
+    testConnection,
+    isConversationComplete
   };
 };
 
