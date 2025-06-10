@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
@@ -14,67 +15,24 @@ import ResourcesTab from "./tabs/ResourcesTab";
 import NotesTab from "./tabs/NotesTab";
 import ConversationInput from "./ConversationInput";
 import ProgressTracker from "./ProgressTracker";
-import PerformanceInsights from "./PerformanceInsights";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
+import { PatientProfileDisplay } from "./PatientProfileDisplay";
+import { ConnectionStatus } from "./ConnectionStatus";
+import { PerformanceInsightsModal } from "./PerformanceInsightsModal";
+import { ScenarioHeaderControls } from "./ScenarioHeaderControls";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { DialogueLine } from "@/data/scenarios";
 import { Button } from "@/components/ui/button";
-import { Loader2, RefreshCw, TestTube, User, Stethoscope } from "lucide-react";
+import { Loader2, User } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
 import { toast } from "sonner";
+import { createPatientProfile, PatientProfile } from "@/utils/patientProfiles";
 
 interface ScenarioContentProps {
   scenario: any;
   loading: boolean;
 }
-
-const createPatientProfile = (scenarioType: string, scenario: any) => {
-  const profiles = {
-    'patient-care': {
-      name: 'Frau Müller',
-      age: 65,
-      condition: scenario?.description || 'Routineuntersuchung',
-      mood: 'leicht besorgt',
-      personality: 'höflich aber ängstlich',
-      communicationStyle: 'direkt aber respektvoll'
-    },
-    'emergency': {
-      name: 'Herr Schmidt',
-      age: 45,
-      condition: 'Brustschmerzen',
-      mood: 'panisch',
-      personality: 'gestresst und ängstlich',
-      communicationStyle: 'kurz und abgehackt durch Schmerz'
-    },
-    'handover': {
-      name: 'Dr. Weber',
-      age: 38,
-      condition: 'Schichtübergabe',
-      mood: 'konzentriert',
-      personality: 'professionell und sachlich',
-      communicationStyle: 'medizinisch präzise'
-    },
-    'elderly-care': {
-      name: 'Herr Hoffmann',
-      age: 82,
-      condition: 'Demenz, leichte Verwirrung',
-      mood: 'verwirrt aber freundlich',
-      personality: 'freundlich aber vergesslich',
-      communicationStyle: 'langsam und manchmal wiederholt'
-    },
-    'disability-care': {
-      name: 'Lisa',
-      age: 28,
-      condition: 'geistige Behinderung',
-      mood: 'unsicher aber kooperativ',
-      personality: 'freundlich aber hilfesuchend',
-      communicationStyle: 'einfach und direkt'
-    }
-  };
-
-  return profiles[scenarioType] || profiles['patient-care'];
-};
 
 export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   scenario,
@@ -84,7 +42,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   const [activeTab, setActiveTab] = useState("conversation");
   const [conversation, setConversation] = useState<DialogueLine[]>([]);
   const [currentDialogueIndex, setCurrentDialogueIndex] = useState(0);
-  const [patientProfile, setPatientProfile] = useState<any>(null);
+  const [patientProfile, setPatientProfile] = useState<PatientProfile | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<'unknown' | 'testing' | 'connected' | 'failed'>('unknown');
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedback, setFeedback] = useState("");
@@ -98,12 +56,6 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     isComplete: false
   });
   const isMobile = useIsMobile();
-  
-  const tabTitles = {
-    conversation: "Interactive Dialogue",
-    resources: "Help Resources", 
-    notes: "Personal Notes"
-  };
 
   // Initialize patient profile when scenario changes
   useEffect(() => {
@@ -119,7 +71,6 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   
   const { 
     generateUnifiedResponse, 
-    currentPatientProfile,
     isLoading,
     error: llmError,
     testConnection,
@@ -286,20 +237,15 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* Performance Insights Modal */}
-      {showInsights && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="max-w-md w-full">
-            <PerformanceInsights
-              insights={performanceInsights}
-              completedGoals={progressData.completedGoals}
-              totalGoals={progressData.totalGoals}
-              scenarioType={scenario?.category || 'patient-care'}
-              onClose={() => setShowInsights(false)}
-              onRestart={handleResetConversation}
-            />
-          </div>
-        </div>
-      )}
+      <PerformanceInsightsModal
+        isOpen={showInsights}
+        insights={performanceInsights}
+        completedGoals={progressData.completedGoals}
+        totalGoals={progressData.totalGoals}
+        scenarioType={scenario?.category || 'patient-care'}
+        onClose={() => setShowInsights(false)}
+        onRestart={handleResetConversation}
+      />
 
       <Card className="h-full">
         <CardHeader className="flex flex-row items-center justify-between">
@@ -314,51 +260,19 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
           </CardTitle>
           
           {activeTab === "conversation" && (
-            <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={handleTestConnection}
-                disabled={connectionStatus === 'testing'}
-              >
-                {connectionStatus === 'testing' ? (
-                  <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-                ) : (
-                  <TestTube className="h-4 w-4 mr-1" />
-                )}
-                Test AI
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleResetConversation}
-                disabled={conversation.length <= 2}
-              >
-                <RefreshCw className="h-4 w-4 mr-1" /> 
-                Reset
-              </Button>
-            </div>
+            <ScenarioHeaderControls
+              connectionStatus={connectionStatus}
+              conversationLength={conversation.length}
+              onTestConnection={handleTestConnection}
+              onResetConversation={handleResetConversation}
+            />
           )}
         </CardHeader>
         
         {/* Connection Status Alert */}
-        {activeTab === "conversation" && connectionStatus !== 'unknown' && (
+        {activeTab === "conversation" && (
           <CardContent className="pt-0">
-            <Alert className={connectionStatus === 'connected' ? 'border-green-200 bg-green-50' : 
-                            connectionStatus === 'failed' ? 'border-red-200 bg-red-50' : 
-                            'border-yellow-200 bg-yellow-50'}>
-              <Stethoscope className="h-4 w-4" />
-              <AlertTitle>
-                {connectionStatus === 'connected' && "AI Connected"}
-                {connectionStatus === 'failed' && "AI Connection Failed"}
-                {connectionStatus === 'testing' && "Testing AI Connection..."}
-              </AlertTitle>
-              <AlertDescription>
-                {connectionStatus === 'connected' && "OpenAI integration is working. You can now have realistic medical conversations."}
-                {connectionStatus === 'failed' && "Could not connect to OpenAI. Check if OPENAI_API_KEY is properly configured in Supabase secrets."}
-                {connectionStatus === 'testing' && "Verifying OpenAI API connection..."}
-              </AlertDescription>
-            </Alert>
+            <ConnectionStatus status={connectionStatus} />
           </CardContent>
         )}
 
@@ -376,15 +290,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
         {/* Patient Profile Display */}
         {activeTab === "conversation" && patientProfile && (
           <CardContent className="pt-0">
-            <div className="bg-medical-50 border border-medical-200 rounded-lg p-3 mb-4">
-              <h4 className="text-sm font-medium text-medical-800 mb-2">Patient Profile</h4>
-              <div className="grid grid-cols-2 gap-2 text-xs text-medical-700">
-                <div><strong>Name:</strong> {patientProfile.name}</div>
-                <div><strong>Alter:</strong> {patientProfile.age}</div>
-                <div><strong>Zustand:</strong> {patientProfile.condition}</div>
-                <div><strong>Stimmung:</strong> {patientProfile.mood}</div>
-              </div>
-            </div>
+            <PatientProfileDisplay patientProfile={patientProfile} />
           </CardContent>
         )}
 
