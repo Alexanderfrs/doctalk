@@ -110,7 +110,7 @@ const Practice: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Fortschritt</p>
-                    <p className="text-xl font-bold">{Math.round(((userProgress?.scenarios_completed || 0) / scenarios.length) * 100)}%</p>
+                    <p className="text-xl font-bold">{Math.round(((userProgress?.scenarios_completed || 0) / Math.max(scenarios.length, 1)) * 100)}%</p>
                   </div>
                 </div>
               </CardContent>
@@ -157,6 +157,7 @@ const Practice: React.FC = () => {
                       navigate(`/scenario/${randomScenario.id}`);
                     }
                   }}
+                  disabled={scenarios.length === 0}
                 >
                   Zufälliges Szenario starten ({scenarios.length} verfügbar)
                 </Button>

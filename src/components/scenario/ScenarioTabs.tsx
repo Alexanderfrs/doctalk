@@ -1,11 +1,8 @@
 
 import React from "react";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MessageSquare, Book, Lightbulb } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import ConversationTab from "./tabs/ConversationTab";
-import ResourcesTab from "./tabs/ResourcesTab";
-import NotesTab from "./tabs/NotesTab";
 import ConversationInput from "./ConversationInput";
 import { DialogueLine } from "@/data/scenarios";
 
@@ -26,8 +23,6 @@ interface ScenarioTabsProps {
 }
 
 const ScenarioTabs: React.FC<ScenarioTabsProps> = ({
-  activeTab,
-  onTabChange,
   conversation,
   onSendMessage,
   isLLMLoading,
@@ -36,62 +31,35 @@ const ScenarioTabs: React.FC<ScenarioTabsProps> = ({
   feedback,
   onDismissFeedback,
   scenarioCategory,
-  notes,
-  onNotesChange,
   isConversationComplete
 }) => {
   return (
     <Card className="w-full">
-      <Tabs value={activeTab} onValueChange={onTabChange}>
-        <TabsList className="grid grid-cols-3 mb-4 touch-action-manipulation">
-          <TabsTrigger value="conversation" className="md:text-sm text-xs">
-            <MessageSquare className="mr-2 h-4 w-4" />
-            <span className="md:inline hidden">Conversation</span>
-          </TabsTrigger>
-          <TabsTrigger value="resources" className="md:text-sm text-xs">
-            <Book className="mr-2 h-4 w-4" />
-            <span className="md:inline hidden">Resources</span>
-          </TabsTrigger>
-          <TabsTrigger value="notes" className="md:text-sm text-xs">
-            <Lightbulb className="mr-2 h-4 w-4" />
-            <span className="md:inline hidden">Notes</span>
-          </TabsTrigger>
-        </TabsList>
-        
-        <div className="p-6">
-          <TabsContent value="conversation">
-            <ConversationTab 
-              conversation={conversation}
-              onUserResponse={onSendMessage}
-              isProcessingResponse={isLLMLoading}
-              suggestion={suggestion}
-              onQuickReply={onQuickReply}
-              feedback={feedback}
-              onDismissFeedback={onDismissFeedback}
-              conversationHistory={conversation}
-              scenarioType={scenarioCategory}
-            />
-          </TabsContent>
-          
-          <TabsContent value="resources">
-            <ResourcesTab />
-          </TabsContent>
-          
-          <TabsContent value="notes">
-            <NotesTab 
-              notes={notes} 
-              onNotesChange={onNotesChange} 
-            />
-          </TabsContent>
-        </div>
-        
-        {activeTab === "conversation" && !isConversationComplete && (
-          <ConversationInput 
-            onSendMessage={onSendMessage}
-            disabled={isLLMLoading}
-          />
-        )}
-      </Tabs>
+      <div className="flex items-center gap-2 p-4 border-b">
+        <MessageSquare className="h-5 w-5 text-medical-600" />
+        <h3 className="font-semibold text-medical-800">Gespräch</h3>
+      </div>
+      
+      <div className="p-6">
+        <ConversationTab 
+          conversation={conversation}
+          onUserResponse={onSendMessage}
+          isProcessingResponse={isLLMLoading}
+          suggestion={suggestion}
+          onQuickReply={onQuickReply}
+          feedback={feedback}
+          onDismissFeedback={onDismissFeedback}
+          conversationHistory={conversation}
+          scenarioType={scenarioCategory}
+        />
+      </div>
+      
+      {!isConversationComplete && (
+        <ConversationInput 
+          onSendMessage={onSendMessage}
+          disabled={isLLMLoading}
+        />
+      )}
     </Card>
   );
 };
