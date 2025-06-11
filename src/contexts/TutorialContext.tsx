@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
 export interface TutorialStep {
@@ -35,7 +34,7 @@ const tutorialSteps: TutorialStep[] = [
     id: 'welcome',
     page: '/dashboard',
     target: '[data-tutorial-target="welcome-header"]',
-    title: 'Willkommen zu MedGerman!',
+    title: 'Willkommen zu DocTalk!',
     description: 'Hier ist Ihr Dashboard mit Lernfortschritt und Empfehlungen für medizinisches Deutsch.',
     position: 'bottom'
   },
@@ -190,3 +189,5 @@ export const useTutorial = () => {
   }
   return context;
 };
+
+export default TutorialProvider;
