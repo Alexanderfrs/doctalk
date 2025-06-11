@@ -27,39 +27,216 @@ export type Database = {
         }
         Relationships: []
       }
+      learning_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          minutes_studied: number
+          scenarios_completed: number
+          session_date: string
+          updated_at: string
+          user_id: string
+          vocabulary_practiced: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          minutes_studied?: number
+          scenarios_completed?: number
+          session_date?: string
+          updated_at?: string
+          user_id: string
+          vocabulary_practiced?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          minutes_studied?: number
+          scenarios_completed?: number
+          session_date?: string
+          updated_at?: string
+          user_id?: string
+          vocabulary_practiced?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
           created_at: string
+          daily_goal_minutes: number | null
+          experience_level: string | null
           german_level: string | null
           id: string
+          learning_preferences: Json | null
           name: string | null
           native_language: string | null
+          practice_needs: string[] | null
           preferences: Json | null
           profession: string | null
+          profession_category: string | null
+          specialty_areas: string[] | null
           updated_at: string
+          weekly_goal_sessions: number | null
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
+          daily_goal_minutes?: number | null
+          experience_level?: string | null
           german_level?: string | null
           id: string
+          learning_preferences?: Json | null
           name?: string | null
           native_language?: string | null
+          practice_needs?: string[] | null
           preferences?: Json | null
           profession?: string | null
+          profession_category?: string | null
+          specialty_areas?: string[] | null
           updated_at?: string
+          weekly_goal_sessions?: number | null
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
+          daily_goal_minutes?: number | null
+          experience_level?: string | null
           german_level?: string | null
           id?: string
+          learning_preferences?: Json | null
           name?: string | null
           native_language?: string | null
+          practice_needs?: string[] | null
           preferences?: Json | null
           profession?: string | null
+          profession_category?: string | null
+          specialty_areas?: string[] | null
           updated_at?: string
+          weekly_goal_sessions?: number | null
+        }
+        Relationships: []
+      }
+      scenario_attempts: {
+        Row: {
+          accuracy_score: number | null
+          completed_at: string
+          created_at: string
+          duration_minutes: number | null
+          feedback_quality: string | null
+          id: string
+          notes: string | null
+          scenario_id: string
+          scenario_type: string
+          user_id: string
+        }
+        Insert: {
+          accuracy_score?: number | null
+          completed_at?: string
+          created_at?: string
+          duration_minutes?: number | null
+          feedback_quality?: string | null
+          id?: string
+          notes?: string | null
+          scenario_id: string
+          scenario_type: string
+          user_id: string
+        }
+        Update: {
+          accuracy_score?: number | null
+          completed_at?: string
+          created_at?: string
+          duration_minutes?: number | null
+          feedback_quality?: string | null
+          id?: string
+          notes?: string | null
+          scenario_id?: string
+          scenario_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          created_at: string
+          current_streak: number
+          daily_goal_minutes: number
+          id: string
+          last_study_date: string | null
+          longest_streak: number
+          scenarios_completed: number
+          total_study_minutes: number
+          updated_at: string
+          user_id: string
+          vocabulary_mastered: number
+          weekly_goal_minutes: number
+        }
+        Insert: {
+          created_at?: string
+          current_streak?: number
+          daily_goal_minutes?: number
+          id?: string
+          last_study_date?: string | null
+          longest_streak?: number
+          scenarios_completed?: number
+          total_study_minutes?: number
+          updated_at?: string
+          user_id: string
+          vocabulary_mastered?: number
+          weekly_goal_minutes?: number
+        }
+        Update: {
+          created_at?: string
+          current_streak?: number
+          daily_goal_minutes?: number
+          id?: string
+          last_study_date?: string | null
+          longest_streak?: number
+          scenarios_completed?: number
+          total_study_minutes?: number
+          updated_at?: string
+          user_id?: string
+          vocabulary_mastered?: number
+          weekly_goal_minutes?: number
+        }
+        Relationships: []
+      }
+      vocabulary_mastery: {
+        Row: {
+          category: string
+          correct_attempts: number
+          created_at: string
+          id: string
+          last_practiced: string
+          mastery_level: number
+          total_attempts: number
+          updated_at: string
+          user_id: string
+          word_id: string
+        }
+        Insert: {
+          category: string
+          correct_attempts?: number
+          created_at?: string
+          id?: string
+          last_practiced?: string
+          mastery_level?: number
+          total_attempts?: number
+          updated_at?: string
+          user_id: string
+          word_id: string
+        }
+        Update: {
+          category?: string
+          correct_attempts?: number
+          created_at?: string
+          id?: string
+          last_practiced?: string
+          mastery_level?: number
+          total_attempts?: number
+          updated_at?: string
+          user_id?: string
+          word_id?: string
         }
         Relationships: []
       }

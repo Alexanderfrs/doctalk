@@ -7,6 +7,7 @@ import RecentScenarios from "@/components/home/RecentScenarios";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLearningRoadmap } from "@/hooks/useLearningRoadmap";
+import { useProgressTracking } from "@/hooks/useProgressTracking";
 import scenarios from "@/data/scenarios";
 import { Calendar, BookOpen, Trophy, Target, Clock, CheckCircle, ArrowRight, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ const Dashboard = () => {
   const { translate } = useLanguage();
   const { profile } = useAuth();
   const { roadmap, generateRoadmap, updateObjectiveProgress } = useLearningRoadmap();
+  const { userProgress, recentSessions, isLoading: progressLoading } = useProgressTracking();
 
   useEffect(() => {
     if (profile?.german_level && !roadmap) {
@@ -24,19 +26,20 @@ const Dashboard = () => {
     }
   }, [profile, roadmap, generateRoadmap]);
 
-  // Mock user progress data - in a real app this would come from a backend
-  const userProgress = {
-    completedScenarios: 12,
-    totalScenarios: scenarios.length,
-    masteredVocabulary: 145,
-    totalVocabulary: 400,
-    streak: 7
+  // Use real progress data from the database
+  const userStats = {
+    lastActivity: userProgress?.last_study_date || "2024-01-15",
+    weeklyGoal: userProgress?.weekly_goal_minutes ? Math.ceil(userProgress.weekly_goal_minutes / userProgress.daily_goal_minutes) : 5,
+    weeklyProgress: recentSessions.length
   };
 
-  const userStats = {
-    lastActivity: "2024-01-15",
-    weeklyGoal: 5,
-    weeklyProgress: 3
+  // Calculate real user progress from database
+  const realUserProgress = {
+    completedScenarios: userProgress?.scenarios_completed || 0,
+    totalScenarios: scenarios.length,
+    masteredVocabulary: userProgress?.vocabulary_mastered || 0,
+    totalVocabulary: 400, // This could be dynamic based on available vocabulary
+    streak: userProgress?.current_streak || 0
   };
 
   // Get recent/recommended scenarios
@@ -47,6 +50,15 @@ const Dashboard = () => {
   }));
 
   const isLowLevel = profile?.german_level && ['A1', 'A2'].includes(profile.german_level);
+
+  // Calculate today's progress towards daily goal
+  const todaySession = recentSessions.find(session => {
+    const today = new Date().toISOString().split('T')[0];
+    return session.session_date === today;
+  });
+  const todayMinutes = todaySession?.minutes_studied || 0;
+  const dailyGoal = userProgress?.daily_goal_minutes || 20;
+  const dailyProgress = Math.min(Math.round((todayMinutes / dailyGoal) * 100), 100);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -89,8 +101,14 @@ const Dashboard = () => {
               <Trophy className="h-6 w-6 text-yellow-500 mr-3" />
               <h3 className="text-lg font-medium text-medical-800">Tagesziel</h3>
             </div>
-            <div className="text-2xl font-bold text-medical-700">{userStats.weeklyProgress}/5</div>
-            <p className="text-sm text-medical-600">Übungen heute</p>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-bold text-medical-700">{todayMinutes}min</span>
+                <span className="text-sm text-medical-600">von {dailyGoal}min</span>
+              </div>
+              <Progress value={dailyProgress} className="h-2" />
+              <p className="text-xs text-medical-600">{dailyProgress}% des Tagesziels erreicht</p>
+            </div>
           </div>
           
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
@@ -98,8 +116,11 @@ const Dashboard = () => {
               <Calendar className="h-6 w-6 text-green-500 mr-3" />
               <h3 className="text-lg font-medium text-green-800">Streak</h3>
             </div>
-            <div className="text-2xl font-bold text-green-700">{userProgress.streak}</div>
+            <div className="text-2xl font-bold text-green-700">{realUserProgress.streak}</div>
             <p className="text-sm text-green-600">Tage in Folge</p>
+            {userProgress?.longest_streak && userProgress.longest_streak > realUserProgress.streak && (
+              <p className="text-xs text-green-500 mt-1">Rekord: {userProgress.longest_streak} Tage</p>
+            )}
           </div>
           
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
@@ -109,6 +130,9 @@ const Dashboard = () => {
             </div>
             <div className="text-2xl font-bold text-blue-700">{roadmap?.progressPercentage || 0}%</div>
             <p className="text-sm text-blue-600">Lernziele erreicht</p>
+            <p className="text-xs text-blue-500 mt-1">
+              {userProgress?.total_study_minutes || 0} Minuten insgesamt
+            </p>
           </div>
         </div>
 
@@ -206,15 +230,15 @@ const Dashboard = () => {
                     <div className="grid grid-cols-2 gap-4 mt-6">
                       <div className="text-center p-3 bg-medical-50 rounded-lg">
                         <div className="text-lg font-bold text-medical-700">
-                          {roadmap.objectives.filter(obj => obj.completed).length}
+                          {realUserProgress.completedScenarios}
                         </div>
-                        <div className="text-xs text-medical-600">Abgeschlossen</div>
+                        <div className="text-xs text-medical-600">Szenarien</div>
                       </div>
                       <div className="text-center p-3 bg-blue-50 rounded-lg">
                         <div className="text-lg font-bold text-blue-700">
-                          {roadmap.objectives.length}
+                          {realUserProgress.masteredVocabulary}
                         </div>
-                        <div className="text-xs text-blue-600">Gesamt</div>
+                        <div className="text-xs text-blue-600">Vokabeln</div>
                       </div>
                     </div>
 
@@ -240,7 +264,7 @@ const Dashboard = () => {
 
         {/* Progress Overview */}
         <ProgressOverview 
-          userProgress={userProgress}
+          userProgress={realUserProgress}
           userStats={userStats}
         />
 
