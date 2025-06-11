@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AppHeader from "@/components/layout/AppHeader";
+import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PracticeSearch from "@/components/practice/PracticeSearch";
 import PracticeFilters from "@/components/practice/PracticeFilters";
@@ -57,7 +57,7 @@ const Practice: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
-      <AppHeader />
+      <Header />
       
       <main className="flex-grow pt-24 px-4 md:px-8 pb-12">
         <div className="container mx-auto">

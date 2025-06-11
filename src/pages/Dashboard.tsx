@@ -7,7 +7,7 @@ import { useLearningRoadmap } from "@/hooks/useLearningRoadmap";
 import ProgressOverview from "@/components/home/ProgressOverview";
 import RecentScenarios from "@/components/home/RecentScenarios";
 import LearningRoadmap from "@/components/dashboard/LearningRoadmap";
-import AppHeader from "@/components/layout/AppHeader";
+import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -106,7 +106,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
-      <AppHeader />
+      <Header />
       
       <main className="flex-grow pt-24 px-4 md:px-8 pb-20">
         <div className="container mx-auto">

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import AppHeader from "@/components/layout/AppHeader";
+import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import VocabularyHeader from "@/components/vocabulary/VocabularyHeader";
 import VocabularySearch from "@/components/vocabulary/VocabularySearch";
@@ -10,10 +10,11 @@ import VocabularyPracticeCard from "@/components/vocabulary/VocabularyPracticeCa
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, Play, RotateCcw } from "lucide-react";
+import { BookOpen, Play, RotateCcw, CheckCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useVocabulary } from "@/hooks/useVocabulary";
 import { useVocabularyProgress } from "@/hooks/useVocabularyProgress";
+import { toast } from "sonner";
 
 const Vocabulary: React.FC = () => {
   const { user, profile } = useAuth();
@@ -36,6 +37,7 @@ const Vocabulary: React.FC = () => {
   // State management
   const [practiceMode, setPracticeMode] = useState(false);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [practiceCompleted, setPracticeCompleted] = useState(false);
   
   // Get mastery statistics
   const masteryStats = getMasteryStats();
@@ -47,6 +49,7 @@ const Vocabulary: React.FC = () => {
   useEffect(() => {
     if (finalFilteredVocabulary.length > 0) {
       setCurrentWordIndex(0);
+      setPracticeCompleted(false);
     }
   }, [finalFilteredVocabulary]);
 
@@ -54,6 +57,7 @@ const Vocabulary: React.FC = () => {
     if (finalFilteredVocabulary.length > 0) {
       setPracticeMode(true);
       setCurrentWordIndex(0);
+      setPracticeCompleted(false);
     }
   };
 
@@ -63,20 +67,25 @@ const Vocabulary: React.FC = () => {
       setCurrentWordIndex(prev => prev + 1);
     } else {
       // Practice session complete
+      setPracticeCompleted(true);
+      toast.success("Vokabeltraining abgeschlossen!");
       setTimeout(() => {
         setPracticeMode(false);
         setCurrentWordIndex(0);
-      }, 2000);
+        setPracticeCompleted(false);
+      }, 3000);
     }
   };
 
   const handleResetPractice = () => {
     setCurrentWordIndex(0);
+    setPracticeCompleted(false);
   };
 
   const handleEndPractice = () => {
     setPracticeMode(false);
     setCurrentWordIndex(0);
+    setPracticeCompleted(false);
   };
 
   const handleResetFilters = () => {
@@ -95,7 +104,7 @@ const Vocabulary: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
-      <AppHeader />
+      <Header />
       
       <main className="flex-grow pt-24 px-4 md:px-8 pb-12">
         <div className="container mx-auto">
@@ -183,57 +192,74 @@ const Vocabulary: React.FC = () => {
             </Tabs>
           ) : (
             <div className="space-y-6">
-              {/* Practice Header */}
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="font-semibold">Vokabeltraining</h3>
-                      <p className="text-sm text-gray-600">
-                        Wort {currentWordIndex + 1} von {finalFilteredVocabulary.length}
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleResetPractice}
-                      >
-                        <RotateCcw className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleEndPractice}
-                      >
-                        Beenden
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  {/* Progress Bar */}
-                  <div className="mt-4">
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-medical-500 h-2 rounded-full transition-all duration-300"
-                        style={{ 
-                          width: `${((currentWordIndex + 1) / finalFilteredVocabulary.length) * 100}%` 
-                        }}
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              {practiceCompleted ? (
+                <Card>
+                  <CardContent className="p-8 text-center">
+                    <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+                    <h3 className="text-2xl font-semibold mb-2">Training abgeschlossen!</h3>
+                    <p className="text-gray-600 mb-4">
+                      Sie haben alle {finalFilteredVocabulary.length} Vokabeln durchgearbeitet.
+                    </p>
+                    <Button onClick={handleEndPractice}>
+                      Zurück zur Übersicht
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <>
+                  {/* Practice Header */}
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-semibold">Vokabeltraining</h3>
+                          <p className="text-sm text-gray-600">
+                            Wort {currentWordIndex + 1} von {finalFilteredVocabulary.length}
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleResetPractice}
+                          >
+                            <RotateCcw className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleEndPractice}
+                          >
+                            Beenden
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      {/* Progress Bar */}
+                      <div className="mt-4">
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div 
+                            className="bg-medical-500 h-2 rounded-full transition-all duration-300"
+                            style={{ 
+                              width: `${((currentWordIndex + 1) / finalFilteredVocabulary.length) * 100}%` 
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-              {/* Practice Card */}
-              {finalFilteredVocabulary[currentWordIndex] && (
-                <VocabularyPracticeCard
-                  word={{
-                    ...finalFilteredVocabulary[currentWordIndex],
-                    difficulty: 'B1' // Default difficulty since it's not in the data
-                  }}
-                  onComplete={handlePracticeComplete}
-                />
+                  {/* Practice Card */}
+                  {finalFilteredVocabulary[currentWordIndex] && (
+                    <VocabularyPracticeCard
+                      word={{
+                        ...finalFilteredVocabulary[currentWordIndex],
+                        difficulty: 'B1' // Default difficulty since it's not in the data
+                      }}
+                      onComplete={handlePracticeComplete}
+                    />
+                  )}
+                </>
               )}
             </div>
           )}
