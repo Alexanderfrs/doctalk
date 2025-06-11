@@ -45,6 +45,43 @@ const Dashboard: React.FC = () => {
     weeklyProgress: recentSessions.slice(0, 7).reduce((sum, session) => sum + session.minutes_studied, 0)
   };
 
+  // Sample scenarios data based on user's German level
+  const getSampleScenarios = () => {
+    const level = profile?.german_level || 'A1';
+    
+    const scenarios = [
+      {
+        id: "patient-intake-basic",
+        title: "Patientenaufnahme Grundlagen",
+        description: "Lernen Sie die Grundlagen der Patientenaufnahme und wichtige Fragen",
+        difficulty: level === 'A1' || level === 'A2' ? 'beginner' : level === 'B1' || level === 'B2' ? 'intermediate' : 'advanced',
+        category: "patient-care",
+        tags: ["Aufnahme", "Grundlagen", "Patientengespräch"],
+        progress: Math.floor(Math.random() * 100)
+      },
+      {
+        id: "medical-history",
+        title: "Anamnese führen",
+        description: "Effektive Anamnesegespräche mit Patienten führen",
+        difficulty: level === 'A1' ? 'beginner' : level === 'A2' || level === 'B1' ? 'intermediate' : 'advanced',
+        category: "patient-care", 
+        tags: ["Anamnese", "Patientengespräch", "Diagnose"],
+        progress: Math.floor(Math.random() * 100)
+      },
+      {
+        id: "team-communication",
+        title: "Kommunikation im Team",
+        description: "Professionelle Kommunikation mit Kollegen und Vorgesetzten",
+        difficulty: level === 'A1' || level === 'A2' ? 'beginner' : 'intermediate',
+        category: "teamwork",
+        tags: ["Team", "Kommunikation", "Kollegen"],
+        progress: Math.floor(Math.random() * 100)
+      }
+    ];
+
+    return scenarios;
+  };
+
   const handleObjectiveClick = (objective: any) => {
     if (objective.scenarioIds?.length > 0) {
       // Navigate to scenarios page or specific scenario
@@ -128,7 +165,7 @@ const Dashboard: React.FC = () => {
           </TabsContent>
 
           <TabsContent value="scenarios">
-            <RecentScenarios />
+            <RecentScenarios activeScenarios={getSampleScenarios()} />
           </TabsContent>
 
           <TabsContent value="vocabulary">
