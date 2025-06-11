@@ -65,8 +65,15 @@ const AppHeader: React.FC<AppHeaderProps> = ({
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
-  // For authenticated users, we only show logo and auth buttons since AppNavigation handles navigation
+  // For authenticated users, show full navigation with desktop nav
   if (isAuthenticated) {
+    const navItems = [
+      { path: "/dashboard", label: translate("home"), icon: null },
+      { path: "/practice", label: translate("practice"), icon: null },
+      { path: "/vocabulary", label: translate("vocabulary"), icon: null },
+      { path: "/profile", label: translate("profile"), icon: null }
+    ];
+
     return (
       <header
         className={cn(
@@ -81,6 +88,25 @@ const AppHeader: React.FC<AppHeaderProps> = ({
             {/* Logo */}
             <AppLogo path={logoPath} showSlogan={showSlogan} size="large" />
 
+            {/* Desktop Navigation for authenticated users */}
+            <nav className="hidden md:flex space-x-1">
+              {navItems.map((item) => (
+                <Button
+                  key={item.path}
+                  variant="ghost"
+                  asChild
+                  className={cn(
+                    "text-neutral-600 hover:text-medical-600",
+                    location.pathname === item.path && "bg-medical-50 text-medical-600"
+                  )}
+                >
+                  <a href={item.path}>
+                    <span>{item.label}</span>
+                  </a>
+                </Button>
+              ))}
+            </nav>
+
             {/* Language selector and Auth buttons */}
             <AuthButtons 
               isAuthenticated={isAuthenticated} 
@@ -89,13 +115,38 @@ const AppHeader: React.FC<AppHeaderProps> = ({
               onLogout={handleLogout}
               showAuthButtons={showAuthButtons}
             />
+
+            {/* Mobile menu button */}
+            <div className="md:hidden flex items-center space-x-2">
+              <UILanguageSelector />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleMobileMenu}
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              >
+                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </Button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        <MobileNavMenu 
+          isOpen={isMobileMenuOpen}
+          navItems={navItems}
+          isAuthenticated={isAuthenticated}
+          handleLogin={handleLogin}
+          handleRegister={handleRegister}
+          handleLogout={handleLogout}
+          onClose={() => setIsMobileMenuOpen(false)}
+          showAuthButtons={showAuthButtons}
+        />
       </header>
     );
   }
 
-  // For non-authenticated users, show full navigation
+  // For non-authenticated users, show basic navigation
   const navItems = [
     { path: "/#features", label: translate("features"), icon: null },
     { path: "/#pricing", label: translate("pricingTitle"), icon: null },
