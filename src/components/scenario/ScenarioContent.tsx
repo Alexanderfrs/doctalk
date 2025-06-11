@@ -1,19 +1,9 @@
 
-import React, { useState, useEffect } from "react";
-import { Scenario, DialogueLine } from "@/data/scenarios";
+import React from "react";
+import { Scenario } from "@/data/scenarios";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MessageSquare, Book, Lightbulb } from "lucide-react";
-import ConversationTab from "./tabs/ConversationTab";
-import ResourcesTab from "./tabs/ResourcesTab";
-import NotesTab from "./tabs/NotesTab";
-import ConversationInput from "./ConversationInput";
-import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
-import { toast } from "sonner";
-import ProgressTracker from "./ProgressTracker";
-import { PerformanceInsightsModal } from "./PerformanceInsightsModal";
-import { createPatientProfile } from "@/utils/patientProfiles";
+import ScenarioContainer from "./ScenarioContainer";
 
 interface ScenarioContentProps {
   scenario: Scenario | null;
@@ -24,94 +14,6 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
   scenario,
   loading,
 }) => {
-  const [activeTab, setActiveTab] = useState("conversation");
-  const [conversation, setConversation] = useState<DialogueLine[]>([]);
-  const [notes, setNotes] = useState("");
-  const [feedback, setFeedback] = useState<string>("");
-  const [suggestion, setSuggestion] = useState<string>("");
-  const [showInsights, setShowInsights] = useState(false);
-  const [performanceInsights, setPerformanceInsights] = useState<string>("");
-
-  const {
-    generateUnifiedResponse,
-    currentPatientProfile,
-    isLoading: isLLMLoading,
-    error: llmError,
-    reset: resetLLM,
-    isConversationComplete
-  } = useUnifiedMedicalLLM({
-    scenarioType: scenario?.category as any || 'patient-care',
-    scenarioDescription: scenario?.description || '',
-    difficultyLevel: 'intermediate',
-    patientContext: scenario ? createPatientProfile(scenario.category, scenario) : undefined,
-    userLanguage: 'en',
-    onError: (error) => {
-      console.error("LLM Error:", error);
-      toast.error("Ein Fehler ist beim Generieren der Antwort aufgetreten.");
-    },
-    onConversationComplete: (insights) => {
-      setPerformanceInsights(insights);
-      setShowInsights(true);
-    }
-  });
-
-  useEffect(() => {
-    if (scenario) {
-      setConversation([]);
-      setNotes("");
-      setFeedback("");
-      setSuggestion("");
-      resetLLM();
-    }
-  }, [scenario, resetLLM]);
-
-  const handleSendMessage = async (message: string) => {
-    if (!scenario || isLLMLoading || isConversationComplete) return;
-
-    try {
-      const userMessage: DialogueLine = {
-        speaker: 'user',
-        text: message
-      };
-
-      const updatedConversation = [...conversation, userMessage];
-      setConversation(updatedConversation);
-
-      const response = await generateUnifiedResponse(message, conversation);
-
-      const aiMessage: DialogueLine = {
-        speaker: scenario.category === 'teamwork' ? 'colleague' : 'patient',
-        text: response.patientReply
-      };
-
-      setConversation(prev => [...prev, aiMessage]);
-      
-      if (response.briefFeedback) {
-        setFeedback(response.briefFeedback);
-      }
-      
-      if (response.suggestionForNext) {
-        setSuggestion(response.suggestionForNext);
-      }
-
-    } catch (error) {
-      console.error("Error sending message:", error);
-      toast.error("Fehler beim Senden der Nachricht");
-    }
-  };
-
-  const handleQuickReply = (text: string) => {
-    handleSendMessage(text);
-  };
-
-  const handleDismissFeedback = () => {
-    setFeedback("");
-  };
-
-  const handleNotesChange = (newNotes: string) => {
-    setNotes(newNotes);
-  };
-
   if (loading) {
     return (
       <div className="w-full max-w-4xl mx-auto space-y-6">
@@ -131,91 +33,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     );
   }
 
-  const completedGoals = Math.min(Math.floor(conversation.length / 2), 7);
-  const totalGoals = 7;
-  const currentObjective = isConversationComplete 
-    ? "Gespräch abgeschlossen" 
-    : "Führen Sie das Gespräch fort";
-
-  return (
-    <div className="w-full max-w-4xl mx-auto space-y-6">
-      <ProgressTracker 
-        completedGoals={completedGoals}
-        totalGoals={totalGoals}
-        currentObjective={currentObjective}
-      />
-      
-      <Card className="w-full">
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-3 mb-4 touch-action-manipulation">
-            <TabsTrigger value="conversation" className="md:text-sm text-xs">
-              <MessageSquare className="mr-2 h-4 w-4" />
-              <span className="md:inline hidden">Conversation</span>
-            </TabsTrigger>
-            <TabsTrigger value="resources" className="md:text-sm text-xs">
-              <Book className="mr-2 h-4 w-4" />
-              <span className="md:inline hidden">Resources</span>
-            </TabsTrigger>
-            <TabsTrigger value="notes" className="md:text-sm text-xs">
-              <Lightbulb className="mr-2 h-4 w-4" />
-              <span className="md:inline hidden">Notes</span>
-            </TabsTrigger>
-          </TabsList>
-          
-          <div className="p-6">
-            <TabsContent value="conversation">
-              <ConversationTab 
-                conversation={conversation}
-                onUserResponse={handleSendMessage}
-                isProcessingResponse={isLLMLoading}
-                suggestion={suggestion}
-                onQuickReply={handleQuickReply}
-                feedback={feedback}
-                onDismissFeedback={handleDismissFeedback}
-                conversationHistory={conversation}
-                scenarioType={scenario.category}
-              />
-            </TabsContent>
-            
-            <TabsContent value="resources">
-              <ResourcesTab />
-            </TabsContent>
-            
-            <TabsContent value="notes">
-              <NotesTab 
-                notes={notes} 
-                onNotesChange={handleNotesChange} 
-              />
-            </TabsContent>
-          </div>
-          
-          {activeTab === "conversation" && !isConversationComplete && (
-            <ConversationInput 
-              onSendMessage={handleSendMessage}
-              disabled={isLLMLoading}
-            />
-          )}
-        </Tabs>
-      </Card>
-
-      <PerformanceInsightsModal
-        isOpen={showInsights}
-        onClose={() => setShowInsights(false)}
-        insights={performanceInsights}
-        completedGoals={completedGoals}
-        totalGoals={totalGoals}
-        scenarioType={scenario.category}
-        onRestart={() => {
-          setConversation([]);
-          setNotes("");
-          setFeedback("");
-          setSuggestion("");
-          setShowInsights(false);
-          resetLLM();
-        }}
-      />
-    </div>
-  );
+  return <ScenarioContainer scenario={scenario} />;
 };
 
 export default ScenarioContent;
