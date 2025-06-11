@@ -1,13 +1,12 @@
 
-import React from "react";
-import { Card, CardHeader, CardContent, CardDescription, CardTitle, CardFooter } from "@/components/ui/card";
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
-import { Award, Book, FileText } from "lucide-react";
+import { Target, Trophy, Calendar, Award } from "lucide-react";
 
 interface GoalsTabProps {
   dailyGoal: number;
@@ -15,175 +14,138 @@ interface GoalsTabProps {
   onTakeCertificateTest: (certId: string) => void;
 }
 
-const certificateTypes = [{
-  id: "app-achievement",
-  name: "App Achievement",
-  description: "Internal certificates for completing app milestones",
-  certificates: [{
-    id: "medical-basics",
-    name: "Medical Basics",
-    level: "A2",
-    completed: true,
-    date: "2023-10-15"
-  }, {
-    id: "hospital-communication",
-    name: "Hospital Communication",
-    level: "B1",
-    completed: false
-  }, {
-    id: "emergency-care",
-    name: "Emergency Care",
-    level: "B2",
-    completed: false
-  }]
-}, {
-  id: "official-exam",
-  name: "Official Exam Preparation",
-  description: "Practice tests for official German language certificates",
-  certificates: [{
-    id: "telc-b1",
-    name: "telc Deutsch B1 Pflege",
-    level: "B1",
-    completed: false
-  }, {
-    id: "telc-b2",
-    name: "telc Deutsch B2 Pflege",
-    level: "B2",
-    completed: false
-  }, {
-    id: "goethe-b2",
-    name: "Goethe-Zertifikat B2",
-    level: "B2",
-    completed: false
-  }]
-}];
-
-const GoalsTab: React.FC<GoalsTabProps> = ({
-  dailyGoal,
+const GoalsTab: React.FC<GoalsTabProps> = ({ 
+  dailyGoal, 
   onSaveGoals,
-  onTakeCertificateTest
+  onTakeCertificateTest 
 }) => {
-  const [goalValue, setGoalValue] = React.useState(dailyGoal);
+  const [localDailyGoal, setLocalDailyGoal] = useState(dailyGoal);
+  const [weeklyTarget, setWeeklyTarget] = useState(5);
+
+  const certificates = [
+    {
+      id: "fsp",
+      name: "Fachsprachenprüfung (FSP)",
+      description: "Medizinische Fachsprachenprüfung für Ärzte",
+      difficulty: "B2-C1",
+      status: "available"
+    },
+    {
+      id: "telc-medizin",
+      name: "telc Deutsch B2-C1 Medizin",
+      description: "Fachsprachenprüfung für Gesundheitsberufe", 
+      difficulty: "B2-C1",
+      status: "available"
+    },
+    {
+      id: "oet",
+      name: "OET (Occupational English Test)",
+      description: "Englischtest für Gesundheitsberufe",
+      difficulty: "B1-C1", 
+      status: "coming_soon"
+    }
+  ];
 
   return (
     <div className="space-y-6">
-      <Card className="dark:bg-neutral-800 dark:border-neutral-700">
+      {/* Daily Learning Goals */}
+      <Card>
         <CardHeader>
-          <CardTitle>Lernziele</CardTitle>
-          <CardDescription className="dark:text-neutral-400">
-            Definieren Sie Ihre persönlichen Sprachlernziele
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="targetLevel">Ziel-Sprachniveau</Label>
-            <Select defaultValue="b1">
-              <SelectTrigger id="targetLevel">
-                <SelectValue placeholder="Wählen Sie Ihr Ziel-Niveau" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="a1">A1 - Anfänger</SelectItem>
-                <SelectItem value="a2">A2 - Grundlegende Kenntnisse</SelectItem>
-                <SelectItem value="b1">B1 - Fortgeschrittene Grundkenntnisse</SelectItem>
-                <SelectItem value="b2">B2 - Selbständige Sprachverwendung</SelectItem>
-                <SelectItem value="c1">C1 - Fachkundige Sprachkenntnisse</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
-          <div className="space-y-2">
-            <Label>Tägliches Lernziel (Minuten)</Label>
-            <div className="flex items-center gap-4">
-              <Slider 
-                value={[goalValue]} 
-                min={5} 
-                max={60} 
-                step={5} 
-                onValueChange={val => setGoalValue(val[0])} 
-                className="flex-grow" 
-              />
-              <span className="font-medium w-12 text-center">{goalValue}</span>
-            </div>
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="deadline">Ziel erreichen bis</Label>
-            <Input id="deadline" type="date" defaultValue="2023-12-31" />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="focusAreas">Schwerpunktbereiche</Label>
-            <Select defaultValue="medical-communication">
-              <SelectTrigger id="focusAreas">
-                <SelectValue placeholder="Wählen Sie Ihre Schwerpunkte" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="medical-vocabulary">Medizinisches Vokabular</SelectItem>
-                <SelectItem value="medical-communication">Patientenkommunikation</SelectItem>
-                <SelectItem value="documentation">Dokumentation & Berichte</SelectItem>
-                <SelectItem value="emergencies">Notfallsituationen</SelectItem>
-                <SelectItem value="workplace-communication">Arbeitsplatz-Kommunikation</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button onClick={onSaveGoals}>Ziele speichern</Button>
-        </CardFooter>
-      </Card>
-      
-      <Card className="dark:bg-neutral-800 dark:border-neutral-700">
-        <CardHeader>
-          <CardTitle>Zertifikate</CardTitle>
-          <CardDescription className="dark:text-neutral-400">
-            Bereiten Sie sich auf offizielle Sprachzertifikate vor oder erwerben Sie App-Zertifikate
-          </CardDescription>
+          <CardTitle className="flex items-center gap-2">
+            <Target className="h-5 w-5" />
+            Tägliche Lernziele
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {certificateTypes.map(type => (
-            <div key={type.id} className="space-y-3">
-              <h3 className="font-medium flex items-center gap-2">
-                <Award className="h-5 w-5 text-medical-500" />
-                {type.name}
-              </h3>
-              <p className="text-sm text-neutral-600 dark:text-neutral-300 mb-2">{type.description}</p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {type.certificates.map(cert => (
-                  <div 
-                    key={cert.id} 
-                    className={`border rounded-lg p-3 ${
-                      cert.completed 
-                        ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800" 
-                        : "bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700"
-                    }`}
-                  >
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium">{cert.name}</h4>
-                      <Badge variant="outline">{cert.level}</Badge>
-                    </div>
-                    
-                    {cert.completed ? (
-                      <div className="text-sm text-green-700 dark:text-green-400 flex items-center gap-1">
-                        <Award className="h-4 w-4" />
-                        Erworben am {cert.date}
-                      </div>
-                    ) : (
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="w-full mt-2" 
-                        onClick={() => onTakeCertificateTest(cert.id)}
-                      >
-                        <FileText className="h-4 w-4 mr-1" />
-                        Test starten
-                      </Button>
-                    )}
-                  </div>
-                ))}
+          <div className="space-y-2">
+            <Label htmlFor="daily-goal">Tägliches Lernziel (Minuten)</Label>
+            <div className="space-y-4">
+              <Slider
+                id="daily-goal"
+                min={5}
+                max={120}
+                step={5}
+                value={[localDailyGoal]}
+                onValueChange={(value) => setLocalDailyGoal(value[0])}
+                className="w-full"
+              />
+              <div className="text-center">
+                <span className="text-2xl font-bold text-medical-600">{localDailyGoal}</span>
+                <span className="text-gray-500 ml-1">Minuten pro Tag</span>
               </div>
             </div>
-          ))}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="weekly-target">Wöchentliche Lerntage</Label>
+            <div className="space-y-4">
+              <Slider
+                id="weekly-target"
+                min={1}
+                max={7}
+                step={1}
+                value={[weeklyTarget]}
+                onValueChange={(value) => setWeeklyTarget(value[0])}
+                className="w-full"
+              />
+              <div className="text-center">
+                <span className="text-2xl font-bold text-medical-600">{weeklyTarget}</span>
+                <span className="text-gray-500 ml-1">Tage pro Woche</span>
+              </div>
+            </div>
+          </div>
+
+          <Button onClick={onSaveGoals} className="w-full">
+            Ziele speichern
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Certificate Preparation */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Award className="h-5 w-5" />
+            Zertifikatsvorbereitung
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <p className="text-gray-600">
+              Bereiten Sie sich auf anerkannte Sprachzertifikate vor:
+            </p>
+            
+            {certificates.map((cert) => (
+              <div 
+                key={cert.id}
+                className="border rounded-lg p-4 space-y-3"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h4 className="font-medium">{cert.name}</h4>
+                    <p className="text-sm text-gray-600 mt-1">{cert.description}</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Badge variant="outline">{cert.difficulty}</Badge>
+                      <Badge 
+                        variant={cert.status === 'available' ? 'default' : 'secondary'}
+                      >
+                        {cert.status === 'available' ? 'Verfügbar' : 'Bald verfügbar'}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+                
+                <Button 
+                  onClick={() => onTakeCertificateTest(cert.id)}
+                  disabled={cert.status !== 'available'}
+                  className="w-full"
+                  variant={cert.status === 'available' ? 'default' : 'outline'}
+                >
+                  {cert.status === 'available' ? 'Test starten' : 'Bald verfügbar'}
+                </Button>
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
     </div>
