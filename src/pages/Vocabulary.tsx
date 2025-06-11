@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import HelpButton from "@/components/tutorial/HelpButton";
 import VocabularyHeader from "@/components/vocabulary/VocabularyHeader";
 import VocabularySearch from "@/components/vocabulary/VocabularySearch";
 import VocabularyFilters from "@/components/vocabulary/VocabularyFilters";
@@ -110,19 +111,21 @@ const Vocabulary: React.FC = () => {
         <div className="container mx-auto">
           <VocabularyHeader />
           
-          <VocabularyProgress 
-            masteredCount={masteredWords.length}
-            totalCount={allWords.length}
-          />
+          <div data-tutorial-target="vocabulary-progress">
+            <VocabularyProgress 
+              masteredCount={masteredWords.length}
+              totalCount={allWords.length}
+            />
+          </div>
 
           {!practiceMode ? (
-            <Tabs defaultValue="browse" className="space-y-6">
+            <Tabs defaultValue="browse" className="space-y-6" data-tutorial-target="vocabulary-tabs">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="browse" className="flex items-center gap-2">
                   <BookOpen className="h-4 w-4" />
                   Durchsuchen
                 </TabsTrigger>
-                <TabsTrigger value="practice" className="flex items-center gap-2">
+                <TabsTrigger value="practice" className="flex items-center gap-2" data-tutorial-target="practice-tab">
                   <Play className="h-4 w-4" />
                   Üben
                 </TabsTrigger>
@@ -267,6 +270,7 @@ const Vocabulary: React.FC = () => {
       </main>
       
       <Footer />
+      <HelpButton />
     </div>
   );
 };

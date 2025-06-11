@@ -1,6 +1,6 @@
-
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTutorial } from "@/contexts/TutorialContext";
 import { useProgressTracking } from "@/hooks/useProgressTracking";
 import { useVocabularyProgress } from "@/hooks/useVocabularyProgress";
 import { useLearningRoadmap } from "@/hooks/useLearningRoadmap";
@@ -9,6 +9,7 @@ import RecentScenarios from "@/components/home/RecentScenarios";
 import LearningRoadmap from "@/components/dashboard/LearningRoadmap";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import HelpButton from "@/components/tutorial/HelpButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,9 +18,23 @@ import { toast } from "sonner";
 
 const Dashboard: React.FC = () => {
   const { user, profile } = useAuth();
+  const { startTutorial, isCompleted } = useTutorial();
   const { userProgress, recentSessions } = useProgressTracking();
   const { getMasteryStats } = useVocabularyProgress();
   const { roadmap, generateRoadmap, isLoading: roadmapLoading } = useLearningRoadmap();
+
+  // Auto-start tutorial for new users
+  useEffect(() => {
+    if (user && profile && !isCompleted) {
+      const hasSeenTutorial = localStorage.getItem('tutorial-completed') === 'true';
+      if (!hasSeenTutorial) {
+        // Start tutorial after a short delay to ensure page is loaded
+        setTimeout(() => {
+          startTutorial();
+        }, 1000);
+      }
+    }
+  }, [user, profile, isCompleted, startTutorial]);
 
   // Generate roadmap based on user's German level
   useEffect(() => {
@@ -111,7 +126,7 @@ const Dashboard: React.FC = () => {
       <main className="flex-grow pt-24 px-4 md:px-8 pb-20">
         <div className="container mx-auto">
           {/* Welcome Header */}
-          <div className="mb-8">
+          <div className="mb-8" data-tutorial-target="welcome-header">
             <h1 className="text-3xl font-bold text-medical-800 mb-2">
               Willkommen zurück{profile?.name ? `, ${profile.name}` : ''}!
             </h1>
@@ -121,19 +136,21 @@ const Dashboard: React.FC = () => {
           </div>
 
           {/* Progress Overview */}
-          <ProgressOverview 
-            userProgress={progressData} 
-            userStats={statsData} 
-          />
+          <div data-tutorial-target="progress-overview">
+            <ProgressOverview 
+              userProgress={progressData} 
+              userStats={statsData} 
+            />
+          </div>
 
           {/* Main Content Tabs */}
           <Tabs defaultValue="roadmap" className="space-y-6">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="roadmap" className="flex items-center gap-2">
+              <TabsTrigger value="roadmap" className="flex items-center gap-2" data-tutorial-target="roadmap-tab">
                 <Target className="h-4 w-4" />
                 Lernpfad
               </TabsTrigger>
-              <TabsTrigger value="scenarios" className="flex items-center gap-2">
+              <TabsTrigger value="scenarios" className="flex items-center gap-2" data-tutorial-target="scenarios-tab">
                 <MessageCircle className="h-4 w-4" />
                 Szenarien
               </TabsTrigger>
@@ -214,6 +231,7 @@ const Dashboard: React.FC = () => {
       </main>
       
       <Footer />
+      <HelpButton />
     </div>
   );
 };

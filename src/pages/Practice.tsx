@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import HelpButton from "@/components/tutorial/HelpButton";
 import PracticeSearch from "@/components/practice/PracticeSearch";
 import PracticeFilters from "@/components/practice/PracticeFilters";
 import ScenarioGrid from "@/components/practice/ScenarioGrid";
@@ -72,7 +72,7 @@ const Practice: React.FC = () => {
           </div>
 
           {/* Progress Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8" data-tutorial-target="practice-progress">
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
@@ -131,7 +131,7 @@ const Practice: React.FC = () => {
           </div>
 
           {/* Quick Actions - Single card for scenario start */}
-          <div className="mb-8">
+          <div className="mb-8" data-tutorial-target="quick-start">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -161,21 +161,23 @@ const Practice: React.FC = () => {
           </div>
 
           {/* Search and Filters */}
-          <PracticeSearch
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            placeholder="Szenarien durchsuchen..."
-          />
+          <div data-tutorial-target="search-filters">
+            <PracticeSearch
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              placeholder="Szenarien durchsuchen..."
+            />
 
-          <PracticeFilters
-            selectedLevel={selectedLevel}
-            selectedCategory={selectedCategory}
-            selectedTags={selectedTags}
-            onLevelChange={setSelectedLevel}
-            onCategoryChange={setSelectedCategory}
-            onTagToggle={handleTagToggle}
-            onClearFilters={handleClearFilters}
-          />
+            <PracticeFilters
+              selectedLevel={selectedLevel}
+              selectedCategory={selectedCategory}
+              selectedTags={selectedTags}
+              onLevelChange={setSelectedLevel}
+              onCategoryChange={setSelectedCategory}
+              onTagToggle={handleTagToggle}
+              onClearFilters={handleClearFilters}
+            />
+          </div>
 
           {/* Scenarios Grid */}
           {isLoading ? (
@@ -196,6 +198,7 @@ const Practice: React.FC = () => {
       </main>
       
       <Footer />
+      <HelpButton />
     </div>
   );
 };
