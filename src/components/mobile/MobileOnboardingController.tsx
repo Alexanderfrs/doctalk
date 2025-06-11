@@ -71,7 +71,6 @@ const MobileOnboardingController: React.FC = () => {
         showArrows={false}
         loop={false}
         className="h-full"
-        currentIndex={currentIndex}
       >
         {screens}
       </SwipeableContainer>
