@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from "react";
 import { Scenario, DialogueLine } from "@/data/scenarios";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TabNavigation } from "./TabNavigation";
+import TabNavigation from "./TabNavigation";
 import ConversationTab from "./tabs/ConversationTab";
 import ResourcesTab from "./tabs/ResourcesTab";
 import NotesTab from "./tabs/NotesTab";
@@ -10,7 +11,7 @@ import ConversationInput from "./ConversationInput";
 import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
 import { toast } from "sonner";
 import ProgressTracker from "./ProgressTracker";
-import PerformanceInsightsModal from "./PerformanceInsightsModal";
+import { PerformanceInsightsModal } from "./PerformanceInsightsModal";
 
 interface ScenarioContentProps {
   scenario: Scenario | null;
@@ -40,7 +41,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     scenarioType: scenario?.category as any || 'patient-care',
     scenarioDescription: scenario?.description || '',
     difficultyLevel: 'intermediate',
-    patientContext: scenario?.patient,
+    patientContext: scenario?.description || '',
     userLanguage: 'en',
     onError: (error) => {
       console.error("LLM Error:", error);
@@ -77,7 +78,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       const response = await generateUnifiedResponse(message, conversation);
 
       const aiMessage: DialogueLine = {
-        speaker: scenario.category === 'handover' ? 'colleague' : 'patient',
+        speaker: scenario.category === 'teamwork' ? 'colleague' : 'patient',
         text: response.patientReply
       };
 
@@ -124,18 +125,19 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     );
   }
 
-  const progress = {
-    completedGoals: Math.min(Math.floor(conversation.length / 2), 7),
-    totalGoals: 7,
-    currentObjective: isConversationComplete 
-      ? "Gespräch abgeschlossen" 
-      : "Führen Sie das Gespräch fort",
-    isComplete: isConversationComplete
-  };
+  const completedGoals = Math.min(Math.floor(conversation.length / 2), 7);
+  const totalGoals = 7;
+  const currentObjective = isConversationComplete 
+    ? "Gespräch abgeschlossen" 
+    : "Führen Sie das Gespräch fort";
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
-      <ProgressTracker progress={progress} />
+      <ProgressTracker 
+        completedGoals={completedGoals}
+        totalGoals={totalGoals}
+        currentObjective={currentObjective}
+      />
       
       <Card className="w-full">
         <TabNavigation 
@@ -160,12 +162,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
           
           {activeTab === "resources" && <ResourcesTab />}
           
-          {activeTab === "notes" && (
-            <NotesTab 
-              notes={notes}
-              onNotesChange={setNotes}
-            />
-          )}
+          {activeTab === "notes" && <NotesTab />}
         </div>
         
         {activeTab === "conversation" && !isConversationComplete && (
@@ -180,7 +177,17 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
         isOpen={showInsights}
         onClose={() => setShowInsights(false)}
         insights={performanceInsights}
-        scenarioTitle={scenario.title}
+        completedGoals={completedGoals}
+        totalGoals={totalGoals}
+        scenarioType={scenario.category}
+        onRestart={() => {
+          setConversation([]);
+          setNotes("");
+          setFeedback("");
+          setSuggestion("");
+          setShowInsights(false);
+          resetLLM();
+        }}
       />
     </div>
   );
