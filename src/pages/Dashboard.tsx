@@ -7,6 +7,8 @@ import { useLearningRoadmap } from "@/hooks/useLearningRoadmap";
 import ProgressOverview from "@/components/home/ProgressOverview";
 import RecentScenarios from "@/components/home/RecentScenarios";
 import LearningRoadmap from "@/components/dashboard/LearningRoadmap";
+import AppHeader from "@/components/layout/AppHeader";
+import Footer from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -103,109 +105,115 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-medical-50 to-white">
-      <div className="container mx-auto py-8 px-4">
-        {/* Welcome Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-medical-800 mb-2">
-            Willkommen zurück{profile?.name ? `, ${profile.name}` : ''}!
-          </h1>
-          <p className="text-gray-600">
-            Hier ist Ihr Lernfortschritt und Ihre personalisierten Empfehlungen.
-          </p>
-        </div>
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
+      <AppHeader />
+      
+      <main className="flex-grow pt-24 px-4 md:px-8 pb-20">
+        <div className="container mx-auto">
+          {/* Welcome Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-medical-800 mb-2">
+              Willkommen zurück{profile?.name ? `, ${profile.name}` : ''}!
+            </h1>
+            <p className="text-gray-600">
+              Hier ist Ihr Lernfortschritt und Ihre personalisierten Empfehlungen.
+            </p>
+          </div>
 
-        {/* Progress Overview */}
-        <ProgressOverview 
-          userProgress={progressData} 
-          userStats={statsData} 
-        />
+          {/* Progress Overview */}
+          <ProgressOverview 
+            userProgress={progressData} 
+            userStats={statsData} 
+          />
 
-        {/* Main Content Tabs */}
-        <Tabs defaultValue="roadmap" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="roadmap" className="flex items-center gap-2">
-              <Target className="h-4 w-4" />
-              Lernpfad
-            </TabsTrigger>
-            <TabsTrigger value="scenarios" className="flex items-center gap-2">
-              <MessageCircle className="h-4 w-4" />
-              Szenarien
-            </TabsTrigger>
-            <TabsTrigger value="vocabulary" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              Vokabeln
-            </TabsTrigger>
-          </TabsList>
+          {/* Main Content Tabs */}
+          <Tabs defaultValue="roadmap" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="roadmap" className="flex items-center gap-2">
+                <Target className="h-4 w-4" />
+                Lernpfad
+              </TabsTrigger>
+              <TabsTrigger value="scenarios" className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4" />
+                Szenarien
+              </TabsTrigger>
+              <TabsTrigger value="vocabulary" className="flex items-center gap-2">
+                <BookOpen className="h-4 w-4" />
+                Vokabeln
+              </TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="roadmap" className="space-y-6">
-            {roadmap ? (
-              <LearningRoadmap 
-                roadmap={roadmap} 
-                onObjectiveClick={handleObjectiveClick}
-              />
-            ) : roadmapLoading ? (
+            <TabsContent value="roadmap" className="space-y-6">
+              {roadmap ? (
+                <LearningRoadmap 
+                  roadmap={roadmap} 
+                  onObjectiveClick={handleObjectiveClick}
+                />
+              ) : roadmapLoading ? (
+                <Card>
+                  <CardContent className="p-8 text-center">
+                    <p>Generiere personalisierten Lernpfad...</p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card>
+                  <CardContent className="p-8 text-center">
+                    <p className="mb-4">
+                      Führen Sie zunächst das Sprach-Assessment durch, um einen personalisierten Lernpfad zu erhalten.
+                    </p>
+                    <Button onClick={() => window.location.href = '/profile'}>
+                      Assessment starten
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+
+            <TabsContent value="scenarios">
+              <RecentScenarios activeScenarios={getSampleScenarios()} />
+            </TabsContent>
+
+            <TabsContent value="vocabulary">
               <Card>
-                <CardContent className="p-8 text-center">
-                  <p>Generiere personalisierten Lernpfad...</p>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <p className="mb-4">
-                    Führen Sie zunächst das Sprach-Assessment durch, um einen personalisierten Lernpfad zu erhalten.
-                  </p>
-                  <Button onClick={() => window.location.href = '/profile'}>
-                    Assessment starten
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BookOpen className="h-5 w-5" />
+                    Vokabel-Fortschritt
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-600">{masteryStats.totalWords}</div>
+                      <div className="text-sm text-gray-500">Gesamt</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">{masteryStats.masteredWords}</div>
+                      <div className="text-sm text-gray-500">Gemeistert</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-yellow-600">{masteryStats.intermediateWords}</div>
+                      <div className="text-sm text-gray-500">In Bearbeitung</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-medical-600">{masteryStats.masteryPercentage}%</div>
+                      <div className="text-sm text-gray-500">Fortschritt</div>
+                    </div>
+                  </div>
+                  <Button 
+                    className="w-full"
+                    onClick={() => window.location.href = '/vocabulary'}
+                  >
+                    Vokabeln üben
                   </Button>
                 </CardContent>
               </Card>
-            )}
-          </TabsContent>
-
-          <TabsContent value="scenarios">
-            <RecentScenarios activeScenarios={getSampleScenarios()} />
-          </TabsContent>
-
-          <TabsContent value="vocabulary">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BookOpen className="h-5 w-5" />
-                  Vokabel-Fortschritt
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">{masteryStats.totalWords}</div>
-                    <div className="text-sm text-gray-500">Gesamt</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">{masteryStats.masteredWords}</div>
-                    <div className="text-sm text-gray-500">Gemeistert</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-yellow-600">{masteryStats.intermediateWords}</div>
-                    <div className="text-sm text-gray-500">In Bearbeitung</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-medical-600">{masteryStats.masteryPercentage}%</div>
-                    <div className="text-sm text-gray-500">Fortschritt</div>
-                  </div>
-                </div>
-                <Button 
-                  className="w-full"
-                  onClick={() => window.location.href = '/vocabulary'}
-                >
-                  Vokabeln üben
-                </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </main>
+      
+      <Footer />
     </div>
   );
 };
