@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import MobileOnboardingScreen from "./MobileOnboardingScreen";
 import { useNavigate } from "react-router-dom";
@@ -71,6 +71,7 @@ const MobileOnboardingController: React.FC = () => {
         showArrows={false}
         loop={false}
         className="h-full"
+        key={currentIndex} // Force re-render when currentIndex changes
       >
         {screens}
       </SwipeableContainer>

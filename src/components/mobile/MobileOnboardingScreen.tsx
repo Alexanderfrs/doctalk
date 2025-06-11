@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -45,11 +46,12 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
         };
       case 2:
         return {
-          icon: "🗣️",
-          title: translate("mobileOnboarding.screen2.title") || "Voice & Role-playing",
-          subtitle: translate("mobileOnboarding.screen2.subtitle") || "Practice Real-World Conversations",
-          description: translate("mobileOnboarding.screen2.description") || "Understand the Recognition Process in Germany",
-          showLogo: false
+          icon: "📋",
+          title: translate("mobileOnboarding.screen2.title") || "Understanding the Recognition Process in Germany",
+          subtitle: "",
+          description: "",
+          showLogo: false,
+          showRecognitionProcess: true
         };
       case 3:
         return {
@@ -87,6 +89,12 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
     "Local Dialects"
   ];
 
+  const recognitionItems = [
+    { text: "Visa ✓", checked: true },
+    { text: "Paperwork ✓", checked: true },
+    { text: "Sprachzertifikat ✓", checked: true }
+  ];
+
   return (
     <div className="min-h-screen w-full flex flex-col bg-gradient-to-b from-medical-50 to-white relative overflow-hidden">
       {/* Skip button - positioned absolutely */}
@@ -105,8 +113,8 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
       {/* Main content - centered with proper spacing */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-20 pb-32">
         <div className="w-full max-w-xs mx-auto text-center space-y-6">
-          {/* Icon - only show for non-logo screens */}
-          {!content.showLogo && (
+          {/* Icon or Image - only show for non-logo screens */}
+          {!content.showLogo && !content.showRecognitionProcess && (
             <div className="text-5xl mb-4">
               {content.icon}
             </div>
@@ -125,61 +133,95 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
             </div>
           )}
 
+          {/* Recognition Process content for second screen */}
+          {content.showRecognitionProcess && (
+            <div className="flex flex-col items-center space-y-6">
+              <div className="bg-white rounded-xl p-4 shadow-lg">
+                <img 
+                  src="/lovable-uploads/dd117c38-ea2f-45e4-93a8-d055131d91fc.png"
+                  alt="Recognition Process"
+                  className="h-16 w-auto"
+                />
+              </div>
+              
+              <div className="space-y-4 w-full">
+                {recognitionItems.map((item, index) => (
+                  <div 
+                    key={index}
+                    className="flex items-center justify-center space-x-3 animate-fade-in"
+                    style={{ animationDelay: `${index * 200}ms` }}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <div className="w-5 h-5 rounded-full border-2 border-medical-500 bg-medical-500 flex items-center justify-center">
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                      <span className="text-lg font-medium text-medical-800">{item.text}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Title */}
           <h1 className="text-2xl font-bold text-medical-800 leading-tight">
             {content.title}
           </h1>
 
           {/* Subtitle */}
-          <h2 className="text-lg font-medium text-medical-600 leading-relaxed">
-            {content.subtitle}
-          </h2>
+          {content.subtitle && (
+            <h2 className="text-lg font-medium text-medical-600 leading-relaxed">
+              {content.subtitle}
+            </h2>
+          )}
 
           {/* Description with special handling for bullet points on screen 3 */}
-          <div className="space-y-4">
-            {content.showBulletPoints ? (
-              <div className="space-y-4">
-                <div className="space-y-3">
-                  {bulletPoints.map((point, index) => (
-                    <div 
-                      key={index}
-                      className="flex items-center justify-start space-x-3 text-left animate-fade-in"
-                      style={{ animationDelay: `${index * 150}ms` }}
-                    >
-                      <div className="flex items-center space-x-2">
-                        <div 
-                          className={`w-5 h-5 rounded-full border-2 border-medical-500 flex items-center justify-center transition-all duration-500 ${
-                            showCheckmarks ? 'bg-medical-500' : 'bg-transparent'
-                          }`}
-                          style={{ animationDelay: `${800 + index * 200}ms` }}
-                        >
-                          {showCheckmarks && (
-                            <Check 
-                              className="w-3 h-3 text-white animate-scale-in" 
-                              style={{ animationDelay: `${800 + index * 200}ms` }}
-                            />
-                          )}
+          {!content.showRecognitionProcess && (
+            <div className="space-y-4">
+              {content.showBulletPoints ? (
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    {bulletPoints.map((point, index) => (
+                      <div 
+                        key={index}
+                        className="flex items-center justify-start space-x-3 text-left animate-fade-in"
+                        style={{ animationDelay: `${index * 150}ms` }}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <div 
+                            className={`w-5 h-5 rounded-full border-2 border-medical-500 flex items-center justify-center transition-all duration-500 ${
+                              showCheckmarks ? 'bg-medical-500' : 'bg-transparent'
+                            }`}
+                            style={{ animationDelay: `${800 + index * 200}ms` }}
+                          >
+                            {showCheckmarks && (
+                              <Check 
+                                className="w-3 h-3 text-white animate-scale-in" 
+                                style={{ animationDelay: `${800 + index * 200}ms` }}
+                              />
+                            )}
+                          </div>
+                          <span className="text-sm text-neutral-700">{point}</span>
                         </div>
-                        <span className="text-sm text-neutral-700">{point}</span>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                  <p className="text-sm text-neutral-600 leading-relaxed mt-4">
+                    Learn the language that one the wards.
+                  </p>
                 </div>
-                <p className="text-sm text-neutral-600 leading-relaxed mt-4">
-                  Learn the language that one the wards.
+              ) : content.description ? (
+                <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">
+                  {content.description}
                 </p>
-              </div>
-            ) : (
-              <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">
-                {content.description}
-              </p>
-            )}
-          </div>
+              ) : null}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Action button - fixed at bottom with proper spacing to avoid overlap */}
-      <div className="absolute bottom-0 left-0 right-0 w-full px-6 pb-8 mb-16 safe-area-bottom">
+      {/* Action button - fixed at bottom with proper spacing to avoid overlap with indicators */}
+      <div className="absolute bottom-20 left-0 right-0 w-full px-6 safe-area-bottom">
         {isLast ? (
           <Button 
             onClick={onStart}
@@ -192,7 +234,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
             onClick={onNext}
             className="w-full h-12 text-base font-semibold bg-medical-500 hover:bg-medical-600 text-white rounded-xl touch-target"
           >
-            {translate("next") || "Next"}
+            {translate("next") || "Weiter"}
           </Button>
         )}
       </div>
