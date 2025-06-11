@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useVocabularyProgress } from "@/hooks/useVocabularyProgress";
 import { CheckCircle, X, Volume2, RotateCcw } from "lucide-react";
-import { useTextToSpeech } from "@/hooks/useTextToSpeech";
+import useTextToSpeech from "@/hooks/useTextToSpeech";
 
 interface VocabularyWord {
   id: string;
