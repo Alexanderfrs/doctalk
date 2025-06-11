@@ -33,6 +33,7 @@ const MobileOnboardingController: React.FC = () => {
       onNext={handleNext} 
       onSkip={handleSkip} 
       onStart={handleStart}
+      currentIndex={currentIndex}
     />,
     <MobileOnboardingScreen 
       key="screen2"
@@ -40,6 +41,7 @@ const MobileOnboardingController: React.FC = () => {
       onNext={handleNext} 
       onSkip={handleSkip} 
       onStart={handleStart}
+      currentIndex={currentIndex}
     />,
     <MobileOnboardingScreen 
       key="screen3"
@@ -47,6 +49,7 @@ const MobileOnboardingController: React.FC = () => {
       onNext={handleNext} 
       onSkip={handleSkip} 
       onStart={handleStart}
+      currentIndex={currentIndex}
     />,
     <MobileOnboardingScreen 
       key="screen4"
@@ -54,12 +57,13 @@ const MobileOnboardingController: React.FC = () => {
       onNext={handleNext} 
       onSkip={handleSkip} 
       onStart={handleStart}
+      currentIndex={currentIndex}
       isLast={true}
     />
   ];
 
   return (
-    <div className="h-screen w-full overflow-hidden">
+    <div className="h-screen w-full overflow-hidden relative">
       <SwipeableContainer
         onSwipe={handleSwipe}
         initialIndex={currentIndex}
@@ -67,6 +71,7 @@ const MobileOnboardingController: React.FC = () => {
         showArrows={false}
         loop={false}
         className="h-full"
+        currentIndex={currentIndex}
       >
         {screens}
       </SwipeableContainer>

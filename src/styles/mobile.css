@@ -145,6 +145,20 @@
     border-radius: 2px;
     margin: 8px auto;
   }
+  
+  /* Fix for onboarding button overlap with indicators */
+  .mobile-onboarding-screen .swipe-indicators {
+    bottom: 100px !important; /* Push indicators up to avoid button overlap */
+  }
+  
+  /* Ensure onboarding action button has proper spacing */
+  .mobile-onboarding-action-button {
+    z-index: 20 !important;
+    position: absolute !important;
+    bottom: 64px !important; /* Above the indicators */
+    left: 24px !important;
+    right: 24px !important;
+  }
 }
 
 /* Safe area handling for iOS - improved */

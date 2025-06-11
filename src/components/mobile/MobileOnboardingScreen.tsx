@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -9,6 +8,7 @@ interface MobileOnboardingScreenProps {
   onNext: () => void;
   onSkip: () => void;
   onStart: () => void;
+  currentIndex: number;
   isLast?: boolean;
 }
 
@@ -17,6 +17,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
   onNext,
   onSkip,
   onStart,
+  currentIndex,
   isLast = false
 }) => {
   const { translate } = useLanguage();
@@ -102,7 +103,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
       )}
 
       {/* Main content - centered with proper spacing */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-20">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-20 pb-32">
         <div className="w-full max-w-xs mx-auto text-center space-y-6">
           {/* Icon - only show for non-logo screens */}
           {!content.showLogo && (
@@ -114,11 +115,11 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
           {/* Logo for first screen - bigger and centered */}
           {content.showLogo && (
             <div className="flex flex-col items-center space-y-4 mb-6">
-              <div className="bg-white rounded-xl p-4 shadow-lg">
+              <div className="bg-white rounded-xl p-6 shadow-lg">
                 <img 
                   src="/lovable-uploads/fbff1d77-b805-4a84-9721-79292aad57c6.png"
                   alt="DocTalk Logo"
-                  className="h-16 w-auto"
+                  className="h-20 w-auto"
                 />
               </div>
             </div>
@@ -177,8 +178,8 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
         </div>
       </div>
 
-      {/* Action button - fixed at bottom with proper spacing */}
-      <div className="w-full px-6 pb-8 safe-area-bottom">
+      {/* Action button - fixed at bottom with proper spacing to avoid overlap */}
+      <div className="absolute bottom-0 left-0 right-0 w-full px-6 pb-8 mb-16 safe-area-bottom">
         {isLast ? (
           <Button 
             onClick={onStart}
