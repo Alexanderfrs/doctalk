@@ -4,7 +4,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Mic, MicOff } from "lucide-react";
+import { Send, Mic, MicOff, MicVocal } from "lucide-react";
 import useVoiceRecognition from "@/hooks/useVoiceRecognition";
 import { toast } from "sonner";
 
@@ -19,14 +19,16 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
 }) => {
   const { t } = useTranslation();
   const [message, setMessage] = useState("");
+
+  // First voice recognition hook for transcription to text area
   const { 
     text: recognizedText, 
-    isListening,
-    startListening,
-    stopListening,
-    resetText,
+    isListening: isTranscribing,
+    startListening: startTranscribing,
+    stopListening: stopTranscribing,
+    resetText: resetTranscriptionText,
     hasRecognitionSupport,
-    error
+    error: transcriptionError
   } = useVoiceRecognition({
     language: 'de-DE',
     continuous: false,
@@ -37,12 +39,39 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
           const newText = prev ? `${prev} ${result}` : result;
           return newText;
         });
-        resetText();
+        resetTranscriptionText();
       }
     },
     onError: (error) => {
-      console.error("Voice recognition error:", error);
+      console.error("Voice transcription error:", error);
       toast.error("Spracherkennung fehlgeschlagen: " + error);
+    }
+  });
+
+  // Second voice recognition hook for direct chat input
+  const {
+    text: directSpeechText,
+    isListening: isDirectListening,
+    startListening: startDirectListening,
+    stopListening: stopDirectListening,
+    resetText: resetDirectText,
+    error: directSpeechError
+  } = useVoiceRecognition({
+    language: 'de-DE',
+    continuous: true,
+    interimResults: true,
+    onResult: (result, isFinal) => {
+      if (isFinal && result.trim()) {
+        // Add a small delay to ensure the user has finished speaking
+        setTimeout(() => {
+          onSendMessage(result.trim());
+          resetDirectText();
+        }, 500);
+      }
+    },
+    onError: (error) => {
+      console.error("Direct speech error:", error);
+      toast.error("Direkte Spracheingabe fehlgeschlagen: " + error);
     }
   });
 
@@ -52,17 +81,36 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
     setMessage("");
   };
 
-  const toggleListening = async () => {
-    if (isListening) {
-      stopListening();
+  const toggleTranscription = async () => {
+    if (isTranscribing) {
+      stopTranscribing();
     } else {
       try {
-        await startListening();
+        await startTranscribing();
         toast.info("Sprechen Sie jetzt...");
       } catch (error) {
-        console.error("Failed to start voice recognition:", error);
+        console.error("Failed to start voice transcription:", error);
         toast.error("Spracherkennung konnte nicht gestartet werden");
       }
+    }
+  };
+
+  const handleDirectSpeechMouseDown = async () => {
+    if (!isDirectListening) {
+      try {
+        await startDirectListening();
+        toast.info("Halten Sie gedrückt und sprechen Sie...");
+      } catch (error) {
+        console.error("Failed to start direct speech:", error);
+        toast.error("Direkte Spracheingabe konnte nicht gestartet werden");
+      }
+    }
+  };
+
+  const handleDirectSpeechMouseUp = () => {
+    if (isDirectListening) {
+      stopDirectListening();
+      toast.info("Verarbeitung...");
     }
   };
 
@@ -83,27 +131,50 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
               }
             }}
           />
-          {error && (
-            <p className="text-xs text-red-500 mt-1">{error}</p>
+          {(transcriptionError || directSpeechError) && (
+            <p className="text-xs text-red-500 mt-1">
+              {transcriptionError || directSpeechError}
+            </p>
           )}
         </div>
         
         <div className="flex flex-col space-y-2">
           {hasRecognitionSupport && (
-            <Button 
-              variant={isListening ? "destructive" : "outline"}
-              size="icon" 
-              onClick={toggleListening}
-              disabled={disabled}
-              className="touch-action-manipulation"
-              aria-label={isListening ? "Aufnahme stoppen" : "Sprachaufnahme starten"}
-            >
-              {isListening ? (
-                <MicOff className="h-4 w-4" />
-              ) : (
-                <Mic className="h-4 w-4" />
-              )}
-            </Button>
+            <>
+              {/* Transcription to text area button */}
+              <Button 
+                variant={isTranscribing ? "destructive" : "outline"}
+                size="icon" 
+                onClick={toggleTranscription}
+                disabled={disabled || isDirectListening}
+                className="touch-action-manipulation"
+                aria-label={isTranscribing ? "Transkription stoppen" : "Transkription starten"}
+                title="Transkription in Textfeld"
+              >
+                {isTranscribing ? (
+                  <MicOff className="h-4 w-4" />
+                ) : (
+                  <Mic className="h-4 w-4" />
+                )}
+              </Button>
+
+              {/* Direct speech input button */}
+              <Button 
+                variant={isDirectListening ? "default" : "secondary"}
+                size="icon" 
+                onMouseDown={handleDirectSpeechMouseDown}
+                onMouseUp={handleDirectSpeechMouseUp}
+                onMouseLeave={handleDirectSpeechMouseUp}
+                onTouchStart={handleDirectSpeechMouseDown}
+                onTouchEnd={handleDirectSpeechMouseUp}
+                disabled={disabled || isTranscribing}
+                className="touch-action-manipulation"
+                aria-label="Direkt sprechen (halten)"
+                title="Halten und sprechen - direkt senden"
+              >
+                <MicVocal className="h-4 w-4" />
+              </Button>
+            </>
           )}
           
           <Button 
