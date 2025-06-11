@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CheckCircle, ArrowRight } from "lucide-react";
@@ -23,6 +24,8 @@ const Onboarding: React.FC = () => {
   const totalSteps = 3;
   
   const handleStepComplete = async (stepNumber: number, data?: any) => {
+    console.log(`Step ${stepNumber} completed with data:`, data);
+    
     if (!completedSteps.includes(stepNumber)) {
       setCompletedSteps([...completedSteps, stepNumber]);
     }
@@ -37,13 +40,32 @@ const Onboarding: React.FC = () => {
       try {
         let updateData = {};
         
-        if (stepNumber === 1 && data.level) {
-          updateData = { german_level: data.level };
+        if (stepNumber === 1) {
+          // Assessment results
+          updateData = { 
+            german_level: data.level,
+            preferences: {
+              assessment_results: {
+                level: data.level,
+                percentage: data.percentage,
+                meetsMinimumRequirement: data.meetsMinimumRequirement,
+                strengths: data.strengths,
+                recommendedContent: data.recommendedContent,
+                acknowledgedLimitations: data.acknowledgedLimitations || false
+              }
+            }
+          };
         } else if (stepNumber === 2 && data.language) {
           updateData = { native_language: data.language };
         } else if (stepNumber === 3 && data.preferences) {
-          // Don't save preferences here, we'll do it in completeOnboarding
-          // Just keep the data for later
+          // Merge with existing preferences
+          const existingPrefs = userData.preferences || {};
+          updateData = { 
+            preferences: {
+              ...existingPrefs,
+              ...data.preferences
+            }
+          };
         }
         
         if (Object.keys(updateData).length > 0) {
@@ -54,6 +76,8 @@ const Onboarding: React.FC = () => {
             
           if (error) {
             console.error('Error updating profile:', error);
+          } else {
+            console.log('Profile updated successfully:', updateData);
           }
         }
       } catch (error) {
@@ -66,7 +90,15 @@ const Onboarding: React.FC = () => {
       await completeOnboarding({
         name: userData.name || data?.name
       });
-      toast.success("Einrichtung abgeschlossen!");
+      
+      // Show appropriate completion message based on German level
+      const germanLevel = userData.german_level || data?.german_level;
+      if (germanLevel && ['A1', 'A2'].includes(germanLevel)) {
+        toast.info(`Einrichtung abgeschlossen! Ihr Niveau: ${germanLevel}. Wir empfehlen zunächst allgemeine Deutschkenntnisse zu verbessern.`);
+      } else {
+        toast.success("Einrichtung abgeschlossen!");
+      }
+      
       navigate("/dashboard");
     } else {
       setCurrentStep(stepNumber + 1);

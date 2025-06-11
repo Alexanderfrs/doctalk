@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { toast } from 'sonner';
 import { Question, UserAnswer, AssessmentResult } from './types';
 import { questionBank } from './questionBank';
@@ -18,7 +18,6 @@ interface LanguageAssessmentHook {
   handleSelectAnswer: (answer: string) => void;
   resetAssessment: () => void;
   goToNextQuestion: () => void;
-
   assessmentStarted: boolean;
   assessmentStep: number;
   currentLevel: string;
@@ -26,8 +25,6 @@ interface LanguageAssessmentHook {
   handleAnswer: (questionId: string, answerId: string) => void;
   handleNextStep: () => void;
   completeAssessment: (answers?: UserAnswer[]) => void;
-  
-  // New properties for timed tests
   isTimedTest: boolean;
   setTimedTest: (isTimed: boolean) => void;
   timeRemaining: number;
@@ -39,27 +36,47 @@ interface LanguageAssessmentHook {
 }
 
 export function useLanguageAssessment(): LanguageAssessmentHook {
-  // Updated for general German proficiency assessment
   const MIN_QUESTIONS = 8;
-  const MAX_QUESTIONS = 10;
+  const MAX_QUESTIONS = 12;
   const CONFIDENCE_THRESHOLD = 0.7;
-  const DEFAULT_TIME_LIMIT_MINUTES = 10; // Increased for more thorough assessment
+  const DEFAULT_TIME_LIMIT_MINUTES = 10;
 
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [currentLevel, setCurrentLevel] = useState<string>('A1');
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isComplete, setIsComplete] = useState<boolean>(false);
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [startTime, setStartTime] = useState<number>(0);
   const [assessmentStarted, setAssessmentStarted] = useState<boolean>(false);
-  
-  // New state for timed tests
   const [isTimedTest, setIsTimedTest] = useState<boolean>(false);
   const [timeLimitMinutes, setTimeLimitMinutes] = useState<number>(DEFAULT_TIME_LIMIT_MINUTES);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   const [showAnswerExplanations, setShowAnswerExplanations] = useState<boolean>(true);
+
+  // Initialize questions when assessment starts
+  useEffect(() => {
+    if (assessmentStarted && allQuestions.length === 0) {
+      console.log("Initializing assessment questions...");
+      setIsLoading(true);
+      
+      // Start with a mix of A1-B1 questions to properly assess
+      const initialQuestions = selectAdaptiveQuestions('A2', [], MAX_QUESTIONS);
+      console.log("Selected questions:", initialQuestions.length);
+      
+      if (initialQuestions.length > 0) {
+        setAllQuestions(initialQuestions);
+        setCurrentLevel('A2');
+      } else {
+        // Fallback to all available questions if adaptive selection fails
+        const fallbackQuestions = Object.values(questionBank).flat().slice(0, MAX_QUESTIONS);
+        setAllQuestions(fallbackQuestions);
+      }
+      
+      setIsLoading(false);
+    }
+  }, [assessmentStarted]);
 
   // Timer effect
   useEffect(() => {
@@ -72,28 +89,11 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
           completeAssessment();
           toast.info(`Zeitlimit von ${timeLimitMinutes} Minuten erreicht.`);
         }
-      }, 1000); // Update every second for smoother countdown
+      }, 1000);
       
       return () => clearInterval(timerId);
     }
   }, [startTime, isComplete, isTimedTest, timeLimitMinutes]);
-
-  const initializeAssessment = () => {
-    setIsLoading(true);
-    setUserAnswers([]);
-    setCurrentQuestionIndex(0);
-    setIsComplete(false);
-    setResult(null);
-    setStartTime(Date.now());
-    setAssessmentStarted(false);
-    setTimeElapsed(0);
-    
-    // Start with adaptive questions for general German proficiency
-    const initialQuestions = selectAdaptiveQuestions('A1', [], MAX_QUESTIONS);
-    setAllQuestions(initialQuestions);
-    setCurrentLevel('A1');
-    setIsLoading(false);
-  };
 
   const currentQuestion = useMemo(() => {
     if (allQuestions.length === 0 || currentQuestionIndex >= allQuestions.length) {
@@ -102,12 +102,13 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     
     const question = allQuestions[currentQuestionIndex];
     
-    if (question && !question.level && question.difficulty) {
-      question.level = question.difficulty;
-    }
-    
+    // Ensure question has proper structure
     if (question && !question.question && question.text) {
       question.question = question.text;
+    }
+    
+    if (question && !question.level && question.difficulty) {
+      question.level = question.difficulty;
     }
     
     return question;
@@ -116,7 +117,7 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
   const progress = useMemo(() => {
     if (isComplete) return 100;
     if (userAnswers.length === 0) return 0;
-    const estimatedTotal = Math.max(MIN_QUESTIONS, userAnswers.length);
+    const estimatedTotal = Math.max(MIN_QUESTIONS, Math.min(userAnswers.length + 3, MAX_QUESTIONS));
     return Math.min(100, Math.round((userAnswers.length / estimatedTotal) * 100));
   }, [userAnswers.length, isComplete]);
 
@@ -126,7 +127,8 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     return Math.floor(remainingSeconds);
   }, [isTimedTest, startTime, timeLimitMinutes, timeElapsed]);
 
-  const startAssessment = () => {
+  const startAssessment = useCallback(() => {
+    console.log("Starting assessment...");
     setAssessmentStarted(true);
     setUserAnswers([]);
     setCurrentQuestionIndex(0);
@@ -134,18 +136,16 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     setResult(null);
     setStartTime(Date.now());
     setTimeElapsed(0);
-  };
+    setIsLoading(true);
+  }, []);
 
-  const setTimedTest = (isTimed: boolean) => {
-    setIsTimedTest(isTimed);
-  };
-
-  const toggleAnswerExplanations = () => {
-    setShowAnswerExplanations(prev => !prev);
-  };
-
-  const handleSelectAnswer = (answer: string) => {
-    if (!currentQuestion || isComplete) return;
+  const handleSelectAnswer = useCallback((answer: string) => {
+    if (!currentQuestion || isComplete) {
+      console.log("Cannot select answer: no current question or assessment complete");
+      return;
+    }
+    
+    console.log("Selected answer:", answer, "for question:", currentQuestion.id);
     
     const isCorrect = answer === currentQuestion.correctAnswer;
     const newAnswer: UserAnswer = {
@@ -157,34 +157,24 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     const updatedAnswers = [...userAnswers, newAnswer];
     setUserAnswers(updatedAnswers);
     
-    // Modified logic for 8-10 questions assessment
+    // Check if we should end the assessment
     if (shouldEndAssessment(updatedAnswers, MAX_QUESTIONS, MIN_QUESTIONS, CONFIDENCE_THRESHOLD) ||
         currentQuestionIndex >= allQuestions.length - 1) {
-      completeAssessment(updatedAnswers);
+      setTimeout(() => completeAssessment(updatedAnswers), 500);
     } else {
-      goToNextQuestion();
+      setTimeout(() => goToNextQuestion(), 500);
     }
-  };
+  }, [currentQuestion, isComplete, userAnswers, currentQuestionIndex, allQuestions.length]);
 
-  const handleAnswer = (questionId: string, answerId: string) => {
-    if (!currentQuestion || isComplete) return;
-    
-    const isCorrect = answerId === currentQuestion.correctAnswer;
-    const newAnswer: UserAnswer = {
-      questionId,
-      selectedAnswer: answerId,
-      isCorrect
-    };
-    
-    setUserAnswers(prev => [...prev, newAnswer]);
-  };
+  const handleAnswer = useCallback((questionId: string, answerId: string) => {
+    handleSelectAnswer(answerId);
+  }, [handleSelectAnswer]);
 
-  const goToNextQuestion = () => {
+  const goToNextQuestion = useCallback(() => {
     setCurrentQuestionIndex(prev => prev + 1);
-  };
+  }, []);
 
-  const handleNextStep = () => {
-    // Check if an answer has been selected for the current question
+  const handleNextStep = useCallback(() => {
     if (currentQuestion && !userAnswers.some(a => a.questionId === currentQuestion.id)) {
       toast.warning("Bitte wählen Sie eine Antwort aus");
       return;
@@ -195,24 +185,36 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     } else {
       goToNextQuestion();
     }
-  };
+  }, [currentQuestion, userAnswers, currentQuestionIndex, allQuestions.length]);
 
-  const completeAssessment = (answers = userAnswers) => {
+  const completeAssessment = useCallback((answers = userAnswers) => {
+    console.log("Completing assessment with", answers.length, "answers");
     const assessmentResult = calculateAssessmentResults(answers, allQuestions);
     setResult(assessmentResult);
     setIsComplete(true);
     
-    // Show completion notification for general German proficiency
     if (isTimedTest) {
       toast.success(`Deutschtest abgeschlossen: Niveau ${assessmentResult.level}, Zeit: ${Math.floor(timeElapsed)} Minuten`);
     } else {
       toast.success(`Deutschtest abgeschlossen: Niveau ${assessmentResult.level}`);
     }
-  };
+  }, [userAnswers, allQuestions, isTimedTest, timeElapsed]);
 
-  const resetAssessment = () => {
-    initializeAssessment();
-  };
+  const resetAssessment = useCallback(() => {
+    setAssessmentStarted(false);
+    setUserAnswers([]);
+    setAllQuestions([]);
+    setCurrentQuestionIndex(0);
+    setIsComplete(false);
+    setResult(null);
+    setStartTime(0);
+    setTimeElapsed(0);
+    setIsLoading(false);
+  }, []);
+
+  const toggleAnswerExplanations = useCallback(() => {
+    setShowAnswerExplanations(prev => !prev);
+  }, []);
 
   const assessmentStep = currentQuestionIndex + 1;
 
