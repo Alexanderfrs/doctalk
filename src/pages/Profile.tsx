@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import Header from "@/components/layout/Header";
+import AppHeader from "@/components/layout/AppHeader";
 import Footer from "@/components/layout/Footer";
 import HelpButton from "@/components/tutorial/HelpButton";
 import { toast } from "sonner";
@@ -52,7 +52,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen flex flex-col dark:bg-neutral-900">
-      <Header />
+      <AppHeader />
       
       <main className="flex-grow pt-24 px-4 md:px-8 pb-12">
         <div className="container mx-auto">
