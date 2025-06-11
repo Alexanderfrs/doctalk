@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Help } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import { useTutorial } from '@/contexts/TutorialContext';
 
 const HelpButton: React.FC = () => {
@@ -20,7 +20,7 @@ const HelpButton: React.FC = () => {
             onClick={restartTutorial}
             className="fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full shadow-lg bg-white hover:bg-gray-50 border-2 border-blue-200"
           >
-            <Help className="h-5 w-5 text-blue-600" />
+            <HelpCircle className="h-5 w-5 text-blue-600" />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="left">

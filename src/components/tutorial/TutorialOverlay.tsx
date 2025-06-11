@@ -62,20 +62,22 @@ const TutorialOverlay: React.FC = () => {
       {/* Tooltip */}
       <TutorialTooltip targetElement={targetElement} />
       
-      {/* Add pulse animation styles */}
-      <style jsx>{`
-        @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+      {/* Add pulse animation styles using a style tag without jsx prop */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes pulse {
+            0% {
+              box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+            }
+            50% {
+              box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.1);
+            }
+            100% {
+              box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+            }
           }
-          50% {
-            box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.1);
-          }
-          100% {
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
-          }
-        }
-      `}</style>
+        `
+      }} />
     </>
   );
 };
