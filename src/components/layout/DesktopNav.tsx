@@ -2,6 +2,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NavItem {
   path: string;
@@ -15,6 +16,7 @@ interface DesktopNavProps {
 
 const DesktopNav: React.FC<DesktopNavProps> = ({ navItems }) => {
   const location = useLocation();
+  const { translate } = useLanguage();
 
   return (
     <nav className="hidden md:flex space-x-1">
@@ -34,7 +36,7 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ navItems }) => {
                     : "text-neutral-600 hover:bg-neutral-100"
                 )}
               >
-                <span className="ml-2">Why DocTalk</span>
+                <span className="ml-2">{translate("whyChooseDocTalk")}</span>
               </a>
             )}
             
