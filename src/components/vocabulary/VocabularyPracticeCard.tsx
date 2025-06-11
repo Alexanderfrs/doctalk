@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -31,7 +32,7 @@ const VocabularyPracticeCard: React.FC<VocabularyPracticeCardProps> = ({
   const [answerRevealed, setAnswerRevealed] = useState(showAnswer);
   const [hasAnswered, setHasAnswered] = useState(false);
   const { recordVocabularyPractice } = useVocabularyProgress();
-  const { speak, isSupported } = useTextToSpeech();
+  const { speak, hasSpeechSupport } = useTextToSpeech();
 
   const handleAnswer = (correct: boolean) => {
     if (hasAnswered) return;
@@ -59,8 +60,8 @@ const VocabularyPracticeCard: React.FC<VocabularyPracticeCardProps> = ({
   };
 
   const handleSpeak = () => {
-    if (isSupported) {
-      speak(word.german, 'de-DE');
+    if (hasSpeechSupport) {
+      speak(word.german);
     }
   };
 
@@ -99,7 +100,7 @@ const VocabularyPracticeCard: React.FC<VocabularyPracticeCardProps> = ({
             <h3 className="text-2xl font-bold text-medical-800">
               {word.german}
             </h3>
-            {isSupported && (
+            {hasSpeechSupport && (
               <Button
                 variant="ghost"
                 size="sm"
