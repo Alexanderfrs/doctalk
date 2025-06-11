@@ -24,20 +24,25 @@ const ScenarioDetail = () => {
       try {
         setLoading(true);
         
+        console.log("Looking for scenario with ID:", id);
+        console.log("Available scenarios:", scenarios.map(s => ({ id: s.id, title: s.title })));
+        
         // Find the scenario in our local data
         const foundScenario = scenarios.find(s => s.id === id);
         
         if (foundScenario) {
+          console.log("Found scenario:", foundScenario.title);
           setScenario(foundScenario);
         } else {
-          toast.error(t("error.scenario_not_found"));
+          console.error("Scenario not found for ID:", id);
+          toast.error("Szenario nicht gefunden");
           navigate('/practice');
         }
         
         setLoading(false);
       } catch (error) {
         console.error("Error fetching scenario:", error);
-        toast.error(t("error.loading_scenario"));
+        toast.error("Fehler beim Laden des Szenarios");
         setLoading(false);
       }
     };
@@ -45,7 +50,7 @@ const ScenarioDetail = () => {
     if (id) {
       fetchScenario();
     }
-  }, [id, t, navigate]);
+  }, [id, navigate]);
 
   const handleBack = () => {
     navigate(-1);

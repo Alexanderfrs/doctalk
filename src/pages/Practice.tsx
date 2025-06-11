@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
@@ -109,7 +110,7 @@ const Practice: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Fortschritt</p>
-                    <p className="text-xl font-bold">{Math.round(((userProgress?.scenarios_completed || 0) / 50) * 100)}%</p>
+                    <p className="text-xl font-bold">{Math.round(((userProgress?.scenarios_completed || 0) / scenarios.length) * 100)}%</p>
                   </div>
                 </div>
               </CardContent>
@@ -148,13 +149,16 @@ const Practice: React.FC = () => {
                   onClick={() => {
                     // Find a scenario matching user's level
                     const levelScenarios = scenarios.filter(s => s.difficulty === profile?.german_level);
-                    const randomScenario = levelScenarios[Math.floor(Math.random() * levelScenarios.length)];
+                    const randomScenario = levelScenarios.length > 0 
+                      ? levelScenarios[Math.floor(Math.random() * levelScenarios.length)]
+                      : scenarios[Math.floor(Math.random() * scenarios.length)];
                     if (randomScenario) {
+                      console.log("Starting random scenario:", randomScenario.id);
                       navigate(`/scenario/${randomScenario.id}`);
                     }
                   }}
                 >
-                  Zufälliges Szenario starten
+                  Zufälliges Szenario starten ({scenarios.length} verfügbar)
                 </Button>
               </CardContent>
             </Card>
