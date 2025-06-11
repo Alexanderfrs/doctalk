@@ -61,17 +61,19 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
       console.log("Initializing assessment questions...");
       setIsLoading(true);
       
-      // Start with a mix of A1-B1 questions to properly assess
-      const initialQuestions = selectAdaptiveQuestions('A2', [], MAX_QUESTIONS);
+      // Start with a balanced mix of B1-B2 questions for proper assessment
+      const initialQuestions = selectAdaptiveQuestions('B1', [], MAX_QUESTIONS);
       console.log("Selected questions:", initialQuestions.length);
       
-      if (initialQuestions.length > 0) {
+      if (initialQuestions.length >= MIN_QUESTIONS) {
         setAllQuestions(initialQuestions);
-        setCurrentLevel('A2');
+        setCurrentLevel('B1');
       } else {
-        // Fallback to all available questions if adaptive selection fails
-        const fallbackQuestions = Object.values(questionBank).flat().slice(0, MAX_QUESTIONS);
+        // Fallback to ensure we have enough questions
+        const allAvailableQuestions = Object.values(questionBank).flat();
+        const fallbackQuestions = allAvailableQuestions.slice(0, MAX_QUESTIONS);
         setAllQuestions(fallbackQuestions);
+        console.log("Using fallback questions:", fallbackQuestions.length);
       }
       
       setIsLoading(false);
@@ -131,6 +133,7 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     console.log("Starting assessment...");
     setAssessmentStarted(true);
     setUserAnswers([]);
+    setAllQuestions([]);
     setCurrentQuestionIndex(0);
     setIsComplete(false);
     setResult(null);
@@ -238,7 +241,7 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     handleNextStep,
     completeAssessment,
     isTimedTest,
-    setTimedTest,
+    setTimedTest: setIsTimedTest, // Fixed: Use the correct state setter
     timeRemaining,
     timeElapsed,
     timeLimitMinutes,
