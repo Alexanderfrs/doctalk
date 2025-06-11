@@ -34,20 +34,14 @@ const Vocabulary: React.FC = () => {
   const { getMasteryStats } = useVocabularyProgress();
   
   // State management
-  const [selectedDifficulty, setSelectedDifficulty] = useState("Alle");
   const [practiceMode, setPracticeMode] = useState(false);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   
   // Get mastery statistics
   const masteryStats = getMasteryStats();
 
-  // Filter vocabulary based on difficulty (additional filter on top of useVocabulary)
-  const finalFilteredVocabulary = filteredWords.filter((word) => {
-    if (selectedDifficulty !== 'Alle' && word.difficulty !== selectedDifficulty) {
-      return false;
-    }
-    return true;
-  });
+  // Use the filtered words directly from useVocabulary
+  const finalFilteredVocabulary = filteredWords;
 
   // Reset practice when filters change
   useEffect(() => {
@@ -88,7 +82,6 @@ const Vocabulary: React.FC = () => {
   const handleResetFilters = () => {
     setActiveCategory("all");
     setActiveDomain("all");
-    setSelectedDifficulty("Alle");
     setSearchTerm("");
   };
 
@@ -151,12 +144,8 @@ const Vocabulary: React.FC = () => {
                             <h3 className="font-semibold text-lg text-medical-800">
                               {word.german}
                             </h3>
-                            <span className={`px-2 py-1 rounded text-xs font-medium ${
-                              word.difficulty === 'A1' || word.difficulty === 'A2' ? 'bg-green-100 text-green-800' :
-                              word.difficulty === 'B1' || word.difficulty === 'B2' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
-                            }`}>
-                              {word.difficulty}
+                            <span className="px-2 py-1 rounded text-xs font-medium bg-medical-100 text-medical-800">
+                              {word.category}
                             </span>
                           </div>
                           <p className="text-gray-600">{word.english}</p>
@@ -239,7 +228,10 @@ const Vocabulary: React.FC = () => {
               {/* Practice Card */}
               {finalFilteredVocabulary[currentWordIndex] && (
                 <VocabularyPracticeCard
-                  word={finalFilteredVocabulary[currentWordIndex]}
+                  word={{
+                    ...finalFilteredVocabulary[currentWordIndex],
+                    difficulty: 'B1' // Default difficulty since it's not in the data
+                  }}
                   onComplete={handlePracticeComplete}
                 />
               )}
