@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Scenario, DialogueLine } from "@/data/scenarios";
 import { Card } from "@/components/ui/card";
@@ -106,6 +107,10 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     setFeedback("");
   };
 
+  const handleNotesChange = (newNotes: string) => {
+    setNotes(newNotes);
+  };
+
   if (loading) {
     return (
       <div className="w-full max-w-4xl mx-auto space-y-6">
@@ -162,7 +167,12 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
           
           {activeTab === "resources" && <ResourcesTab />}
           
-          {activeTab === "notes" && <NotesTab />}
+          {activeTab === "notes" && (
+            <NotesTab 
+              notes={notes} 
+              onNotesChange={handleNotesChange} 
+            />
+          )}
         </div>
         
         {activeTab === "conversation" && !isConversationComplete && (

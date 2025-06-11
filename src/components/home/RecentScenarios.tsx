@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScenarioCard from "@/components/ui/ScenarioCard";
@@ -23,9 +23,14 @@ interface RecentScenariosProps {
 const RecentScenarios: React.FC<RecentScenariosProps> = ({ activeScenarios }) => {
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   const handleSwipe = (index: number) => {
     setCurrentScenarioIndex(index);
+  };
+
+  const handleScenarioClick = (scenarioId: string) => {
+    navigate(`/scenario/${scenarioId}`);
   };
 
   return (
@@ -54,7 +59,7 @@ const RecentScenarios: React.FC<RecentScenariosProps> = ({ activeScenarios }) =>
               <div key={scenario.id} className="px-2 w-full h-full">
                 <ScenarioCard 
                   scenario={scenario} 
-                  onClick={() => console.log(`Navigate to scenario: ${scenario.id}`)}
+                  onClick={() => handleScenarioClick(scenario.id)}
                   className="h-full"
                 />
               </div>
@@ -74,7 +79,7 @@ const RecentScenarios: React.FC<RecentScenariosProps> = ({ activeScenarios }) =>
             <ScenarioCard 
               key={scenario.id} 
               scenario={scenario} 
-              onClick={() => console.log(`Navigate to scenario: ${scenario.id}`)}
+              onClick={() => handleScenarioClick(scenario.id)}
             />
           ))}
         </div>
