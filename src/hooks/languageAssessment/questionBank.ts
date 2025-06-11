@@ -1,7 +1,7 @@
 
 import { Question, QuestionBank } from './types';
 
-// A1 level questions
+// A1 level questions - Basic German proficiency
 const a1Questions: Question[] = [
   {
     id: 'a1_1',
@@ -44,25 +44,16 @@ const a1Questions: Question[] = [
     topic: 'colors'
   },
   {
-    id: 'a1_healthcare_1',
-    text: 'Wo tut es weh?',
-    options: ['Hier tut es weh.', 'Ich bin krank.', 'Ich brauche Medikamente.', 'Ich gehe zum Arzt.'],
-    correctAnswer: 'Hier tut es weh.',
+    id: 'a1_6',
+    text: 'Ich _____ Deutsch.',
+    options: ['lerne', 'lernt', 'lernen', 'lernst'],
+    correctAnswer: 'lerne',
     difficulty: 'A1',
-    topic: 'healthcare'
-  },
-  {
-    id: 'a1_healthcare_2',
-    text: 'Was ist das auf Deutsch?',
-    image: 'https://cdn-icons-png.flaticon.com/512/4486/4486026.png',
-    options: ['Eine Tablette', 'Ein Pflaster', 'Eine Spritze', 'Ein Thermometer'],
-    correctAnswer: 'Eine Tablette',
-    difficulty: 'A1',
-    topic: 'healthcare'
+    topic: 'verbs'
   }
 ];
 
-// A2 level questions
+// A2 level questions - Elementary German
 const a2Questions: Question[] = [
   {
     id: 'a2_1',
@@ -105,24 +96,24 @@ const a2Questions: Question[] = [
     topic: 'food'
   },
   {
-    id: 'a2_healthcare_1',
-    text: 'Wie oft müssen Sie die Tabletten einnehmen?',
-    options: ['Einmal täglich.', 'Zweimal wöchentlich.', 'Dreimal monatlich.', 'Viermal jährlich.'],
-    correctAnswer: 'Einmal täglich.',
+    id: 'a2_6',
+    text: 'Ich möchte _____ Buch kaufen.',
+    options: ['ein', 'eine', 'der', 'den'],
+    correctAnswer: 'ein',
     difficulty: 'A2',
-    topic: 'healthcare'
+    topic: 'articles'
   },
   {
-    id: 'a2_healthcare_2',
-    text: 'Was ist die korrekte Antwort auf die Frage: "Haben Sie Allergien?"',
-    options: ['Ja, ich bin allergisch gegen Penicillin.', 'Mein Blutdruck ist normal.', 'Ich habe Fieber.', 'Ich esse dreimal am Tag.'],
-    correctAnswer: 'Ja, ich bin allergisch gegen Penicillin.',
+    id: 'a2_7',
+    text: 'Können Sie mir helfen? Ich finde mein Hotel nicht.',
+    options: ['Natürlich! Wie heißt Ihr Hotel?', 'Nein, ich arbeite nicht hier.', 'Das ist sehr teuer.', 'Ich habe Hunger.'],
+    correctAnswer: 'Natürlich! Wie heißt Ihr Hotel?',
     difficulty: 'A2',
-    topic: 'healthcare'
+    topic: 'communication'
   }
 ];
 
-// B1 level questions
+// B1 level questions - Intermediate German
 const b1Questions: Question[] = [
   {
     id: 'b1_1',
@@ -190,61 +181,32 @@ const b1Questions: Question[] = [
     topic: 'idioms'
   },
   {
-    id: 'b1_healthcare_1',
-    text: 'Ein Patient klagt über Schmerzen. Was ist die beste Antwort?',
-    options: [
-      'Können Sie mir bitte sagen, wo genau der Schmerz ist und wie stark er ist?',
-      'Haben Sie heute gut geschlafen?',
-      'Möchten Sie etwas essen?',
-      'Wie alt sind Sie?'
-    ],
-    correctAnswer: 'Können Sie mir bitte sagen, wo genau der Schmerz ist und wie stark er ist?',
+    id: 'b1_6',
+    text: 'Nachdem er seine Ausbildung _____ hatte, fing er an zu arbeiten.',
+    options: ['beendet', 'beendete', 'beenden', 'beenden wird'],
+    correctAnswer: 'beendet',
     difficulty: 'B1',
-    topic: 'healthcare'
+    topic: 'perfect_tense'
   },
   {
-    id: 'b1_healthcare_2',
-    text: 'Wie lautet die korrekte Anweisung für eine Blutabnahme?',
-    options: [
-      'Bitte ziehen Sie Ihre Jacke aus.',
-      'Bitte machen Sie Ihren Arm frei und ballen Sie die Hand zur Faust.',
-      'Bitte essen Sie vor der Untersuchung nichts.',
-      'Bitte trinken Sie viel Wasser.'
-    ],
-    correctAnswer: 'Bitte machen Sie Ihren Arm frei und ballen Sie die Hand zur Faust.',
+    id: 'b1_7',
+    text: 'Der Film, _____ gestern im Fernsehen lief, war sehr interessant.',
+    options: ['der', 'den', 'dem', 'dessen'],
+    correctAnswer: 'der',
     difficulty: 'B1',
-    topic: 'healthcare'
+    topic: 'relative_pronouns'
+  },
+  {
+    id: 'b1_8',
+    text: 'Obwohl es regnete, _____ wir spazieren gegangen.',
+    options: ['haben', 'sind', 'waren', 'hatten'],
+    correctAnswer: 'sind',
+    difficulty: 'B1',
+    topic: 'conjunctions'
   }
 ];
 
-// B2 level questions
-const b2QuestionsAdditions: Question[] = [
-  {
-    id: 'b2_medical_1',
-    text: 'Was bedeutet die Abkürzung "DK" im klinischen Alltag?',
-    options: ['Dokumentation', 'Dauerkatheter', 'Druckkontrolle', 'Diabeteskontrollen'],
-    correctAnswer: 'Dauerkatheter',
-    difficulty: 'B2',
-    topic: 'healthcare'
-  },
-  {
-    id: 'b2_medical_2',
-    text: 'Welches der folgenden medizinischen Geräte wird für die künstliche Beatmung eingesetzt?',
-    options: ['Infusionspumpe', 'Defibrillator', 'Beatmungsgerät', 'Endoskop'],
-    correctAnswer: 'Beatmungsgerät',
-    difficulty: 'B2',
-    topic: 'healthcare'
-  },
-  {
-    id: 'b2_medical_3',
-    text: 'Was ist die korrekte Übersetzung für "Appendizitis"?',
-    options: ['Mandelentzündung', 'Blinddarmentzündung', 'Lungenentzündung', 'Nierenentzündung'],
-    correctAnswer: 'Blinddarmentzündung',
-    difficulty: 'B2',
-    topic: 'healthcare'
-  }
-];
-
+// B2 level questions - Upper Intermediate German
 const b2Questions: Question[] = [
   {
     id: 'b2_1',
@@ -271,12 +233,12 @@ const b2Questions: Question[] = [
     id: 'b2_3',
     text: 'Welcher Satz enthält einen korrekten Relativsatz?',
     options: [
-      'Der Mann, der ich gestern getroffen habe, ist Arzt.',
-      'Der Mann, den ich gestern getroffen habe, ist Arzt.',
-      'Der Mann, dessen ich gestern getroffen habe, ist Arzt.',
-      'Der Mann, dem ich gestern getroffen habe, ist Arzt.'
+      'Der Mann, der ich gestern getroffen habe, ist Lehrer.',
+      'Der Mann, den ich gestern getroffen habe, ist Lehrer.',
+      'Der Mann, dessen ich gestern getroffen habe, ist Lehrer.',
+      'Der Mann, dem ich gestern getroffen habe, ist Lehrer.'
     ],
-    correctAnswer: 'Der Mann, den ich gestern getroffen habe, ist Arzt.',
+    correctAnswer: 'Der Mann, den ich gestern getroffen habe, ist Lehrer.',
     difficulty: 'B2',
     topic: 'relative_clauses'
   },
@@ -302,72 +264,32 @@ const b2Questions: Question[] = [
     topic: 'idioms'
   },
   {
-    id: 'b2_healthcare_1',
-    text: 'Welcher Ausdruck gehört nicht zur medizinischen Fachsprache?',
-    options: ['Anamnese', 'Diagnose', 'Therapie', 'Rezension'],
-    correctAnswer: 'Rezension',
+    id: 'b2_6',
+    text: 'Je _____ das Wetter wird, desto mehr Menschen gehen ins Schwimmbad.',
+    options: ['wärmer', 'warm', 'wärmsten', 'wärmere'],
+    correctAnswer: 'wärmer',
     difficulty: 'B2',
-    topic: 'healthcare'
+    topic: 'comparative'
   },
   {
-    id: 'b2_healthcare_2',
-    text: 'Wie erklären Sie einem Patienten, dass er nüchtern zur Untersuchung kommen soll?',
-    options: [
-      'Sie müssen vor der Untersuchung 8 Stunden auf Essen und Trinken verzichten.',
-      'Sie dürfen vor der Untersuchung keinen Alkohol trinken.',
-      'Sie sollten vor der Untersuchung viel Wasser trinken.',
-      'Sie müssen vor der Untersuchung duschen.'
-    ],
-    correctAnswer: 'Sie müssen vor der Untersuchung 8 Stunden auf Essen und Trinken verzichten.',
+    id: 'b2_7',
+    text: 'Er tat so, als _____ er nichts von dem Problem.',
+    options: ['wüsste', 'weiß', 'gewusst', 'wissen'],
+    correctAnswer: 'wüsste',
     difficulty: 'B2',
-    topic: 'healthcare'
-  },
-  ...b2QuestionsAdditions
-];
-
-// C1 level questions
-const c1QuestionsAdditions: Question[] = [
-  {
-    id: 'c1_medical_1',
-    text: 'Was bedeutet die Abkürzung "COPD"?',
-    options: [
-      'Chronisch obstruktive Prostataerkrankung',
-      'Chronisch obstruktive Lungenerkrankung',
-      'Chronische Osteoporose mit peripherer Deformation',
-      'Chronische Otitis mit pulmonaler Disposition'
-    ],
-    correctAnswer: 'Chronisch obstruktive Lungenerkrankung',
-    difficulty: 'C1',
-    topic: 'healthcare'
+    topic: 'subjunctive'
   },
   {
-    id: 'c1_medical_2',
-    text: 'Was bedeuten die Abkürzungen "RR" und "BZ" in der Patientendokumentation?',
-    options: [
-      'Rheumafaktor und Blutzucker',
-      'Blutdruck und Blutzucker',
-      'Rückenreflex und Blutzucker',
-      'Blutdruck und Blutungszeit'
-    ],
-    correctAnswer: 'Blutdruck und Blutzucker',
-    difficulty: 'C1',
-    topic: 'healthcare'
-  },
-  {
-    id: 'c1_medical_3',
-    text: 'Welche dieser Formulierungen würde man in einer professionellen Pflegedokumentation verwenden?',
-    options: [
-      'Patient kann nicht laufen.',
-      'Patient braucht viel Hilfe.',
-      'Patient ist bettlägerig.',
-      'Patient ist nur mit Hilfsmitteln und unter Aufsicht mobilisierbar.'
-    ],
-    correctAnswer: 'Patient ist nur mit Hilfsmitteln und unter Aufsicht mobilisierbar.',
-    difficulty: 'C1',
-    topic: 'healthcare'
+    id: 'b2_8',
+    text: 'Das Projekt wurde trotz aller Schwierigkeiten erfolgreich _____.',
+    options: ['durchgeführt', 'durchführen', 'durchzuführen', 'durchführte'],
+    correctAnswer: 'durchgeführt',
+    difficulty: 'B2',
+    topic: 'participles'
   }
 ];
 
+// C1 level questions - Advanced German
 const c1Questions: Question[] = [
   {
     id: 'c1_1',
@@ -430,64 +352,24 @@ const c1Questions: Question[] = [
     topic: 'cases'
   },
   {
-    id: 'c1_healthcare_1',
-    text: 'Welcher der folgenden Begriffe beschreibt keine Erkrankung des Herz-Kreislauf-Systems?',
-    options: [
-      'Hypertonie',
-      'Tachykardie',
-      'Myokardinfarkt',
-      'Pneumonie'
-    ],
-    correctAnswer: 'Pneumonie',
+    id: 'c1_6',
+    text: 'Die Verhandlungen sind ins Stocken _____.',
+    options: ['gekommen', 'geraten', 'gefallen', 'geworden'],
+    correctAnswer: 'geraten',
     difficulty: 'C1',
-    topic: 'healthcare'
+    topic: 'idioms'
   },
   {
-    id: 'c1_healthcare_2',
-    text: 'Wie würden Sie einem Patienten erklären, dass er ein MRT benötigt?',
-    options: [
-      'Wir müssen Ihr Blut untersuchen, um die Ursache festzustellen.',
-      'Wir müssen eine Röntgenaufnahme machen, um einen Knochenbruch auszuschließen.',
-      'Wir benötigen eine bildgebende Untersuchung mit einem Magnetresonanztomographen, um detaillierte Bilder Ihres Gewebes zu erhalten.',
-      'Wir werden Ihre Haut mit Ultraschall untersuchen.'
-    ],
-    correctAnswer: 'Wir benötigen eine bildgebende Untersuchung mit einem Magnetresonanztomographen, um detaillierte Bilder Ihres Gewebes zu erhalten.',
+    id: 'c1_7',
+    text: 'Angesichts der _____ Lage entschied die Regierung, sofort zu handeln.',
+    options: ['ernst', 'ernste', 'ernsten', 'ernsteren'],
+    correctAnswer: 'ernsten',
     difficulty: 'C1',
-    topic: 'healthcare'
-  },
-  ...c1QuestionsAdditions
-];
-
-// C2 level questions
-const c2QuestionsAdditions: Question[] = [
-  {
-    id: 'c2_medical_1',
-    text: 'Was ist ein "Stroke Patient"?',
-    options: [
-      'Ein Patient mit Schlaganfall',
-      'Ein Patient mit Hitzschlag',
-      'Ein Patient mit Herzinfarkt',
-      'Ein Patient mit Lähmungserscheinungen'
-    ],
-    correctAnswer: 'Ein Patient mit Schlaganfall',
-    difficulty: 'C2',
-    topic: 'healthcare'
-  },
-  {
-    id: 'c2_medical_2',
-    text: 'Welche dieser Aussagen zur Dokumentation einer Wunde ist am präzisesten?',
-    options: [
-      'Die Wunde sieht gut aus.',
-      'Die Wunde ist 2x3 cm groß, mit seröser Sekretion, Wundränder leicht gerötet.',
-      'Die Wunde hat sich verbessert.',
-      'Die Wunde ist groß und rot.'
-    ],
-    correctAnswer: 'Die Wunde ist 2x3 cm groß, mit seröser Sekretion, Wundränder leicht gerötet.',
-    difficulty: 'C2',
-    topic: 'healthcare'
+    topic: 'adjective_declension'
   }
 ];
 
+// C2 level questions - Mastery German
 const c2Questions: Question[] = [
   {
     id: 'c2_1',
@@ -538,34 +420,7 @@ const c2Questions: Question[] = [
     correctAnswer: 'direkt zur Sache kommen',
     difficulty: 'C2',
     topic: 'latin_expressions'
-  },
-  {
-    id: 'c2_healthcare_1',
-    text: 'Wie lautet die korrekte Bezeichnung für die Zellschicht, die die Blutgefäße von innen auskleidet?',
-    options: [
-      'Endothel',
-      'Epithel',
-      'Peritoneum',
-      'Perikard'
-    ],
-    correctAnswer: 'Endothel',
-    difficulty: 'C2',
-    topic: 'healthcare'
-  },
-  {
-    id: 'c2_healthcare_2',
-    text: 'Welche der folgenden Aussagen zu einer informierten Einwilligung (Informed Consent) ist korrekt?',
-    options: [
-      'Die Einwilligung muss immer schriftlich erfolgen.',
-      'Bei bewusstlosen Patienten ist keine Einwilligung erforderlich.',
-      'Die Einwilligung muss freiwillig, nach angemessener Aufklärung und bei bestehender Einwilligungsfähigkeit erfolgen.',
-      'Für Routineuntersuchungen ist keine Einwilligung erforderlich.'
-    ],
-    correctAnswer: 'Die Einwilligung muss freiwillig, nach angemessener Aufklärung und bei bestehender Einwilligungsfähigkeit erfolgen.',
-    difficulty: 'C2',
-    topic: 'healthcare'
-  },
-  ...c2QuestionsAdditions
+  }
 ];
 
 // Export a complete question bank organized by difficulty level

@@ -39,10 +39,11 @@ interface LanguageAssessmentHook {
 }
 
 export function useLanguageAssessment(): LanguageAssessmentHook {
-  const MIN_QUESTIONS = 5;
-  const MAX_QUESTIONS = 15;
+  // Updated for general German proficiency assessment
+  const MIN_QUESTIONS = 8;
+  const MAX_QUESTIONS = 10;
   const CONFIDENCE_THRESHOLD = 0.7;
-  const DEFAULT_TIME_LIMIT_MINUTES = 5;
+  const DEFAULT_TIME_LIMIT_MINUTES = 10; // Increased for more thorough assessment
 
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [currentLevel, setCurrentLevel] = useState<string>('A1');
@@ -87,6 +88,7 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     setAssessmentStarted(false);
     setTimeElapsed(0);
     
+    // Start with adaptive questions for general German proficiency
     const initialQuestions = selectAdaptiveQuestions('A1', [], MAX_QUESTIONS);
     setAllQuestions(initialQuestions);
     setCurrentLevel('A1');
@@ -155,6 +157,7 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     const updatedAnswers = [...userAnswers, newAnswer];
     setUserAnswers(updatedAnswers);
     
+    // Modified logic for 8-10 questions assessment
     if (shouldEndAssessment(updatedAnswers, MAX_QUESTIONS, MIN_QUESTIONS, CONFIDENCE_THRESHOLD) ||
         currentQuestionIndex >= allQuestions.length - 1) {
       completeAssessment(updatedAnswers);
@@ -199,11 +202,11 @@ export function useLanguageAssessment(): LanguageAssessmentHook {
     setResult(assessmentResult);
     setIsComplete(true);
     
-    // Show completion notification
+    // Show completion notification for general German proficiency
     if (isTimedTest) {
-      toast.success(`FSP-Test abgeschlossen: Niveau ${assessmentResult.level}, Zeit: ${Math.floor(timeElapsed)} Minuten`);
+      toast.success(`Deutschtest abgeschlossen: Niveau ${assessmentResult.level}, Zeit: ${Math.floor(timeElapsed)} Minuten`);
     } else {
-      toast.success(`Sprachtest abgeschlossen: Niveau ${assessmentResult.level}`);
+      toast.success(`Deutschtest abgeschlossen: Niveau ${assessmentResult.level}`);
     }
   };
 
