@@ -24,15 +24,26 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
     isListening,
     startListening,
     stopListening,
-    hasRecognitionSupport
+    resetText,
+    hasRecognitionSupport,
+    error
   } = useVoiceRecognition({
     language: 'de-DE',
+    continuous: false,
+    interimResults: true,
     onResult: (result, isFinal) => {
       if (isFinal) {
-        setMessage(prev => prev ? `${prev} ${result}` : result);
+        setMessage(prev => {
+          const newText = prev ? `${prev} ${result}` : result;
+          return newText;
+        });
+        resetText();
       }
     },
-    onError: (error) => toast.error(error)
+    onError: (error) => {
+      console.error("Voice recognition error:", error);
+      toast.error("Spracherkennung fehlgeschlagen: " + error);
+    }
   });
 
   const handleSendMessage = () => {
@@ -47,59 +58,64 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
     } else {
       try {
         await startListening();
+        toast.info("Sprechen Sie jetzt...");
       } catch (error) {
-        toast.error("Failed to start voice recognition");
+        console.error("Failed to start voice recognition:", error);
+        toast.error("Spracherkennung konnte nicht gestartet werden");
       }
     }
   };
 
   return (
-    <CardFooter>
-      <div className="flex w-full items-center space-x-2">
-        <Textarea
-          placeholder={t("scenario.type_message")}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="flex-1"
-          disabled={disabled}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              handleSendMessage();
-            }
-          }}
-        />
-        
-        {hasRecognitionSupport && (
-          <Button 
-            variant={isListening ? "destructive" : "outline"}
-            size="icon" 
-            onClick={toggleListening}
+    <CardFooter className="p-4">
+      <div className="flex w-full items-end space-x-2">
+        <div className="flex-1">
+          <Textarea
+            placeholder={t("scenario.type_message")}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className="min-h-[80px] resize-none"
             disabled={disabled}
-            className="touch-action-manipulation"
-            aria-label={isListening ? t("scenario.stop_listening") : t("scenario.start_speaking")}
-          >
-            {isListening ? (
-              <MicOff className="h-4 w-4" />
-            ) : (
-              <Mic className="h-4 w-4" />
-            )}
-            <span className="sr-only">
-              {isListening ? t("scenario.stop_listening") : t("scenario.start_speaking")}
-            </span>
-          </Button>
-        )}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage();
+              }
+            }}
+          />
+          {error && (
+            <p className="text-xs text-red-500 mt-1">{error}</p>
+          )}
+        </div>
         
-        <Button 
-          size="icon" 
-          onClick={handleSendMessage}
-          disabled={disabled || !message.trim()}
-          className="touch-action-manipulation"
-          aria-label={t("common.send")}
-        >
-          <Send className="h-4 w-4" />
-          <span className="sr-only">{t("common.send")}</span>
-        </Button>
+        <div className="flex flex-col space-y-2">
+          {hasRecognitionSupport && (
+            <Button 
+              variant={isListening ? "destructive" : "outline"}
+              size="icon" 
+              onClick={toggleListening}
+              disabled={disabled}
+              className="touch-action-manipulation"
+              aria-label={isListening ? "Aufnahme stoppen" : "Sprachaufnahme starten"}
+            >
+              {isListening ? (
+                <MicOff className="h-4 w-4" />
+              ) : (
+                <Mic className="h-4 w-4" />
+              )}
+            </Button>
+          )}
+          
+          <Button 
+            size="icon" 
+            onClick={handleSendMessage}
+            disabled={disabled || !message.trim()}
+            className="touch-action-manipulation"
+            aria-label={t("common.send")}
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </CardFooter>
   );

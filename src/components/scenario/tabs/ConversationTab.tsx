@@ -6,6 +6,7 @@ import { User, Bot, Loader2, Stethoscope, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FeedbackDisplay from "../FeedbackDisplay";
 import ResponseGuidance from "../ResponseGuidance";
+import VocabularySuggestions from "../VocabularySuggestions";
 
 interface ConversationTabProps {
   conversation: DialogueLine[];
@@ -75,8 +76,20 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
     }
   };
 
+  const handleVocabSelect = (word: string) => {
+    if (onQuickReply) {
+      onQuickReply(word);
+    }
+  };
+
   return (
     <div className="space-y-4">
+      {/* Vocabulary Suggestions */}
+      <VocabularySuggestions 
+        scenarioType={scenarioType}
+        onVocabSelect={handleVocabSelect}
+      />
+
       {/* Conversation Display */}
       <div className="h-96 overflow-y-auto space-y-4 p-4 border rounded-lg bg-white">
         {conversation.length === 0 ? (
