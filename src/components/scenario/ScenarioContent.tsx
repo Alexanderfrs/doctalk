@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Scenario, DialogueLine } from "@/data/scenarios";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import TabNavigation from "./TabNavigation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MessageSquare, Book, Lightbulb } from "lucide-react";
 import ConversationTab from "./tabs/ConversationTab";
 import ResourcesTab from "./tabs/ResourcesTab";
 import NotesTab from "./tabs/NotesTab";
@@ -145,42 +146,56 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       />
       
       <Card className="w-full">
-        <TabNavigation 
-          activeTab={activeTab} 
-          onChange={setActiveTab}
-        />
-        
-        <div className="p-6">
-          {activeTab === "conversation" && (
-            <ConversationTab 
-              conversation={conversation}
-              onUserResponse={handleSendMessage}
-              isProcessingResponse={isLLMLoading}
-              suggestion={suggestion}
-              onQuickReply={handleQuickReply}
-              feedback={feedback}
-              onDismissFeedback={handleDismissFeedback}
-              conversationHistory={conversation}
-              scenarioType={scenario.category}
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid grid-cols-3 mb-4 touch-action-manipulation">
+            <TabsTrigger value="conversation" className="md:text-sm text-xs">
+              <MessageSquare className="mr-2 h-4 w-4" />
+              <span className="md:inline hidden">Conversation</span>
+            </TabsTrigger>
+            <TabsTrigger value="resources" className="md:text-sm text-xs">
+              <Book className="mr-2 h-4 w-4" />
+              <span className="md:inline hidden">Resources</span>
+            </TabsTrigger>
+            <TabsTrigger value="notes" className="md:text-sm text-xs">
+              <Lightbulb className="mr-2 h-4 w-4" />
+              <span className="md:inline hidden">Notes</span>
+            </TabsTrigger>
+          </TabsList>
+          
+          <div className="p-6">
+            <TabsContent value="conversation">
+              <ConversationTab 
+                conversation={conversation}
+                onUserResponse={handleSendMessage}
+                isProcessingResponse={isLLMLoading}
+                suggestion={suggestion}
+                onQuickReply={handleQuickReply}
+                feedback={feedback}
+                onDismissFeedback={handleDismissFeedback}
+                conversationHistory={conversation}
+                scenarioType={scenario.category}
+              />
+            </TabsContent>
+            
+            <TabsContent value="resources">
+              <ResourcesTab />
+            </TabsContent>
+            
+            <TabsContent value="notes">
+              <NotesTab 
+                notes={notes} 
+                onNotesChange={handleNotesChange} 
+              />
+            </TabsContent>
+          </div>
+          
+          {activeTab === "conversation" && !isConversationComplete && (
+            <ConversationInput 
+              onSendMessage={handleSendMessage}
+              disabled={isLLMLoading}
             />
           )}
-          
-          {activeTab === "resources" && <ResourcesTab />}
-          
-          {activeTab === "notes" && (
-            <NotesTab 
-              notes={notes} 
-              onNotesChange={handleNotesChange} 
-            />
-          )}
-        </div>
-        
-        {activeTab === "conversation" && !isConversationComplete && (
-          <ConversationInput 
-            onSendMessage={handleSendMessage}
-            disabled={isLLMLoading}
-          />
-        )}
+        </Tabs>
       </Card>
 
       <PerformanceInsightsModal
