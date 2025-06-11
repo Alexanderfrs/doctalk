@@ -25,12 +25,13 @@ const vocabularyCategories: VocabularyCategory[] = [
     words: [
       {
         id: 'blood-pressure',
-        german: 'der Blutdruck',
+        german: 'der Blutdruck (RR)',
         english: 'blood pressure',
         pronunciation: 'bluut-drook',
-        example: 'Der Blutdruck des Patienten ist heute erhöht.',
+        example: 'RR: 120/80 mmHg - Der Blutdruck des Patienten ist heute erhöht.',
         category: 'vital-signs',
-        notes: 'Often recorded as systolic/diastolic (e.g., 120/80)'
+        notes: 'Often recorded as systolic/diastolic (e.g., 120/80). RR stands for Riva-Rocci',
+        abbreviation: 'RR'
       },
       {
         id: 'pulse',
@@ -58,12 +59,23 @@ const vocabularyCategories: VocabularyCategory[] = [
       },
       {
         id: 'oxygen-saturation',
-        german: 'die Sauerstoffsättigung',
+        german: 'die Sauerstoffsättigung (SpO2)',
         english: 'oxygen saturation',
         pronunciation: 'zow-er-shtof-zet-ee-goong',
-        example: 'Die Sauerstoffsättigung ist auf 92% gefallen.',
+        example: 'Die SpO2 ist auf 92% gefallen.',
         category: 'vital-signs',
-        notes: 'Often abbreviated as SpO2'
+        notes: 'SpO2 = Sauerstoffsättigung im Blut',
+        abbreviation: 'SpO2'
+      },
+      {
+        id: 'blood-sugar',
+        german: 'der Blutzucker (BZ)',
+        english: 'blood sugar',
+        pronunciation: 'bluut-tsoo-ker',
+        example: 'BZ vor dem Essen messen: 120 mg/dl.',
+        category: 'vital-signs',
+        notes: 'BZ = Blutzucker, normal range 70-100 mg/dl nüchtern',
+        abbreviation: 'BZ'
       }
     ]
   },
@@ -205,6 +217,93 @@ const vocabularyCategories: VocabularyCategory[] = [
         pronunciation: 'noht-fahl-team',
         example: 'Das Notfallteam ist bereits unterwegs.',
         category: 'emergency'
+      }
+    ]
+  },
+  {
+    id: 'care-equipment',
+    name: 'Pflegehilfsmittel',
+    description: 'Tägliche Pflegehilfsmittel und Ausrüstung für die Patientenversorgung',
+    words: [
+      {
+        id: 'rollator',
+        german: 'der Rollator',
+        english: 'rollator/walker',
+        pronunciation: 'roll-ah-tor',
+        example: 'Mit dem Rollator kann sie selbstständig zur Physiotherapie gehen.',
+        category: 'care-equipment'
+      },
+      {
+        id: 'wheelchair',
+        german: 'der Rollstuhl',
+        english: 'wheelchair',
+        pronunciation: 'roll-shtool',
+        example: 'Der Patient ist auf einen Rollstuhl angewiesen.',
+        category: 'care-equipment'
+      },
+      {
+        id: 'walking-cane',
+        german: 'der Gehstock',
+        english: 'walking cane',
+        pronunciation: 'geh-shtock',
+        example: 'Er benutzt einen Gehstock seit seiner Hüft-OP.',
+        category: 'care-equipment'
+      },
+      {
+        id: 'lift-hoist',
+        german: 'der Patientenlift',
+        english: 'patient lift/hoist',
+        pronunciation: 'pah-tsi-en-ten-lift',
+        example: 'Der Patientenlift erleichtert den Transfer ins Bett.',
+        category: 'care-equipment'
+      },
+      {
+        id: 'commode-chair',
+        german: 'der Toilettenstuhl',
+        english: 'commode chair',
+        pronunciation: 'toy-let-ten-shtool',
+        example: 'Der Toilettenstuhl steht neben dem Bett bereit.',
+        category: 'care-equipment'
+      },
+      {
+        id: 'shower-chair',
+        german: 'der Duschstuhl',
+        english: 'shower chair',
+        pronunciation: 'doosh-shtool',
+        example: 'Mit dem Duschstuhl kann sie sicher duschen.',
+        category: 'care-equipment'
+      },
+      {
+        id: 'grab-bars',
+        german: 'die Haltegriffe',
+        english: 'grab bars',
+        pronunciation: 'hal-teh-grif-feh',
+        example: 'Die Haltegriffe im Bad bieten zusätzliche Sicherheit.',
+        category: 'care-equipment'
+      },
+      {
+        id: 'bed-table',
+        german: 'der Bettisch',
+        english: 'over-bed table',
+        pronunciation: 'bet-tish',
+        example: 'Das Essen wird auf dem Bettisch serviert.',
+        category: 'care-equipment'
+      },
+      {
+        id: 'anti-slip-mat',
+        german: 'die Rutschfeste Matte',
+        english: 'anti-slip mat',
+        pronunciation: 'rooch-fes-teh mat-teh',
+        example: 'Die rutschfeste Matte verhindert Stürze im Bad.',
+        category: 'care-equipment'
+      },
+      {
+        id: 'bed-rails',
+        german: 'das Bettgitter',
+        english: 'bed rails',
+        pronunciation: 'bet-git-ter',
+        example: 'Das Bettgitter schützt vor nächtlichen Stürzen.',
+        category: 'care-equipment'
       }
     ]
   },
@@ -539,6 +638,16 @@ const vocabularyCategories: VocabularyCategory[] = [
         example: 'Die Patientin hat eine Fraktur des rechten Handgelenks.',
         category: 'diagnoses',
         notes: 'Knochenbruch'
+      },
+      {
+        id: 'copd',
+        german: 'COPD (Chronisch obstruktive Lungenerkrankung)',
+        english: 'COPD (Chronic Obstructive Pulmonary Disease)',
+        pronunciation: 'tzay-oh-pay-day',
+        example: 'Der Patient leidet seit Jahren an COPD, auch "Raucherlunge" genannt.',
+        category: 'diagnoses',
+        notes: 'COPD = Chronisch obstruktive Lungenerkrankung, umgangssprachlich "Raucherlunge"',
+        abbreviation: 'COPD'
       }
     ]
   },
@@ -554,48 +663,58 @@ const vocabularyCategories: VocabularyCategory[] = [
         pronunciation: 'err-err',
         example: 'RR: 120/80 mmHg',
         category: 'abbreviations',
-        notes: 'Blutdruck',
+        notes: 'Blutdruck nach Riva-Rocci-Methode',
         abbreviation: 'RR'
       },
       {
         id: 'bs',
-        german: 'BZ',
+        german: 'BZ (Blutzucker)',
         english: 'BS (blood sugar)',
         pronunciation: 'bay-tzett',
-        example: 'BZ vor dem Essen messen.',
+        example: 'BZ vor dem Essen messen: 120 mg/dl.',
         category: 'abbreviations',
-        notes: 'Blutzucker',
+        notes: 'BZ = Blutzucker, Normalwerte nüchtern 70-100 mg/dl',
         abbreviation: 'BZ'
       },
       {
         id: 'ecg',
-        german: 'EKG',
+        german: 'EKG (Elektrokardiogramm)',
         english: 'ECG/EKG',
         pronunciation: 'ay-kah-gay',
         example: 'Das EKG zeigt eine Sinustachykardie.',
         category: 'abbreviations',
-        notes: 'Elektrokardiogramm',
+        notes: 'EKG = Elektrokardiogramm, zeichnet Herzaktivität auf',
         abbreviation: 'EKG'
       },
       {
-        id: 'copd',
-        german: 'COPD',
+        id: 'copd-abbr',
+        german: 'COPD (Chronisch obstruktive Lungenerkrankung)',
         english: 'COPD',
         pronunciation: 'tzay-oh-pay-day',
-        example: 'Der Patient leidet seit Jahren an COPD.',
+        example: 'Patient mit COPD braucht regelmäßige Atemtherapie.',
         category: 'abbreviations',
-        notes: 'Chronisch obstruktive Lungenerkrankung ("Raucherlunge")',
+        notes: 'COPD = "Raucherlunge", chronische Lungenkrankheit',
         abbreviation: 'COPD'
       },
       {
         id: 'icu',
-        german: 'ITS',
+        german: 'ITS (Intensivstation)',
         english: 'ICU',
         pronunciation: 'ee-tay-ess',
         example: 'Der Patient wird auf die ITS verlegt.',
         category: 'abbreviations',
-        notes: 'Intensivstation',
+        notes: 'ITS = Intensivstation, auch Intensivtherapiestation',
         abbreviation: 'ITS'
+      },
+      {
+        id: 'spo2-abbr',
+        german: 'SpO2 (Sauerstoffsättigung)',
+        english: 'SpO2 (oxygen saturation)',
+        pronunciation: 'ess-pay-oh-zwei',
+        example: 'SpO2 liegt bei 98% - das ist normal.',
+        category: 'abbreviations',
+        notes: 'SpO2 = Sauerstoffsättigung im Blut, normal >95%',
+        abbreviation: 'SpO2'
       }
     ]
   },
@@ -721,7 +840,7 @@ const vocabularyCategories: VocabularyCategory[] = [
         notes: 'Usually used in plural form'
       },
       {
-        id: 'wheelchair',
+        id: 'wheelchair-equip',
         german: 'der Rollstuhl',
         english: 'wheelchair',
         pronunciation: 'roll-shtool',

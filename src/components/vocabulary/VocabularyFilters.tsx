@@ -29,7 +29,9 @@ const VocabularyFilters: React.FC<VocabularyFiltersProps> = ({
     { id: "emergency", label: "Notfälle" },
     { id: "medications", label: "Medikamente" },
     { id: "pain-scale", label: "Schmerzskala" },
-    { id: "equipment", label: "Geräte und Ausstattung" }
+    { id: "care-equipment", label: "Pflegehilfsmittel" },
+    { id: "equipment", label: "Medizinische Geräte" },
+    { id: "abbreviations", label: "Abkürzungen" }
   ];
 
   const domains = [

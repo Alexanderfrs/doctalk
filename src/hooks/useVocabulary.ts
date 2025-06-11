@@ -32,9 +32,9 @@ export const useVocabulary = () => {
     
     const domainCategories = {
       'hospital': ['vital-signs', 'emergency', 'medications', 'pain-scale', 'diagnoses', 'abbreviations', 'equipment'],
-      'daily-care': ['ward-routines', 'documentation', 'mobility', 'general-care'],
-      'elderly-care': ['elderly-care', 'dementia', 'mobility', 'general-care'],
-      'disability-care': ['disability-care', 'communication', 'mobility']
+      'daily-care': ['ward-routines', 'documentation', 'mobility', 'general-care', 'care-equipment'],
+      'elderly-care': ['elderly-care', 'dementia', 'mobility', 'general-care', 'care-equipment'],
+      'disability-care': ['disability-care', 'communication', 'mobility', 'care-equipment']
     };
     
     const relevantCategories = domainCategories[activeDomain] || [];
