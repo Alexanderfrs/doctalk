@@ -41,7 +41,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
           icon: "🏥",
           title: "DocTalk",
           subtitle: translate("mobileOnboarding.screen1.subtitle") || "The App to Speak, Work, Belong in German.",
-          description: translate("mobileOnboarding.screen1.description") || "Your gateway to confident communication in German healthcare.",
+          description: "Swipe to discover more",
           showLogo: true
         };
       case 2:
@@ -58,7 +58,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
           icon: "📚",
           title: translate("mobileOnboarding.screen3.title") || "Medical Learning",
           subtitle: translate("mobileOnboarding.screen3.subtitle") || "Master Medical Vocabulary & Terminology",
-          description: translate("mobileOnboarding.screen3.description") || "Learn the language that one the wards.",
+          description: "Learn the language used on the ward",
           showLogo: false,
           showBulletPoints: true
         };
@@ -66,7 +66,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
         return {
           icon: "💬",
           title: translate("mobileOnboarding.screen4.title") || "Practice Real-World Scenarios",
-          subtitle: translate("mobileOnboarding.screen4.subtitle") || "Speak and Listen to Real Medical Dialogue",
+          subtitle: "Speak and Listen to Real Medical Dialogue with AI",
           description: translate("mobileOnboarding.screen4.description") || "Practice Real-World Scenarios with AI",
           showLogo: false
         };
@@ -143,7 +143,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
                 {recognitionSteps.map((step, index) => (
                   <div 
                     key={index}
-                    className={`flex items-start space-x-3 p-3 bg-white rounded-lg shadow-sm transition-all duration-500 ${
+                    className={`flex items-start space-x-3 p-3 bg-white rounded-lg shadow-sm transition-all duration-500 animate-complete ${
                       showAnimations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                     }`}
                     style={{ 
@@ -192,7 +192,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
                     {bulletPoints.map((point, index) => (
                       <div 
                         key={index}
-                        className={`flex items-center justify-start space-x-3 text-left transition-all duration-500 ${
+                        className={`flex items-center justify-start space-x-3 text-left transition-all duration-500 animate-complete ${
                           showAnimations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                         }`}
                         style={{ 
