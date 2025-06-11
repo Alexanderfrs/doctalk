@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import LanguageCertification from "./pages/LanguageCertification";
 import BrandBanner from "./components/brand/BrandBanner";
+import AppNavigation from "./components/navigation/AppNavigation";
 import Onboarding from "./pages/Onboarding";
 import Index from "./pages/Index";
 
@@ -58,7 +59,12 @@ const OnboardingProtectedRoute = ({ children }) => {
     return <Navigate to="/onboarding" replace />;
   }
   
-  return children;
+  return (
+    <>
+      {children}
+      <AppNavigation />
+    </>
+  );
 };
 
 // Route that's only accessible for non-authenticated users

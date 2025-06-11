@@ -1,22 +1,43 @@
 
-import React, { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { useScenarios } from "@/hooks/useScenarios";
-import PracticeFilters from "@/components/practice/PracticeFilters";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import AppHeader from "@/components/layout/AppHeader";
+import Footer from "@/components/layout/Footer";
 import PracticeSearch from "@/components/practice/PracticeSearch";
+import PracticeFilters from "@/components/practice/PracticeFilters";
 import ScenarioGrid from "@/components/practice/ScenarioGrid";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, MessageCircle, TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BookOpen, MessageCircle, Target, TrendingUp } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useProgressTracking } from "@/hooks/useProgressTracking";
+import { useScenarios } from "@/hooks/useScenarios";
 
 const Practice: React.FC = () => {
   const { user, profile } = useAuth();
+  const { userProgress } = useProgressTracking();
   const { scenarios, isLoading } = useScenarios();
+  const navigate = useNavigate();
   
-  // Filter states
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedLevel, setSelectedLevel] = useState('Alle');
-  const [selectedCategory, setSelectedCategory] = useState('Alle');
+  // Filter and search state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("Alle");
+  const [selectedCategory, setSelectedCategory] = useState("Alle");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  // Set default level based on user's German level
+  useEffect(() => {
+    if (profile?.german_level && selectedLevel === "Alle") {
+      setSelectedLevel(profile.german_level);
+    }
+  }, [profile?.german_level, selectedLevel]);
+
+  const handleClearFilters = () => {
+    setSearchQuery("");
+    setSelectedLevel("Alle");
+    setSelectedCategory("Alle");
+    setSelectedTags([]);
+  };
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags(prev => 
@@ -26,121 +47,176 @@ const Practice: React.FC = () => {
     );
   };
 
-  const handleClearFilters = () => {
-    setSearchQuery('');
-    setSelectedLevel('Alle');
-    setSelectedCategory('Alle');
-    setSelectedTags([]);
-  };
-
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p>Bitte melden Sie sich an, um zu üben.</p>
+        <p>Bitte melden Sie sich an, um die Übungsseite zu sehen.</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-medical-50 to-white">
-      <div className="container mx-auto py-8 px-4">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-medical-800 mb-2">
-            Übungen & Szenarien
-          </h1>
-          <p className="text-gray-600">
-            Verbessern Sie Ihre medizinischen Deutschkenntnisse mit praxisnahen Übungen.
-          </p>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center">
-                <MessageCircle className="h-4 w-4 mr-2 text-blue-500" />
-                Verfügbare Szenarien
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-600">
-                {scenarios.length}
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Für Ihr Level: {profile?.german_level || 'B1'}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center">
-                <TrendingUp className="h-4 w-4 mr-2 text-green-500" />
-                Abgeschlossen
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">
-                {scenarios.filter(s => s.completed).length}
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                {Math.round((scenarios.filter(s => s.completed).length / scenarios.length) * 100) || 0}% Fortschritt
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center">
-                <BookOpen className="h-4 w-4 mr-2 text-purple-500" />
-                Empfohlen
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-purple-600">
-                {scenarios.filter(s => !s.completed).length}
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Noch zu bearbeiten
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Search */}
-        <PracticeSearch
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          placeholder="Szenarien durchsuchen..."
-        />
-
-        {/* Filters */}
-        <PracticeFilters
-          selectedLevel={selectedLevel}
-          selectedCategory={selectedCategory}
-          selectedTags={selectedTags}
-          onLevelChange={setSelectedLevel}
-          onCategoryChange={setSelectedCategory}
-          onTagToggle={handleTagToggle}
-          onClearFilters={handleClearFilters}
-        />
-
-        {/* Scenarios Grid */}
-        {isLoading ? (
-          <div className="text-center py-12">
-            <p>Lade Szenarien...</p>
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
+      <AppHeader />
+      
+      <main className="flex-grow pt-24 px-4 md:px-8 pb-12">
+        <div className="container mx-auto">
+          {/* Header Section */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-medical-800 mb-2">
+              Medizinische Szenarien üben
+            </h1>
+            <p className="text-gray-600">
+              Verbessern Sie Ihre medizinischen Deutschkenntnisse mit realistischen Patientensituationen.
+            </p>
           </div>
-        ) : (
-          <ScenarioGrid
-            scenarios={scenarios}
+
+          {/* Progress Overview */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <MessageCircle className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Szenarien</p>
+                    <p className="text-xl font-bold">{userProgress?.scenarios_completed || 0}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <Target className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Streak</p>
+                    <p className="text-xl font-bold">{userProgress?.current_streak || 0} Tage</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-purple-100 rounded-lg">
+                    <TrendingUp className="h-5 w-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Fortschritt</p>
+                    <p className="text-xl font-bold">{Math.round(((userProgress?.scenarios_completed || 0) / 50) * 100)}%</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-yellow-100 rounded-lg">
+                    <BookOpen className="h-5 w-5 text-yellow-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Level</p>
+                    <p className="text-xl font-bold">{profile?.german_level || 'A1'}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MessageCircle className="h-5 w-5" />
+                  Schnellstart
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 mb-4">
+                  Beginnen Sie sofort mit einem Szenario passend zu Ihrem Level.
+                </p>
+                <Button 
+                  className="w-full"
+                  onClick={() => {
+                    // Find a scenario matching user's level
+                    const levelScenarios = scenarios.filter(s => s.difficulty === profile?.german_level);
+                    const randomScenario = levelScenarios[Math.floor(Math.random() * levelScenarios.length)];
+                    if (randomScenario) {
+                      navigate(`/scenario/${randomScenario.id}`);
+                    }
+                  }}
+                >
+                  Zufälliges Szenario starten
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BookOpen className="h-5 w-5" />
+                  Vokabeln üben
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 mb-4">
+                  Erweitern Sie Ihren medizinischen Wortschatz.
+                </p>
+                <Button 
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => navigate('/vocabulary')}
+                >
+                  Zur Vokabelübung
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Search and Filters */}
+          <PracticeSearch
             searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            placeholder="Szenarien durchsuchen..."
+          />
+
+          <PracticeFilters
             selectedLevel={selectedLevel}
             selectedCategory={selectedCategory}
             selectedTags={selectedTags}
+            onLevelChange={setSelectedLevel}
+            onCategoryChange={setSelectedCategory}
+            onTagToggle={handleTagToggle}
+            onClearFilters={handleClearFilters}
           />
-        )}
-      </div>
+
+          {/* Scenarios Grid */}
+          {isLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-medical-500 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Szenarien werden geladen...</p>
+            </div>
+          ) : (
+            <ScenarioGrid
+              scenarios={scenarios}
+              searchQuery={searchQuery}
+              selectedLevel={selectedLevel}
+              selectedCategory={selectedCategory}
+              selectedTags={selectedTags}
+            />
+          )}
+        </div>
+      </main>
+      
+      <Footer />
     </div>
   );
 };
