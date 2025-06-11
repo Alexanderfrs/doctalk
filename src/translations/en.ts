@@ -54,8 +54,10 @@ export const englishTranslations = {
   customContent: 'Tailored content for language levels B1 to C1 - build upon your existing German foundation with medical specialization.',
   expertDeveloped: 'Developed with Experts',
   contentDevelopment: 'All content was developed and reviewed in collaboration with doctors, nurses, and language teachers.',
-  certificationRecognition: 'FSP & Anerkennung Support',
-  examPreparation: 'Comprehensive preparation for the Fachsprachenprüfung (FSP) and professional recognition (Anerkennung) process in German healthcare.',
+  anerkennungFspSupport: 'Anerkennung & FSP Support',
+  anerkennungExamPreparation: 'Comprehensive preparation for professional recognition (Anerkennung) and the Fachsprachenprüfung (FSP) in German healthcare.',
+  flexibleLearning: 'Flexible Learning',
+  flexibleLearningDesc: 'Learn at your own pace with immediate practical application in your daily medical work environment.',
   comparisonTitle: 'Compared to general language learning apps',
   feature: 'Feature',
   generalApps: 'General Apps',
@@ -201,7 +203,7 @@ export const englishTranslations = {
   practiceDescription: "Practice medical German in realistic scenarios from your professional activities",
   
   // New comparison section translations
-  whyChooseDocTalk: "Why choose DocTalk?",
+  whyChooseDocTalk: "Why choose DocTalk",
   whyChooseDocTalkDesc: "See how DocTalk provides unique benefits that other language learning solutions simply can't match.",
   specializedMedicalContent: "Specialized Medical Content",
   specializedMedicalContentDesc: "Comprehensive medical vocabulary and terminology developed specifically for healthcare professionals.",

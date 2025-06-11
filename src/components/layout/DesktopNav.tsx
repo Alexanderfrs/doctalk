@@ -21,7 +21,7 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ navItems }) => {
   return (
     <nav className="hidden md:flex space-x-1">
       {navItems.map((item, index) => {
-        // Insert "Why DocTalk" button after "Features" (index 0) and before "Pricing" (index 1)
+        // Insert "Why DocTalk?" button after "Features" (index 0) and before "Pricing" (index 1)
         const showWhyDocTalk = index === 1 && item.path === "/#pricing";
         
         return (
@@ -36,7 +36,7 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ navItems }) => {
                     : "text-neutral-600 hover:bg-neutral-100"
                 )}
               >
-                <span className="ml-2">{translate("whyChooseDocTalk")}</span>
+                <span className="ml-2">{translate("whyChooseDocTalk")}?</span>
               </a>
             )}
             

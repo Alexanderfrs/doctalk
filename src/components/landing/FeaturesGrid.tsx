@@ -29,8 +29,13 @@ const FeaturesGrid = () => {
     },
     {
       icon: <Award className="h-8 w-8 text-medical-600" />,
-      title: translate("certificationRecognition"),
-      description: translate("examPreparation")
+      title: translate("anerkennungFspSupport"),
+      description: translate("anerkennungExamPreparation")
+    },
+    {
+      icon: <Clock className="h-8 w-8 text-medical-600" />,
+      title: translate("flexibleLearning"),
+      description: translate("flexibleLearningDesc")
     }
   ];
 
