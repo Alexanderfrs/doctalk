@@ -1,4 +1,3 @@
-
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -217,5 +216,21 @@ export const germanTranslations = {
   generalContent: "Allgemeine Sprachinhalte",
   otherSolutions: "Andere Lösungen",
   medicalTeamWorking: "Glückliches medizinisches Team, das zusammenarbeitet",
-  otherSolutionsSpecific: 'Sprachschulen, Privatlehrer, allgemeine Apps'
+  otherSolutionsSpecific: 'Sprachschulen, Privatlehrer, allgemeine Apps',
+  
+  // Mobile onboarding translations  
+  "mobileOnboarding.screen1.subtitle": "Die App zum Sprechen, Arbeiten und Dazugehören auf Deutsch.",
+  "mobileOnboarding.screen1.description": "Ihr Tor zur selbstbewussten Kommunikation im deutschen Gesundheitswesen.",
+  "mobileOnboarding.screen2.title": "Sprache & Rollenspiele",
+  "mobileOnboarding.screen2.subtitle": "Üben Sie reale Gespräche",
+  "mobileOnboarding.screen2.description": "Verstehen Sie den Anerkennungsprozess in Deutschland",
+  "mobileOnboarding.screen3.title": "Medizinisches Lernen", 
+  "mobileOnboarding.screen3.subtitle": "Meistern Sie medizinische Terminologie",
+  "mobileOnboarding.screen3.description": "• Echtes Klinik-Vokabular\n• Medizinische Abkürzungen\n• Medizinische Dokumentation\n• Lokale Dialekte\n\nLernen Sie die Sprache der Stationen.",
+  "mobileOnboarding.screen4.title": "Reale Szenarien üben",
+  "mobileOnboarding.screen4.subtitle": "Sprechen und Hören medizinischer Dialoge",
+  "mobileOnboarding.screen4.description": "Üben Sie reale Szenarien mit KI",
+  "skip": "Überspringen",
+  "next": "Weiter",
+  "start": "Starten"
 };

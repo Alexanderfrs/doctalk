@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -223,5 +222,21 @@ export const englishTranslations = {
   bottomLineDesc: "DocTalk is the only language learning solution designed specifically for medical professionals who need to excel in German healthcare environments.",
   medicalTeamWorking: "Happy medical team working together",
   hospitalScene: "Hospital scene",
-  medicalEducation: "Medical education"
+  medicalEducation: "Medical education",
+  
+  // Mobile onboarding translations
+  "mobileOnboarding.screen1.subtitle": "The App to Speak, Work, Belong in German.",
+  "mobileOnboarding.screen1.description": "Your gateway to confident communication in German healthcare.",
+  "mobileOnboarding.screen2.title": "Voice & Role-playing",
+  "mobileOnboarding.screen2.subtitle": "Practice Real-World Conversations", 
+  "mobileOnboarding.screen2.description": "Understand the Recognition Process in Germany",
+  "mobileOnboarding.screen3.title": "Medical Learning",
+  "mobileOnboarding.screen3.subtitle": "Master Medical Vocabulary & Terminology",
+  "mobileOnboarding.screen3.description": "• Real clinic vocabulary\n• Medical abbreviations\n• Medical documentation\n• Local Dialects\n\nLearn the language that one the wards.",
+  "mobileOnboarding.screen4.title": "Practice Real-World Scenarios",
+  "mobileOnboarding.screen4.subtitle": "Speak and Listen to Real Medical Dialogue", 
+  "mobileOnboarding.screen4.description": "Practice Real-World Scenarios with AI",
+  "skip": "Skip",
+  "next": "Next", 
+  "start": "Start"
 };
