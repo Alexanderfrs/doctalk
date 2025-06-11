@@ -17,12 +17,23 @@ import { useVocabularyProgress } from "@/hooks/useVocabularyProgress";
 
 const Vocabulary: React.FC = () => {
   const { user, profile } = useAuth();
-  const { vocabulary, isLoading } = useVocabulary();
+  const { 
+    searchTerm, 
+    setSearchTerm, 
+    filteredWords, 
+    activeCategory, 
+    setActiveCategory, 
+    activeDomain, 
+    setActiveDomain,
+    isFiltersOpen,
+    setIsFiltersOpen,
+    masteredWords,
+    updateMasteredStatus,
+    allWords
+  } = useVocabulary();
   const { getMasteryStats } = useVocabularyProgress();
   
   // State management
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("Alle");
   const [selectedDifficulty, setSelectedDifficulty] = useState("Alle");
   const [practiceMode, setPracticeMode] = useState(false);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -30,36 +41,23 @@ const Vocabulary: React.FC = () => {
   // Get mastery statistics
   const masteryStats = getMasteryStats();
 
-  // Filter vocabulary based on search and filters
-  const filteredVocabulary = vocabulary.filter((word) => {
-    // Search filter
-    if (searchQuery && !word.german.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !word.english.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
-
-    // Category filter
-    if (selectedCategory !== 'Alle' && word.category !== selectedCategory) {
-      return false;
-    }
-
-    // Difficulty filter  
+  // Filter vocabulary based on difficulty (additional filter on top of useVocabulary)
+  const finalFilteredVocabulary = filteredWords.filter((word) => {
     if (selectedDifficulty !== 'Alle' && word.difficulty !== selectedDifficulty) {
       return false;
     }
-
     return true;
   });
 
   // Reset practice when filters change
   useEffect(() => {
-    if (filteredVocabulary.length > 0) {
+    if (finalFilteredVocabulary.length > 0) {
       setCurrentWordIndex(0);
     }
-  }, [filteredVocabulary]);
+  }, [finalFilteredVocabulary]);
 
   const handleStartPractice = () => {
-    if (filteredVocabulary.length > 0) {
+    if (finalFilteredVocabulary.length > 0) {
       setPracticeMode(true);
       setCurrentWordIndex(0);
     }
@@ -67,7 +65,7 @@ const Vocabulary: React.FC = () => {
 
   const handlePracticeComplete = (correct: boolean) => {
     // Move to next word or end practice
-    if (currentWordIndex < filteredVocabulary.length - 1) {
+    if (currentWordIndex < finalFilteredVocabulary.length - 1) {
       setCurrentWordIndex(prev => prev + 1);
     } else {
       // Practice session complete
@@ -87,6 +85,13 @@ const Vocabulary: React.FC = () => {
     setCurrentWordIndex(0);
   };
 
+  const handleResetFilters = () => {
+    setActiveCategory("all");
+    setActiveDomain("all");
+    setSelectedDifficulty("Alle");
+    setSearchTerm("");
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -103,7 +108,10 @@ const Vocabulary: React.FC = () => {
         <div className="container mx-auto">
           <VocabularyHeader />
           
-          <VocabularyProgress masteryStats={masteryStats} />
+          <VocabularyProgress 
+            masteredCount={masteredWords.length}
+            totalCount={allWords.length}
+          />
 
           {!practiceMode ? (
             <Tabs defaultValue="browse" className="space-y-6">
@@ -120,53 +128,49 @@ const Vocabulary: React.FC = () => {
 
               <TabsContent value="browse" className="space-y-6">
                 <VocabularySearch
-                  searchQuery={searchQuery}
-                  onSearchChange={setSearchQuery}
+                  searchTerm={searchTerm}
+                  onSearchChange={setSearchTerm}
                 />
 
                 <VocabularyFilters
-                  selectedCategory={selectedCategory}
-                  selectedDifficulty={selectedDifficulty}
-                  onCategoryChange={setSelectedCategory}
-                  onDifficultyChange={setSelectedDifficulty}
+                  activeCategory={activeCategory}
+                  activeDomain={activeDomain}
+                  isFiltersOpen={isFiltersOpen}
+                  onCategoryChange={setActiveCategory}
+                  onDomainChange={setActiveDomain}
+                  onFiltersToggle={() => setIsFiltersOpen(!isFiltersOpen)}
+                  onResetFilters={handleResetFilters}
                 />
 
-                {isLoading ? (
-                  <div className="text-center py-12">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-medical-500 mx-auto"></div>
-                    <p className="mt-4 text-gray-600">Vokabeln werden geladen...</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filteredVocabulary.map((word) => (
-                      <Card key={word.id} className="hover:shadow-md transition-shadow">
-                        <CardContent className="p-4">
-                          <div className="space-y-2">
-                            <div className="flex justify-between items-start">
-                              <h3 className="font-semibold text-lg text-medical-800">
-                                {word.german}
-                              </h3>
-                              <span className={`px-2 py-1 rounded text-xs font-medium ${
-                                word.difficulty === 'A1' || word.difficulty === 'A2' ? 'bg-green-100 text-green-800' :
-                                word.difficulty === 'B1' || word.difficulty === 'B2' ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-red-100 text-red-800'
-                              }`}>
-                                {word.difficulty}
-                              </span>
-                            </div>
-                            <p className="text-gray-600">{word.english}</p>
-                            <p className="text-sm text-gray-500">{word.category}</p>
-                            {word.example && (
-                              <p className="text-sm italic text-gray-500 border-l-2 border-medical-200 pl-3">
-                                {word.example}
-                              </p>
-                            )}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {finalFilteredVocabulary.map((word) => (
+                    <Card key={word.id} className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-4">
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-start">
+                            <h3 className="font-semibold text-lg text-medical-800">
+                              {word.german}
+                            </h3>
+                            <span className={`px-2 py-1 rounded text-xs font-medium ${
+                              word.difficulty === 'A1' || word.difficulty === 'A2' ? 'bg-green-100 text-green-800' :
+                              word.difficulty === 'B1' || word.difficulty === 'B2' ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-red-100 text-red-800'
+                            }`}>
+                              {word.difficulty}
+                            </span>
                           </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                )}
+                          <p className="text-gray-600">{word.english}</p>
+                          <p className="text-sm text-gray-500">{word.category}</p>
+                          {word.example && (
+                            <p className="text-sm italic text-gray-500 border-l-2 border-medical-200 pl-3">
+                              {word.example}
+                            </p>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </TabsContent>
 
               <TabsContent value="practice" className="space-y-6">
@@ -174,11 +178,11 @@ const Vocabulary: React.FC = () => {
                   <CardContent className="p-6 text-center">
                     <h3 className="text-xl font-semibold mb-4">Vokabeltraining</h3>
                     <p className="text-gray-600 mb-6">
-                      Testen Sie Ihr Wissen mit {filteredVocabulary.length} Vokabeln.
+                      Testen Sie Ihr Wissen mit {finalFilteredVocabulary.length} Vokabeln.
                     </p>
                     <Button 
                       onClick={handleStartPractice}
-                      disabled={filteredVocabulary.length === 0}
+                      disabled={finalFilteredVocabulary.length === 0}
                       className="bg-medical-500 hover:bg-medical-600"
                     >
                       <Play className="h-4 w-4 mr-2" />
@@ -197,7 +201,7 @@ const Vocabulary: React.FC = () => {
                     <div>
                       <h3 className="font-semibold">Vokabeltraining</h3>
                       <p className="text-sm text-gray-600">
-                        Wort {currentWordIndex + 1} von {filteredVocabulary.length}
+                        Wort {currentWordIndex + 1} von {finalFilteredVocabulary.length}
                       </p>
                     </div>
                     <div className="flex gap-2">
@@ -224,7 +228,7 @@ const Vocabulary: React.FC = () => {
                       <div 
                         className="bg-medical-500 h-2 rounded-full transition-all duration-300"
                         style={{ 
-                          width: `${((currentWordIndex + 1) / filteredVocabulary.length) * 100}%` 
+                          width: `${((currentWordIndex + 1) / finalFilteredVocabulary.length) * 100}%` 
                         }}
                       />
                     </div>
@@ -233,9 +237,9 @@ const Vocabulary: React.FC = () => {
               </Card>
 
               {/* Practice Card */}
-              {filteredVocabulary[currentWordIndex] && (
+              {finalFilteredVocabulary[currentWordIndex] && (
                 <VocabularyPracticeCard
-                  word={filteredVocabulary[currentWordIndex]}
+                  word={finalFilteredVocabulary[currentWordIndex]}
                   onComplete={handlePracticeComplete}
                 />
               )}
