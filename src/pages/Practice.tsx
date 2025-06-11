@@ -26,9 +26,9 @@ const Practice: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("Alle");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  // Set default level based on user's German level
+  // Set default level based on user's German level (only if it's B1+)
   useEffect(() => {
-    if (profile?.german_level && selectedLevel === "Alle") {
+    if (profile?.german_level && selectedLevel === "Alle" && ['B1', 'B2', 'C1', 'C2'].includes(profile.german_level)) {
       setSelectedLevel(profile.german_level);
     }
   }, [profile?.german_level, selectedLevel]);
@@ -124,7 +124,7 @@ const Practice: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Level</p>
-                    <p className="text-xl font-bold">{profile?.german_level || 'A1'}</p>
+                    <p className="text-xl font-bold">{profile?.german_level || 'B1'}</p>
                   </div>
                 </div>
               </CardContent>

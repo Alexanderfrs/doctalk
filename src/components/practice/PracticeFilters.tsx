@@ -24,7 +24,7 @@ const PracticeFilters: React.FC<PracticeFiltersProps> = ({
   onTagToggle,
   onClearFilters
 }) => {
-  const levels = ['Alle', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+  const levels = ['Alle', 'B1', 'B2', 'C1', 'C2'];
   const categories = ['Alle', 'patient-care', 'teamwork', 'emergency', 'consultation', 'handover'];
   const commonTags = ['Aufnahme', 'Anamnese', 'Notfall', 'Team', 'Kommunikation', 'Diagnose', 'Medikamente', 'Übergabe'];
 
