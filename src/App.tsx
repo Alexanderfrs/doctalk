@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,10 +19,10 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import LanguageCertification from "./pages/LanguageCertification";
 import BrandBanner from "./components/brand/BrandBanner";
-import AppNavigation from "./components/navigation/AppNavigation";
 import Onboarding from "./pages/Onboarding";
 import Index from "./pages/Index";
 import TutorialOverlay from "./components/tutorial/TutorialOverlay";
+import "./styles/mobile.css";
 
 const queryClient = new QueryClient();
 
@@ -60,12 +61,7 @@ const OnboardingProtectedRoute = ({ children }) => {
     return <Navigate to="/onboarding" replace />;
   }
   
-  return (
-    <>
-      {children}
-      <AppNavigation />
-    </>
-  );
+  return children;
 };
 
 // Route that's only accessible for non-authenticated users
