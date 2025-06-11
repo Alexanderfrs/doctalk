@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Scenario, DialogueLine } from "@/data/scenarios";
 import { Card } from "@/components/ui/card";
@@ -12,6 +11,7 @@ import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
 import { toast } from "sonner";
 import ProgressTracker from "./ProgressTracker";
 import { PerformanceInsightsModal } from "./PerformanceInsightsModal";
+import { createPatientProfile } from "@/utils/patientProfiles";
 
 interface ScenarioContentProps {
   scenario: Scenario | null;
@@ -41,7 +41,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     scenarioType: scenario?.category as any || 'patient-care',
     scenarioDescription: scenario?.description || '',
     difficultyLevel: 'intermediate',
-    patientContext: scenario?.description || '',
+    patientContext: scenario ? createPatientProfile(scenario.category, scenario) : undefined,
     userLanguage: 'en',
     onError: (error) => {
       console.error("LLM Error:", error);
@@ -142,7 +142,7 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
       <Card className="w-full">
         <TabNavigation 
           activeTab={activeTab} 
-          onTabChange={setActiveTab}
+          onChange={setActiveTab}
         />
         
         <div className="p-6">
@@ -192,3 +192,5 @@ export const ScenarioContent: React.FC<ScenarioContentProps> = ({
     </div>
   );
 };
+
+export default ScenarioContent;
