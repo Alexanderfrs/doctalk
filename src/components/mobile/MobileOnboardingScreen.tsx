@@ -22,14 +22,14 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
   isLast = false
 }) => {
   const { translate } = useLanguage();
-  const [showCheckmarks, setShowCheckmarks] = useState(false);
+  const [showAnimations, setShowAnimations] = useState(false);
 
-  // Trigger checkmark animation for slide 3
+  // Trigger animations for slides with animated content
   useEffect(() => {
-    if (screenNumber === 3) {
+    if (screenNumber === 2 || screenNumber === 3) {
       const timer = setTimeout(() => {
-        setShowCheckmarks(true);
-      }, 800); // Show checkmarks after 800ms
+        setShowAnimations(true);
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [screenNumber]);
@@ -48,8 +48,8 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
         return {
           icon: "📋",
           title: translate("mobileOnboarding.screen2.title") || "Understanding the Recognition Process in Germany",
-          subtitle: "",
-          description: "",
+          subtitle: translate("mobileOnboarding.screen2.subtitle") || "Complete Your Journey to Practice Medicine",
+          description: translate("mobileOnboarding.screen2.description") || "Navigate the complex recognition process with confidence",
           showLogo: false,
           showRecognitionProcess: true
         };
@@ -58,7 +58,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
           icon: "📚",
           title: translate("mobileOnboarding.screen3.title") || "Medical Learning",
           subtitle: translate("mobileOnboarding.screen3.subtitle") || "Master Medical Vocabulary & Terminology",
-          description: translate("mobileOnboarding.screen3.description") || "Real clinic vocabulary\nMedical abbreviations\nMedical documentation\nLocal Dialects\n\nLearn the language that one the wards.",
+          description: translate("mobileOnboarding.screen3.description") || "Learn the language that one the wards.",
           showLogo: false,
           showBulletPoints: true
         };
@@ -89,10 +89,11 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
     "Local Dialects"
   ];
 
-  const recognitionItems = [
-    { text: "Visa ✓", checked: true },
-    { text: "Paperwork ✓", checked: true },
-    { text: "Sprachzertifikat ✓", checked: true }
+  const recognitionSteps = [
+    { text: "Document Verification", description: "Gather required credentials" },
+    { text: "Language Certification", description: "Achieve B2/C1 level German" },
+    { text: "Medical Knowledge Test", description: "Pass the Kenntnisprüfung" },
+    { text: "Professional Integration", description: "Start your medical career" }
   ];
 
   return (
@@ -111,7 +112,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
       )}
 
       {/* Main content - centered with proper spacing */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-20 pb-32">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-20 pb-40">
         <div className="w-full max-w-xs mx-auto text-center space-y-6">
           {/* Icon or Image - only show for non-logo screens */}
           {!content.showLogo && !content.showRecognitionProcess && (
@@ -136,26 +137,33 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
           {/* Recognition Process content for second screen */}
           {content.showRecognitionProcess && (
             <div className="flex flex-col items-center space-y-6">
-              <div className="bg-white rounded-xl p-4 shadow-lg">
-                <img 
-                  src="/lovable-uploads/dd117c38-ea2f-45e4-93a8-d055131d91fc.png"
-                  alt="Recognition Process"
-                  className="h-16 w-auto"
-                />
-              </div>
+              <div className="text-4xl mb-4">🏥</div>
               
               <div className="space-y-4 w-full">
-                {recognitionItems.map((item, index) => (
+                {recognitionSteps.map((step, index) => (
                   <div 
                     key={index}
-                    className="flex items-center justify-center space-x-3 animate-fade-in"
-                    style={{ animationDelay: `${index * 200}ms` }}
+                    className={`flex items-start space-x-3 p-3 bg-white rounded-lg shadow-sm transition-all duration-500 ${
+                      showAnimations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                    }`}
+                    style={{ 
+                      animationDelay: `${index * 200}ms`,
+                      opacity: showAnimations ? 1 : 0,
+                      transform: showAnimations ? 'translateY(0)' : 'translateY(16px)'
+                    }}
                   >
                     <div className="flex items-center space-x-2">
-                      <div className="w-5 h-5 rounded-full border-2 border-medical-500 bg-medical-500 flex items-center justify-center">
-                        <Check className="w-3 h-3 text-white" />
+                      <div className={`w-5 h-5 rounded-full border-2 border-medical-500 flex items-center justify-center transition-all duration-500 ${
+                        showAnimations ? 'bg-medical-500' : 'bg-transparent'
+                      }`}>
+                        {showAnimations && (
+                          <Check className="w-3 h-3 text-white" />
+                        )}
                       </div>
-                      <span className="text-lg font-medium text-medical-800">{item.text}</span>
+                      <div className="text-left">
+                        <div className="text-sm font-medium text-medical-800">{step.text}</div>
+                        <div className="text-xs text-medical-600">{step.description}</div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -184,21 +192,23 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
                     {bulletPoints.map((point, index) => (
                       <div 
                         key={index}
-                        className="flex items-center justify-start space-x-3 text-left animate-fade-in"
-                        style={{ animationDelay: `${index * 150}ms` }}
+                        className={`flex items-center justify-start space-x-3 text-left transition-all duration-500 ${
+                          showAnimations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                        }`}
+                        style={{ 
+                          animationDelay: `${index * 150}ms`,
+                          opacity: showAnimations ? 1 : 0,
+                          transform: showAnimations ? 'translateY(0)' : 'translateY(16px)'
+                        }}
                       >
                         <div className="flex items-center space-x-2">
                           <div 
                             className={`w-5 h-5 rounded-full border-2 border-medical-500 flex items-center justify-center transition-all duration-500 ${
-                              showCheckmarks ? 'bg-medical-500' : 'bg-transparent'
+                              showAnimations ? 'bg-medical-500' : 'bg-transparent'
                             }`}
-                            style={{ animationDelay: `${800 + index * 200}ms` }}
                           >
-                            {showCheckmarks && (
-                              <Check 
-                                className="w-3 h-3 text-white animate-scale-in" 
-                                style={{ animationDelay: `${800 + index * 200}ms` }}
-                              />
+                            {showAnimations && (
+                              <Check className="w-3 h-3 text-white" />
                             )}
                           </div>
                           <span className="text-sm text-neutral-700">{point}</span>
@@ -207,7 +217,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
                     ))}
                   </div>
                   <p className="text-sm text-neutral-600 leading-relaxed mt-4">
-                    Learn the language that one the wards.
+                    {content.description}
                   </p>
                 </div>
               ) : content.description ? (
@@ -220,8 +230,8 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
         </div>
       </div>
 
-      {/* Action button - fixed at bottom with proper spacing to avoid overlap with indicators */}
-      <div className="absolute bottom-20 left-0 right-0 w-full px-6 safe-area-bottom">
+      {/* Action button - fixed at bottom with proper spacing */}
+      <div className="absolute bottom-28 left-0 right-0 w-full px-6 safe-area-bottom">
         {isLast ? (
           <Button 
             onClick={onStart}
