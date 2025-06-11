@@ -3,12 +3,11 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Home, BookOpen, MessageCircle, User, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import UILanguageSelector from "@/components/language/UILanguageSelector";
 import AppLogo from "./AppLogo";
-import DesktopNav from "./DesktopNav";
 import AuthButtons from "./AuthButtons";
 import MobileNavMenu from "./MobileNavMenu";
 
@@ -42,25 +41,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Navigation items based on authentication status
-  const getNavItems = () => {
-    if (isAuthenticated) {
-      return [
-        { path: "/dashboard", label: translate("home"), icon: <Home className="h-5 w-5" /> },
-        { path: "/practice", label: translate("practice"), icon: <MessageCircle className="h-5 w-5" /> },
-        { path: "/vocabulary", label: translate("vocabulary"), icon: <BookOpen className="h-5 w-5" /> },
-        { path: "/profile", label: translate("profile"), icon: <User className="h-5 w-5" /> },
-      ];
-    } else {
-      return [
-        { path: "/#features", label: translate("features"), icon: <MessageCircle className="h-5 w-5" /> },
-        { path: "/#pricing", label: translate("pricingTitle"), icon: <BookOpen className="h-5 w-5" /> },
-      ];
-    }
-  };
-
-  const navItems = getNavItems();
-
   const handleLogout = async () => {
     if (onLogout) {
       onLogout();
@@ -85,6 +65,42 @@ const AppHeader: React.FC<AppHeaderProps> = ({
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
+  // For authenticated users, we only show logo and auth buttons since AppNavigation handles navigation
+  if (isAuthenticated) {
+    return (
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 px-4 md:px-8", 
+          isScrolled 
+            ? "bg-white/90 backdrop-blur-md shadow-sm" 
+            : "bg-transparent"
+        )}
+      >
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <AppLogo path={logoPath} showSlogan={showSlogan} size="large" />
+
+            {/* Language selector and Auth buttons */}
+            <AuthButtons 
+              isAuthenticated={isAuthenticated} 
+              onLogin={handleLogin}
+              onRegister={handleRegister}
+              onLogout={handleLogout}
+              showAuthButtons={showAuthButtons}
+            />
+          </div>
+        </div>
+      </header>
+    );
+  }
+
+  // For non-authenticated users, show full navigation
+  const navItems = [
+    { path: "/#features", label: translate("features"), icon: null },
+    { path: "/#pricing", label: translate("pricingTitle"), icon: null },
+  ];
+
   return (
     <header
       className={cn(
@@ -99,8 +115,18 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           {/* Logo */}
           <AppLogo path={logoPath} showSlogan={showSlogan} size="large" />
 
-          {/* Desktop Navigation */}
-          <DesktopNav navItems={navItems} />
+          {/* Desktop Navigation for non-authenticated users */}
+          <nav className="hidden md:flex space-x-1">
+            {navItems.map((item) => (
+              <a
+                key={item.path}
+                href={item.path}
+                className="flex items-center px-4 py-2 rounded-lg transition-colors text-neutral-600 hover:bg-neutral-100"
+              >
+                <span>{item.label}</span>
+              </a>
+            ))}
+          </nav>
 
           {/* Language selector and Auth buttons */}
           <AuthButtons 

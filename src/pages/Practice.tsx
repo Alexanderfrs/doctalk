@@ -8,7 +8,7 @@ import PracticeFilters from "@/components/practice/PracticeFilters";
 import ScenarioGrid from "@/components/practice/ScenarioGrid";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, MessageCircle, Target, TrendingUp } from "lucide-react";
+import { MessageCircle, Target, TrendingUp } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProgressTracking } from "@/hooks/useProgressTracking";
 import { useScenarios } from "@/hooks/useScenarios";
@@ -119,7 +119,7 @@ const Practice: React.FC = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-yellow-100 rounded-lg">
-                    <BookOpen className="h-5 w-5 text-yellow-600" />
+                    <MessageCircle className="h-5 w-5 text-yellow-600" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Level</p>
@@ -130,8 +130,8 @@ const Practice: React.FC = () => {
             </Card>
           </div>
 
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {/* Quick Actions - Single card for scenario start */}
+          <div className="mb-8">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -155,27 +155,6 @@ const Practice: React.FC = () => {
                   }}
                 >
                   Zufälliges Szenario starten
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BookOpen className="h-5 w-5" />
-                  Vokabeln üben
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 mb-4">
-                  Erweitern Sie Ihren medizinischen Wortschatz.
-                </p>
-                <Button 
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => navigate('/vocabulary')}
-                >
-                  Zur Vokabelübung
                 </Button>
               </CardContent>
             </Card>
