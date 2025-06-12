@@ -2,9 +2,10 @@ import React, { useState, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useVocabulary } from "@/hooks/useVocabulary";
 import { useVocabularyDeduplication } from "@/hooks/useVocabularyDeduplication";
 import AppHeader from "@/components/layout/AppHeader";
-import BottomNavigation from "@/components/layout/BottomNavigation";
+import BottomNavigation from "@/components/navigation/BottomNavigation";
 import VocabularyBrowseTab from "@/components/vocabulary/VocabularyBrowseTab";
 import VocabularyPracticeTab from "@/components/vocabulary/VocabularyPracticeTab";
 import VocabularyMobileView from "@/components/vocabulary/VocabularyMobileView";
@@ -21,7 +22,9 @@ const Vocabulary = () => {
   const [showPractice, setShowPractice] = useState(false);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [practiceCompleted, setPracticeCompleted] = useState(false);
-  const { words, isLoading, error } = useVocabularyDeduplication();
+  
+  const { words: vocabularyWords, isLoading, error } = useVocabulary();
+  const words = useVocabularyDeduplication(vocabularyWords);
 
   const filteredWords = useMemo(() => {
     let filtered = words;
@@ -53,9 +56,11 @@ const Vocabulary = () => {
   }, [filteredWords]);
 
   const availableCategories = useMemo(() => {
-    const categories = words.map(word => word.category).filter(Boolean);
+    const categories = vocabularyWords
+      .map(word => word.category)
+      .filter((category): category is string => Boolean(category));
     return [...new Set(categories)];
-  }, [words]);
+  }, [vocabularyWords]);
 
   const handleSearchChange = useCallback((term: string) => {
     setSearchTerm(term);
