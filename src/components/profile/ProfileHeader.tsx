@@ -55,7 +55,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         <div>
           <div className="flex items-center justify-between mb-1">
             <Label className="text-sm">Tagesziel: {dailyGoal} Minuten</Label>
-            <span className="text-xs text-medical-600 dark:text-medical-400 font-medium">75% erreicht</span>
+            <span className="text-xs text-medical-600 dark:text-medical-400 font-medium">0% erreicht</span>
           </div>
           <Progress value={75} className="h-2" />
         </div>
