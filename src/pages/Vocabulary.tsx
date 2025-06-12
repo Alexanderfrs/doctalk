@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Header from "@/components/layout/Header";
 import MobileHeader from "@/components/layout/MobileHeader";
@@ -288,7 +289,7 @@ const Vocabulary: React.FC = () => {
                                 </div>
                               </div>
                               <p className="text-gray-600">{word.english}</p>
-                              <p className="text-sm text-gray-500">{word.category}</p>
+                              <p className="text-sm text-gray-500">{word.categories[0]}</p>
                               {word.example && (
                                 <p className="text-sm italic text-gray-500 border-l-2 border-medical-200 pl-3">
                                   {word.example}
