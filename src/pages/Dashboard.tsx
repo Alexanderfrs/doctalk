@@ -9,6 +9,7 @@ import ProgressOverview from "@/components/home/ProgressOverview";
 import RecentScenarios from "@/components/home/RecentScenarios";
 import LearningRoadmap from "@/components/dashboard/LearningRoadmap";
 import Header from "@/components/layout/Header";
+import MobileHeader from "@/components/layout/MobileHeader";
 import Footer from "@/components/layout/Footer";
 import HelpButton from "@/components/tutorial/HelpButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -124,9 +125,9 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
-      <Header />
+      {isMobile ? <MobileHeader /> : <Header />}
       
-      <main className={`flex-grow ${isMobile ? 'pt-20 px-4 pb-20' : 'pt-24 px-4 md:px-8 pb-20'}`}>
+      <main className={`flex-grow ${isMobile ? 'pt-16 px-4 pb-20' : 'pt-24 px-4 md:px-8 pb-20'}`}>
         <div className="container mx-auto">
           {/* Welcome Header */}
           <div className={`${isMobile ? 'mb-4' : 'mb-8'}`} data-tutorial-target="welcome-header">
