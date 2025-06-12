@@ -4,13 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, Stethoscope, CheckCircle, ArrowLeft, X } from "lucide-react";
+import { Eye, EyeOff, CheckCircle, X } from "lucide-react";
 import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/contexts/AuthContext";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import AppLogo from "@/components/layout/AppLogo";
 
 const Register: React.FC = () => {
   const [name, setName] = useState("");
@@ -19,10 +19,9 @@ const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [skipOnboardingFlow, setSkipOnboardingFlow] = useState(false);
   
   const navigate = useNavigate();
-  const { signUp, skipOnboarding } = useAuth();
+  const { signUp } = useAuth();
   const { translate } = useLanguage();
   const isMobile = useIsMobile();
 
@@ -41,13 +40,7 @@ const Register: React.FC = () => {
       }
       
       toast.success("Registration successful!");
-      
-      if (skipOnboardingFlow) {
-        await skipOnboarding();
-        navigate("/dashboard");
-      } else {
-        navigate("/onboarding");
-      }
+      navigate("/onboarding");
     } catch (error) {
       console.error("Registration error:", error);
       setError("An unexpected error occurred. Please try again.");
@@ -81,12 +74,9 @@ const Register: React.FC = () => {
       <main className="flex-grow flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">
-            <Link to="/" className="inline-flex items-center justify-center gap-2">
-              <div className="bg-medical-500 text-white p-2 rounded-lg">
-                <Stethoscope className="h-6 w-6" />
-              </div>
-              <span className="text-2xl font-bold text-medical-800">DocTalk</span>
-            </Link>
+            <div className="flex justify-center mb-6">
+              <AppLogo path="/" variant="minimal" size="large" />
+            </div>
             <h1 className="text-2xl font-bold mt-6 mb-2">Create Account</h1>
             <p className="text-neutral-600">
               Start your journey to becoming a medical language expert
@@ -145,20 +135,6 @@ const Register: React.FC = () => {
                 </button>
               </div>
               <p className="text-xs text-gray-500 mt-1">Password must be at least 6 characters long</p>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="skipOnboarding" 
-                checked={skipOnboardingFlow}
-                onCheckedChange={(checked) => setSkipOnboardingFlow(checked === true)}
-              />
-              <Label 
-                htmlFor="skipOnboarding" 
-                className="text-sm cursor-pointer"
-              >
-                Skip onboarding flow (can be completed later in settings)
-              </Label>
             </div>
 
             <div>
