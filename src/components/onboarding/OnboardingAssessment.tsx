@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ChevronRight, Lightbulb, AlertCircle, CheckCircle, XCircle } from "lucide-react";
-import { useLanguageAssessment } from "@/hooks/languageAssessment/useLanguageAssessment";
+import { ChevronRight, Lightbulb, AlertCircle, User, Target, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
 interface OnboardingAssessmentProps {
@@ -12,291 +11,324 @@ interface OnboardingAssessmentProps {
 }
 
 const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete }) => {
-  const {
-    currentQuestion,
-    handleSelectAnswer,
-    isComplete,
-    result,
-    progress,
-    assessmentStarted,
-    startAssessment,
-    resetAssessment,
-    isLoading,
-  } = useLanguageAssessment();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState<any>({});
+  const totalSteps = 3;
 
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [showContinueOption, setShowContinueOption] = useState(false);
+  const professions = [
+    "Arzt/Ärztin",
+    "Krankenpfleger/in",
+    "Physiotherapeut/in",
+    "Zahnarzt/Zahnärztin", 
+    "Apotheker/in",
+    "Medizinische/r Fachangestellte/r",
+    "Rettungssanitäter/in",
+    "Hebamme/Geburtshelfer",
+    "Psychologe/Psychologin",
+    "Student/in der Medizin",
+    "Andere medizinische Fachkraft"
+  ];
 
-  const handleAnswerSelect = (answerId: string) => {
-    setSelectedAnswer(answerId);
-  };
+  const germanLevels = [
+    { value: "A1", label: "A1 - Anfänger" },
+    { value: "A2", label: "A2 - Grundkenntnisse" },
+    { value: "B1", label: "B1 - Mittelstufe" },
+    { value: "B2", label: "B2 - Gute Mittelstufe" },
+    { value: "C1", label: "C1 - Fortgeschritten" },
+    { value: "C2", label: "C2 - Sehr fortgeschritten" }
+  ];
 
-  const handleSubmitAnswer = () => {
-    if (!selectedAnswer) {
-      toast.warning("Bitte wählen Sie eine Antwort aus");
-      return;
-    }
-    
-    handleSelectAnswer(selectedAnswer);
-    setSelectedAnswer(null);
-  };
+  const helpAreas = [
+    "Patientengespräche führen",
+    "Medizinische Dokumentation",
+    "Kollegenkommunikation",
+    "Notfallsituationen",
+    "Medizinisches Fachvokabular",
+    "Anamnese und Befundung",
+    "Aufklärungsgespräche",
+    "Übergaben zwischen Schichten",
+    "Telefonate mit anderen Abteilungen",
+    "Umgang mit Angehörigen"
+  ];
 
-  const handleStartAssessment = () => {
-    startAssessment();
-  };
+  const objectives = [
+    "Berufliche Anerkennung in Deutschland",
+    "Verbesserung der Deutschkenntnisse",
+    "Vorbereitung auf Fachsprachprüfung",
+    "Bessere Integration ins medizinische Team",
+    "Patientensicherheit erhöhen",
+    "Selbstvertrauen in der Kommunikation"
+  ];
 
-  const handleFinish = () => {
-    if (result) {
-      const meetsMinimumRequirement = ['B1', 'B2', 'C1', 'C2'].includes(result.level);
-      
-      onComplete({ 
-        level: result.level,
-        meetsMinimumRequirement,
-        percentage: result.percentage,
-        strengths: result.strengths || [],
-        recommendedContent: result.recommendedContent || []
+  const handleNext = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      // Complete the assessment
+      onComplete({
+        profession: formData.profession,
+        germanLevel: formData.germanLevel,
+        helpAreas: formData.helpAreas || [],
+        objectives: formData.objectives || [],
+        acknowledgedB1Requirement: true
       });
     }
   };
 
-  const handleContinueAnyway = () => {
-    if (result) {
-      onComplete({ 
-        level: result.level,
-        meetsMinimumRequirement: false,
-        percentage: result.percentage,
-        strengths: result.strengths || [],
-        recommendedContent: result.recommendedContent || [],
-        acknowledgedLimitations: true
-      });
+  const handlePrevious = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
     }
   };
 
-  if (!assessmentStarted) {
-    return (
-      <div className="space-y-6">
-        <div className="p-5 bg-blue-50 border border-blue-100 rounded-lg flex items-start space-x-4">
-          <Lightbulb className="h-6 w-6 text-blue-500 flex-shrink-0 mt-0.5" />
-          <div>
-            <h4 className="font-medium text-blue-900 mb-1">Deutschtest</h4>
-            <p className="text-blue-700 text-sm">
-              Dieser Test ermittelt Ihr aktuelles Deutschniveau, damit wir Ihren 
-              Lernplan für medizinisches Deutsch optimal anpassen können.
-            </p>
-          </div>
-        </div>
-        
-        <div className="space-y-4">
-          <h4 className="font-medium text-lg">Wie funktioniert der Test?</h4>
-          <ul className="space-y-3">
-            <li className="flex items-start">
-              <span className="flex items-center justify-center h-6 w-6 rounded-full bg-medical-100 text-medical-700 mr-3 text-xs font-medium flex-shrink-0">1</span>
-              <span>Sie beantworten 8-12 Fragen zu allgemeinem Deutsch</span>
-            </li>
-            <li className="flex items-start">
-              <span className="flex items-center justify-center h-6 w-6 rounded-full bg-medical-100 text-medical-700 mr-3 text-xs font-medium flex-shrink-0">2</span>
-              <span>Der Test passt sich an Ihre Antworten an</span>
-            </li>
-            <li className="flex items-start">
-              <span className="flex items-center justify-center h-6 w-6 rounded-full bg-medical-100 text-medical-700 mr-3 text-xs font-medium flex-shrink-0">3</span>
-              <span>Das Ergebnis bestimmt Ihr Deutschniveau (A1-C2)</span>
-            </li>
-            <li className="flex items-start">
-              <span className="flex items-center justify-center h-6 w-6 rounded-full bg-medical-100 text-medical-700 mr-3 text-xs font-medium flex-shrink-0">4</span>
-              <span>Basierend darauf erstellen wir Ihren Lernplan</span>
-            </li>
-          </ul>
-        </div>
-        
-        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-          <div className="flex items-start">
-            <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5 mr-3" />
-            <div className="text-sm">
-              <p className="text-amber-800 mb-1 font-medium">Wichtiger Hinweis:</p>
-              <p className="text-amber-700">
-                DocTalk ist für Lernende mit mindestens B1-Deutschniveau konzipiert. 
-                Bei niedrigerem Niveau bieten wir angepasste Lernpfade an, aber empfehlen 
-                zunächst die Verbesserung der allgemeinen Deutschkenntnisse.
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        <Button 
-          onClick={handleStartAssessment} 
-          className="w-full bg-medical-500 hover:bg-medical-600"
-        >
-          Deutschtest starten
-        </Button>
-      </div>
-    );
-  }
+  const updateFormData = (field: string, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
-  if (isComplete && result) {
-    const meetsMinimumRequirement = ['B1', 'B2', 'C1', 'C2'].includes(result.level);
-    
-    return (
-      <div className="space-y-6">
-        <div className="text-center py-4">
-          <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 ${
-            meetsMinimumRequirement 
-              ? 'bg-green-100 text-green-600' 
-              : 'bg-amber-100 text-amber-600'
-          }`}>
-            {meetsMinimumRequirement ? (
-              <CheckCircle className="w-8 h-8" />
-            ) : (
-              <AlertCircle className="w-8 h-8" />
-            )}
-          </div>
-          
-          <h3 className="text-xl font-semibold mb-2">Test abgeschlossen!</h3>
-          <p className="text-gray-600 mb-4">
-            Basierend auf Ihren Antworten haben wir Ihr Deutschniveau eingeschätzt.
-          </p>
-          
-          <div className="bg-medical-50 border border-medical-100 rounded-lg p-6 mb-6">
-            <h4 className="text-lg font-semibold text-medical-800 mb-1">Ihr Deutschniveau:</h4>
-            <div className="text-3xl font-bold text-medical-600 mb-2">{result.level}</div>
-            <p className="text-sm text-medical-700">{result.description}</p>
-          </div>
-          
-          <div className="text-sm text-gray-500 mb-6">
-            <div className="mb-2">
-              <span className="font-medium">Korrekt beantwortet:</span> {result.correctCount} von {result.totalQuestions} ({Math.round(result.percentage)}%)
-            </div>
-            {result.strengths && result.strengths.length > 0 && (
-              <div className="mb-2">
-                <span className="font-medium">Ihre Stärken:</span> {result.strengths.join(', ')}
+  const toggleArrayItem = (field: string, item: string) => {
+    const currentArray = formData[field] || [];
+    const newArray = currentArray.includes(item)
+      ? currentArray.filter(i => i !== item)
+      : [...currentArray, item];
+    updateFormData(field, newArray);
+  };
+
+  const isStepValid = () => {
+    switch (currentStep) {
+      case 1:
+        return formData.profession && formData.germanLevel;
+      case 2:
+        return formData.helpAreas && formData.helpAreas.length > 0;
+      case 3:
+        return formData.objectives && formData.objectives.length > 0;
+      default:
+        return false;
+    }
+  };
+
+  const progress = (currentStep / totalSteps) * 100;
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="space-y-6">
+            <div className="p-5 bg-blue-50 border border-blue-100 rounded-lg flex items-start space-x-4">
+              <Lightbulb className="h-6 w-6 text-blue-500 flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-medium text-blue-900 mb-1">Wichtiger Hinweis</h4>
+                <p className="text-blue-700 text-sm">
+                  DocTalk ist für Lernende mit mindestens B1-Deutschniveau konzipiert. 
+                  Bei niedrigerem Niveau können Sie die App trotzdem nutzen, aber die 
+                  Inhalte werden sehr herausfordernd sein.
+                </p>
               </div>
-            )}
-          </div>
+            </div>
 
-          {!meetsMinimumRequirement && (
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg mb-6">
-              <div className="flex items-start">
-                <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5 mr-3" />
-                <div className="text-sm text-left">
-                  <p className="text-amber-800 mb-2 font-medium">Empfehlung:</p>
-                  <p className="text-amber-700 mb-3">
-                    Ihr Deutschniveau liegt unter B1. Für optimale Lernerfolge empfehlen wir, 
-                    zunächst Ihre allgemeinen Deutschkenntnisse zu verbessern.
-                  </p>
-                  <p className="text-amber-700 mb-3">
-                    Sie können DocTalk trotzdem nutzen, aber die medizinischen Inhalte werden 
-                    sehr herausfordernd sein. Wir stellen Ihnen angepasste Lernpfade zur Verfügung.
-                  </p>
-                  
-                  <div className="flex gap-2 mt-4">
-                    <Button 
-                      onClick={handleContinueAnyway}
-                      variant="outline"
-                      size="sm"
-                      className="text-amber-700 border-amber-300 hover:bg-amber-100"
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-3">
+                  <User className="inline h-4 w-4 mr-2" />
+                  Was ist Ihr Beruf im medizinischen Bereich?
+                </label>
+                <div className="grid grid-cols-1 gap-2">
+                  {professions.map((profession) => (
+                    <button
+                      key={profession}
+                      type="button"
+                      className={`p-3 text-left border rounded-lg transition-colors ${
+                        formData.profession === profession
+                          ? "border-medical-500 bg-medical-50"
+                          : "border-gray-200 hover:border-medical-200"
+                      }`}
+                      onClick={() => updateFormData('profession', profession)}
                     >
-                      Trotzdem fortfahren
-                    </Button>
-                  </div>
+                      {profession}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-3">
+                  Wie schätzen Sie Ihr aktuelles Deutschniveau ein?
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {germanLevels.map((level) => (
+                    <button
+                      key={level.value}
+                      type="button"
+                      className={`p-3 text-left border rounded-lg transition-colors ${
+                        formData.germanLevel === level.value
+                          ? "border-medical-500 bg-medical-50"
+                          : "border-gray-200 hover:border-medical-200"
+                      }`}
+                      onClick={() => updateFormData('germanLevel', level.value)}
+                    >
+                      <div className="font-medium">{level.value}</div>
+                      <div className="text-xs text-gray-600">{level.label.split(' - ')[1]}</div>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
-          )}
-        </div>
-        
-        {meetsMinimumRequirement && (
-          <Button 
-            onClick={handleFinish} 
-            className="w-full bg-medical-500 hover:bg-medical-600"
-          >
-            Weiter zur Einrichtung
-          </Button>
-        )}
+          </div>
+        );
 
-        <Button 
-          onClick={resetAssessment}
-          variant="outline"
-          className="w-full border-gray-200"
-        >
-          Test wiederholen
-        </Button>
-      </div>
-    );
-  }
+      case 2:
+        return (
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium mb-3">
+                <Target className="inline h-4 w-4 mr-2" />
+                Bei welchen Bereichen möchten Sie Unterstützung? (Mehrfachauswahl möglich)
+              </label>
+              <div className="grid grid-cols-1 gap-2">
+                {helpAreas.map((area) => (
+                  <button
+                    key={area}
+                    type="button"
+                    className={`p-3 text-left border rounded-lg transition-colors flex items-center ${
+                      formData.helpAreas?.includes(area)
+                        ? "border-medical-500 bg-medical-50"
+                        : "border-gray-200 hover:border-medical-200"
+                    }`}
+                    onClick={() => toggleArrayItem('helpAreas', area)}
+                  >
+                    <div className={`w-5 h-5 rounded border mr-3 flex items-center justify-center ${
+                      formData.helpAreas?.includes(area)
+                        ? "border-medical-500 bg-medical-500"
+                        : "border-gray-300"
+                    }`}>
+                      {formData.helpAreas?.includes(area) && (
+                        <CheckCircle className="w-3 h-3 text-white" />
+                      )}
+                    </div>
+                    {area}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-medical-500 mb-4"></div>
-        <p className="text-medical-600">Test wird vorbereitet...</p>
-      </div>
-    );
-  }
+      case 3:
+        return (
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium mb-3">
+                <Target className="inline h-4 w-4 mr-2" />
+                Was sind Ihre Hauptziele mit DocTalk? (Mehrfachauswahl möglich)
+              </label>
+              <div className="grid grid-cols-1 gap-2">
+                {objectives.map((objective) => (
+                  <button
+                    key={objective}
+                    type="button"
+                    className={`p-3 text-left border rounded-lg transition-colors flex items-center ${
+                      formData.objectives?.includes(objective)
+                        ? "border-medical-500 bg-medical-50"
+                        : "border-gray-200 hover:border-medical-200"
+                    }`}
+                    onClick={() => toggleArrayItem('objectives', objective)}
+                  >
+                    <div className={`w-5 h-5 rounded border mr-3 flex items-center justify-center ${
+                      formData.objectives?.includes(objective)
+                        ? "border-medical-500 bg-medical-500"
+                        : "border-gray-300"
+                    }`}>
+                      {formData.objectives?.includes(objective) && (
+                        <CheckCircle className="w-3 h-3 text-white" />
+                      )}
+                    </div>
+                    {objective}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {formData.germanLevel && ['A1', 'A2'].includes(formData.germanLevel) && (
+              <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                <div className="flex items-start">
+                  <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5 mr-3" />
+                  <div className="text-sm">
+                    <p className="text-amber-800 mb-1 font-medium">Empfehlung:</p>
+                    <p className="text-amber-700">
+                      Da Ihr Deutschniveau unter B1 liegt, empfehlen wir zunächst die 
+                      Verbesserung Ihrer allgemeinen Deutschkenntnisse parallel zur 
+                      Nutzung von DocTalk.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  const getStepTitle = () => {
+    switch (currentStep) {
+      case 1:
+        return "Ihr Profil";
+      case 2:
+        return "Unterstützungsbereiche";
+      case 3:
+        return "Ihre Ziele";
+      default:
+        return "";
+    }
+  };
+
+  const getStepDescription = () => {
+    switch (currentStep) {
+      case 1:
+        return "Erzählen Sie uns etwas über sich";
+      case 2:
+        return "Wobei sollen wir Ihnen helfen?";
+      case 3:
+        return "Was möchten Sie erreichen?";
+      default:
+        return "";
+    }
+  };
 
   return (
     <div className="space-y-6">
       <div className="mb-4">
         <div className="flex justify-between mb-1">
-          <span className="text-sm text-gray-500">Fortschritt</span>
-          <span className="text-sm font-medium">{progress}%</span>
+          <span className="text-sm text-gray-500">Schritt {currentStep} von {totalSteps}</span>
+          <span className="text-sm font-medium">{Math.round(progress)}%</span>
         </div>
         <Progress value={progress} className="h-2" />
       </div>
-      
-      {currentQuestion && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium">{currentQuestion.question || currentQuestion.text}</h3>
-          
-          <div className="space-y-3">
-            {Array.isArray(currentQuestion.options) && currentQuestion.options.map((option, index) => {
-              const optionId = typeof option === 'string' ? option : option.id;
-              const optionText = typeof option === 'string' ? option : option.text;
-              
-              return (
-                <div
-                  key={index}
-                  className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                    selectedAnswer === optionId
-                      ? "border-medical-500 bg-medical-50"
-                      : "border-gray-200 hover:border-medical-200 hover:bg-gray-50"
-                  }`}
-                  onClick={() => handleAnswerSelect(optionId)}
-                >
-                  <div className="flex items-center">
-                    <div
-                      className={`w-5 h-5 rounded-full border flex items-center justify-center mr-3 ${
-                        selectedAnswer === optionId
-                          ? "border-medical-500 bg-medical-500"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {selectedAnswer === optionId && (
-                        <div className="w-2 h-2 rounded-full bg-white"></div>
-                      )}
-                    </div>
-                    <span>{optionText}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-      
+
+      <div className="text-center mb-6">
+        <h3 className="text-xl font-semibold mb-2">{getStepTitle()}</h3>
+        <p className="text-gray-600">{getStepDescription()}</p>
+      </div>
+
+      {renderStep()}
+
       <div className="flex justify-between pt-4">
         <Button
           variant="outline"
-          onClick={resetAssessment}
+          onClick={handlePrevious}
+          disabled={currentStep === 1}
           className="border-gray-200"
         >
-          Neustart
+          Zurück
         </Button>
         
         <Button
-          onClick={handleSubmitAnswer}
-          disabled={!selectedAnswer}
+          onClick={handleNext}
+          disabled={!isStepValid()}
           className="bg-medical-500 hover:bg-medical-600"
         >
-          Weiter
+          {currentStep === totalSteps ? 'Fertigstellen' : 'Weiter'}
           <ChevronRight className="ml-1 h-4 w-4" />
         </Button>
       </div>

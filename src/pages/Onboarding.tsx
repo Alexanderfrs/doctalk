@@ -41,17 +41,17 @@ const Onboarding: React.FC = () => {
         let updateData = {};
         
         if (stepNumber === 1) {
-          // Assessment results
+          // Background and objectives assessment
           updateData = { 
-            german_level: data.level,
+            profession: data.profession,
+            german_level: data.germanLevel,
             preferences: {
               assessment_results: {
-                level: data.level,
-                percentage: data.percentage,
-                meetsMinimumRequirement: data.meetsMinimumRequirement,
-                strengths: data.strengths,
-                recommendedContent: data.recommendedContent,
-                acknowledgedLimitations: data.acknowledgedLimitations || false
+                profession: data.profession,
+                germanLevel: data.germanLevel,
+                helpAreas: data.helpAreas,
+                objectives: data.objectives,
+                acknowledgedB1Requirement: data.acknowledgedB1Requirement
               }
             }
           };
@@ -92,7 +92,7 @@ const Onboarding: React.FC = () => {
       });
       
       // Show appropriate completion message based on German level
-      const germanLevel = userData.german_level || data?.german_level;
+      const germanLevel = userData.germanLevel || data?.germanLevel;
       if (germanLevel && ['A1', 'A2'].includes(germanLevel)) {
         toast.info(`Einrichtung abgeschlossen! Ihr Niveau: ${germanLevel}. Wir empfehlen zunächst allgemeine Deutschkenntnisse zu verbessern.`);
       } else {
@@ -112,11 +112,11 @@ const Onboarding: React.FC = () => {
   
   const steps = [
     {
-      title: userLanguage === 'de' ? "Sprachniveau" : "Language Level",
+      title: userLanguage === 'de' ? "Profil & Ziele" : "Profile & Goals",
       component: <OnboardingAssessment onComplete={(data) => handleStepComplete(1, data)} />,
       description: userLanguage === 'de' 
-        ? "Wir ermitteln Ihr aktuelles Deutschniveau" 
-        : "We'll assess your current German level"
+        ? "Erzählen Sie uns von Ihrem Hintergrund und Zielen" 
+        : "Tell us about your background and goals"
     },
     {
       title: userLanguage === 'de' ? "Muttersprache" : "Native Language",
