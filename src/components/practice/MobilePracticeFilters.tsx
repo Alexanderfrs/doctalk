@@ -7,40 +7,30 @@ import BottomSheet from "@/components/mobile/BottomSheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface MobilePracticeFiltersProps {
-  selectedCategory: string;
-  selectedTags: string[];
-  onCategoryChange: (category: string) => void;
-  onTagToggle: (tag: string) => void;
+  selectedTopic: string;
+  onTopicChange: (topic: string) => void;
   onClearFilters: () => void;
 }
 
 const MobilePracticeFilters: React.FC<MobilePracticeFiltersProps> = ({
-  selectedCategory,
-  selectedTags,
-  onCategoryChange,
-  onTagToggle,
+  selectedTopic,
+  onTopicChange,
   onClearFilters
 }) => {
   const isMobile = useIsMobile();
-  const categories = ['Alle', 'patient-care', 'teamwork', 'emergency', 'consultation', 'handover', 'elderly-care', 'disability-care'];
-  const commonTags = ['Aufnahme', 'Anamnese', 'Notfall', 'Team', 'Kommunikation', 'Diagnose', 'Demenz', 'Mobilität', 'Behindertenbetreuung'];
+  
+  const topics = [
+    'Alle', 
+    'Patientenversorgung', 
+    'Teamarbeit', 
+    'Notfall', 
+    'Beratung', 
+    'Übergabe', 
+    'Altenpflege', 
+    'Behindertenbetreuung'
+  ];
 
-  const hasActiveFilters = selectedCategory !== 'Alle' || selectedTags.length > 0;
-  const activeFiltersCount = (selectedCategory !== 'Alle' ? 1 : 0) + selectedTags.length;
-
-  const getCategoryLabel = (category: string) => {
-    const labels = {
-      'Alle': 'Alle',
-      'patient-care': 'Patientenversorgung',
-      'teamwork': 'Teamarbeit',
-      'emergency': 'Notfall',
-      'consultation': 'Beratung',
-      'handover': 'Übergabe',
-      'elderly-care': 'Altenpflege',
-      'disability-care': 'Behindertenbetreuung'
-    };
-    return labels[category] || category;
-  };
+  const hasActiveFilters = selectedTopic !== 'Alle';
 
   if (!isMobile) {
     return null;
@@ -48,39 +38,20 @@ const MobilePracticeFilters: React.FC<MobilePracticeFiltersProps> = ({
 
   const filterContent = (
     <div className="space-y-6">
-      {/* Category Filter */}
-      <div>
-        <label className="text-sm font-medium text-gray-700 mb-3 block">
-          Kategorie
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <Badge
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              className="cursor-pointer hover:bg-medical-50 touch-target"
-              onClick={() => onCategoryChange(category)}
-            >
-              {getCategoryLabel(category)}
-            </Badge>
-          ))}
-        </div>
-      </div>
-
-      {/* Tags Filter */}
+      {/* Topics Filter */}
       <div>
         <label className="text-sm font-medium text-gray-700 mb-3 block">
           Themen
         </label>
         <div className="flex flex-wrap gap-2">
-          {commonTags.map((tag) => (
+          {topics.map((topic) => (
             <Badge
-              key={tag}
-              variant={selectedTags.includes(tag) ? "default" : "outline"}
+              key={topic}
+              variant={selectedTopic === topic ? "default" : "outline"}
               className="cursor-pointer hover:bg-medical-50 touch-target"
-              onClick={() => onTagToggle(tag)}
+              onClick={() => onTopicChange(topic)}
             >
-              {tag}
+              {topic}
             </Badge>
           ))}
         </div>
@@ -95,7 +66,7 @@ const MobilePracticeFilters: React.FC<MobilePracticeFiltersProps> = ({
             className="w-full"
           >
             <X className="h-4 w-4 mr-2" />
-            Alle Filter zurücksetzen
+            Filter zurücksetzen
           </Button>
         </div>
       )}
@@ -109,16 +80,16 @@ const MobilePracticeFilters: React.FC<MobilePracticeFiltersProps> = ({
           <Button variant="outline" className="w-full justify-between touch-target">
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4" />
-              Filter
-              {activeFiltersCount > 0 && (
+              Themen
+              {hasActiveFilters && (
                 <Badge variant="secondary" className="ml-2">
-                  {activeFiltersCount}
+                  1
                 </Badge>
               )}
             </div>
           </Button>
         }
-        title="Filter"
+        title="Themen Filter"
       >
         {filterContent}
       </BottomSheet>
@@ -126,16 +97,9 @@ const MobilePracticeFilters: React.FC<MobilePracticeFiltersProps> = ({
       {/* Active filters summary */}
       {hasActiveFilters && (
         <div className="flex flex-wrap gap-2 mt-3">
-          {selectedCategory !== 'Alle' && (
-            <Badge variant="secondary" className="text-xs">
-              {getCategoryLabel(selectedCategory)}
-            </Badge>
-          )}
-          {selectedTags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
-              {tag}
-            </Badge>
-          ))}
+          <Badge variant="secondary" className="text-xs">
+            {selectedTopic}
+          </Badge>
         </div>
       )}
     </div>

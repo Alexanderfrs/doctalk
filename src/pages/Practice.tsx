@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
@@ -6,7 +5,6 @@ import MobileHeader from "@/components/layout/MobileHeader";
 import Footer from "@/components/layout/Footer";
 import HelpButton from "@/components/tutorial/HelpButton";
 import PracticeSearch from "@/components/practice/PracticeSearch";
-import PracticeFilters from "@/components/practice/PracticeFilters";
 import MobilePracticeFilters from "@/components/practice/MobilePracticeFilters";
 import ScenarioGrid from "@/components/practice/ScenarioGrid";
 import CollapsibleSection from "@/components/mobile/CollapsibleSection";
@@ -26,31 +24,25 @@ const Practice: React.FC = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   
-  // Filter and search state - removed level filter, focus on categories only
+  // Simplified filter state - only topics
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("Alle");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedTopic, setSelectedTopic] = useState("Alle");
+
+  console.log('Practice page render:', {
+    scenarios: scenarios.length,
+    isLoading,
+    searchQuery,
+    selectedTopic
+  });
 
   const handleClearFilters = () => {
     setSearchQuery("");
-    setSelectedCategory("Alle");
-    setSelectedTags([]);
-  };
-
-  const handleTagToggle = (tag: string) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
-    );
+    setSelectedTopic("Alle");
   };
 
   const handleQuickStart = () => {
-    const randomScenario = scenarios.length > 0 
-      ? scenarios[Math.floor(Math.random() * scenarios.length)]
-      : null;
-    
-    if (randomScenario) {
+    if (scenarios.length > 0) {
+      const randomScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
       console.log("Starting random scenario:", randomScenario.id);
       navigate(`/scenario/${randomScenario.id}`);
     }
@@ -197,26 +189,16 @@ const Practice: React.FC = () => {
             />
           </div>
 
-          {/* Filters */}
-          <div data-tutorial-target="search-filters">
-            {isMobile ? (
+          {/* Simplified Filters - only for mobile */}
+          {isMobile && (
+            <div data-tutorial-target="search-filters">
               <MobilePracticeFilters
-                selectedCategory={selectedCategory}
-                selectedTags={selectedTags}
-                onCategoryChange={setSelectedCategory}
-                onTagToggle={handleTagToggle}
+                selectedTopic={selectedTopic}
+                onTopicChange={setSelectedTopic}
                 onClearFilters={handleClearFilters}
               />
-            ) : (
-              <PracticeFilters
-                selectedCategory={selectedCategory}
-                selectedTags={selectedTags}
-                onCategoryChange={setSelectedCategory}
-                onTagToggle={handleTagToggle}
-                onClearFilters={handleClearFilters}
-              />
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Scenarios Grid */}
           {isLoading ? (
@@ -228,8 +210,7 @@ const Practice: React.FC = () => {
             <ScenarioGrid
               scenarios={scenarios}
               searchQuery={searchQuery}
-              selectedCategory={selectedCategory}
-              selectedTags={selectedTags}
+              selectedTopic={selectedTopic}
             />
           )}
         </div>

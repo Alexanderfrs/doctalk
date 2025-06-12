@@ -21,6 +21,7 @@ export const useScenarios = () => {
 
   // Convert the imported scenarios to the expected format - show all scenarios
   const processScenarios = () => {
+    console.log('Processing scenarios, total count:', scenarios.length);
     return scenarios.map(scenario => ({
       id: scenario.id,
       title: scenario.title,
@@ -34,21 +35,29 @@ export const useScenarios = () => {
   };
 
   const fetchScenarios = async () => {
+    console.log('Fetching scenarios...');
     setIsLoading(true);
     try {
       const processedScenarios = processScenarios();
-      console.log('Processed scenarios:', processedScenarios);
+      console.log('Processed scenarios:', processedScenarios.length, 'scenarios');
       setScenarioList(processedScenarios);
     } catch (error) {
       console.error('Error processing scenarios:', error);
+      setScenarioList([]); // Ensure we have a fallback
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
+    console.log('useScenarios effect triggered');
     fetchScenarios();
   }, []);
+
+  console.log('useScenarios hook returning:', {
+    scenarios: scenarioList.length,
+    isLoading
+  });
 
   return {
     scenarios: scenarioList,
