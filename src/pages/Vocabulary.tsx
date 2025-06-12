@@ -72,8 +72,11 @@ const Vocabulary: React.FC = () => {
       );
     }
     
-    // Shuffle the words for variety
-    wordsToUse = wordsToUse.sort(() => Math.random() - 0.5);
+    // Shuffle the words for variety using Fisher-Yates algorithm for better randomization
+    for (let i = wordsToUse.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [wordsToUse[i], wordsToUse[j]] = [wordsToUse[j], wordsToUse[i]];
+    }
     
     // Limit number of cards if specified
     if (config.numberOfCards > 0) {

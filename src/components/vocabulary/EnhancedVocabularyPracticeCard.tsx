@@ -1,11 +1,13 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useVocabularyProgress } from "@/hooks/useVocabularyProgress";
-import { CheckCircle, XCircle, Volume2 } from "lucide-react";
+import { CheckCircle, XCircle, Volume2, Mic, Send } from "lucide-react";
 import useTextToSpeech from "@/hooks/useTextToSpeech";
+import useVoiceRecognition from "@/hooks/useVoiceRecognition";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { DeduplicatedVocabularyWord } from "@/hooks/useVocabularyDeduplication";
 
 interface EnhancedVocabularyPracticeCardProps {
@@ -22,8 +24,43 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
   const [userAnswer, setUserAnswer] = useState('');
   const [isAnswered, setIsAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [showSubmit, setShowSubmit] = useState(false);
   const { recordVocabularyPractice } = useVocabularyProgress();
   const { speak, hasSpeechSupport } = useTextToSpeech();
+  const isMobile = useIsMobile();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const {
+    text: voiceText,
+    isListening,
+    startListening,
+    stopListening,
+    resetText,
+    hasRecognitionSupport
+  } = useVoiceRecognition({
+    language: 'en-US',
+    onResult: (result, isFinal) => {
+      if (isFinal) {
+        setUserAnswer(result.trim());
+        setShowSubmit(true);
+      }
+    }
+  });
+
+  useEffect(() => {
+    if (voiceText) {
+      setUserAnswer(voiceText);
+      setShowSubmit(true);
+    }
+  }, [voiceText]);
+
+  useEffect(() => {
+    if (userAnswer.trim().length > 0 && !isAnswered) {
+      setShowSubmit(true);
+    } else {
+      setShowSubmit(false);
+    }
+  }, [userAnswer, isAnswered]);
 
   const normalizeText = (text: string) => {
     return text.toLowerCase().trim().replace(/[^a-z\s]/g, '');
@@ -41,29 +78,44 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
     return isExactMatch || (isCloseMatch && Math.abs(normalizedAnswer.length - normalizedCorrect.length) <= 2);
   };
 
-  const handleAnswerChange = (value: string) => {
-    setUserAnswer(value);
+  const handleSubmitAnswer = () => {
+    if (isAnswered || userAnswer.trim().length === 0) return;
+
+    const correct = checkAnswer(userAnswer);
+    setIsAnswered(true);
+    setIsCorrect(correct);
+    setShowSubmit(false);
     
-    if (!isAnswered && value.trim().length > 0) {
-      const correct = checkAnswer(value);
-      if (correct || value.trim().length >= word.english.length) {
-        setIsAnswered(true);
-        setIsCorrect(correct);
-        
-        // Record the practice session
-        recordVocabularyPractice(word.id, word.categories[0], correct);
-        
-        // Auto-advance after delay
-        setTimeout(() => {
-          onComplete(correct);
-        }, autoAdvanceDelay);
-      }
+    // Record the practice session
+    recordVocabularyPractice(word.id, word.categories[0], correct);
+    
+    // Auto-advance after delay
+    setTimeout(() => {
+      onComplete(correct);
+    }, autoAdvanceDelay);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && showSubmit && !isAnswered) {
+      handleSubmitAnswer();
     }
   };
 
   const handleSpeak = () => {
     if (hasSpeechSupport) {
       speak(word.german);
+    }
+  };
+
+  const handleVoiceInput = async () => {
+    if (!hasRecognitionSupport) return;
+
+    if (isListening) {
+      stopListening();
+    } else {
+      resetText();
+      setUserAnswer('');
+      await startListening();
     }
   };
 
@@ -113,7 +165,7 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
                 variant="ghost"
                 size="sm"
                 onClick={handleSpeak}
-                className="text-medical-600"
+                className="text-medical-600 touch-target"
               >
                 <Volume2 className="h-4 w-4" />
               </Button>
@@ -131,11 +183,13 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
         <div className="space-y-3">
           <div className="relative">
             <input
+              ref={inputRef}
               type="text"
               value={userAnswer}
-              onChange={(e) => handleAnswerChange(e.target.value)}
+              onChange={(e) => setUserAnswer(e.target.value)}
+              onKeyPress={handleKeyPress}
               placeholder="Ihre Antwort..."
-              className={`w-full p-3 border rounded-lg focus:outline-none transition-colors ${
+              className={`w-full p-3 border rounded-lg focus:outline-none transition-colors pr-20 ${
                 isAnswered 
                   ? isCorrect 
                     ? 'border-green-500 bg-green-50' 
@@ -144,16 +198,58 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
               }`}
               disabled={isAnswered}
             />
-            {isAnswered && (
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                {isCorrect ? (
+            
+            {/* Voice Input Button */}
+            {hasRecognitionSupport && !isAnswered && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleVoiceInput}
+                className={`absolute right-12 top-1/2 transform -translate-y-1/2 touch-target ${
+                  isListening ? 'text-red-500' : 'text-gray-500'
+                }`}
+              >
+                <Mic className="h-4 w-4" />
+              </Button>
+            )}
+            
+            {/* Submit Button or Status Icon */}
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+              {isAnswered ? (
+                isCorrect ? (
                   <CheckCircle className="h-5 w-5 text-green-500" />
                 ) : (
                   <XCircle className="h-5 w-5 text-red-500" />
-                )}
-              </div>
-            )}
+                )
+              ) : showSubmit ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSubmitAnswer}
+                  className="p-1 touch-target"
+                >
+                  <Send className="h-4 w-4 text-medical-600" />
+                </Button>
+              ) : null}
+            </div>
           </div>
+
+          {/* Mobile Submit Button */}
+          {isMobile && showSubmit && !isAnswered && (
+            <Button
+              onClick={handleSubmitAnswer}
+              className="w-full bg-medical-500 hover:bg-medical-600 touch-target"
+            >
+              Antwort prüfen
+            </Button>
+          )}
+
+          {/* Voice Recognition Status */}
+          {isListening && (
+            <div className="text-center text-sm text-medical-600">
+              🎤 Hört zu... (Sprechen Sie Ihre Antwort)
+            </div>
+          )}
 
           {/* Feedback */}
           {isAnswered && (
