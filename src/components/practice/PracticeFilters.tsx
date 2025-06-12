@@ -6,29 +6,38 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Filter, X } from "lucide-react";
 
 interface PracticeFiltersProps {
-  selectedLevel: string;
   selectedCategory: string;
   selectedTags: string[];
-  onLevelChange: (level: string) => void;
   onCategoryChange: (category: string) => void;
   onTagToggle: (tag: string) => void;
   onClearFilters: () => void;
 }
 
 const PracticeFilters: React.FC<PracticeFiltersProps> = ({
-  selectedLevel,
   selectedCategory,
   selectedTags,
-  onLevelChange,
   onCategoryChange,
   onTagToggle,
   onClearFilters
 }) => {
-  const levels = ['Alle', 'B1', 'B2', 'C1', 'C2'];
-  const categories = ['Alle', 'patient-care', 'teamwork', 'emergency', 'consultation', 'handover'];
-  const commonTags = ['Aufnahme', 'Anamnese', 'Notfall', 'Team', 'Kommunikation', 'Diagnose', 'Medikamente', 'Übergabe'];
+  const categories = ['Alle', 'patient-care', 'teamwork', 'emergency', 'consultation', 'handover', 'elderly-care', 'disability-care'];
+  const commonTags = ['Aufnahme', 'Anamnese', 'Notfall', 'Team', 'Kommunikation', 'Diagnose', 'Demenz', 'Mobilität', 'Behindertenbetreuung'];
 
-  const hasActiveFilters = selectedLevel !== 'Alle' || selectedCategory !== 'Alle' || selectedTags.length > 0;
+  const hasActiveFilters = selectedCategory !== 'Alle' || selectedTags.length > 0;
+
+  const getCategoryLabel = (category: string) => {
+    const labels = {
+      'Alle': 'Alle',
+      'patient-care': 'Patientenversorgung',
+      'teamwork': 'Teamarbeit',
+      'emergency': 'Notfall',
+      'consultation': 'Beratung',
+      'handover': 'Übergabe',
+      'elderly-care': 'Altenpflege',
+      'disability-care': 'Behindertenbetreuung'
+    };
+    return labels[category] || category;
+  };
 
   return (
     <Card className="mb-6">
@@ -46,25 +55,6 @@ const PracticeFilters: React.FC<PracticeFiltersProps> = ({
           )}
         </div>
 
-        {/* Level Filter */}
-        <div className="mb-4">
-          <label className="text-sm font-medium text-gray-700 mb-2 block">
-            Schwierigkeitsgrad
-          </label>
-          <div className="flex flex-wrap gap-2">
-            {levels.map((level) => (
-              <Badge
-                key={level}
-                variant={selectedLevel === level ? "default" : "outline"}
-                className="cursor-pointer hover:bg-medical-50"
-                onClick={() => onLevelChange(level)}
-              >
-                {level}
-              </Badge>
-            ))}
-          </div>
-        </div>
-
         {/* Category Filter */}
         <div className="mb-4">
           <label className="text-sm font-medium text-gray-700 mb-2 block">
@@ -78,12 +68,7 @@ const PracticeFilters: React.FC<PracticeFiltersProps> = ({
                 className="cursor-pointer hover:bg-medical-50"
                 onClick={() => onCategoryChange(category)}
               >
-                {category === 'Alle' ? 'Alle' : 
-                 category === 'patient-care' ? 'Patientenversorgung' :
-                 category === 'teamwork' ? 'Teamarbeit' :
-                 category === 'emergency' ? 'Notfall' :
-                 category === 'consultation' ? 'Beratung' :
-                 category === 'handover' ? 'Übergabe' : category}
+                {getCategoryLabel(category)}
               </Badge>
             ))}
           </div>
