@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, X } from "lucide-react";
 import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/contexts/AuthContext";
@@ -36,7 +36,7 @@ const Login: React.FC = () => {
       }
       
       toast.success(translate("loginSuccess"));
-      navigate("/index"); // Let the Index component handle routing
+      navigate("/index");
     } catch (error) {
       console.error("Login error:", error);
       toast.error(translate("unexpectedError"));
@@ -46,7 +46,6 @@ const Login: React.FC = () => {
   };
 
   const handleBack = () => {
-    // If mobile, go back to mobile onboarding, otherwise go to main landing
     if (isMobile) {
       navigate("/", { state: { returnToOnboarding: true } });
     } else {
@@ -56,15 +55,15 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Back button - always visible on mobile, positioned properly */}
+      {/* Back button - positioned prominently on mobile */}
       {isMobile && (
-        <div className="absolute top-4 left-4 z-20">
+        <div className="fixed top-4 left-4 z-50">
           <Button 
             variant="ghost" 
             onClick={handleBack}
-            className="text-medical-600 hover:text-medical-700 bg-white/80 backdrop-blur-sm shadow-sm rounded-full w-10 h-10 p-0 flex items-center justify-center"
+            className="bg-white/90 hover:bg-white shadow-lg rounded-full w-12 h-12 p-0 flex items-center justify-center border border-gray-200"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <X className="h-6 w-6 text-gray-700" />
           </Button>
         </div>
       )}

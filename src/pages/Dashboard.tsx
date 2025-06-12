@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTutorial } from "@/contexts/TutorialContext";
@@ -125,7 +126,7 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
       <Header />
       
-      <main className={`flex-grow ${isMobile ? 'pt-16 px-4 pb-20' : 'pt-24 px-4 md:px-8 pb-20'}`}>
+      <main className={`flex-grow ${isMobile ? 'pt-20 px-4 pb-20' : 'pt-24 px-4 md:px-8 pb-20'}`}>
         <div className="container mx-auto">
           {/* Welcome Header */}
           <div className={`${isMobile ? 'mb-4' : 'mb-8'}`} data-tutorial-target="welcome-header">
