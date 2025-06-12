@@ -100,7 +100,7 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
     <div>
       {isMobile ? (
         <div className="px-2">
-          <div className="space-y-4 max-h-[50vh] overflow-y-auto pb-4">
+          <div className="space-y-4 pb-4">
             {filteredScenarios.map((scenario) => (
               <ScenarioCard 
                 key={scenario.id}

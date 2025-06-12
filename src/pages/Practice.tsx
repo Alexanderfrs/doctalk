@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
@@ -5,7 +6,7 @@ import MobileHeader from "@/components/layout/MobileHeader";
 import Footer from "@/components/layout/Footer";
 import HelpButton from "@/components/tutorial/HelpButton";
 import PracticeSearch from "@/components/practice/PracticeSearch";
-import MobilePracticeFilters from "@/components/practice/MobilePracticeFilters";
+import UnifiedPracticeFilters from "@/components/practice/UnifiedPracticeFilters";
 import ScenarioGrid from "@/components/practice/ScenarioGrid";
 import CollapsibleSection from "@/components/mobile/CollapsibleSection";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
@@ -24,7 +25,7 @@ const Practice: React.FC = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   
-  // Simplified filter state - only topics
+  // Simplified state - only topic-based filtering
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("Alle");
 
@@ -189,16 +190,14 @@ const Practice: React.FC = () => {
             />
           </div>
 
-          {/* Simplified Filters - only for mobile */}
-          {isMobile && (
-            <div data-tutorial-target="search-filters">
-              <MobilePracticeFilters
-                selectedTopic={selectedTopic}
-                onTopicChange={setSelectedTopic}
-                onClearFilters={handleClearFilters}
-              />
-            </div>
-          )}
+          {/* Unified Filters - works for both mobile and desktop */}
+          <div data-tutorial-target="search-filters">
+            <UnifiedPracticeFilters
+              selectedTopic={selectedTopic}
+              onTopicChange={setSelectedTopic}
+              onClearFilters={handleClearFilters}
+            />
+          </div>
 
           {/* Scenarios Grid */}
           {isLoading ? (
