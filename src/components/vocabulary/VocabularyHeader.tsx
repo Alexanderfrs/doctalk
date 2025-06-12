@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { List, Mic, Award, BookOpen } from "lucide-react";
+import { BookOpen, Award } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 
 interface VocabularyHeaderProps {
@@ -36,20 +36,6 @@ const VocabularyHeader: React.FC<VocabularyHeaderProps> = ({ className }) => {
             Medizinische Diagnostik
           </span>
         </div>
-      </div>
-      
-      <div className="flex gap-3">
-        <Button asChild variant="outline" className="flex items-center">
-          <a href="/practice">
-            <List className="h-4 w-4 mr-2" />
-            Übungen
-          </a>
-        </Button>
-        
-        <Button className="flex items-center bg-medical-500 hover:bg-medical-600">
-          <Mic className="h-4 w-4 mr-2" />
-          Aussprache üben
-        </Button>
       </div>
     </div>
   );

@@ -7,16 +7,18 @@ import VocabularyHeader from "@/components/vocabulary/VocabularyHeader";
 import VocabularySearch from "@/components/vocabulary/VocabularySearch";
 import VocabularyFilters from "@/components/vocabulary/VocabularyFilters";
 import VocabularyProgress from "@/components/vocabulary/VocabularyProgress";
-import VocabularyPracticeCard from "@/components/vocabulary/VocabularyPracticeCard";
+import EnhancedVocabularyPracticeCard from "@/components/vocabulary/EnhancedVocabularyPracticeCard";
+import PracticeSetupDialog, { PracticeConfig } from "@/components/vocabulary/PracticeSetupDialog";
 import CollapsibleSection from "@/components/mobile/CollapsibleSection";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, Play, RotateCcw, CheckCircle, Filter, TrendingUp } from "lucide-react";
+import { BookOpen, RotateCcw, CheckCircle, Filter, TrendingUp } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useVocabulary } from "@/hooks/useVocabulary";
 import { useVocabularyProgress } from "@/hooks/useVocabularyProgress";
+import { useVocabularyDeduplication } from "@/hooks/useVocabularyDeduplication";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
 
@@ -39,36 +41,57 @@ const Vocabulary: React.FC = () => {
   } = useVocabulary();
   const { getMasteryStats } = useVocabularyProgress();
   
+  // Use deduplication hook
+  const deduplicatedWords = useVocabularyDeduplication(filteredWords);
+  
   // State management
   const [practiceMode, setPracticeMode] = useState(false);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [practiceCompleted, setPracticeCompleted] = useState(false);
+  const [practiceWords, setPracticeWords] = useState(deduplicatedWords);
   
   // Get mastery statistics
   const masteryStats = getMasteryStats();
 
-  // Use the filtered words directly from useVocabulary
-  const finalFilteredVocabulary = filteredWords;
-
   // Reset practice when filters change
   useEffect(() => {
-    if (finalFilteredVocabulary.length > 0) {
+    if (deduplicatedWords.length > 0) {
       setCurrentWordIndex(0);
       setPracticeCompleted(false);
     }
-  }, [finalFilteredVocabulary]);
+  }, [deduplicatedWords]);
 
-  const handleStartPractice = () => {
-    if (finalFilteredVocabulary.length > 0) {
+  const handleStartPractice = (config: PracticeConfig) => {
+    let wordsToUse = [...deduplicatedWords];
+    
+    // Filter by category if specified
+    if (config.category !== "all") {
+      wordsToUse = wordsToUse.filter(word => 
+        word.categories.includes(config.category)
+      );
+    }
+    
+    // Shuffle the words for variety
+    wordsToUse = wordsToUse.sort(() => Math.random() - 0.5);
+    
+    // Limit number of cards if specified
+    if (config.numberOfCards > 0) {
+      wordsToUse = wordsToUse.slice(0, config.numberOfCards);
+    }
+    
+    if (wordsToUse.length > 0) {
+      setPracticeWords(wordsToUse);
       setPracticeMode(true);
       setCurrentWordIndex(0);
       setPracticeCompleted(false);
+    } else {
+      toast.error("Keine Vokabeln für diese Konfiguration verfügbar.");
     }
   };
 
   const handlePracticeComplete = (correct: boolean) => {
     // Move to next word or end practice
-    if (currentWordIndex < finalFilteredVocabulary.length - 1) {
+    if (currentWordIndex < practiceWords.length - 1) {
       setCurrentWordIndex(prev => prev + 1);
     } else {
       // Practice session complete
@@ -98,6 +121,9 @@ const Vocabulary: React.FC = () => {
     setActiveDomain("all");
     setSearchTerm("");
   };
+
+  // Get unique categories for the setup dialog
+  const availableCategories = Array.from(new Set(allWords.map(word => word.category)));
 
   if (!user) {
     return (
@@ -169,22 +195,19 @@ const Vocabulary: React.FC = () => {
                     <CardContent className="p-4 text-center">
                       <h3 className="text-lg font-semibold mb-2">Vokabeltraining</h3>
                       <p className="text-gray-600 mb-4 text-sm">
-                        {finalFilteredVocabulary.length} Vokabeln verfügbar
+                        {deduplicatedWords.length} Vokabeln verfügbar
                       </p>
-                      <Button 
-                        onClick={handleStartPractice}
-                        disabled={finalFilteredVocabulary.length === 0}
-                        className="w-full bg-medical-500 hover:bg-medical-600 touch-target"
-                      >
-                        <Play className="h-4 w-4 mr-2" />
-                        Training starten
-                      </Button>
+                      <PracticeSetupDialog
+                        availableCategories={availableCategories}
+                        onStartPractice={handleStartPractice}
+                        totalWords={deduplicatedWords.length}
+                      />
                     </CardContent>
                   </Card>
 
                   {/* Vocabulary Grid */}
                   <div className="grid grid-cols-1 gap-4">
-                    {finalFilteredVocabulary.slice(0, 10).map((word) => (
+                    {deduplicatedWords.slice(0, 10).map((word) => (
                       <Card key={word.id} className="hover:shadow-md transition-shadow">
                         <CardContent className="p-4">
                           <div className="space-y-2">
@@ -192,9 +215,13 @@ const Vocabulary: React.FC = () => {
                               <h3 className="font-semibold text-lg text-medical-800">
                                 {word.german}
                               </h3>
-                              <span className="px-2 py-1 rounded text-xs font-medium bg-medical-100 text-medical-800">
-                                {word.category}
-                              </span>
+                              <div className="flex flex-wrap gap-1">
+                                {word.categories.map((category, index) => (
+                                  <span key={index} className="px-2 py-1 rounded text-xs font-medium bg-medical-100 text-medical-800">
+                                    {category}
+                                  </span>
+                                ))}
+                              </div>
                             </div>
                             <p className="text-gray-600">{word.english}</p>
                             {word.example && (
@@ -206,9 +233,9 @@ const Vocabulary: React.FC = () => {
                         </CardContent>
                       </Card>
                     ))}
-                    {finalFilteredVocabulary.length > 10 && (
+                    {deduplicatedWords.length > 10 && (
                       <div className="text-center text-gray-500 text-sm">
-                        +{finalFilteredVocabulary.length - 10} weitere Vokabeln
+                        +{deduplicatedWords.length - 10} weitere Vokabeln
                       </div>
                     )}
                   </div>
@@ -222,7 +249,7 @@ const Vocabulary: React.FC = () => {
                       Durchsuchen
                     </TabsTrigger>
                     <TabsTrigger value="practice" className="flex items-center gap-2" data-tutorial-target="practice-tab">
-                      <Play className="h-4 w-4" />
+                      <BookOpen className="h-4 w-4" />
                       Üben
                     </TabsTrigger>
                   </TabsList>
@@ -244,7 +271,7 @@ const Vocabulary: React.FC = () => {
                     />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {finalFilteredVocabulary.map((word) => (
+                      {deduplicatedWords.map((word) => (
                         <Card key={word.id} className="hover:shadow-md transition-shadow">
                           <CardContent className="p-4">
                             <div className="space-y-2">
@@ -252,9 +279,13 @@ const Vocabulary: React.FC = () => {
                                 <h3 className="font-semibold text-lg text-medical-800">
                                   {word.german}
                                 </h3>
-                                <span className="px-2 py-1 rounded text-xs font-medium bg-medical-100 text-medical-800">
-                                  {word.category}
-                                </span>
+                                <div className="flex flex-wrap gap-1">
+                                  {word.categories.map((category, index) => (
+                                    <span key={index} className="px-2 py-1 rounded text-xs font-medium bg-medical-100 text-medical-800">
+                                      {category}
+                                    </span>
+                                  ))}
+                                </div>
                               </div>
                               <p className="text-gray-600">{word.english}</p>
                               <p className="text-sm text-gray-500">{word.category}</p>
@@ -275,16 +306,13 @@ const Vocabulary: React.FC = () => {
                       <CardContent className="p-6 text-center">
                         <h3 className="text-xl font-semibold mb-4">Vokabeltraining</h3>
                         <p className="text-gray-600 mb-6">
-                          Testen Sie Ihr Wissen mit {finalFilteredVocabulary.length} Vokabeln.
+                          Testen Sie Ihr Wissen mit {deduplicatedWords.length} Vokabeln.
                         </p>
-                        <Button 
-                          onClick={handleStartPractice}
-                          disabled={finalFilteredVocabulary.length === 0}
-                          className="bg-medical-500 hover:bg-medical-600"
-                        >
-                          <Play className="h-4 w-4 mr-2" />
-                          Training starten
-                        </Button>
+                        <PracticeSetupDialog
+                          availableCategories={availableCategories}
+                          onStartPractice={handleStartPractice}
+                          totalWords={deduplicatedWords.length}
+                        />
                       </CardContent>
                     </Card>
                   </TabsContent>
@@ -299,7 +327,7 @@ const Vocabulary: React.FC = () => {
                     <CheckCircle className={`text-green-500 mx-auto mb-4 ${isMobile ? 'h-12 w-12' : 'h-16 w-16'}`} />
                     <h3 className={`font-semibold mb-2 ${isMobile ? 'text-xl' : 'text-2xl'}`}>Training abgeschlossen!</h3>
                     <p className={`text-gray-600 mb-4 ${isMobile ? 'text-sm' : ''}`}>
-                      Sie haben alle {finalFilteredVocabulary.length} Vokabeln durchgearbeitet.
+                      Sie haben alle {practiceWords.length} Vokabeln durchgearbeitet.
                     </p>
                     <Button onClick={handleEndPractice} className={isMobile ? 'w-full touch-target' : ''}>
                       Zurück zur Übersicht
@@ -315,7 +343,7 @@ const Vocabulary: React.FC = () => {
                         <div>
                           <h3 className="font-semibold">Vokabeltraining</h3>
                           <p className="text-sm text-gray-600">
-                            Wort {currentWordIndex + 1} von {finalFilteredVocabulary.length}
+                            Wort {currentWordIndex + 1} von {practiceWords.length}
                           </p>
                         </div>
                         <div className="flex gap-2">
@@ -344,7 +372,7 @@ const Vocabulary: React.FC = () => {
                           <div 
                             className="bg-medical-500 h-2 rounded-full transition-all duration-300"
                             style={{ 
-                              width: `${((currentWordIndex + 1) / finalFilteredVocabulary.length) * 100}%` 
+                              width: `${((currentWordIndex + 1) / practiceWords.length) * 100}%` 
                             }}
                           />
                         </div>
@@ -353,10 +381,10 @@ const Vocabulary: React.FC = () => {
                   </Card>
 
                   {/* Practice Card */}
-                  {finalFilteredVocabulary[currentWordIndex] && (
-                    <VocabularyPracticeCard
+                  {practiceWords[currentWordIndex] && (
+                    <EnhancedVocabularyPracticeCard
                       word={{
-                        ...finalFilteredVocabulary[currentWordIndex],
+                        ...practiceWords[currentWordIndex],
                         difficulty: 'B1' // Default difficulty since it's not in the data
                       }}
                       onComplete={handlePracticeComplete}
