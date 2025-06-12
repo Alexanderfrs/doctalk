@@ -4,12 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, Stethoscope, CheckCircle } from "lucide-react";
+import { Eye, EyeOff, Stethoscope, CheckCircle, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Register: React.FC = () => {
   const [name, setName] = useState("");
@@ -23,6 +24,7 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
   const { signUp, skipOnboarding } = useAuth();
   const { translate } = useLanguage();
+  const isMobile = useIsMobile();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,8 +57,30 @@ const Register: React.FC = () => {
     }
   };
 
+  const handleBack = () => {
+    // If mobile, go back to mobile onboarding, otherwise go to main landing
+    if (isMobile) {
+      navigate("/");
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Back button for mobile */}
+      {isMobile && (
+        <div className="absolute top-4 left-4 z-10 safe-area-top">
+          <Button 
+            variant="ghost" 
+            onClick={handleBack}
+            className="text-medical-600 hover:text-medical-700 touch-target p-2"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+        </div>
+      )}
+
       <main className="flex-grow flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">

@@ -181,7 +181,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
             </h2>
           )}
 
-          {/* Description - show before bullet points for screen 4 */}
+          {/* For screen 4, show description before bullet points */}
           {screenNumber === 4 && content.description && (
             <p className="text-sm text-neutral-600 leading-relaxed">
               {content.description}

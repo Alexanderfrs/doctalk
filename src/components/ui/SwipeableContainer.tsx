@@ -105,14 +105,14 @@ const SwipeableContainer: React.FC<SwipeableContainerProps> = ({
         </div>
       </div>
       
-      {/* Page indicators */}
+      {/* Page indicators - made much smaller */}
       {showIndicators && (
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-1.5">
           {React.Children.map(children, (_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+              className={`w-1 h-1 rounded-full transition-all duration-300 ${
                 index === currentIndex
                   ? "bg-medical-500"
                   : "bg-gray-300"
