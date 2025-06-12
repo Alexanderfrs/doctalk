@@ -19,7 +19,6 @@ interface Scenario {
 interface ScenarioGridProps {
   scenarios: Scenario[];
   searchQuery: string;
-  selectedLevel: string;
   selectedCategory: string;
   selectedTags: string[];
 }
@@ -27,7 +26,6 @@ interface ScenarioGridProps {
 const ScenarioGrid: React.FC<ScenarioGridProps> = ({
   scenarios,
   searchQuery,
-  selectedLevel,
   selectedCategory,
   selectedTags
 }) => {
@@ -39,11 +37,6 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
     // Search filter
     if (searchQuery && !scenario.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
         !scenario.description.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
-
-    // Level filter
-    if (selectedLevel !== 'Alle' && scenario.difficulty !== selectedLevel) {
       return false;
     }
 
@@ -79,24 +72,19 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
     <div>
       {isMobile ? (
         <div className="px-2">
-          <SwipeableContainer
-            onSwipe={() => {}}
-            showIndicators={false}
-            className="h-[400px]"
-          >
+          <div className="grid grid-cols-1 gap-4 max-h-[60vh] overflow-y-auto">
             {filteredScenarios.map((scenario) => (
-              <div key={scenario.id} className="px-2 w-full h-full">
-                <ScenarioCard 
-                  scenario={scenario} 
-                  onClick={() => handleScenarioClick(scenario.id)}
-                  className="h-full"
-                />
-              </div>
+              <ScenarioCard 
+                key={scenario.id}
+                scenario={scenario} 
+                onClick={() => handleScenarioClick(scenario.id)}
+                className="h-auto"
+              />
             ))}
-          </SwipeableContainer>
+          </div>
           
           <div className="text-center text-sm text-medical-600 mt-4">
-            {filteredScenarios.length} Szenarien gefunden • Swipen Sie für mehr
+            {filteredScenarios.length} Szenarien gefunden
           </div>
         </div>
       ) : (

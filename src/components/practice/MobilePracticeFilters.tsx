@@ -7,33 +7,26 @@ import BottomSheet from "@/components/mobile/BottomSheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface MobilePracticeFiltersProps {
-  selectedLevel: string;
   selectedCategory: string;
   selectedTags: string[];
-  onLevelChange: (level: string) => void;
   onCategoryChange: (category: string) => void;
   onTagToggle: (tag: string) => void;
   onClearFilters: () => void;
 }
 
 const MobilePracticeFilters: React.FC<MobilePracticeFiltersProps> = ({
-  selectedLevel,
   selectedCategory,
   selectedTags,
-  onLevelChange,
   onCategoryChange,
   onTagToggle,
   onClearFilters
 }) => {
   const isMobile = useIsMobile();
-  const levels = ['Alle', 'B1', 'B2', 'C1', 'C2'];
-  const categories = ['Alle', 'patient-care', 'teamwork', 'emergency', 'consultation', 'handover'];
-  const commonTags = ['Aufnahme', 'Anamnese', 'Notfall', 'Team', 'Kommunikation', 'Diagnose'];
+  const categories = ['Alle', 'patient-care', 'teamwork', 'emergency', 'consultation', 'handover', 'elderly-care', 'disability-care'];
+  const commonTags = ['Aufnahme', 'Anamnese', 'Notfall', 'Team', 'Kommunikation', 'Diagnose', 'Demenz', 'Mobilität', 'Behindertenbetreuung'];
 
-  const hasActiveFilters = selectedLevel !== 'Alle' || selectedCategory !== 'Alle' || selectedTags.length > 0;
-  const activeFiltersCount = (selectedLevel !== 'Alle' ? 1 : 0) + 
-                            (selectedCategory !== 'Alle' ? 1 : 0) + 
-                            selectedTags.length;
+  const hasActiveFilters = selectedCategory !== 'Alle' || selectedTags.length > 0;
+  const activeFiltersCount = (selectedCategory !== 'Alle' ? 1 : 0) + selectedTags.length;
 
   const getCategoryLabel = (category: string) => {
     const labels = {
@@ -42,7 +35,9 @@ const MobilePracticeFilters: React.FC<MobilePracticeFiltersProps> = ({
       'teamwork': 'Teamarbeit',
       'emergency': 'Notfall',
       'consultation': 'Beratung',
-      'handover': 'Übergabe'
+      'handover': 'Übergabe',
+      'elderly-care': 'Altenpflege',
+      'disability-care': 'Behindertenbetreuung'
     };
     return labels[category] || category;
   };
@@ -53,25 +48,6 @@ const MobilePracticeFilters: React.FC<MobilePracticeFiltersProps> = ({
 
   const filterContent = (
     <div className="space-y-6">
-      {/* Level Filter */}
-      <div>
-        <label className="text-sm font-medium text-gray-700 mb-3 block">
-          Schwierigkeitsgrad
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {levels.map((level) => (
-            <Badge
-              key={level}
-              variant={selectedLevel === level ? "default" : "outline"}
-              className="cursor-pointer hover:bg-medical-50 touch-target"
-              onClick={() => onLevelChange(level)}
-            >
-              {level}
-            </Badge>
-          ))}
-        </div>
-      </div>
-
       {/* Category Filter */}
       <div>
         <label className="text-sm font-medium text-gray-700 mb-3 block">
@@ -150,11 +126,6 @@ const MobilePracticeFilters: React.FC<MobilePracticeFiltersProps> = ({
       {/* Active filters summary */}
       {hasActiveFilters && (
         <div className="flex flex-wrap gap-2 mt-3">
-          {selectedLevel !== 'Alle' && (
-            <Badge variant="secondary" className="text-xs">
-              Level: {selectedLevel}
-            </Badge>
-          )}
           {selectedCategory !== 'Alle' && (
             <Badge variant="secondary" className="text-xs">
               {getCategoryLabel(selectedCategory)}

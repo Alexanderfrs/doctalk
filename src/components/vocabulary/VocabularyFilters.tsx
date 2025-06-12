@@ -31,7 +31,9 @@ const VocabularyFilters: React.FC<VocabularyFiltersProps> = ({
     { id: "pain-scale", label: "Schmerzskala" },
     { id: "care-equipment", label: "Pflegehilfsmittel" },
     { id: "equipment", label: "Medizinische Geräte" },
-    { id: "abbreviations", label: "Abkürzungen" }
+    { id: "abbreviations", label: "Abkürzungen" },
+    { id: "elderly-care", label: "Altenpflege" },
+    { id: "disability-care", label: "Behindertenbetreuung" }
   ];
 
   const domains = [
@@ -39,7 +41,8 @@ const VocabularyFilters: React.FC<VocabularyFiltersProps> = ({
     { id: "hospital", label: "Krankenhaus" },
     { id: "elderly-care", label: "Altenpflege" },
     { id: "disability-care", label: "Behindertenbetreuung" },
-    { id: "daily-care", label: "Tägliche Pflege" }
+    { id: "daily-care", label: "Tägliche Pflege" },
+    { id: "emergency", label: "Notfallmedizin" }
   ];
 
   return (

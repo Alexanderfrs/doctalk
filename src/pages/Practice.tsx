@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
@@ -12,7 +13,7 @@ import CollapsibleSection from "@/components/mobile/CollapsibleSection";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Target, TrendingUp, Play } from "lucide-react";
+import { MessageCircle, Target, TrendingUp } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProgressTracking } from "@/hooks/useProgressTracking";
 import { useScenarios } from "@/hooks/useScenarios";
@@ -25,22 +26,13 @@ const Practice: React.FC = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   
-  // Filter and search state
+  // Filter and search state - removed level filter, focus on categories only
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedLevel, setSelectedLevel] = useState("Alle");
   const [selectedCategory, setSelectedCategory] = useState("Alle");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  // Set default level based on user's German level (only if it's B1+)
-  useEffect(() => {
-    if (profile?.german_level && selectedLevel === "Alle" && ['B1', 'B2', 'C1', 'C2'].includes(profile.german_level)) {
-      setSelectedLevel(profile.german_level);
-    }
-  }, [profile?.german_level, selectedLevel]);
-
   const handleClearFilters = () => {
     setSearchQuery("");
-    setSelectedLevel("Alle");
     setSelectedCategory("Alle");
     setSelectedTags([]);
   };
@@ -54,10 +46,9 @@ const Practice: React.FC = () => {
   };
 
   const handleQuickStart = () => {
-    const levelScenarios = scenarios.filter(s => s.difficulty === profile?.german_level);
-    const randomScenario = levelScenarios.length > 0 
-      ? levelScenarios[Math.floor(Math.random() * levelScenarios.length)]
-      : scenarios[Math.floor(Math.random() * scenarios.length)];
+    const randomScenario = scenarios.length > 0 
+      ? scenarios[Math.floor(Math.random() * scenarios.length)]
+      : null;
     
     if (randomScenario) {
       console.log("Starting random scenario:", randomScenario.id);
@@ -116,7 +107,6 @@ const Practice: React.FC = () => {
             </CollapsibleSection>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8" data-tutorial-target="practice-progress">
-              {/* ... keep existing code (desktop progress cards) */}
               <Card>
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
@@ -184,14 +174,13 @@ const Practice: React.FC = () => {
                     Schnellstart
                   </h3>
                   <p className={`text-gray-600 mb-4 ${isMobile ? 'text-sm' : ''}`}>
-                    Beginnen Sie sofort mit einem Szenario passend zu Ihrem Level.
+                    Beginnen Sie sofort mit einem zufälligen Szenario.
                   </p>
                   <Button 
                     className={`${isMobile ? 'w-full' : ''} touch-target`}
                     onClick={handleQuickStart}
                     disabled={scenarios.length === 0}
                   >
-                    <Play className="h-4 w-4 mr-2" />
                     Zufälliges Szenario starten ({scenarios.length} verfügbar)
                   </Button>
                 </div>
@@ -212,20 +201,16 @@ const Practice: React.FC = () => {
           <div data-tutorial-target="search-filters">
             {isMobile ? (
               <MobilePracticeFilters
-                selectedLevel={selectedLevel}
                 selectedCategory={selectedCategory}
                 selectedTags={selectedTags}
-                onLevelChange={setSelectedLevel}
                 onCategoryChange={setSelectedCategory}
                 onTagToggle={handleTagToggle}
                 onClearFilters={handleClearFilters}
               />
             ) : (
               <PracticeFilters
-                selectedLevel={selectedLevel}
                 selectedCategory={selectedCategory}
                 selectedTags={selectedTags}
-                onLevelChange={setSelectedLevel}
                 onCategoryChange={setSelectedCategory}
                 onTagToggle={handleTagToggle}
                 onClearFilters={handleClearFilters}
@@ -243,7 +228,6 @@ const Practice: React.FC = () => {
             <ScenarioGrid
               scenarios={scenarios}
               searchQuery={searchQuery}
-              selectedLevel={selectedLevel}
               selectedCategory={selectedCategory}
               selectedTags={selectedTags}
             />
