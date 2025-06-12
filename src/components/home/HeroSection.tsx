@@ -12,7 +12,6 @@ const HeroSection = () => {
   const { translate } = useLanguage();
   const isMobile = useIsMobile();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isInitialized, setIsInitialized] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const heroContents = [
@@ -29,14 +28,6 @@ const HeroSection = () => {
       alt: translate("medicalEducation"),
     },
   ];
-
-  // Initialize component after mount to prevent flickering
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsInitialized(true);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleSwipeChange = (index: number) => {
     setActiveIndex(index);
@@ -86,11 +77,7 @@ const HeroSection = () => {
           
           <div 
             className="w-full animate-fade-in" 
-            style={{ 
-              animationDelay: '300ms',
-              opacity: isInitialized ? 1 : 0,
-              transition: 'opacity 0.3s ease-in-out'
-            }}
+            style={{ animationDelay: '300ms' }}
             ref={containerRef}
           >
             <div className="relative">
@@ -108,36 +95,28 @@ const HeroSection = () => {
                       alt={content.alt} 
                       className="hero-image-mobile"
                       loading="eager"
-                      style={{ 
-                        display: 'block',
-                        visibility: isInitialized ? 'visible' : 'hidden'
-                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>
                   </div>
                 ))}
               </SwipeableContainer>
               
-              {isInitialized && (
-                <>
-                  <Button 
-                    variant="ghost" 
-                    className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
-                    onClick={handlePrevious}
-                    disabled={activeIndex === 0}
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
-                    onClick={handleNext}
-                    disabled={activeIndex === heroContents.length - 1}
-                  >
-                    <ChevronRight className="h-5 w-5" />
-                  </Button>
-                </>
-              )}
+              <Button 
+                variant="ghost" 
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
+                onClick={handlePrevious}
+                disabled={activeIndex === 0}
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
+                onClick={handleNext}
+                disabled={activeIndex === heroContents.length - 1}
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
             </div>
           </div>
         </div>
@@ -179,11 +158,7 @@ const HeroSection = () => {
         
         <div 
           className="md:w-1/2 animate-fade-in" 
-          style={{ 
-            animationDelay: '300ms',
-            opacity: isInitialized ? 1 : 0,
-            transition: 'opacity 0.3s ease-in-out'
-          }}
+          style={{ animationDelay: '300ms' }}
         >
           <div className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden">
             <img 
@@ -191,10 +166,6 @@ const HeroSection = () => {
               alt={translate("medicalTeamWorking")}
               className="w-full h-[300px] object-cover"
               loading="eager"
-              style={{ 
-                display: 'block',
-                visibility: isInitialized ? 'visible' : 'hidden'
-              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>
           </div>
