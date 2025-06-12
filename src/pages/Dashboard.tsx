@@ -9,6 +9,7 @@ import DashboardTabs from "@/components/dashboard/DashboardTabs";
 import Header from "@/components/layout/Header";
 import MobileHeader from "@/components/layout/MobileHeader";
 import Footer from "@/components/layout/Footer";
+import BottomNavigation from "@/components/navigation/BottomNavigation";
 import HelpButton from "@/components/tutorial/HelpButton";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -45,10 +46,11 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  if (!user) {
+  // Loading state
+  if (!user || !profile) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p>Bitte melden Sie sich an, um das Dashboard zu sehen.</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-medical-500"></div>
       </div>
     );
   }
@@ -57,12 +59,12 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
       {isMobile ? <MobileHeader /> : <Header />}
       
-      <main className={`flex-grow ${isMobile ? 'pt-14 px-4 pb-20' : 'pt-24 px-4 md:px-8 pb-20'}`}>
-        <div className="container mx-auto">
+      <main className={`flex-grow ${isMobile ? 'pt-16 px-4 pb-24' : 'pt-24 px-4 md:px-8 pb-20'}`}>
+        <div className="container mx-auto max-w-7xl">
           <DashboardHeader profileName={profile?.name} />
 
-          {/* Progress Overview */}
-          <div data-tutorial-target="progress-overview" className={isMobile ? 'mb-4' : 'mb-6'}>
+          {/* Progress Overview - Always show, even during loading */}
+          <div data-tutorial-target="progress-overview" className={isMobile ? 'mb-6' : 'mb-8'}>
             <ProgressOverview 
               userProgress={progressData} 
               userStats={statsData} 
@@ -79,7 +81,8 @@ const Dashboard: React.FC = () => {
         </div>
       </main>
       
-      <Footer />
+      {!isMobile && <Footer />}
+      {isMobile && <BottomNavigation />}
       <HelpButton />
     </div>
   );

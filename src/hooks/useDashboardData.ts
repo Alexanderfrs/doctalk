@@ -22,19 +22,19 @@ export const useDashboardData = () => {
 
   const masteryStats = getMasteryStats();
 
-  // Calculate progress data for ProgressOverview component
+  // Ensure we always return stable default data to prevent component disappearing
   const progressData = {
-    completedScenarios: userProgress?.scenarios_completed || 0,
+    completedScenarios: userProgress?.scenarios_completed ?? 0,
     totalScenarios: 50, // This could be dynamic based on available scenarios
-    masteredVocabulary: masteryStats.masteredWords,
-    totalVocabulary: masteryStats.totalWords || 500, // Default fallback
-    streak: userProgress?.current_streak || 0
+    masteredVocabulary: masteryStats.masteredWords ?? 0,
+    totalVocabulary: masteryStats.totalWords ?? 500, // Default fallback
+    streak: userProgress?.current_streak ?? 0
   };
 
   const statsData = {
-    lastActivity: userProgress?.last_study_date || new Date().toISOString().split('T')[0],
-    weeklyGoal: userProgress?.weekly_goal_minutes || 120,
-    weeklyProgress: recentSessions.slice(0, 7).reduce((sum, session) => sum + session.minutes_studied, 0)
+    lastActivity: userProgress?.last_study_date ?? new Date().toISOString().split('T')[0],
+    weeklyGoal: userProgress?.weekly_goal_minutes ?? 120,
+    weeklyProgress: recentSessions?.slice(0, 7).reduce((sum, session) => sum + (session.minutes_studied ?? 0), 0) ?? 0
   };
 
   return {
