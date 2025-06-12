@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useSwipeable } from "react-swipeable";
 
@@ -72,7 +73,6 @@ const SwipeableContainer: React.FC<SwipeableContainerProps> = ({
   const swipeHandlers = useSwipeable({
     onSwipedLeft: handleSwipeLeft,
     onSwipedRight: handleSwipeRight,
-    preventDefaultTouchmoveEvent: true,
     trackMouse: false,
   });
 
@@ -112,7 +112,7 @@ const SwipeableContainer: React.FC<SwipeableContainerProps> = ({
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
                 index === currentIndex
                   ? "bg-medical-500"
                   : "bg-gray-300"
