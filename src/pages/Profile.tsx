@@ -1,17 +1,20 @@
 
 import React, { useState, useEffect } from "react";
 import AppHeader from "@/components/layout/AppHeader";
+import MobileHeader from "@/components/layout/MobileHeader";
 import Footer from "@/components/layout/Footer";
 import HelpButton from "@/components/tutorial/HelpButton";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileTabs from "@/components/profile/ProfileTabs";
 
 const Profile = () => {
   const { profile } = useAuth();
+  const isMobile = useIsMobile();
   const [dailyGoal, setDailyGoal] = useState(20);
   const [notifications, setNotifications] = useState(true);
   const [soundEffects, setSoundEffects] = useState(true);
@@ -52,9 +55,9 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen flex flex-col dark:bg-neutral-900">
-      <AppHeader />
+      {isMobile ? <MobileHeader /> : <AppHeader />}
       
-      <main className="flex-grow pt-24 px-4 md:px-8 pb-12">
+      <main className={`flex-grow ${isMobile ? 'pt-16 pb-20' : 'pt-24'} px-4 md:px-8`}>
         <div className="container mx-auto">
           <div className="bg-white dark:bg-neutral-800 rounded-xl p-6 md:p-8 shadow-sm border border-neutral-100 dark:border-neutral-700 mb-8">
             <div data-tutorial-target="profile-header">
@@ -86,7 +89,7 @@ const Profile = () => {
         </div>
       </main>
       
-      <Footer />
+      {!isMobile && <Footer />}
       <HelpButton />
     </div>
   );

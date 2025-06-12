@@ -1,9 +1,8 @@
 
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, BarChart3, Star, Crown } from "lucide-react";
+import { Settings, Star, Crown } from "lucide-react";
 import SettingsTab from "./tabs/SettingsTab";
-import AssessmentTab from "./tabs/AssessmentTab";
 import GoalsTab from "./tabs/GoalsTab";
 import SubscriptionTab from "./tabs/SubscriptionTab";
 
@@ -38,14 +37,10 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({
 }) => {
   return (
     <Tabs defaultValue="settings">
-      <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-6">
+      <TabsList className="grid grid-cols-3 mb-6">
         <TabsTrigger value="settings" className="flex items-center gap-1">
           <Settings className="h-4 w-4" />
           <span>Einstellungen</span>
-        </TabsTrigger>
-        <TabsTrigger value="assessment" className="flex items-center gap-1">
-          <BarChart3 className="h-4 w-4" />
-          <span>Sprachtest</span>
         </TabsTrigger>
         <TabsTrigger value="goals" className="flex items-center gap-1">
           <Star className="h-4 w-4" />
@@ -65,10 +60,6 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({
           onSoundEffectsChange={onSoundEffectsChange}
           onSaveSettings={onSaveSettings}
         />
-      </TabsContent>
-      
-      <TabsContent value="assessment">
-        <AssessmentTab />
       </TabsContent>
       
       <TabsContent value="goals">

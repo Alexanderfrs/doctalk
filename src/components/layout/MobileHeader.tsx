@@ -24,7 +24,7 @@ const MobileHeader: React.FC = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200">
       <div className="flex items-center justify-between px-4 py-2 min-h-[56px]">
-        <AppLogo path="/dashboard" size="small" />
+        <AppLogo path="/dashboard" variant="minimal" size="small" />
         
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" className="h-9 w-9">
