@@ -48,7 +48,7 @@ const Login: React.FC = () => {
   const handleBack = () => {
     // If mobile, go back to mobile onboarding, otherwise go to main landing
     if (isMobile) {
-      navigate("/");
+      navigate("/", { state: { returnToOnboarding: true } });
     } else {
       navigate("/");
     }
@@ -56,13 +56,13 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Back button for mobile */}
+      {/* Back button - always visible on mobile, positioned properly */}
       {isMobile && (
-        <div className="absolute top-4 left-4 z-10 safe-area-top">
+        <div className="absolute top-4 left-4 z-20">
           <Button 
             variant="ghost" 
             onClick={handleBack}
-            className="text-medical-600 hover:text-medical-700 touch-target p-2"
+            className="text-medical-600 hover:text-medical-700 bg-white/80 backdrop-blur-sm shadow-sm rounded-full w-10 h-10 p-0 flex items-center justify-center"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>

@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, MessageCircle, TrendingUp, Target } from "lucide-react";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Dashboard: React.FC = () => {
   const { user, profile } = useAuth();
@@ -22,6 +23,7 @@ const Dashboard: React.FC = () => {
   const { userProgress, recentSessions } = useProgressTracking();
   const { getMasteryStats } = useVocabularyProgress();
   const { roadmap, generateRoadmap, isLoading: roadmapLoading } = useLearningRoadmap();
+  const isMobile = useIsMobile();
 
   // Auto-start tutorial for new users
   useEffect(() => {
@@ -123,11 +125,11 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
       <Header />
       
-      <main className="flex-grow pt-24 px-4 md:px-8 pb-20">
+      <main className={`flex-grow ${isMobile ? 'pt-16 px-4 pb-20' : 'pt-24 px-4 md:px-8 pb-20'}`}>
         <div className="container mx-auto">
           {/* Welcome Header */}
-          <div className="mb-8" data-tutorial-target="welcome-header">
-            <h1 className="text-3xl font-bold text-medical-800 mb-2">
+          <div className={`${isMobile ? 'mb-4' : 'mb-8'}`} data-tutorial-target="welcome-header">
+            <h1 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-medical-800 mb-2`}>
               Willkommen zurück{profile?.name ? `, ${profile.name}` : ''}!
             </h1>
             <p className="text-gray-600">
@@ -136,7 +138,7 @@ const Dashboard: React.FC = () => {
           </div>
 
           {/* Progress Overview */}
-          <div data-tutorial-target="progress-overview">
+          <div data-tutorial-target="progress-overview" className={isMobile ? 'mb-4' : 'mb-6'}>
             <ProgressOverview 
               userProgress={progressData} 
               userStats={statsData} 
@@ -148,15 +150,15 @@ const Dashboard: React.FC = () => {
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="roadmap" className="flex items-center gap-2" data-tutorial-target="roadmap-tab">
                 <Target className="h-4 w-4" />
-                Lernpfad
+                {!isMobile && "Lernpfad"}
               </TabsTrigger>
               <TabsTrigger value="scenarios" className="flex items-center gap-2" data-tutorial-target="scenarios-tab">
                 <MessageCircle className="h-4 w-4" />
-                Szenarien
+                {!isMobile && "Szenarien"}
               </TabsTrigger>
               <TabsTrigger value="vocabulary" className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
-                Vokabeln
+                {!isMobile && "Vokabeln"}
               </TabsTrigger>
             </TabsList>
 
