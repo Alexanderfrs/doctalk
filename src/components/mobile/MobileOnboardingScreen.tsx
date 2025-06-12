@@ -65,9 +65,9 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
       case 4:
         return {
           icon: "💬",
-          title: translate("mobileOnboarding.screen4.title") || "Practice Real-World Scenarios",
+          title: translate("mobileOnboarding.screen4.title") || "Voice & Role-playing",
           subtitle: "Speak and Listen to Real Medical Dialogue with AI",
-          description: translate("mobileOnboarding.screen4.description") || "Practice Real-World Scenarios with AI",
+          description: "Practice Real-World Conversations",
           showLogo: false
         };
       default:
@@ -112,7 +112,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
       )}
 
       {/* Main content - centered with proper spacing */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-20 pb-40">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-20 pb-52">
         <div className="w-full max-w-xs mx-auto text-center space-y-6">
           {/* Icon or Image - only show for non-logo screens */}
           {!content.showLogo && !content.showRecognitionProcess && (
@@ -137,8 +137,6 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
           {/* Recognition Process content for second screen */}
           {content.showRecognitionProcess && (
             <div className="flex flex-col items-center space-y-6">
-              <div className="text-4xl mb-4">🏥</div>
-              
               <div className="space-y-4 w-full">
                 {recognitionSteps.map((step, index) => (
                   <div 
@@ -183,8 +181,15 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
             </h2>
           )}
 
+          {/* Description - show before bullet points for screen 4 */}
+          {screenNumber === 4 && content.description && (
+            <p className="text-sm text-neutral-600 leading-relaxed">
+              {content.description}
+            </p>
+          )}
+
           {/* Description with special handling for bullet points on screen 3 */}
-          {!content.showRecognitionProcess && (
+          {!content.showRecognitionProcess && screenNumber !== 4 && (
             <div className="space-y-4">
               {content.showBulletPoints ? (
                 <div className="space-y-4">
@@ -231,7 +236,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
       </div>
 
       {/* Action button - fixed at bottom with proper spacing */}
-      <div className="absolute bottom-28 left-0 right-0 w-full px-6 safe-area-bottom">
+      <div className="absolute bottom-20 left-0 right-0 w-full px-6 safe-area-bottom">
         {isLast ? (
           <Button 
             onClick={onStart}
@@ -244,7 +249,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
             onClick={onNext}
             className="w-full h-12 text-base font-semibold bg-medical-500 hover:bg-medical-600 text-white rounded-xl touch-target"
           >
-            {translate("next") || "Weiter"}
+            {translate("next") || "Next"}
           </Button>
         )}
       </div>

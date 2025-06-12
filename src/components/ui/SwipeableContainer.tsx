@@ -1,214 +1,146 @@
-
-import React, { useState, useRef, useEffect } from "react";
-import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useSwipeable } from "react-swipeable";
 
 interface SwipeableContainerProps {
-  children: React.ReactNode[];
+  children: React.ReactNode;
   onSwipe?: (index: number) => void;
   initialIndex?: number;
-  className?: string;
   showIndicators?: boolean;
   showArrows?: boolean;
   loop?: boolean;
+  className?: string;
 }
 
 const SwipeableContainer: React.FC<SwipeableContainerProps> = ({
   children,
   onSwipe,
   initialIndex = 0,
-  className,
-  showIndicators = true,
-  showArrows = true,
+  showIndicators = false,
+  showArrows = false,
   loop = false,
+  className = "",
+  ...props
 }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const [touchEndX, setTouchEndX] = useState<number | null>(null);
-  const [isSwiping, setIsSwiping] = useState(false);
-  const [translateX, setTranslateX] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.targetTouches[0].clientX);
-    setIsSwiping(true);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isSwiping) return;
-    
-    const currentX = e.targetTouches[0].clientX;
-    setTouchEndX(currentX);
-    
-    const containerWidth = containerRef.current?.offsetWidth || 0;
-    const diffX = (currentX - (touchStartX || 0));
-    const percentMoved = (diffX / containerWidth) * 100;
-    
-    // Limit swiping to a certain percentage if not looping
-    if (!loop) {
-      if ((currentIndex === 0 && diffX > 0) || 
-          (currentIndex === React.Children.count(children) - 1 && diffX < 0)) {
-        setTranslateX(percentMoved * 0.2); // Resistance at edges
-      } else {
-        setTranslateX(percentMoved);
-      }
-    } else {
-      setTranslateX(percentMoved);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    if (!isSwiping || touchStartX === null || touchEndX === null) {
-      setIsSwiping(false);
-      setTranslateX(0);
-      return;
-    }
-
-    const containerWidth = containerRef.current?.offsetWidth || 0;
-    const SWIPE_THRESHOLD = containerWidth * 0.2; // 20% of container width
-    
-    const diffX = touchEndX - touchStartX;
-    
-    if (diffX > SWIPE_THRESHOLD) {
-      // Swiped right
-      if (currentIndex > 0 || loop) {
-        handlePrev();
-      }
-    } else if (diffX < -SWIPE_THRESHOLD) {
-      // Swiped left
-      if (currentIndex < React.Children.count(children) - 1 || loop) {
-        handleNext();
-      }
-    }
-    
-    setIsSwiping(false);
-    setTouchStartX(null);
-    setTouchEndX(null);
-    setTranslateX(0);
-  };
-
-  const handleNext = () => {
-    let nextIndex;
-    
-    if (currentIndex >= React.Children.count(children) - 1) {
-      nextIndex = loop ? 0 : React.Children.count(children) - 1;
-    } else {
-      nextIndex = currentIndex + 1;
-    }
-    
-    setCurrentIndex(nextIndex);
-    if (onSwipe) onSwipe(nextIndex);
-  };
-
-  const handlePrev = () => {
-    let prevIndex;
-    
-    if (currentIndex <= 0) {
-      prevIndex = loop ? React.Children.count(children) - 1 : 0;
-    } else {
-      prevIndex = currentIndex - 1;
-    }
-    
-    setCurrentIndex(prevIndex);
-    if (onSwipe) onSwipe(prevIndex);
-  };
-
-  const goToIndex = (index: number) => {
-    setCurrentIndex(index);
-    if (onSwipe) onSwipe(index);
-  };
+  const [itemWidth, setItemWidth] = useState(0);
 
   useEffect(() => {
-    // Add keyboard navigation for accessibility
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        handlePrev();
-      } else if (e.key === "ArrowRight") {
-        handleNext();
+    const updateItemWidth = () => {
+      if (containerRef.current) {
+        setItemWidth(containerRef.current.offsetWidth);
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentIndex]);
+    updateItemWidth();
+    window.addEventListener("resize", updateItemWidth);
 
-  const indicatorClasses = "w-2 h-2 rounded-full transition-all duration-300";
+    return () => window.removeEventListener("resize", updateItemWidth);
+  }, []);
+
+  useEffect(() => {
+    setCurrentIndex(initialIndex);
+  }, [initialIndex]);
+
+  const goToSlide = useCallback(
+    (index: number) => {
+      if (!loop && (index < 0 || index >= React.Children.count(children))) {
+        return;
+      }
+
+      let newIndex = index;
+      if (index < 0) {
+        newIndex = React.Children.count(children) - 1;
+      } else if (index >= React.Children.count(children)) {
+        newIndex = 0;
+      }
+
+      setCurrentIndex(newIndex);
+      onSwipe?.(newIndex);
+    },
+    [children, loop, onSwipe]
+  );
+
+  const handleSwipeLeft = () => {
+    goToSlide(currentIndex + 1);
+  };
+
+  const handleSwipeRight = () => {
+    goToSlide(currentIndex - 1);
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: handleSwipeLeft,
+    onSwipedRight: handleSwipeRight,
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: false,
+  });
+
+  const calculateTransform = () => {
+    return `translateX(-${currentIndex * itemWidth}px)`;
+  };
 
   return (
-    <div 
-      className={cn("relative overflow-hidden", className)}
-      ref={containerRef}
-    >
+    <div className={`relative ${className}`} {...props}>
       <div
-        className="flex transition-transform duration-300 h-full touch-pan-y"
-        style={{
-          transform: isSwiping 
-            ? `translateX(${translateX}px)` 
-            : `translateX(-${currentIndex * 100}%)`,
-        }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        className="swipeable-container overflow-hidden"
+        ref={containerRef}
       >
-        {React.Children.map(children, (child, index) => (
-          <div 
-            key={index} 
-            className="min-w-full flex-shrink-0 flex items-center justify-center"
-            aria-hidden={index !== currentIndex}
-          >
-            {child}
-          </div>
-        ))}
+        <div
+          {...swipeHandlers}
+          className="flex transition-transform duration-300"
+          style={{
+            width: `${itemWidth * React.Children.count(children)}px`,
+            transform: calculateTransform(),
+          }}
+        >
+          {React.Children.map(children, (child, index) => (
+            <div
+              key={index}
+              style={{ width: `${itemWidth}px`, flexShrink: 0 }}
+            >
+              {child}
+            </div>
+          ))}
+        </div>
       </div>
-
-      {/* Navigation Arrows */}
-      {showArrows && !isMobile && (
-        <>
-          <button
-            className={cn(
-              "absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-md text-neutral-700 hover:bg-white transition-opacity",
-              { "opacity-50 cursor-not-allowed": !loop && currentIndex === 0 }
-            )}
-            onClick={handlePrev}
-            disabled={!loop && currentIndex === 0}
-            aria-label="Previous item"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            className={cn(
-              "absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-md text-neutral-700 hover:bg-white transition-opacity",
-              { "opacity-50 cursor-not-allowed": !loop && currentIndex === React.Children.count(children) - 1 }
-            )}
-            onClick={handleNext}
-            disabled={!loop && currentIndex === React.Children.count(children) - 1}
-            aria-label="Next item"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        </>
-      )}
-
-      {/* Page Indicators */}
-      {showIndicators && React.Children.count(children) > 1 && (
-        <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2 z-10">
+      
+      {/* Page indicators */}
+      {showIndicators && (
+        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
           {React.Children.map(children, (_, index) => (
             <button
               key={index}
-              className={cn(
-                indicatorClasses,
-                index === currentIndex 
-                  ? "bg-medical-600 w-4" 
-                  : "bg-neutral-300 hover:bg-neutral-400"
-              )}
-              onClick={() => goToIndex(index)}
-              aria-label={`Go to item ${index + 1}`}
-              aria-current={index === currentIndex}
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex
+                  ? "bg-medical-500"
+                  : "bg-gray-300"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
+      )}
+
+      {/* Navigation arrows */}
+      {showArrows && (
+        <>
+          <button
+            className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white bg-opacity-75 rounded-full p-2"
+            onClick={() => goToSlide(currentIndex - 1)}
+            aria-label="Previous Slide"
+          >
+            {"<"}
+          </button>
+          <button
+            className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white bg-opacity-75 rounded-full p-2"
+            onClick={() => goToSlide(currentIndex + 1)}
+            aria-label="Next Slide"
+          >
+            {">"}
+          </button>
+        </>
       )}
     </div>
   );
