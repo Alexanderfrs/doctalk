@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
@@ -22,7 +23,7 @@ const MobileLandingPage: React.FC = () => {
     }
   }, [shouldReturnToOnboarding, navigate]);
 
-  const { login, register } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   const handleSwipe = (index: number) => {
     setCurrentSlide(index);
@@ -33,12 +34,10 @@ const MobileLandingPage: React.FC = () => {
   };
 
   const handleSkip = () => {
-    login();
     navigate("/login");
   };
 
   const handleStart = () => {
-    register();
     navigate("/register");
   };
 
