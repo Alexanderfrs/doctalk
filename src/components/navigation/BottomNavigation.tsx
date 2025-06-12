@@ -39,7 +39,7 @@ const BottomNavigation: React.FC = () => {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 safe-area-bottom">
+    <div className="fixed bottom-0 left-0 right-0 z-50 safe-area-bottom bg-white border-t border-neutral-200">
       {/* Floating Action Button */}
       <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
         <Button
@@ -52,7 +52,7 @@ const BottomNavigation: React.FC = () => {
       </div>
 
       {/* Bottom Navigation Bar */}
-      <div className="bg-white/95 backdrop-blur-md border-t border-neutral-200 px-2 py-2">
+      <div className="px-2 py-2">
         <div className="flex justify-around items-center">
           {navItems.map((item) => {
             const Icon = item.icon;

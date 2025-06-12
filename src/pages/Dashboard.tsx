@@ -59,7 +59,7 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
       {isMobile ? <MobileHeader /> : <Header />}
       
-      <main className={`flex-grow ${isMobile ? 'pt-16 px-4 pb-24' : 'pt-24 px-4 md:px-8 pb-20'}`}>
+      <main className={`flex-grow ${isMobile ? 'pt-20 px-4 pb-32' : 'pt-24 px-4 md:px-8 pb-20'}`}>
         <div className="container mx-auto max-w-7xl">
           <DashboardHeader profileName={profile?.name} />
 

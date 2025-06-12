@@ -10,7 +10,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ profileName }) => {
   const isMobile = useIsMobile();
 
   return (
-    <div className={`${isMobile ? 'mb-4 mt-2' : 'mb-8'}`} data-tutorial-target="welcome-header">
+    <div className={`${isMobile ? 'mb-4 mt-0' : 'mb-8'}`} data-tutorial-target="welcome-header">
       <h1 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-medical-800 mb-2`}>
         Willkommen zurück{profileName ? `, ${profileName}` : ''}!
       </h1>
