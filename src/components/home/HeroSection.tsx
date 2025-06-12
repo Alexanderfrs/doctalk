@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -7,14 +7,14 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import BetaSignupDialog from "@/components/beta/BetaSignupDialog";
-import { useSwipeable } from "react-swipeable";
 
 const HeroSection = () => {
   const { translate } = useLanguage();
   const isMobile = useIsMobile();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // For mobile swipe functionality
   const heroContents = [
     {
       image: "/lovable-uploads/2cee5e65-91a5-46de-8fc0-957b2d81ef0f.png",
@@ -29,15 +29,26 @@ const HeroSection = () => {
       alt: translate("medicalEducation"),
     },
   ];
-  
-  // Manual swipe handlers for text content
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => setActiveIndex((prev) => Math.min(prev + 1, 2)),
-    onSwipedRight: () => setActiveIndex((prev) => Math.max(prev - 1, 0)),
-    trackMouse: false,
-    trackTouch: true,
-    delta: 10
-  });
+
+  // Initialize component after mount to prevent flickering
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialized(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleSwipeChange = (index: number) => {
+    setActiveIndex(index);
+  };
+
+  const handlePrevious = () => {
+    setActiveIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => Math.min(prev + 1, heroContents.length - 1));
+  };
 
   if (isMobile) {
     return (
@@ -46,7 +57,6 @@ const HeroSection = () => {
           <div 
             className="w-full animate-fade-in touch-pan-y" 
             style={{ animationDelay: '100ms' }}
-            {...swipeHandlers}
           >
             <span className="inline-block px-3 py-1 bg-medical-100 text-medical-800 rounded-full text-sm font-medium mb-4">
               {translate("medicalGerman")}
@@ -74,12 +84,20 @@ const HeroSection = () => {
             </div>
           </div>
           
-          <div className="w-full animate-fade-in" style={{ animationDelay: '300ms' }}>
+          <div 
+            className="w-full animate-fade-in" 
+            style={{ 
+              animationDelay: '300ms',
+              opacity: isInitialized ? 1 : 0,
+              transition: 'opacity 0.3s ease-in-out'
+            }}
+            ref={containerRef}
+          >
             <div className="relative">
               <SwipeableContainer 
                 showArrows={false} 
                 showIndicators={true}
-                onSwipe={setActiveIndex}
+                onSwipe={handleSwipeChange}
                 initialIndex={activeIndex}
                 className="swipeable-mobile"
               >
@@ -89,29 +107,37 @@ const HeroSection = () => {
                       src={content.image} 
                       alt={content.alt} 
                       className="hero-image-mobile"
+                      loading="eager"
+                      style={{ 
+                        display: 'block',
+                        visibility: isInitialized ? 'visible' : 'hidden'
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>
                   </div>
                 ))}
               </SwipeableContainer>
               
-              {/* Custom arrow buttons outside of SwipeableContainer */}
-              <Button 
-                variant="ghost" 
-                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
-                onClick={() => setActiveIndex((prev) => Math.max(prev - 1, 0))}
-                disabled={activeIndex === 0}
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
-                onClick={() => setActiveIndex((prev) => Math.min(prev + 1, heroContents.length - 1))}
-                disabled={activeIndex === heroContents.length - 1}
-              >
-                <ChevronRight className="h-5 w-5" />
-              </Button>
+              {isInitialized && (
+                <>
+                  <Button 
+                    variant="ghost" 
+                    className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
+                    onClick={handlePrevious}
+                    disabled={activeIndex === 0}
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
+                    onClick={handleNext}
+                    disabled={activeIndex === heroContents.length - 1}
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -151,12 +177,24 @@ const HeroSection = () => {
           </div>
         </div>
         
-        <div className="md:w-1/2 animate-fade-in" style={{ animationDelay: '300ms' }}>
+        <div 
+          className="md:w-1/2 animate-fade-in" 
+          style={{ 
+            animationDelay: '300ms',
+            opacity: isInitialized ? 1 : 0,
+            transition: 'opacity 0.3s ease-in-out'
+          }}
+        >
           <div className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden">
             <img 
               src="/lovable-uploads/2cee5e65-91a5-46de-8fc0-957b2d81ef0f.png" 
               alt={translate("medicalTeamWorking")}
               className="w-full h-[300px] object-cover"
+              loading="eager"
+              style={{ 
+                display: 'block',
+                visibility: isInitialized ? 'visible' : 'hidden'
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>
           </div>
