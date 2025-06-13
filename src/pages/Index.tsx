@@ -2,20 +2,25 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useMobileOnboarding } from "@/hooks/useMobileOnboarding";
 
 const Index = () => {
   const { isAuthenticated, onboardingComplete, isLoading } = useAuth();
   const navigate = useNavigate();
+  const { shouldShowOnboarding, isMobileUser } = useMobileOnboarding();
 
   useEffect(() => {
     // Log auth status for debugging
-    console.log("Auth status:", { isAuthenticated, onboardingComplete, isLoading });
+    console.log("Auth status:", { isAuthenticated, onboardingComplete, isLoading, isMobileUser, shouldShowOnboarding });
     
     // Handle navigation after auth check is complete
     if (!isLoading) {
       if (isAuthenticated) {
-        // If authenticated, check if onboarding is complete
-        if (onboardingComplete === false) {
+        // Mobile users: check onboarding status with mobile-specific logic
+        if (shouldShowOnboarding) {
+          console.log("Mobile user redirecting to onboarding");
+          navigate("/onboarding");
+        } else if (onboardingComplete === false) {
           console.log("Redirecting to onboarding");
           navigate("/onboarding");
         } else {
@@ -29,7 +34,7 @@ const Index = () => {
         navigate("/");
       }
     }
-  }, [isAuthenticated, onboardingComplete, isLoading, navigate]);
+  }, [isAuthenticated, onboardingComplete, isLoading, navigate, shouldShowOnboarding, isMobileUser]);
 
   // Show loading state while checking auth
   if (isLoading) {

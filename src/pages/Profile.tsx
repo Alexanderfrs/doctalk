@@ -9,12 +9,14 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useMobileOnboarding } from "@/hooks/useMobileOnboarding";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileTabs from "@/components/profile/ProfileTabs";
 
 const Profile = () => {
   const { profile } = useAuth();
   const isMobile = useIsMobile();
+  const { shouldShowOnboarding } = useMobileOnboarding();
   const [notifications, setNotifications] = useState(true);
   const [soundEffects, setSoundEffects] = useState(true);
   const [avatar, setAvatar] = useState("https://api.dicebear.com/7.x/avataaars/svg?seed=Maria");
@@ -28,6 +30,8 @@ const Profile = () => {
       setAvatar(savedAvatar);
     }
   }, []);
+
+  // Mobile onboarding check happens in useMobileOnboarding hook
 
   const handleSaveSettings = () => {
     localStorage.setItem('userAvatar', avatar);

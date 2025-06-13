@@ -7,9 +7,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { Loader2, Save } from "lucide-react";
 import { useSwipeable } from "react-swipeable";
+import { useIsMobile } from "@/hooks/use-mobile";
+import MobileLogoutButton from "./MobileLogoutButton";
 
 const ProfileSettings = () => {
   const { user, profile, updateProfile, isLoading } = useAuth();
+  const isMobile = useIsMobile();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [profession, setProfession] = useState("");
@@ -159,6 +162,8 @@ const ProfileSettings = () => {
           </Button>
         </div>
       </form>
+
+      {isMobile && <MobileLogoutButton />}
     </div>
   );
 };
