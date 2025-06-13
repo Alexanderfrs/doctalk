@@ -1,98 +1,203 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
-import OnboardingLanguageSelector from "@/components/onboarding/OnboardingLanguageSelector";
+import { CheckCircle, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import OnboardingAssessment from "@/components/onboarding/OnboardingAssessment";
 import OnboardingLanguageSelect from "@/components/onboarding/OnboardingLanguageSelect";
 import OnboardingPersonalization from "@/components/onboarding/OnboardingPersonalization";
-import OnboardingAssessment from "@/components/onboarding/OnboardingAssessment";
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import OnboardingLanguageSelector from "@/components/onboarding/OnboardingLanguageSelector";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import AppLogo from "@/components/layout/AppLogo";
 
-const Onboarding = () => {
-  const [currentStep, setCurrentStep] = useState('setup');
-  const [onboardingData, setOnboardingData] = useState<any>({});
-  const { completeOnboarding, skipOnboarding } = useAuth();
-  const { translate } = useLanguage();
+const Onboarding: React.FC = () => {
   const navigate = useNavigate();
-
-  const handleSkip = async () => {
-    await skipOnboarding();
-    navigate('/dashboard');
-  };
-
-  const handleStepComplete = async (stepData: any) => {
-    const updatedData = { ...onboardingData, ...stepData };
-    setOnboardingData(updatedData);
-
-    switch (currentStep) {
-      case 'setup':
-        setCurrentStep('language');
-        break;
-      case 'language':
-        setCurrentStep('personalization');
-        break;
-      case 'personalization':
-        setCurrentStep('assessment');
-        break;
-      case 'assessment':
-        // Complete onboarding
-        await completeOnboarding(updatedData);
-        navigate('/dashboard');
-        break;
+  const [currentStep, setCurrentStep] = useState(1);
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const { translate } = useLanguage();
+  const { user, completeOnboarding, skipOnboarding } = useAuth();
+  const [userData, setUserData] = useState<any>({});
+  
+  const totalSteps = 3;
+  
+  const handleStepComplete = async (stepNumber: number, data?: any) => {
+    console.log(`Step ${stepNumber} completed with data:`, data);
+    
+    if (!completedSteps.includes(stepNumber)) {
+      setCompletedSteps([...completedSteps, stepNumber]);
+    }
+    
+    // Save step data for later use
+    if (data) {
+      setUserData(prev => ({ ...prev, ...data }));
+    }
+    
+    // Save step data to profile
+    if (user && data) {
+      try {
+        let updateData = {};
+        
+        if (stepNumber === 1) {
+          // Background and objectives assessment
+          updateData = { 
+            profession: data.profession,
+            german_level: data.germanLevel,
+            preferences: {
+              assessment_results: {
+                profession: data.profession,
+                germanLevel: data.germanLevel,
+                helpAreas: data.helpAreas,
+                objectives: data.objectives,
+                acknowledgedB1Requirement: data.acknowledgedB1Requirement
+              }
+            }
+          };
+        } else if (stepNumber === 2 && data.language) {
+          updateData = { native_language: data.language };
+        } else if (stepNumber === 3 && data.preferences) {
+          // Merge with existing preferences
+          const existingPrefs = userData.preferences || {};
+          updateData = { 
+            preferences: {
+              ...existingPrefs,
+              ...data.preferences
+            }
+          };
+        }
+        
+        if (Object.keys(updateData).length > 0) {
+          const { error } = await supabase
+            .from('profiles')
+            .update(updateData)
+            .eq('id', user.id);
+            
+          if (error) {
+            console.error('Error updating profile:', error);
+          } else {
+            console.log('Profile updated successfully:', updateData);
+          }
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+      }
+    }
+    
+    if (stepNumber === totalSteps) {
+      // Complete onboarding with collected data
+      await completeOnboarding({
+        name: userData.name || data?.name
+      });
+      
+      // Show appropriate completion message based on German level
+      const germanLevel = userData.germanLevel || data?.germanLevel;
+      if (germanLevel && ['A1', 'A2'].includes(germanLevel)) {
+        toast.info(`${translate('onboardingSetup')} ${translate('finish')}! ${translate('recommendation')}: ${germanLevel}. ${translate('lowerLevelRecommendation')}`);
+      } else {
+        toast.success(`${translate('onboardingSetup')} ${translate('finish')}!`);
+      }
+      
+      navigate("/dashboard");
+    } else {
+      setCurrentStep(stepNumber + 1);
     }
   };
 
-  const renderCurrentStep = () => {
-    switch (currentStep) {
-      case 'setup':
-        return (
-          <div className="text-center space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold mb-2">{translate('onboardingSetup')}</h2>
-              <p className="text-gray-600">{translate('tellUsAboutBackground')}</p>
+  const handleSkipOnboarding = async () => {
+    await skipOnboarding();
+    navigate("/dashboard");
+  };
+  
+  const steps = [
+    {
+      title: translate('profileAndGoals'),
+      component: <OnboardingAssessment onComplete={(data) => handleStepComplete(1, data)} />,
+      description: translate('tellUsAboutBackground')
+    },
+    {
+      title: translate('nativeLanguage'),
+      component: <OnboardingLanguageSelect onComplete={(data) => handleStepComplete(2, data)} />,
+      description: translate('selectYourNativeLanguage')
+    },
+    {
+      title: translate('personalization'),
+      component: <OnboardingPersonalization onComplete={(data) => handleStepComplete(3, data)} />,
+      description: translate('customizeYourLearningGoals')
+    }
+  ];
+  
+  const currentStepData = steps[currentStep - 1];
+  const progress = (completedSteps.length / totalSteps) * 100;
+  
+  return (
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
+      <header className="py-4 px-6 flex items-center justify-between border-b">
+        <AppLogo path="/" />
+        <OnboardingLanguageSelector />
+      </header>
+      
+      <main className="flex-grow flex flex-col items-center px-4 py-6 max-w-4xl mx-auto w-full">
+        <div className="w-full mb-8">
+          <div className="flex justify-between mb-2">
+            <h2 className="text-lg font-medium">
+              {translate('onboardingSetup')} ({currentStep}/{totalSteps})
+            </h2>
+            <span className="text-medical-600 font-medium">{Math.round(progress)}%</span>
+          </div>
+          <Progress value={progress} className="h-2" />
+        </div>
+        
+        <div className="w-full">
+          <div className="flex flex-wrap justify-between gap-4 mb-8">
+            <div className="flex flex-wrap gap-4">
+              {steps.map((step, index) => (
+                <div 
+                  key={index}
+                  className={`flex items-center px-4 py-2 rounded-full border ${
+                    currentStep === index + 1
+                      ? "border-medical-500 bg-medical-50 text-medical-800"
+                      : completedSteps.includes(index + 1)
+                      ? "border-green-500 bg-green-50 text-green-800"
+                      : "border-gray-200 text-gray-400"
+                  }`}
+                >
+                  {completedSteps.includes(index + 1) ? (
+                    <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                  ) : (
+                    <span className="flex items-center justify-center h-5 w-5 rounded-full bg-current text-white mr-2 text-xs">
+                      {index + 1}
+                    </span>
+                  )}
+                  <span>{step.title}</span>
+                </div>
+              ))}
             </div>
             <Button 
-              onClick={() => handleStepComplete({})}
-              className="bg-medical-500 hover:bg-medical-600"
+              variant="outline" 
+              size="sm"
+              onClick={handleSkipOnboarding}
+              className="text-neutral-600"
             >
-              {translate('next')}
+              {translate('skip')}
+              <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
           </div>
-        );
-      case 'language':
-        return <OnboardingLanguageSelect onComplete={handleStepComplete} />;
-      case 'personalization':
-        return <OnboardingPersonalization onComplete={handleStepComplete} />;
-      case 'assessment':
-        return <OnboardingAssessment onComplete={handleStepComplete} />;
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-medical-50 to-white flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 relative">
-        {/* Header with language selector and skip button */}
-        <div className="flex justify-between items-center mb-8">
-          <OnboardingLanguageSelector />
-          <Button
-            variant="ghost"
-            onClick={handleSkip}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            <X className="h-4 w-4 mr-1" />
-            {translate('skip')}
-          </Button>
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="px-6 py-5 border-b">
+              <h3 className="text-xl font-semibold text-medical-800">{currentStepData.title}</h3>
+              <p className="text-gray-500 mt-1">{currentStepData.description}</p>
+            </div>
+            
+            <div className="p-6">
+              {currentStepData.component}
+            </div>
+          </div>
         </div>
-
-        {/* Main content */}
-        <div className="space-y-8">
-          {renderCurrentStep()}
-        </div>
-      </div>
+      </main>
     </div>
   );
 };
