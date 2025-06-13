@@ -1,4 +1,3 @@
-
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -128,10 +127,10 @@ export const germanTranslations = {
   customContent: 'Inhalte, die für jedes Sprachniveau von A1 bis C1 zugeschnitten sind - Sie können sofort beginnen, unabhängig von Ihrem aktuellen Niveau.',
   expertDeveloped: 'Entwickelt mit Experten',
   contentDevelopment: 'Alle Inhalte wurden in Zusammenarbeit mit Ärzten, Pflegekräften und Sprachlehrern entwickelt und überprüft.',
-  nurseOptimized: 'Optimiert für Gesundheitsexperten',
-  internationalNurses: 'Besonderer Fokus auf die sprachlichen Bedürfnisse internationaler Gesundheitsexperten in Deutschland.',
-  certificationRecognition: 'FSP Vorbereitung',
-  examPreparation: 'Optimale Vorbereitung auf die Fachsprachenprüfung (FSP) und andere Sprachprüfungen für die berufliche Anerkennung im deutschen Gesundheitssystem.',
+  anerkennungFspSupport: 'FSP Vorbereitung',
+  anerkennungExamPreparation: 'Optimale Vorbereitung auf die Fachsprachenprüfung (FSP) und andere Sprachprüfungen für die berufliche Anerkennung im deutschen Gesundheitssystem.',
+  flexibleLearning: 'Flexibles Lernen',
+  flexibleLearningDesc: 'Lernen Sie in Ihrem eigenen Tempo mit sofortiger praktischer Anwendung in Ihrem medizinischen Arbeitsalltag.',
   comparisonTitle: 'Im Vergleich zu allgemeinen Sprachlern-Apps',
   feature: 'Merkmal',
   generalApps: 'Allgemeine Apps',

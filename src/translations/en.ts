@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
