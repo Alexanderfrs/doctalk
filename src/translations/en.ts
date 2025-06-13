@@ -24,6 +24,79 @@ export const englishTranslations = {
   medicalCommunication: 'medical communication',
   trainScenarios: 'Practice dialogue scenarios and terminology for your professional everyday life in healthcare, starting from B1 level.',
   targetAudience: 'Perfect for doctors, nurses, caregivers, and students in medical fields who want to excel in German healthcare environments and achieve professional recognition.',
+  
+  // Onboarding specific translations
+  onboardingSetup: 'Setup',
+  profileAndGoals: 'Profile & Goals',
+  nativeLanguage: 'Native Language',
+  personalization: 'Personalization',
+  tellUsAboutBackground: 'Tell us about your background and goals',
+  selectYourNativeLanguage: 'Select your native language',
+  customizeYourLearningGoals: 'Customize your learning goals',
+  skip: 'Skip',
+  
+  // Assessment translations
+  yourProfile: 'Your Profile',
+  supportAreas: 'Support Areas',
+  yourGoals: 'Your Goals',
+  tellUsSomethingAboutYou: 'Tell us something about you',
+  howCanWeHelpYou: 'How can we help you?',
+  whatDoYouWantToAchieve: 'What do you want to achieve?',
+  
+  // Profession options (limited as requested)
+  professionNurse: 'Nurse',
+  professionDoctor: 'Doctor',
+  professionStudent: 'Student',
+  professionOtherMedical: 'Other medical professional',
+  
+  // Assessment questions
+  whatIsYourMedicalProfession: 'What is your profession in the medical field?',
+  howDoYouAssessGermanLevel: 'How do you assess your current German level?',
+  whichAreasNeedSupport: 'Which areas would you like support with? (Multiple selection possible)',
+  whatAreYourMainGoals: 'What are your main goals with DocTalk? (Multiple selection possible)',
+  
+  // German levels
+  germanLevelA1: 'A1 - Beginner',
+  germanLevelA2: 'A2 - Basic knowledge',
+  germanLevelB1: 'B1 - Intermediate',
+  germanLevelB2: 'B2 - Good intermediate',
+  germanLevelC1: 'C1 - Advanced',
+  germanLevelC2: 'C2 - Very advanced',
+  
+  // Support areas
+  supportPatientConversations: 'Conducting patient conversations',
+  supportMedicalDocumentation: 'Medical documentation',
+  supportColleagueCommunication: 'Colleague communication',
+  supportEmergencySituations: 'Emergency situations',
+  supportMedicalVocabulary: 'Medical professional vocabulary',
+  supportAnamnesisExamination: 'Anamnesis and examination',
+  supportInformationConversations: 'Information conversations',
+  supportShiftHandovers: 'Handovers between shifts',
+  supportDepartmentCalls: 'Phone calls with other departments',
+  supportRelativesCommunication: 'Communication with relatives',
+  
+  // Goals
+  goalProfessionalRecognition: 'Professional recognition in Germany',
+  goalImproveGermanSkills: 'Improve German skills',
+  goalPrepareLanguageExam: 'Prepare for professional language exam',
+  goalBetterTeamIntegration: 'Better integration into medical team',
+  goalIncreasePatientSafety: 'Increase patient safety',
+  goalCommunicationConfidence: 'Self-confidence in communication',
+  
+  // Navigation and UI
+  back: 'Back',
+  next: 'Next',
+  finish: 'Finish',
+  stepOf: 'Step {current} of {total}',
+  
+  // Important notice
+  importantNotice: 'Important Notice',
+  b1RequirementNotice: 'DocTalk is designed for learners with at least B1 German level. With a lower level, you can still use the app, but the content will be very challenging.',
+  
+  // Recommendations
+  recommendation: 'Recommendation:',
+  lowerLevelRecommendation: 'Since your German level is below B1, we recommend first improving your general German skills in parallel with using DocTalk.',
+  
   // Registration page
   createAccount: 'Create Account',
   startJourney: 'Start your journey to becoming a medical language expert',
@@ -40,6 +113,7 @@ export const englishTranslations = {
   registration: 'Registration',
   termsAndConditions: 'By registering, you accept our Terms of Service and Privacy Policy.',
   alreadyRegistered: 'Already registered? Sign in now',
+  
   // Landing page
   startFree: 'Start for free',
   learnMore: 'Learn more',
@@ -116,6 +190,7 @@ export const englishTranslations = {
   features: 'Features',
   login: 'Sign In',
   logout: 'Sign Out',
+  
   // Footer translations
   footerTagline: 'Language training for medical professionals - improve your communication for optimal patient care.',
   madeWithLove: 'Made with love for all healthcare professionals',
@@ -135,6 +210,7 @@ export const englishTranslations = {
   contact: 'Contact',
   swipeLeft: 'Swipe left',
   swipeRight: 'Swipe right',
+  
   // Beta signup translations
   joinBeta: "Sign up for beta release",
   signupForBetaRelease: "Sign up for beta release",

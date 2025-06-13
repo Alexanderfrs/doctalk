@@ -1,10 +1,9 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ChevronRight, Lightbulb, AlertCircle, User, Target, CheckCircle } from "lucide-react";
-import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface OnboardingAssessmentProps {
   onComplete: (data: any) => void;
@@ -13,51 +12,46 @@ interface OnboardingAssessmentProps {
 const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<any>({});
+  const { translate } = useLanguage();
   const totalSteps = 3;
 
+  // Limited profession options as requested
   const professions = [
-    "Arzt/Ärztin",
-    "Krankenpfleger/in",
-    "Physiotherapeut/in",
-    "Zahnarzt/Zahnärztin", 
-    "Apotheker/in",
-    "Medizinische/r Fachangestellte/r",
-    "Rettungssanitäter/in",
-    "Hebamme/Geburtshelfer",
-    "Psychologe/Psychologin",
-    "Student/in der Medizin",
-    "Andere medizinische Fachkraft"
+    { key: 'professionNurse', value: 'Krankenpfleger/in' },
+    { key: 'professionDoctor', value: 'Arzt/Ärztin' },
+    { key: 'professionStudent', value: 'Student/in' },
+    { key: 'professionOtherMedical', value: 'Andere medizinische Fachkraft' }
   ];
 
   const germanLevels = [
-    { value: "A1", label: "A1 - Anfänger" },
-    { value: "A2", label: "A2 - Grundkenntnisse" },
-    { value: "B1", label: "B1 - Mittelstufe" },
-    { value: "B2", label: "B2 - Gute Mittelstufe" },
-    { value: "C1", label: "C1 - Fortgeschritten" },
-    { value: "C2", label: "C2 - Sehr fortgeschritten" }
+    { value: "A1", labelKey: "germanLevelA1" },
+    { value: "A2", labelKey: "germanLevelA2" },
+    { value: "B1", labelKey: "germanLevelB1" },
+    { value: "B2", labelKey: "germanLevelB2" },
+    { value: "C1", labelKey: "germanLevelC1" },
+    { value: "C2", labelKey: "germanLevelC2" }
   ];
 
   const helpAreas = [
-    "Patientengespräche führen",
-    "Medizinische Dokumentation",
-    "Kollegenkommunikation",
-    "Notfallsituationen",
-    "Medizinisches Fachvokabular",
-    "Anamnese und Befundung",
-    "Aufklärungsgespräche",
-    "Übergaben zwischen Schichten",
-    "Telefonate mit anderen Abteilungen",
-    "Umgang mit Angehörigen"
+    'supportPatientConversations',
+    'supportMedicalDocumentation',
+    'supportColleagueCommunication',
+    'supportEmergencySituations',
+    'supportMedicalVocabulary',
+    'supportAnamnesisExamination',
+    'supportInformationConversations',
+    'supportShiftHandovers',
+    'supportDepartmentCalls',
+    'supportRelativesCommunication'
   ];
 
   const objectives = [
-    "Berufliche Anerkennung in Deutschland",
-    "Verbesserung der Deutschkenntnisse",
-    "Vorbereitung auf Fachsprachprüfung",
-    "Bessere Integration ins medizinische Team",
-    "Patientensicherheit erhöhen",
-    "Selbstvertrauen in der Kommunikation"
+    'goalProfessionalRecognition',
+    'goalImproveGermanSkills',
+    'goalPrepareLanguageExam',
+    'goalBetterTeamIntegration',
+    'goalIncreasePatientSafety',
+    'goalCommunicationConfidence'
   ];
 
   const handleNext = () => {
@@ -116,11 +110,9 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
             <div className="p-5 bg-blue-50 border border-blue-100 rounded-lg flex items-start space-x-4">
               <Lightbulb className="h-6 w-6 text-blue-500 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-medium text-blue-900 mb-1">Wichtiger Hinweis</h4>
+                <h4 className="font-medium text-blue-900 mb-1">{translate('importantNotice')}</h4>
                 <p className="text-blue-700 text-sm">
-                  DocTalk ist für Lernende mit mindestens B1-Deutschniveau konzipiert. 
-                  Bei niedrigerem Niveau können Sie die App trotzdem nutzen, aber die 
-                  Inhalte werden sehr herausfordernd sein.
+                  {translate('b1RequirementNotice')}
                 </p>
               </div>
             </div>
@@ -129,21 +121,21 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
               <div>
                 <label className="block text-sm font-medium mb-3">
                   <User className="inline h-4 w-4 mr-2" />
-                  Was ist Ihr Beruf im medizinischen Bereich?
+                  {translate('whatIsYourMedicalProfession')}
                 </label>
                 <div className="grid grid-cols-1 gap-2">
                   {professions.map((profession) => (
                     <button
-                      key={profession}
+                      key={profession.value}
                       type="button"
                       className={`p-3 text-left border rounded-lg transition-colors ${
-                        formData.profession === profession
+                        formData.profession === profession.value
                           ? "border-medical-500 bg-medical-50"
                           : "border-gray-200 hover:border-medical-200"
                       }`}
-                      onClick={() => updateFormData('profession', profession)}
+                      onClick={() => updateFormData('profession', profession.value)}
                     >
-                      {profession}
+                      {translate(profession.key)}
                     </button>
                   ))}
                 </div>
@@ -151,7 +143,7 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
 
               <div>
                 <label className="block text-sm font-medium mb-3">
-                  Wie schätzen Sie Ihr aktuelles Deutschniveau ein?
+                  {translate('howDoYouAssessGermanLevel')}
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {germanLevels.map((level) => (
@@ -166,7 +158,7 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
                       onClick={() => updateFormData('germanLevel', level.value)}
                     >
                       <div className="font-medium">{level.value}</div>
-                      <div className="text-xs text-gray-600">{level.label.split(' - ')[1]}</div>
+                      <div className="text-xs text-gray-600">{translate(level.labelKey)}</div>
                     </button>
                   ))}
                 </div>
@@ -181,7 +173,7 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
             <div>
               <label className="block text-sm font-medium mb-3">
                 <Target className="inline h-4 w-4 mr-2" />
-                Bei welchen Bereichen möchten Sie Unterstützung? (Mehrfachauswahl möglich)
+                {translate('whichAreasNeedSupport')}
               </label>
               <div className="grid grid-cols-1 gap-2">
                 {helpAreas.map((area) => (
@@ -204,7 +196,7 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
                         <CheckCircle className="w-3 h-3 text-white" />
                       )}
                     </div>
-                    {area}
+                    {translate(area)}
                   </button>
                 ))}
               </div>
@@ -218,7 +210,7 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
             <div>
               <label className="block text-sm font-medium mb-3">
                 <Target className="inline h-4 w-4 mr-2" />
-                Was sind Ihre Hauptziele mit DocTalk? (Mehrfachauswahl möglich)
+                {translate('whatAreYourMainGoals')}
               </label>
               <div className="grid grid-cols-1 gap-2">
                 {objectives.map((objective) => (
@@ -241,7 +233,7 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
                         <CheckCircle className="w-3 h-3 text-white" />
                       )}
                     </div>
-                    {objective}
+                    {translate(objective)}
                   </button>
                 ))}
               </div>
@@ -252,11 +244,9 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
                 <div className="flex items-start">
                   <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5 mr-3" />
                   <div className="text-sm">
-                    <p className="text-amber-800 mb-1 font-medium">Empfehlung:</p>
+                    <p className="text-amber-800 mb-1 font-medium">{translate('recommendation')}:</p>
                     <p className="text-amber-700">
-                      Da Ihr Deutschniveau unter B1 liegt, empfehlen wir zunächst die 
-                      Verbesserung Ihrer allgemeinen Deutschkenntnisse parallel zur 
-                      Nutzung von DocTalk.
+                      {translate('lowerLevelRecommendation')}
                     </p>
                   </div>
                 </div>
@@ -273,11 +263,11 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
   const getStepTitle = () => {
     switch (currentStep) {
       case 1:
-        return "Ihr Profil";
+        return translate('yourProfile');
       case 2:
-        return "Unterstützungsbereiche";
+        return translate('supportAreas');
       case 3:
-        return "Ihre Ziele";
+        return translate('yourGoals');
       default:
         return "";
     }
@@ -286,11 +276,11 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
   const getStepDescription = () => {
     switch (currentStep) {
       case 1:
-        return "Erzählen Sie uns etwas über sich";
+        return translate('tellUsSomethingAboutYou');
       case 2:
-        return "Wobei sollen wir Ihnen helfen?";
+        return translate('howCanWeHelpYou');
       case 3:
-        return "Was möchten Sie erreichen?";
+        return translate('whatDoYouWantToAchieve');
       default:
         return "";
     }
@@ -300,7 +290,9 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
     <div className="space-y-6">
       <div className="mb-4">
         <div className="flex justify-between mb-1">
-          <span className="text-sm text-gray-500">Schritt {currentStep} von {totalSteps}</span>
+          <span className="text-sm text-gray-500">
+            {translate('stepOf').replace('{current}', currentStep.toString()).replace('{total}', totalSteps.toString())}
+          </span>
           <span className="text-sm font-medium">{Math.round(progress)}%</span>
         </div>
         <Progress value={progress} className="h-2" />
@@ -320,7 +312,7 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
           disabled={currentStep === 1}
           className="border-gray-200"
         >
-          Zurück
+          {translate('back')}
         </Button>
         
         <Button
@@ -328,7 +320,7 @@ const OnboardingAssessment: React.FC<OnboardingAssessmentProps> = ({ onComplete 
           disabled={!isStepValid()}
           className="bg-medical-500 hover:bg-medical-600"
         >
-          {currentStep === totalSteps ? 'Fertigstellen' : 'Weiter'}
+          {currentStep === totalSteps ? translate('finish') : translate('next')}
           <ChevronRight className="ml-1 h-4 w-4" />
         </Button>
       </div>

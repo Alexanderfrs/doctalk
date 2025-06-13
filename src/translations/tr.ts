@@ -168,5 +168,77 @@ export const turkishTranslations = {
   otherSolutionsSpecific: 'Dil okulları, özel öğretmenler, genel uygulamalar',
   medicalTeamWorking: "Birlikte çalışan mutlu tıp ekibi",
   hospitalScene: "Hastane sahnesi",
-  medicalEducation: "Tıp eğitimi"
+  medicalEducation: "Tıp eğitimi",
+  
+  // Onboarding specific translations
+  onboardingSetup: 'Kurulum',
+  profileAndGoals: 'Profil ve Hedefler',
+  nativeLanguage: 'Ana Dil',
+  personalization: 'Kişiselleştirme',
+  tellUsAboutBackground: 'Geçmişiniz ve hedefleriniz hakkında bize bilgi verin',
+  selectYourNativeLanguage: 'Ana dilinizi seçin',
+  customizeYourLearningGoals: 'Öğrenme hedeflerinizi özelleştirin',
+  skip: 'Atla',
+  
+  // Assessment translations
+  yourProfile: 'Profiliniz',
+  supportAreas: 'Destek Alanları',
+  yourGoals: 'Hedefleriniz',
+  tellUsSomethingAboutYou: 'Kendiniz hakkında bize bilgi verin',
+  howCanWeHelpYou: 'Size nasıl yardımcı olabiliriz?',
+  whatDoYouWantToAchieve: 'Ne başarmak istiyorsunuz?',
+  
+  // Profession options (limited as requested)
+  professionNurse: 'Hemşire',
+  professionDoctor: 'Doktor',
+  professionStudent: 'Öğrenci',
+  professionOtherMedical: 'Diğer tıp uzmanı',
+  
+  // Assessment questions
+  whatIsYourMedicalProfession: 'Tıp alanındaki mesleğiniz nedir?',
+  howDoYouAssessGermanLevel: 'Mevcut Almanca seviyenizi nasıl değerlendiriyorsunuz?',
+  whichAreasNeedSupport: 'Hangi alanlarda destek istiyorsunuz? (Çoklu seçim mümkün)',
+  whatAreYourMainGoals: 'DocTalk ile ana hedefleriniz nelerdir? (Çoklu seçim mümkün)',
+  
+  // German levels
+  germanLevelA1: 'A1 - Başlangıç',
+  germanLevelA2: 'A2 - Temel bilgi',
+  germanLevelB1: 'B1 - Orta',
+  germanLevelB2: 'B2 - İyi orta',
+  germanLevelC1: 'C1 - İleri',
+  germanLevelC2: 'C2 - Çok ileri',
+  
+  // Support areas
+  supportPatientConversations: 'Hasta görüşmeleri yapma',
+  supportMedicalDocumentation: 'Tıbbi dokümantasyon',
+  supportColleagueCommunication: 'Meslektaş iletişimi',
+  supportEmergencySituations: 'Acil durumlar',
+  supportMedicalVocabulary: 'Tıbbi profesyonel kelime hazinesi',
+  supportAnamnesisExamination: 'Anamnez ve muayene',
+  supportInformationConversations: 'Bilgilendirme görüşmeleri',
+  supportShiftHandovers: 'Vardiyalar arası devir',
+  supportDepartmentCalls: 'Diğer departmanlarla telefon görüşmeleri',
+  supportRelativesCommunication: 'Yakınlarla iletişim',
+  
+  // Goals
+  goalProfessionalRecognition: 'Almanya\'da mesleki tanınma',
+  goalImproveGermanSkills: 'Almanca becerilerini geliştirme',
+  goalPrepareLanguageExam: 'Mesleki dil sınavına hazırlanma',
+  goalBetterTeamIntegration: 'Tıp ekibine daha iyi entegrasyon',
+  goalIncreasePatientSafety: 'Hasta güvenliğini artırma',
+  goalCommunicationConfidence: 'İletişimde kendine güven',
+  
+  // Navigation and UI
+  back: 'Geri',
+  next: 'İleri',
+  finish: 'Bitir',
+  stepOf: 'Adım {current} / {total}',
+  
+  // Important notice
+  importantNotice: 'Önemli Uyarı',
+  b1RequirementNotice: 'DocTalk en az B1 Almanca seviyesindeki öğrenciler için tasarlanmıştır. Daha düşük seviyede olsanız da uygulamayı kullanabilirsiniz, ancak içerik çok zorlu olacaktır.',
+  
+  // Recommendations
+  recommendation: 'Öneri:',
+  lowerLevelRecommendation: 'Almanca seviyeniz B1\'in altında olduğu için, DocTalk\'ı kullanırken paralel olarak genel Almanca becerilerinizi geliştirmenizi öneririz.',
 };

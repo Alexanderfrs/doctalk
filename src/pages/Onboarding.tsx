@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import OnboardingAssessment from "@/components/onboarding/OnboardingAssessment";
 import OnboardingLanguageSelect from "@/components/onboarding/OnboardingLanguageSelect";
 import OnboardingPersonalization from "@/components/onboarding/OnboardingPersonalization";
+import OnboardingLanguageSelector from "@/components/onboarding/OnboardingLanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
@@ -17,7 +18,7 @@ const Onboarding: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-  const { userLanguage } = useLanguage();
+  const { translate } = useLanguage();
   const { user, completeOnboarding, skipOnboarding } = useAuth();
   const [userData, setUserData] = useState<any>({});
   
@@ -94,9 +95,9 @@ const Onboarding: React.FC = () => {
       // Show appropriate completion message based on German level
       const germanLevel = userData.germanLevel || data?.germanLevel;
       if (germanLevel && ['A1', 'A2'].includes(germanLevel)) {
-        toast.info(`Einrichtung abgeschlossen! Ihr Niveau: ${germanLevel}. Wir empfehlen zunächst allgemeine Deutschkenntnisse zu verbessern.`);
+        toast.info(`${translate('onboardingSetup')} ${translate('finish')}! ${translate('recommendation')}: ${germanLevel}. ${translate('lowerLevelRecommendation')}`);
       } else {
-        toast.success("Einrichtung abgeschlossen!");
+        toast.success(`${translate('onboardingSetup')} ${translate('finish')}!`);
       }
       
       navigate("/dashboard");
@@ -112,25 +113,19 @@ const Onboarding: React.FC = () => {
   
   const steps = [
     {
-      title: userLanguage === 'de' ? "Profil & Ziele" : "Profile & Goals",
+      title: translate('profileAndGoals'),
       component: <OnboardingAssessment onComplete={(data) => handleStepComplete(1, data)} />,
-      description: userLanguage === 'de' 
-        ? "Erzählen Sie uns von Ihrem Hintergrund und Zielen" 
-        : "Tell us about your background and goals"
+      description: translate('tellUsAboutBackground')
     },
     {
-      title: userLanguage === 'de' ? "Muttersprache" : "Native Language",
+      title: translate('nativeLanguage'),
       component: <OnboardingLanguageSelect onComplete={(data) => handleStepComplete(2, data)} />,
-      description: userLanguage === 'de' 
-        ? "Wählen Sie Ihre Muttersprache aus" 
-        : "Select your native language"
+      description: translate('selectYourNativeLanguage')
     },
     {
-      title: userLanguage === 'de' ? "Personalisierung" : "Personalization",
+      title: translate('personalization'),
       component: <OnboardingPersonalization onComplete={(data) => handleStepComplete(3, data)} />,
-      description: userLanguage === 'de' 
-        ? "Passen Sie Ihre Lernziele an" 
-        : "Customize your learning goals"
+      description: translate('customizeYourLearningGoals')
     }
   ];
   
@@ -139,15 +134,16 @@ const Onboarding: React.FC = () => {
   
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
-      <header className="py-4 px-6 flex items-center justify-center border-b">
+      <header className="py-4 px-6 flex items-center justify-between border-b">
         <AppLogo path="/" />
+        <OnboardingLanguageSelector />
       </header>
       
       <main className="flex-grow flex flex-col items-center px-4 py-6 max-w-4xl mx-auto w-full">
         <div className="w-full mb-8">
           <div className="flex justify-between mb-2">
             <h2 className="text-lg font-medium">
-              {userLanguage === 'de' ? "Einrichtung" : "Setup"} ({currentStep}/{totalSteps})
+              {translate('onboardingSetup')} ({currentStep}/{totalSteps})
             </h2>
             <span className="text-medical-600 font-medium">{Math.round(progress)}%</span>
           </div>
@@ -185,7 +181,7 @@ const Onboarding: React.FC = () => {
               onClick={handleSkipOnboarding}
               className="text-neutral-600"
             >
-              Überspringen
+              {translate('skip')}
               <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
           </div>
