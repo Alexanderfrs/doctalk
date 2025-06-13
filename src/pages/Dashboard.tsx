@@ -10,30 +10,25 @@ import HelpButton from "@/components/tutorial/HelpButton";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { TutorialProvider } from "@/contexts/TutorialContext";
+import { LearningObjective } from "@/hooks/useLearningRoadmap";
 
 const Dashboard = () => {
   const isMobile = useIsMobile();
   const { shouldShowOnboarding } = useMobileOnboarding();
-  const { dashboardData, isLoading, error } = useDashboardData();
+  const { roadmap, roadmapLoading, progressData, statsData, profile } = useDashboardData();
 
   // Mobile onboarding check happens in useMobileOnboarding hook
   // This ensures mobile users always complete onboarding
 
-  if (isLoading) {
+  const handleObjectiveClick = (objective: LearningObjective) => {
+    // Handle objective click - could navigate to specific practice or scenario
+    console.log("Objective clicked:", objective);
+  };
+
+  if (roadmapLoading && !roadmap) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-medical-500"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold mb-2">Error loading dashboard</h2>
-          <p className="text-gray-600">{error.message}</p>
-        </div>
       </div>
     );
   }
@@ -46,11 +41,16 @@ const Dashboard = () => {
         <main className={`flex-grow ${isMobile ? 'pt-16 pb-20' : 'pt-24'} px-4 md:px-8`}>
           <div className="container mx-auto space-y-6">
             <div data-tutorial-target="dashboard-header">
-              <DashboardHeader />
+              <DashboardHeader profileName={profile?.name} />
             </div>
             
             <div data-tutorial-target="dashboard-content">
-              <DashboardTabs dashboardData={dashboardData} />
+              <DashboardTabs 
+                roadmap={roadmap}
+                roadmapLoading={roadmapLoading}
+                germanLevel={profile?.german_level}
+                onObjectiveClick={handleObjectiveClick}
+              />
             </div>
           </div>
         </main>
