@@ -45,10 +45,7 @@ const HeroSection = () => {
     return (
       <section className="container mx-auto mb-12 landing-mobile-section">
         <div className="glass-panel hero-mobile-fix flex flex-col items-center gap-6">
-          <div 
-            className="w-full animate-fade-in touch-pan-y" 
-            style={{ animationDelay: '100ms' }}
-          >
+          <div className="w-full opacity-100 visible">
             <span className="inline-block px-3 py-1 bg-medical-100 text-medical-800 rounded-full text-sm font-medium mb-4">
               {translate("medicalGerman")}
             </span>
@@ -75,11 +72,7 @@ const HeroSection = () => {
             </div>
           </div>
           
-          <div 
-            className="w-full animate-fade-in" 
-            style={{ animationDelay: '300ms' }}
-            ref={containerRef}
-          >
+          <div className="w-full opacity-100 visible" ref={containerRef}>
             <div className="relative">
               <SwipeableContainer 
                 showArrows={false} 
@@ -93,7 +86,7 @@ const HeroSection = () => {
                     <img 
                       src={content.image} 
                       alt={content.alt} 
-                      className="hero-image-mobile"
+                      className="hero-image-mobile opacity-100 visible"
                       loading="eager"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>
@@ -127,7 +120,7 @@ const HeroSection = () => {
   return (
     <section className="container mx-auto mb-12">
       <div className="glass-panel p-8 flex flex-col md:flex-row items-center gap-8">
-        <div className="md:w-1/2 animate-fade-in" style={{ animationDelay: '100ms' }}>
+        <div className="md:w-1/2 opacity-100 visible">
           <span className="inline-block px-3 py-1 bg-medical-100 text-medical-800 rounded-full text-sm font-medium mb-4">
             {translate("medicalGerman")}
           </span>
@@ -156,15 +149,12 @@ const HeroSection = () => {
           </div>
         </div>
         
-        <div 
-          className="md:w-1/2 animate-fade-in" 
-          style={{ animationDelay: '300ms' }}
-        >
+        <div className="md:w-1/2 opacity-100 visible">
           <div className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden">
             <img 
               src="/lovable-uploads/2cee5e65-91a5-46de-8fc0-957b2d81ef0f.png" 
               alt={translate("medicalTeamWorking")}
-              className="w-full h-[300px] object-cover"
+              className="w-full h-[300px] object-cover opacity-100 visible"
               loading="eager"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>

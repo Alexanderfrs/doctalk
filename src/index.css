@@ -139,6 +139,32 @@
     transform: translateY(10px);
     transition: opacity 350ms, transform 350ms;
   }
+
+  /* CRITICAL: Safety measures to ensure content visibility */
+  .hero-image-mobile,
+  .glass-panel img,
+  .hero-section img {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+  }
+
+  /* Ensure hero content is always visible */
+  .glass-panel > div,
+  .hero-section > div {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* Override any problematic animations on critical content */
+  .glass-panel h1,
+  .glass-panel p,
+  .glass-panel button,
+  .glass-panel span {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
 }
 
 @layer components {
@@ -148,6 +174,9 @@
 
   .glass-panel {
     @apply bg-white/70 dark:bg-neutral-800/70 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 dark:border-neutral-700/50;
+    /* Ensure glass panel is always visible */
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .text-gradient {
@@ -156,10 +185,16 @@
 
   .btn-primary {
     @apply bg-gradient-to-r from-medical-600 to-medical-500 dark:from-medical-500 dark:to-medical-400 text-white rounded-full px-6 py-3 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md focus:outline-none focus:ring-2 focus:ring-medical-400 focus:ring-offset-2;
+    /* Ensure buttons are always visible */
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .btn-secondary {
     @apply bg-secondary text-secondary-foreground rounded-full px-6 py-3 shadow-sm hover:bg-secondary/80 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-medical-400 focus:ring-offset-2;
+    /* Ensure buttons are always visible */
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   /* Card 3D transform utilities */
@@ -177,5 +212,12 @@
 
   .rotate-y-180 {
     transform: rotateY(180deg);
+  }
+
+  /* Override any fade-in animations that might hide content */
+  .animate-fade-in {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
   }
 }

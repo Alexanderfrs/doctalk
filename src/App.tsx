@@ -64,20 +64,23 @@ const OnboardingProtectedRoute = ({ children }) => {
   return children;
 };
 
-// Route that's only accessible for non-authenticated users
+// Route that's only accessible for non-authenticated users - FIXED VERSION
 const PublicOnlyRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
   
+  // Show loading spinner while auth state is being determined
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center">
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-medical-500"></div>
     </div>;
   }
   
+  // Only redirect if we're certain the user is authenticated
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
   
+  // Render the public content immediately when not authenticated
   return children;
 };
 
