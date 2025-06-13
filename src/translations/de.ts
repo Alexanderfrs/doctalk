@@ -1,3 +1,4 @@
+
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -24,6 +25,79 @@ export const germanTranslations = {
   medicalCommunication: 'medizinische Kommunikation',
   trainScenarios: 'Üben Sie Dialogszenarien und Terminologie für Ihren beruflichen Alltag im Gesundheitswesen, unabhängig von Ihrem Sprachniveau.',
   targetAudience: 'Perfekt für Ärzte, Krankenschwestern, Pflegekräfte und Studenten in medizinischen Bereichen, die in deutschen Gesundheitseinrichtungen erfolgreich sein wollen.',
+  
+  // Onboarding specific translations
+  onboardingSetup: 'Einrichtung',
+  profileAndGoals: 'Profil & Ziele',
+  nativeLanguage: 'Muttersprache',
+  personalization: 'Personalisierung',
+  tellUsAboutBackground: 'Erzählen Sie uns von Ihrem Hintergrund und Zielen',
+  selectYourNativeLanguage: 'Wählen Sie Ihre Muttersprache aus',
+  customizeYourLearningGoals: 'Passen Sie Ihre Lernziele an',
+  skip: 'Überspringen',
+  
+  // Assessment translations
+  yourProfile: 'Ihr Profil',
+  supportAreas: 'Unterstützungsbereiche',
+  yourGoals: 'Ihre Ziele',
+  tellUsSomethingAboutYou: 'Erzählen Sie uns etwas über sich',
+  howCanWeHelpYou: 'Wobei sollen wir Ihnen helfen?',
+  whatDoYouWantToAchieve: 'Was möchten Sie erreichen?',
+  
+  // Profession options (limited as requested)
+  professionNurse: 'Krankenpfleger/in',
+  professionDoctor: 'Arzt/Ärztin',
+  professionStudent: 'Student/in',
+  professionOtherMedical: 'Andere medizinische Fachkraft',
+  
+  // Assessment questions
+  whatIsYourMedicalProfession: 'Was ist Ihr Beruf im medizinischen Bereich?',
+  howDoYouAssessGermanLevel: 'Wie schätzen Sie Ihr aktuelles Deutschniveau ein?',
+  whichAreasNeedSupport: 'Bei welchen Bereichen möchten Sie Unterstützung? (Mehrfachauswahl möglich)',
+  whatAreYourMainGoals: 'Was sind Ihre Hauptziele mit DocTalk? (Mehrfachauswahl möglich)',
+  
+  // German levels
+  germanLevelA1: 'A1 - Anfänger',
+  germanLevelA2: 'A2 - Grundkenntnisse',
+  germanLevelB1: 'B1 - Mittelstufe',
+  germanLevelB2: 'B2 - Gute Mittelstufe',
+  germanLevelC1: 'C1 - Fortgeschritten',
+  germanLevelC2: 'C2 - Sehr fortgeschritten',
+  
+  // Support areas
+  supportPatientConversations: 'Patientengespräche führen',
+  supportMedicalDocumentation: 'Medizinische Dokumentation',
+  supportColleagueCommunication: 'Kollegenkommunikation',
+  supportEmergencySituations: 'Notfallsituationen',
+  supportMedicalVocabulary: 'Medizinisches Fachvokabular',
+  supportAnamnesisExamination: 'Anamnese und Befundung',
+  supportInformationConversations: 'Aufklärungsgespräche',
+  supportShiftHandovers: 'Übergaben zwischen Schichten',
+  supportDepartmentCalls: 'Telefonate mit anderen Abteilungen',
+  supportRelativesCommunication: 'Umgang mit Angehörigen',
+  
+  // Goals
+  goalProfessionalRecognition: 'Berufliche Anerkennung in Deutschland',
+  goalImproveGermanSkills: 'Verbesserung der Deutschkenntnisse',
+  goalPrepareLanguageExam: 'Vorbereitung auf Fachsprachprüfung',
+  goalBetterTeamIntegration: 'Bessere Integration ins medizinische Team',
+  goalIncreasePatientSafety: 'Patientensicherheit erhöhen',
+  goalCommunicationConfidence: 'Selbstvertrauen in der Kommunikation',
+  
+  // Navigation and UI
+  back: 'Zurück',
+  next: 'Weiter',
+  finish: 'Fertigstellen',
+  stepOf: 'Schritt {current} von {total}',
+  
+  // Important notice
+  importantNotice: 'Wichtiger Hinweis',
+  b1RequirementNotice: 'DocTalk ist für Lernende mit mindestens B1-Deutschniveau konzipiert. Bei niedrigerem Niveau können Sie die App trotzdem nutzen, aber die Inhalte werden sehr herausfordernd sein.',
+  
+  // Recommendations
+  recommendation: 'Empfehlung:',
+  lowerLevelRecommendation: 'Da Ihr Deutschniveau unter B1 liegt, empfehlen wir zunächst die Verbesserung Ihrer allgemeinen Deutschkenntnisse parallel zur Nutzung von DocTalk.',
+  
   // Registration page
   createAccount: 'Konto erstellen',
   startJourney: 'Beginnen Sie Ihre Reise, um ein Experte für medizinische Sprache zu werden',
@@ -40,6 +114,7 @@ export const germanTranslations = {
   registration: 'Registrierung',
   termsAndConditions: 'Mit der Registrierung akzeptieren Sie unsere Nutzungsbedingungen und Datenschutzrichtlinien.',
   alreadyRegistered: 'Bereits registriert? Jetzt anmelden',
+  
   // Landing page
   startFree: 'Kostenlos starten',
   learnMore: 'Mehr erfahren',
@@ -116,6 +191,7 @@ export const germanTranslations = {
   features: 'Funktionen',
   login: 'Anmelden',
   logout: 'Abmelden',
+  
   // Footer translations
   footerTagline: 'Sprachtraining für medizinische Fachkräfte - verbessern Sie Ihre Kommunikation für eine optimale Patientenversorgung.',
   madeWithLove: 'Mit Liebe gemacht für alle Gesundheitsberufe',
@@ -135,6 +211,7 @@ export const germanTranslations = {
   contact: 'Kontakt',
   swipeLeft: 'Nach links wischen',
   swipeRight: 'Nach rechts wischen',
+  
   // Beta signup translations
   joinBeta: "Für die Beta-Version anmelden",
   signupForBetaRelease: "Für die Beta-Version anmelden",
@@ -149,6 +226,7 @@ export const germanTranslations = {
   emailAlreadyRegistered: "Diese E-Mail ist bereits für den Beta-Zugang registriert.",
   errorOccurred: "Ein Fehler ist aufgetreten",
   pleaseRetryLater: "Bitte versuchen Sie es später noch einmal.",
+  
   // Comparison section translations
   whyChooseDocTalk: "Warum DocTalk wählen?",
   whyChooseDocTalkDesc: "Sehen Sie, wie DocTalk einzigartige Vorteile bietet, die andere Sprachlernlösungen einfach nicht erreichen können.",
@@ -169,78 +247,7 @@ export const germanTranslations = {
   medicalTeamWorking: "Glückliches medizinisches Team, das zusammenarbeitet",
   hospitalScene: "Krankenhausszene",
   medicalEducation: "Medizinische Ausbildung",
-
-  // Onboarding specific translations
-  onboardingSetup: 'Einrichtung',
-  profileAndGoals: 'Profil & Ziele',
-  nativeLanguage: 'Muttersprache',
-  personalization: 'Personalisierung',
-  tellUsAboutBackground: 'Erzählen Sie uns von Ihrem Hintergrund und Zielen',
-  selectYourNativeLanguage: 'Wählen Sie Ihre Muttersprache aus',
-  customizeYourLearningGoals: 'Passen Sie Ihre Lernziele an',
-  skip: 'Überspringen',
   
-  // Assessment translations
-  yourProfile: 'Ihr Profil',
-  supportAreas: 'Unterstützungsbereiche',
-  yourGoals: 'Ihre Ziele',
-  tellUsSomethingAboutYou: 'Erzählen Sie uns etwas über sich',
-  howCanWeHelpYou: 'Wobei sollen wir Ihnen helfen?',
-  whatDoYouWantToAchieve: 'Was möchten Sie erreichen?',
-  
-  // Profession options (limited as requested)
-  professionNurse: 'Krankenpfleger/in',
-  professionDoctor: 'Arzt/Ärztin',
-  professionStudent: 'Student/in',
-  professionOtherMedical: 'Andere medizinische Fachkraft',
-  
-  // Assessment questions
-  whatIsYourMedicalProfession: 'Was ist Ihr Beruf im medizinischen Bereich?',
-  howDoYouAssessGermanLevel: 'Wie schätzen Sie Ihr aktuelles Deutschniveau ein?',
-  whichAreasNeedSupport: 'Bei welchen Bereichen möchten Sie Unterstützung? (Mehrfachauswahl möglich)',
-  whatAreYourMainGoals: 'Was sind Ihre Hauptziele mit DocTalk? (Mehrfachauswahl möglich)',
-  
-  // German levels
-  germanLevelA1: 'A1 - Anfänger',
-  germanLevelA2: 'A2 - Grundkenntnisse',
-  germanLevelB1: 'B1 - Mittelstufe',
-  germanLevelB2: 'B2 - Gute Mittelstufe',
-  germanLevelC1: 'C1 - Fortgeschritten',
-  germanLevelC2: 'C2 - Sehr fortgeschritten',
-  
-  // Support areas
-  supportPatientConversations: 'Patientengespräche führen',
-  supportMedicalDocumentation: 'Medizinische Dokumentation',
-  supportColleagueCommunication: 'Kollegenkommunikation',
-  supportEmergencySituations: 'Notfallsituationen',
-  supportMedicalVocabulary: 'Medizinisches Fachvokabular',
-  supportAnamnesisExamination: 'Anamnese und Befundung',
-  supportInformationConversations: 'Aufklärungsgespräche',
-  supportShiftHandovers: 'Übergaben zwischen Schichten',
-  supportDepartmentCalls: 'Telefonate mit anderen Abteilungen',
-  supportRelativesCommunication: 'Umgang mit Angehörigen',
-  
-  // Goals
-  goalProfessionalRecognition: 'Berufliche Anerkennung in Deutschland',
-  goalImproveGermanSkills: 'Verbesserung der Deutschkenntnisse',
-  goalPrepareLanguageExam: 'Vorbereitung auf Fachsprachprüfung',
-  goalBetterTeamIntegration: 'Bessere Integration ins medizinische Team',
-  goalIncreasePatientSafety: 'Patientensicherheit erhöhen',
-  goalCommunicationConfidence: 'Selbstvertrauen in der Kommunikation',
-  
-  // Navigation and UI
-  back: 'Zurück',
-  next: 'Weiter',
-  finish: 'Fertigstellen',
-  stepOf: 'Schritt {current} von {total}',
-  
-  // Important notice
-  importantNotice: 'Wichtiger Hinweis',
-  b1RequirementNotice: 'DocTalk ist für Lernende mit mindestens B1-Deutschniveau konzipiert. Bei niedrigerem Niveau können Sie die App trotzdem nutzen, aber die Inhalte werden sehr herausfordernd sein.',
-  
-  // Recommendations
-  recommendation: 'Empfehlung:',
-  lowerLevelRecommendation: 'Da Ihr Deutschniveau unter B1 liegt, empfehlen wir zunächst die Verbesserung Ihrer allgemeinen Deutschkenntnisse parallel zur Nutzung von DocTalk.',
   // Admin translations
   betaSignups: "Beta-Anmeldungen",
   betaSubscribers: "Beta-Abonnenten",
@@ -262,7 +269,6 @@ export const germanTranslations = {
   noRecentActivity: "Keine letzte Aktivität zum Anzeigen.",
   
   // Common UI translations
-  back: "Zurück",
   dismiss: "Verwerfen",
   processing: "Wird verarbeitet",
   
@@ -293,27 +299,8 @@ export const germanTranslations = {
   practiceDescription: "Üben Sie medizinisches Deutsch in realistischen Szenarien aus Ihren beruflichen Tätigkeiten",
   
   // New comparison section translations
-  whyChooseDocTalk: "Warum DocTalk wählen",
-  whyChooseDocTalkDesc: "Sehen Sie, wie DocTalk einzigartige Vorteile bietet, die andere Sprachlernlösungen einfach nicht erreichen können.",
-  specializedMedicalContent: "Spezialisierte medizinische Inhalte",
-  specializedMedicalContentDesc: "Umfassendes medizinisches Vokabular und Terminologie, die speziell für medizinische Fachkräfte entwickelt wurden.",
-  realisticHospitalScenarios: "Realistische Krankenhausszenarien",
-  realisticHospitalScenariosDesc: "Üben Sie mit authentischen Dialogszenarien aus Krankenhäusern, Kliniken, häuslicher Pflege und anderen Gesundheitseinrichtungen.",
-  flexibleProfessionalFocus: "Flexibler beruflicher Fokus", 
-  flexibleProfessionalFocusDesc: "Lernen Sie in Ihrem eigenen Tempo mit sofortiger praktischer Anwendung in Ihrem medizinischen Arbeitsalltag.",
-  expertDevelopedContent: "Von Experten entwickelte Inhalte",
-  expertDevelopedContentDesc: "Alle Inhalte wurden von medizinischen Fachkräften und Sprachexperten erstellt und überprüft.",
-  limitedOrNone: "Begrenzt oder nicht vorhanden",
-  genericConversations: "Allgemeine Alltagsgespräche",
-  rigidSchedules: "Starre Stundenpläne",
-  generalContent: "Allgemeine Sprachinhalte",
-  otherSolutions: 'Andere Lösungen',
-  otherSolutionsSpecific: 'Sprachschulen, Privatlehrer, generische Apps',
   bottomLine: "Das Fazit",
   bottomLineDesc: "DocTalk ist die einzige Sprachlernlösung, die speziell für medizinische Fachkräfte entwickelt wurde, die im deutschen Gesundheitswesen erfolgreich sein müssen.",
-  medicalTeamWorking: "Glückliches medizinisches Team, das zusammenarbeitet",
-  hospitalScene: "Krankenhausszene",
-  medicalEducation: "Medizinische Ausbildung",
   
   // Mobile onboarding translations
   "mobileOnboarding.screen1.subtitle": "Die App, um auf Deutsch zu sprechen, zu arbeiten und dazuzugehören.",
@@ -327,7 +314,5 @@ export const germanTranslations = {
   "mobileOnboarding.screen4.title": "Üben Sie reale Szenarien",
   "mobileOnboarding.screen4.subtitle": "Sprechen und hören Sie echten medizinischen Dialog", 
   "mobileOnboarding.screen4.description": "Üben Sie reale Szenarien mit KI",
-  "skip": "Überspringen",
-  "next": "Weiter", 
-  "start": "Start"
+  start: "Start"
 };

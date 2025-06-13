@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -247,7 +248,6 @@ export const englishTranslations = {
   noRecentActivity: "No recent activity to display.",
   
   // Common UI translations
-  back: "Back",
   dismiss: "Dismiss",
   processing: "Processing",
   
@@ -312,7 +312,5 @@ export const englishTranslations = {
   "mobileOnboarding.screen4.title": "Practice Real-World Scenarios",
   "mobileOnboarding.screen4.subtitle": "Speak and Listen to Real Medical Dialogue", 
   "mobileOnboarding.screen4.description": "Practice Real-World Scenarios with AI",
-  "skip": "Skip",
-  "next": "Next", 
-  "start": "Start"
+  start: "Start"
 };
