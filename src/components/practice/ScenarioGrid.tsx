@@ -28,7 +28,7 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
-  // Improved mapping: German topic => scenario.category
+  // Mapping of German topic filters to scenario.category values (English)
   const topicToCategoryMap: Record<string, string> = {
     'Alle': 'all',
     'Patientenversorgung': 'patient-care',
@@ -41,32 +41,48 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
     'Behindertenbetreuung': 'disability-care'
   };
 
-  // Filter scenarios based on search and topic
+  // Filtering logic to match category OR tags
   const filteredScenarios = scenarios.filter((scenario) => {
-    console.log('[ScenarioGrid] Filtering scenario:', {
-      title: scenario.title,
-      category: scenario.category,
-      selectedTopic,
-      searchQuery,
-    });
-
-    // Search filter
-    if (searchQuery &&
-        !scenario.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !scenario.description.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
-
-    // Topic filter
+    // Find mapped category (English) for selected German topic
     const mappedCategory = topicToCategoryMap[selectedTopic];
 
-    if (selectedTopic !== 'Alle' && mappedCategory && scenario.category !== mappedCategory) {
-      return false;
+    // Search filter first
+    const matchesSearch = !searchQuery ||
+      scenario.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      scenario.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+    // If "Alle", return all that match search
+    if (selectedTopic === 'Alle') {
+      return matchesSearch;
     }
 
-    return true;
+    // Category matches (fallback to empty string if not mapped)
+    const categoryMatch = mappedCategory && scenario.category === mappedCategory;
+    // OR, tags includes the German filter label (for more fuzzy matching)
+    const tagMatch = scenario.tags
+      .map(tag => tag.toLowerCase())
+      .includes(selectedTopic.toLowerCase());
+
+    // Only include if both search matches AND (either category or tag matches)
+    const keep = matchesSearch && (categoryMatch || tagMatch);
+
+    // Log this scenario's inclusion status for debug
+    console.log('[ScenarioGrid] Filtering scenario:', {
+      scenarioTitle: scenario.title,
+      category: scenario.category,
+      tags: scenario.tags,
+      selectedTopic,
+      mappedCategory,
+      matchesSearch,
+      categoryMatch,
+      tagMatch,
+      keep
+    });
+
+    return keep;
   });
 
+  // Log the final filtered set for debug purposes
   console.log('[ScenarioGrid] Filtered scenarios: ', filteredScenarios.map(s => s.title), 'Total:', filteredScenarios.length);
 
   const handleScenarioClick = (scenarioId: string) => {
@@ -110,7 +126,6 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
               />
             ))}
           </div>
-          
           <div className="text-center text-sm text-medical-600 mt-4 border-t pt-4">
             {filteredScenarios.length} Szenarien gefunden
           </div>
