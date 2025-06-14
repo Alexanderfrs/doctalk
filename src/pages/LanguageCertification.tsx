@@ -1,6 +1,6 @@
 
 import React from "react";
-import Header from "@/components/layout/Header";
+import AppHeader from "@/components/layout/AppHeader";
 import Footer from "@/components/layout/Footer";
 import { Award, BookOpen, Check, Calendar, FileText, Building, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const LanguageCertification = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      <AppHeader />
       
       <main className="flex-grow pt-24 px-4 md:px-8">
         <div className="container mx-auto">
