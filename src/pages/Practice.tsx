@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
@@ -18,25 +17,27 @@ import { useProgressTracking } from "@/hooks/useProgressTracking";
 import { useScenarios } from "@/hooks/useScenarios";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+let practiceRenderCount = 0; // To track render counts
+
 const Practice: React.FC = () => {
+  practiceRenderCount++;
   const { user, profile } = useAuth();
   const { userProgress } = useProgressTracking();
   const { scenarios, isLoading } = useScenarios();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   
-  // Simplified state - only topic-based filtering
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("Alle");
 
-  console.log('Practice page render:', {
-    scenarios: scenarios.length,
-    isLoading,
-    searchQuery,
-    selectedTopic
-  });
+  console.log(`[Practice.tsx] Render #${practiceRenderCount}. isLoading: ${isLoading}, scenarios: ${scenarios.length}, selectedTopic: ${selectedTopic}, searchQuery: "${searchQuery}"`);
+
+  useEffect(() => {
+    console.log(`[Practice.tsx] useEffect for (isLoading, scenarios.length). isLoading: ${isLoading}, scenarios: ${scenarios.length}`);
+  }, [isLoading, scenarios.length]);
 
   const handleClearFilters = () => {
+    console.log('[Practice.tsx] Clearing filters.');
     setSearchQuery("");
     setSelectedTopic("Alle");
   };
@@ -44,12 +45,13 @@ const Practice: React.FC = () => {
   const handleQuickStart = () => {
     if (scenarios.length > 0) {
       const randomScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
-      console.log("Starting random scenario:", randomScenario.id);
+      console.log("[Practice.tsx] Starting random scenario:", randomScenario.id);
       navigate(`/scenario/${randomScenario.id}`);
     }
   };
 
   if (!user) {
+    console.log('[Practice.tsx] User not authenticated, rendering login prompt.');
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p>Bitte melden Sie sich an, um die Übungsseite zu sehen.</p>
@@ -202,15 +204,19 @@ const Practice: React.FC = () => {
           {/* Scenarios Grid */}
           {isLoading ? (
             <div className="text-center py-12">
+              {console.log("[Practice.tsx] Rendering loading spinner because isLoading is true.")}
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-medical-500 mx-auto"></div>
               <p className="mt-4 text-gray-600">Szenarien werden geladen...</p>
             </div>
           ) : (
-            <ScenarioGrid
-              scenarios={scenarios}
-              searchQuery={searchQuery}
-              selectedTopic={selectedTopic}
-            />
+            <>
+              {console.log(`[Practice.tsx] Rendering ScenarioGrid because isLoading is false. Scenarios count: ${scenarios.length}`)}
+              <ScenarioGrid
+                scenarios={scenarios}
+                searchQuery={searchQuery}
+                selectedTopic={selectedTopic}
+              />
+            </>
           )}
         </div>
       </main>
