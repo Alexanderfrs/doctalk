@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ScenarioCard from "@/components/ui/ScenarioCard";
@@ -29,18 +28,13 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
-  console.log('ScenarioGrid render:', {
-    scenarioCount: scenarios.length,
-    searchQuery,
-    selectedTopic
-  });
-
-  // Map topics to categories for filtering
-  const topicToCategoryMap = {
+  // Improved mapping: German topic => scenario.category
+  const topicToCategoryMap: Record<string, string> = {
     'Alle': 'all',
     'Patientenversorgung': 'patient-care',
-    'Teamarbeit': 'teamwork',
     'Notfall': 'emergency',
+    'Dokumentation': 'documentation',
+    'Teamarbeit': 'teamwork',
     'Beratung': 'consultation',
     'Übergabe': 'handover',
     'Altenpflege': 'elderly-care',
@@ -49,10 +43,15 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
 
   // Filter scenarios based on search and topic
   const filteredScenarios = scenarios.filter((scenario) => {
-    console.log('Filtering scenario:', scenario.title, 'category:', scenario.category);
-    
+    console.log('[ScenarioGrid] Filtering scenario:', {
+      title: scenario.title,
+      category: scenario.category,
+      selectedTopic,
+      searchQuery,
+    });
+
     // Search filter
-    if (searchQuery && 
+    if (searchQuery &&
         !scenario.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
         !scenario.description.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
@@ -60,6 +59,7 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
 
     // Topic filter
     const mappedCategory = topicToCategoryMap[selectedTopic];
+
     if (selectedTopic !== 'Alle' && mappedCategory && scenario.category !== mappedCategory) {
       return false;
     }
@@ -67,7 +67,7 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
     return true;
   });
 
-  console.log('Filtered scenarios:', filteredScenarios.length);
+  console.log('[ScenarioGrid] Filtered scenarios: ', filteredScenarios.map(s => s.title), 'Total:', filteredScenarios.length);
 
   const handleScenarioClick = (scenarioId: string) => {
     console.log('Navigating to scenario:', scenarioId);

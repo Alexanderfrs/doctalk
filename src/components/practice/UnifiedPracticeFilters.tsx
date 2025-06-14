@@ -22,8 +22,9 @@ const UnifiedPracticeFilters: React.FC<UnifiedPracticeFiltersProps> = ({
   const topics = [
     'Alle', 
     'Patientenversorgung', 
+    'Notfall',               // Emergency
+    'Dokumentation',         // Documentation
     'Teamarbeit', 
-    'Notfall', 
     'Beratung', 
     'Übergabe', 
     'Altenpflege', 
