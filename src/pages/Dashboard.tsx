@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useMobileOnboarding } from "@/hooks/useMobileOnboarding";
 import AppHeader from "@/components/layout/AppHeader";
@@ -48,7 +47,6 @@ const Dashboard = () => {
               <DashboardTabs 
                 roadmap={roadmap}
                 roadmapLoading={roadmapLoading}
-                germanLevel={profile?.german_level}
                 onObjectiveClick={handleObjectiveClick}
               />
             </div>

@@ -9,16 +9,23 @@ export const useDashboardData = () => {
   const { profile } = useAuth();
   const { userProgress, recentSessions } = useProgressTracking();
   const { getMasteryStats } = useVocabularyProgress();
-  const { roadmap, generateRoadmap, isLoading: roadmapLoading } = useLearningRoadmap();
+  const { roadmap: originalRoadmap, generateRoadmap, isLoading: roadmapLoading } = useLearningRoadmap();
 
   // Generate roadmap based on user's German level
   useEffect(() => {
-    if (profile?.german_level && !roadmap) {
+    if (profile?.german_level && !originalRoadmap) {
       const assessmentResults = profile.preferences?.assessment_results;
       const strengths = assessmentResults?.strengths || [];
       generateRoadmap(profile.german_level, strengths);
     }
-  }, [profile, roadmap, generateRoadmap]);
+  }, [profile, originalRoadmap, generateRoadmap]);
+
+  const roadmap = originalRoadmap ? {
+    ...originalRoadmap,
+    level: '',
+    focus_area: '',
+    objectives: originalRoadmap.objectives.map(obj => ({ ...obj, completed: false }))
+  } : null;
 
   const masteryStats = getMasteryStats();
 
