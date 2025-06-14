@@ -204,13 +204,11 @@ const Practice: React.FC = () => {
           {/* Scenarios Grid */}
           {isLoading ? (
             <div className="text-center py-12">
-              {console.log("[Practice.tsx] Rendering loading spinner because isLoading is true.")}
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-medical-500 mx-auto"></div>
               <p className="mt-4 text-gray-600">Szenarien werden geladen...</p>
             </div>
           ) : (
             <>
-              {console.log(`[Practice.tsx] Rendering ScenarioGrid because isLoading is false. Scenarios count: ${scenarios.length}`)}
               <ScenarioGrid
                 scenarios={scenarios}
                 searchQuery={searchQuery}
