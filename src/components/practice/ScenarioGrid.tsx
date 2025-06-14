@@ -43,47 +43,46 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
 
   // Filtering logic to match category OR tags
   const filteredScenarios = scenarios.filter((scenario) => {
-    // Find mapped category (English) for selected German topic
     const mappedCategory = topicToCategoryMap[selectedTopic];
-
-    // Search filter first
     const matchesSearch = !searchQuery ||
       scenario.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       scenario.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-    // If "Alle", return all that match search
     if (selectedTopic === 'Alle') {
       return matchesSearch;
     }
 
-    // Category matches (fallback to empty string if not mapped)
     const categoryMatch = mappedCategory && scenario.category === mappedCategory;
-    // OR, tags includes the German filter label (for more fuzzy matching)
     const tagMatch = scenario.tags
       .map(tag => tag.toLowerCase())
       .includes(selectedTopic.toLowerCase());
-
-    // Only include if both search matches AND (either category or tag matches)
     const keep = matchesSearch && (categoryMatch || tagMatch);
 
-    // Log this scenario's inclusion status for debug
-    console.log('[ScenarioGrid] Filtering scenario:', {
-      scenarioTitle: scenario.title,
-      category: scenario.category,
-      tags: scenario.tags,
-      selectedTopic,
-      mappedCategory,
-      matchesSearch,
-      categoryMatch,
-      tagMatch,
-      keep
-    });
+    // console.log('[ScenarioGrid] Filtering scenario:', { // Reduced repetitive logging
+    //   scenarioTitle: scenario.title,
+    //   category: scenario.category,
+    //   tags: scenario.tags,
+    //   selectedTopic,
+    //   mappedCategory,
+    //   matchesSearch,
+    //   categoryMatch,
+    //   tagMatch,
+    //   keep
+    // });
 
     return keep;
   });
 
-  // Log the final filtered set for debug purposes
-  console.log('[ScenarioGrid] Filtered scenarios: ', filteredScenarios.map(s => s.title), 'Total:', filteredScenarios.length);
+  // More detailed logging before rendering decision
+  console.log('[ScenarioGrid] PRE-RENDER DECISION:', {
+    propsScenariosCount: scenarios.length,
+    searchQuery,
+    selectedTopic,
+    filteredScenariosCount: filteredScenarios.length,
+    isMobile,
+    // Log first few titles to see what's being filtered (if any)
+    filteredTitlesPreview: filteredScenarios.slice(0,3).map(s => s.title),
+  });
 
   const handleScenarioClick = (scenarioId: string) => {
     console.log('Navigating to scenario:', scenarioId);
@@ -91,6 +90,7 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
   };
 
   if (scenarios.length === 0) {
+    console.log('[ScenarioGrid] Rendering: No scenarios available (raw data empty)');
     return (
       <div className="text-center py-12">
         <p className="text-gray-500 text-lg mb-4">Keine Szenarien verfügbar</p>
@@ -102,6 +102,7 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
   }
 
   if (filteredScenarios.length === 0) {
+    console.log('[ScenarioGrid] Rendering: No scenarios found (after filtering)');
     return (
       <div className="text-center py-12">
         <p className="text-gray-500 text-lg mb-4">Keine Szenarien gefunden</p>
@@ -111,6 +112,9 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
       </div>
     );
   }
+
+  // If we reach here, filteredScenarios.length > 0
+  console.log(`[ScenarioGrid] Rendering: Grid with ${filteredScenarios.length} scenarios. IsMobile: ${isMobile}`);
 
   return (
     <div>
