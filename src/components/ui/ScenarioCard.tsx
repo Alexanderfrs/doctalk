@@ -85,7 +85,7 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({
   return (
     <div 
       className={cn(
-        "group relative flex flex-col bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-300 border border-neutral-100 overflow-hidden animate-scale-in card-hover",
+        "group relative flex flex-col bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-300 border border-neutral-100 overflow-hidden card-hover",
         className
       )}
       onClick={onClick}

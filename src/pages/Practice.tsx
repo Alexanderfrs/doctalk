@@ -208,13 +208,11 @@ const Practice: React.FC = () => {
               <p className="mt-4 text-gray-600">Szenarien werden geladen...</p>
             </div>
           ) : (
-            <div className="border-4 border-blue-500 p-1">
-              <ScenarioGrid
-                scenarios={scenarios}
-                searchQuery={searchQuery}
-                selectedTopic={selectedTopic}
-              />
-            </div>
+            <ScenarioGrid
+              scenarios={scenarios}
+              searchQuery={searchQuery}
+              selectedTopic={selectedTopic}
+            />
           )}
         </div>
       </main>
