@@ -22,8 +22,9 @@ export const useDashboardData = () => {
 
   const roadmap = originalRoadmap ? {
     ...originalRoadmap,
-    level: '',
-    focus_area: '',
+    userLevel: '',
+    currentPhase: '',
+    progressPercentage: 0,
     objectives: originalRoadmap.objectives.map(obj => ({ ...obj, completed: false }))
   } : null;
 

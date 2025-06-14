@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -42,6 +41,8 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ roadmap, onObjectiveC
     }
   };
 
+  const roadmapText = [roadmap.userLevel, roadmap.currentPhase].filter(Boolean).join(' • ');
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -49,9 +50,11 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ roadmap, onObjectiveC
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <span>Ihr Lernpfad</span>
-            <Badge variant="outline" className="text-sm">
-              {roadmap.userLevel} • {roadmap.currentPhase}
-            </Badge>
+            {roadmapText && (
+              <Badge variant="outline" className="text-sm">
+                {roadmapText}
+              </Badge>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
