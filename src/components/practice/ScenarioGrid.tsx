@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ScenarioCard from "@/components/ui/ScenarioCard"; // Ensure this is used
@@ -99,7 +98,7 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
   console.log(`[ScenarioGrid] About to render grid. isMobile=${isMobile}, filteredScenarios_count=${filteredScenarios.length}`);
 
   return (
-    <div>
+    <div className="border-2 border-green-500 p-1">
       {isMobile ? (
         <div className="px-2">
           <div className="space-y-4 pb-4">
@@ -120,7 +119,7 @@ const ScenarioGrid: React.FC<ScenarioGridProps> = ({
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 border-4 border-red-500 p-1">
           {filteredScenarios.map((scenario, index) => {
             if (index === 0) console.log(`[ScenarioGrid] Desktop: Rendering first scenario card: ${scenario.title}`);
             return (
