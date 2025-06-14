@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home, BookOpen, MessageCircle, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import UILanguageSelector from "@/components/language/UILanguageSelector";
@@ -68,10 +67,10 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   // For authenticated users, show full navigation with desktop nav
   if (isAuthenticated) {
     const navItems = [
-      { path: "/dashboard", label: translate("home"), icon: null },
-      { path: "/practice", label: translate("practice"), icon: null },
-      { path: "/vocabulary", label: translate("vocabulary"), icon: null },
-      { path: "/profile", label: translate("profile"), icon: null }
+      { path: "/dashboard", label: translate("home"), icon: <Home className="h-5 w-5" /> },
+      { path: "/practice", label: translate("practice"), icon: <MessageCircle className="h-5 w-5" /> },
+      { path: "/vocabulary", label: translate("vocabulary"), icon: <BookOpen className="h-5 w-5" /> },
+      { path: "/profile", label: translate("profile"), icon: <User className="h-5 w-5" /> }
     ];
 
     return (
@@ -91,19 +90,19 @@ const AppHeader: React.FC<AppHeaderProps> = ({
             {/* Desktop Navigation for authenticated users */}
             <nav className="hidden md:flex space-x-1">
               {navItems.map((item) => (
-                <Button
+                <Link
                   key={item.path}
-                  variant="ghost"
-                  asChild
+                  to={item.path}
                   className={cn(
-                    "text-neutral-600 hover:text-medical-600",
-                    location.pathname === item.path && "bg-medical-50 text-medical-600"
+                    "flex items-center px-4 py-2 rounded-lg transition-colors",
+                    location.pathname === item.path
+                      ? "bg-medical-50 text-medical-700 font-medium"
+                      : "text-neutral-600 hover:bg-neutral-100"
                   )}
                 >
-                  <a href={item.path}>
-                    <span>{item.label}</span>
-                  </a>
-                </Button>
+                  {item.icon}
+                  <span className="ml-2">{item.label}</span>
+                </Link>
               ))}
             </nav>
 

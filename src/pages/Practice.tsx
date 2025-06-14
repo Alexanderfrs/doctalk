@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/layout/Header";
+import AppHeader from "@/components/layout/AppHeader";
 import MobileHeader from "@/components/layout/MobileHeader";
 import Footer from "@/components/layout/Footer";
 import HelpButton from "@/components/tutorial/HelpButton";
@@ -61,7 +62,7 @@ const Practice: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
-      {isMobile ? <MobileHeader /> : <Header />}
+      {isMobile ? <MobileHeader /> : <AppHeader />}
       
       <main className={`flex-grow px-4 md:px-8 pb-12 ${isMobile ? 'pt-20 pb-24' : 'pt-24'}`}>
         <div className="container mx-auto">
