@@ -144,7 +144,6 @@ const uiTranslations: Record<string, Record<string, string>> = {
     'viewVocabulary': 'View Vocabulary',
     'practiceDescription': 'Practice medical German in realistic scenarios from your professional activities',
     'safeFlexibleTraining': 'Safe & Flexible Training',
-    'hideTranslation': 'Hide Translation',
     'safeFlexibleTrainingDesc': 'Safe & Flexible Training',
   }
 };
