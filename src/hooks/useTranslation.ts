@@ -1,3 +1,4 @@
+
 import { useLanguage } from '@/contexts/LanguageContext';
 
 // Create a vocabulary translation map for different languages
@@ -75,12 +76,6 @@ const vocabularyTranslations: Record<string, Record<string, string>> = {
 
 // UI translations, merged with the existing ones in LanguageContext
 const uiTranslations: Record<string, Record<string, string>> = {
-  de: {
-    careerAccelerator: "Karriere-Beschleuniger",
-    careerAcceleratorDesc: "Beschleunigen Sie Ihre berufliche Anerkennung. Unser gezieltes Training bereitet Sie effizient auf den Arbeitsalltag vor. Inklusive Vorbereitung auf FSP & Anerkennung (in Kürze).",
-    safeTraining: "Flexibles & Sicheres Training",
-    safeTrainingDesc: "Üben Sie in einer sicheren, urteilsfreien Umgebung. Unsere KI gibt Ihnen konstruktives Feedback, sodass Sie ohne Druck lernen und sich verbessern können.",
-  },
   en: {
     'singleVocab': 'vocabulary',
     'multipleVocab': 'vocabularies',
