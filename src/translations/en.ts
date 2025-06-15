@@ -125,7 +125,7 @@ export const englishTranslations = {
   practicalDialogs: 'Practical Dialogue Scenarios',
   practiceConversations: 'Practice with realistic conversations from healthcare daily routines - from patient care to team communication in hospitals, clinics, and home care settings.',
   allLanguageLevels: 'Career & System Navigator',
-  customContent: 'Navigate the German healthcare system with ease. Get insights on bureaucratic processes, cultural norms, career opportunities, and finding vacancies.',
+  customContent: 'Navigate the German healthcare system with ease. Get valuable insights into healthcare bureaucracy, workplace culture, and career pathways — and explore job openings through a network of trusted healthcare facilities.',
   expertDeveloped: 'Developed with Experts',
   contentDevelopment: 'All content was developed and reviewed in collaboration with doctors, nurses, and language teachers.',
   safeFlexibleTraining: 'Safe & Flexible Training',

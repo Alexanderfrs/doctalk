@@ -50,7 +50,7 @@ export const spanishTranslations = {
   practicalDialogs: 'Escenarios de diálogo prácticos',
   practiceConversations: 'Practica con conversaciones realistas de la rutina hospitalaria diaria, desde la admisión de pacientes hasta las rondas médicas.',
   allLanguageLevels: 'Navegador Profesional y del Sistema',
-  customContent: 'Navega por el sistema sanitario alemán con facilidad. Obtén información sobre procesos burocráticos, normas culturales, oportunidades profesionales y búsqueda de vacantes.',
+  customContent: 'Navega por el sistema sanitario alemán con facilidad. Obtén información valiosa sobre la burocracia sanitaria, la cultura laboral y las trayectorias profesionales, y explora ofertas de trabajo a través de una red de centros sanitarios de confianza.',
   expertDeveloped: 'Desarrollado con expertos',
   contentDevelopment: 'Todo el contenido fue desarrollado y revisado en colaboración con médicos, enfermeras y profesores de idiomas.',
   safeFlexibleTraining: 'Entrenamiento seguro y flexible',

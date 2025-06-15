@@ -51,7 +51,7 @@ export const turkishTranslations = {
   practicalDialogs: 'Pratik Diyalog Senaryoları',
   practiceConversations: 'Hastane günlük rutinlerinden gerçekçi konuşmalar pratik yapın - hasta kabulünden vizitlere kadar.',
   allLanguageLevels: 'Kariyer ve Sistem Rehberi',
-  customContent: 'Alman sağlık sisteminde kolaylıkla gezinin. Bürokratik süreçler, kültürel normlar, kariyer fırsatları ve boş pozisyonları bulma hakkında bilgi edinin.',
+  customContent: 'Alman sağlık sisteminde kolaylıkla gezinin. Sağlık hizmetleri bürokrasisi, işyeri kültürü ve kariyer yolları hakkında değerli bilgiler edinin ve güvenilir sağlık kuruluşlarından oluşan bir ağ aracılığıyla iş ilanlarını keşfedin.',
   expertDeveloped: 'Uzmanlarla Geliştirildi',
   contentDevelopment: 'Tüm içerik, doktorlar, hemşireler ve dil öğretmenleriyle işbirliği içinde geliştirildi ve gözden geçirildi.',
   safeFlexibleTraining: 'Güvenli ve Esnek Eğitim',
