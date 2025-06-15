@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -46,9 +45,6 @@ const HeroSection = () => {
       <section className="container mx-auto mb-12 landing-mobile-section">
         <div className="glass-panel hero-mobile-fix flex flex-col items-center gap-6">
           <div className="w-full opacity-100 visible">
-            <span className="inline-block px-3 py-1 bg-medical-100 text-medical-800 rounded-full text-sm font-medium mb-4">
-              {translate("medicalGerman")}
-            </span>
             <h1 className="text-3xl font-bold mb-4 text-neutral-800">
               {translate("improveYour")} <span className="text-gradient">{translate("medicalCommunication")}</span>
             </h1>
@@ -124,9 +120,6 @@ const HeroSection = () => {
     <section className="container mx-auto mb-12">
       <div className="glass-panel p-8 flex flex-col md:flex-row items-center gap-8">
         <div className="md:w-1/2 opacity-100 visible">
-          <span className="inline-block px-3 py-1 bg-medical-100 text-medical-800 rounded-full text-sm font-medium mb-4">
-            {translate("medicalGerman")}
-          </span>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
             {translate("improveYour")} <span className="text-gradient">{translate("medicalCommunication")}</span>
           </h1>
