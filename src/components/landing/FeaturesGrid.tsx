@@ -1,57 +1,71 @@
 
 import React from "react";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Heart, MessageCircle, Globe, Users, Award, Rocket } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
+import { Heart, MessageCircle, Globe, Users, Shield, Rocket } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const FeaturesGrid = () => {
-  const { translate } = useLanguage();
+  const { t } = useTranslation();
   
   const features = [
     {
       icon: <Heart className="h-8 w-8 text-medical-600" />,
-      title: translate("medicalVocabulary"),
-      description: translate("learnTerms")
+      title: t("medicalVocabulary"),
+      description: t("learnTerms")
     },
     {
       icon: <MessageCircle className="h-8 w-8 text-medical-600" />,
-      title: translate("practicalDialogs"),
-      description: translate("practiceConversations")
+      title: t("practicalDialogs"),
+      description: t("practiceConversations")
     },
     {
       icon: <Globe className="h-8 w-8 text-medical-600" />,
-      title: translate("allLanguageLevels"),
-      description: translate("customContent")
+      title: t("allLanguageLevels"),
+      description: t("customContent")
     },
     {
       icon: <Users className="h-8 w-8 text-medical-600" />,
-      title: translate("expertDeveloped"),
-      description: translate("contentDevelopment")
+      title: t("expertDeveloped"),
+      description: t("contentDevelopment")
     },
     {
       icon: <Rocket className="h-8 w-8 text-medical-600" />,
-      title: "Karriere-Beschleuniger", // "Career Accelerator"
-      description: "Verschaffen Sie sich einen Wettbewerbsvorteil. Unser gezieltes Training ist darauf ausgelegt, Sie schneller zertifizieren zu lassen und in Deutschland arbeitsfähig zu machen."
+      title: t("careerAccelerator"),
+      description: t("careerAcceleratorDesc"),
+      comingSoonFeature: t("fspPreparation")
     },
     {
-      icon: <Award className="h-8 w-8 text-medical-600" />,
-      title: "Exklusiver Gründerstatus", // "Exclusive Founder Status"
-      description: "Die ersten 50 Mitglieder erhalten den Gründerstatus mit lebenslangen Vorteilen und dem Privileg, die Zukunft von DocTalk mitzugestalten."
+      icon: <Shield className="h-8 w-8 text-medical-600" />,
+      title: t("safeTraining"),
+      description: t("safeTrainingDesc")
     }
   ];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {features.map((feature, index) => (
-        <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-neutral-100 hover:shadow-md transition-shadow">
+        <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-neutral-100 hover:shadow-md transition-shadow flex flex-col h-full">
           <div className="w-16 h-16 bg-medical-50 rounded-full flex items-center justify-center mb-4">
             {feature.icon}
           </div>
           <h3 className="text-lg font-semibold mb-3 text-neutral-800">
             {feature.title}
           </h3>
-          <p className="text-neutral-600">
+          <p className="text-neutral-600 flex-grow">
             {feature.description}
           </p>
+          {feature.comingSoonFeature && (
+            <div className="mt-4">
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="outline" className="text-xs font-semibold uppercase tracking-wider bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-100">
+                  {feature.comingSoonFeature}
+                </Badge>
+                <Badge variant="outline" className="text-xs font-semibold uppercase tracking-wider bg-sky-100 text-sky-800 border-sky-200 hover:bg-sky-100">
+                  {t('comingSoon')}
+                </Badge>
+              </div>
+            </div>
+          )}
         </div>
       ))}
     </div>

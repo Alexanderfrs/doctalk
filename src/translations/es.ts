@@ -1,3 +1,4 @@
+
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -180,5 +181,10 @@ export const spanishTranslations = {
   forDoctorsDescription: "Desde la anamnesis hasta discusiones complejas, domina la comunicación que acelera tu reconocimiento profesional.",
   forMedicalStudentsTitle: "Para Estudiantes de Medicina",
   forMedicalStudentsDescription: "Construye una base lingüística sólida para una ventaja decisiva en tus rotaciones clínicas (Famulatur/PJ) y tu futura carrera.",
-  comingSoon: "Próximamente"
+  comingSoon: "Próximamente",
+  careerAccelerator: "Acelerador de Carrera",
+  careerAcceleratorDesc: "Acelere su reconocimiento profesional. Nuestro entrenamiento dirigido le prepara eficientemente para la rutina laboral diaria en Alemania.",
+  fspPreparation: "Preparación para FSP y Reconocimiento",
+  safeTraining: "Entrenamiento Flexible y Seguro",
+  safeTrainingDesc: "Practique en un entorno seguro y libre de juicios. Nuestra IA le da retroalimentación constructiva para que pueda aprender y mejorar sin presión."
 };
