@@ -28,15 +28,15 @@ const FeaturesGrid = () => {
       description: t("contentDevelopment")
     },
     {
-      icon: <Award className="h-8 w-8 text-medical-600" />,
-      title: t('anerkennungFspSupport'),
-      description: t('anerkennungExamPreparation'),
-      comingSoon: true
-    },
-    {
       icon: <ShieldCheck className="h-8 w-8 text-medical-600" />,
       title: t("safeFlexibleTraining"),
       description: t("safeFlexibleTrainingDesc")
+    },
+    {
+      icon: <Award className="h-8 w-8 text-medical-600" />,
+      title: t('anerkennungFspSupport'),
+      description: t('anerkennungExamPreparationLong'),
+      comingSoon: true
     }
   ];
 
