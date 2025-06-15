@@ -6,6 +6,12 @@ import { ScenarioHeader } from "@/components/scenario/ScenarioHeader";
 import { ScenarioContent } from "@/components/scenario/ScenarioContent";
 import { toast } from "sonner";
 import scenarios, { Scenario } from "@/data/scenarios";
+import { useIsMobile } from "@/hooks/use-mobile";
+import AppHeader from "@/components/layout/AppHeader";
+import MobileHeader from "@/components/layout/MobileHeader";
+import BottomNavigation from "@/components/navigation/BottomNavigation";
+import Footer from "@/components/layout/Footer";
+import { cn } from "@/lib/utils";
 
 /**
  * ScenarioDetail page component
@@ -17,6 +23,7 @@ const ScenarioDetail = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [scenario, setScenario] = useState<Scenario | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Fetch scenario data based on ID
@@ -57,21 +64,28 @@ const ScenarioDetail = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="flex flex-col space-y-6">
-        <ScenarioHeader 
-          scenario={scenario} 
-          loading={loading} 
-          onBack={handleBack} 
-        />
-        
-        <div className="w-full flex justify-center">
-          <ScenarioContent 
-            scenario={scenario} 
-            loading={loading} 
-          />
+    <div className="min-h-screen flex flex-col bg-neutral-50">
+      {isMobile ? <MobileHeader /> : <AppHeader />}
+      <main className={cn("flex-grow", isMobile ? "pt-20 pb-24" : "pt-24")}>
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col space-y-6">
+            <ScenarioHeader 
+              scenario={scenario} 
+              loading={loading} 
+              onBack={handleBack} 
+            />
+            
+            <div className="w-full flex justify-center">
+              <ScenarioContent 
+                scenario={scenario} 
+                loading={loading} 
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
+      {!isMobile && <Footer />}
+      {isMobile && <BottomNavigation />}
     </div>
   );
 };

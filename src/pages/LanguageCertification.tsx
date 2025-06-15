@@ -5,14 +5,20 @@ import Footer from "@/components/layout/Footer";
 import { Award, BookOpen, Check, Calendar, FileText, Building, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
+import MobileHeader from "@/components/layout/MobileHeader";
+import BottomNavigation from "@/components/navigation/BottomNavigation";
+import { cn } from "@/lib/utils";
 
 const LanguageCertification = () => {
+  const isMobile = useIsMobile();
+
   return (
     <div className="min-h-screen flex flex-col">
-      <AppHeader />
+      {isMobile ? <MobileHeader /> : <AppHeader />}
       
-      <main className="flex-grow pt-24 px-4 md:px-8">
-        <div className="container mx-auto">
+      <main className={cn("flex-grow", isMobile ? "pt-20 pb-24" : "pt-24")}>
+        <div className="container mx-auto px-4 md:px-8">
           {/* Hero Section */}
           <section className="mb-16">
             <div className="glass-panel p-8">
@@ -117,7 +123,8 @@ const LanguageCertification = () => {
         </div>
       </main>
 
-      <Footer />
+      {!isMobile && <Footer />}
+      {isMobile && <BottomNavigation />}
     </div>
   );
 };
