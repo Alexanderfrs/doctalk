@@ -5,29 +5,28 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const TargetUsersSection = () => {
   const { translate } = useLanguage();
-  // NOTE: The following text is hardcoded in English.
-  // To support multiple languages, these strings should be moved to translation files.
+
   const users = [
     {
-      title: "For Care Workers",
-      description: "Master everyday communication with patients and colleagues, confidently handle documentation, and understand care instructions with ease.",
+      title: translate("forCareWorkersTitle"),
+      description: translate("forCareWorkersDescription"),
       image: "/lovable-uploads/cea1be79-a723-482d-81f1-17e0c03d04a4.png",
-      icon: <HeartHandshake className="h-8 w-8" />
+      icon: <HeartHandshake className="h-8 w-8" />,
     },
     {
-      title: "For Doctors",
-      description: "Perfect your patient consultations, from taking histories to explaining complex diagnoses and treatment plans. Prepare for the FSP exam with realistic scenarios.",
+      title: translate("forDoctorsTitle"),
+      description: translate("forDoctorsDescription"),
       image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2070&auto=format&fit=crop",
       icon: <Stethoscope className="h-8 w-8" />,
-      isComingSoon: true
+      isComingSoon: true,
     },
     {
-      title: "For Medical Students",
-      description: "Build a strong foundation for your clinical rotations (Famulatur/PJ) and future career in Germany. Practice realistic scenarios and get ready for your exams.",
+      title: translate("forMedicalStudentsTitle"),
+      description: translate("forMedicalStudentsDescription"),
       image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop",
       icon: <GraduationCap className="h-8 w-8" />,
-      isComingSoon: true
-    }
+      isComingSoon: true,
+    },
   ];
 
   return (
@@ -52,7 +51,7 @@ const TargetUsersSection = () => {
               />
               {user.isComingSoon && (
                 <div className="absolute top-3 right-3 bg-medical-500 text-white text-xs font-bold uppercase px-3 py-1.5 rounded-full shadow-md">
-                  Coming Soon
+                  {translate("comingSoon")}
                 </div>
               )}
             </div>

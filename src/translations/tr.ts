@@ -1,4 +1,3 @@
-
 export const turkishTranslations = {
   welcome: 'Hoş Geldiniz',
   language: 'Dil',
@@ -243,5 +242,14 @@ export const turkishTranslations = {
   recommendation: 'Öneri:',
   lowerLevelRecommendation: 'Almanca seviyeniz B1\'in altında olduğu için, DocTalk\'ı kullanırken paralel olarak genel Almanca becerilerinizi geliştirmenizi öneririz.',
   tailoredForMedicalCareer: "Tıbbi kariyerinizin her adımı için özel olarak tasarlandı",
-  doctalkDesignedFor: "DocTalk, farklı sağlık profesyonellerinin özel dil ihtiyaçlarını karşılamak üzere tasarlanmıştır ve güvenle ve hassasiyetle iletişim kurmanıza yardımcı olur."
+  doctalkDesignedFor: "DocTalk, farklı sağlık profesyonellerinin özel dil ihtiyaçlarını karşılamak üzere tasarlanmıştır ve güvenle ve hassasiyetle iletişim kurmanıza yardımcı olur.",
+  
+  // Target Users Section
+  forCareWorkersTitle: "Bakım Personeli İçin",
+  forCareWorkersDescription: "Hastalar ve meslektaşlarınızla günlük iletişimi ustalaşın, belgeleri güvenle yönetin ve bakım talimatlarını kolayca anlayın.",
+  forDoctorsTitle: "Doktorlar İçin",
+  forDoctorsDescription: "Hasta konsültasyonlarınızı mükemmelleştirin, anamnez almaktan karmaşık teşhis ve tedavi planlarını açıklamaya kadar. Gerçekçi senaryolarla FSP sınavına hazırlanın.",
+  forMedicalStudentsTitle: "Tıp Öğrencileri İçin",
+  forMedicalStudentsDescription: "Almanya'daki klinik rotasyonlarınız (Famulatur/PJ) ve gelecekteki kariyeriniz için sağlam bir temel oluşturun. Gerçekçi senaryolarla pratik yapın ve sınavlarınıza hazırlanın.",
+  comingSoon: "Yakında"
 };

@@ -1,3 +1,4 @@
+
 export const romanianTranslations = {
   welcome: 'Bun venit',
   language: 'Limba',
@@ -221,7 +222,16 @@ export const romanianTranslations = {
   generalContent: "Conținut lingvistic general",
   medicalTeamWorking: "Echipă medicală fericită lucrând împreună",
   tailoredForMedicalCareer: 'Adaptat pentru fiecare pas al carierei tale medicale',
-  doctalkDesignedFor: 'DocTalk este conceput pentru a satisface nevoile lingvistice specifice ale diferitelor profesii din domeniul sănătății, ajutându-vă să comunicați cu încredere și precizie.'
+  doctalkDesignedFor: 'DocTalk este conceput pentru a satisface nevoile lingvistice specifice ale diferitelor profesii din domeniul sănătății, ajutându-vă să comunicați cu încredere și precizie.',
+
+  // Target Users Section
+  forCareWorkersTitle: "Pentru îngrijitori",
+  forCareWorkersDescription: "Stăpâniți comunicarea de zi cu zi cu pacienții și colegii, gestionați cu încredere documentația și înțelegeți cu ușurință instrucțiunile de îngrijire.",
+  forDoctorsTitle: "Pentru medici",
+  forDoctorsDescription: "Perfecționați-vă consultațiile cu pacienții, de la anamneză la explicarea diagnosticelor complexe și a planurilor de tratament. Pregătiți-vă pentru examenul FSP cu scenarii realiste.",
+  forMedicalStudentsTitle: "Pentru studenții la medicină",
+  forMedicalStudentsDescription: "Construiți o bază solidă pentru stagiile clinice (Famulatur/PJ) și viitoarea carieră în Germania. Practicați scenarii realiste și pregătiți-vă pentru examene.",
+  comingSoon: "În curând"
 };
 
 export const polishTranslations = {
@@ -444,5 +454,14 @@ export const polishTranslations = {
   generalContent: "Ogólne treści językowe",
   medicalTeamWorking: "Szczęśliwy zespół medyczny pracujący razem",
   tailoredForMedicalCareer: 'Dostosowane do każdego etapu Twojej kariery medycznej',
-  doctalkDesignedFor: 'DocTalk został zaprojektowany, aby sprostać specyficznym potrzebom językowym różnych zawodów medycznych, pomagając Ci komunikować się z pewnością siebie i precyzją.'
+  doctalkDesignedFor: 'DocTalk został zaprojektowany, aby sprostać specyficznym potrzebom językowym różnych zawodów medycznych, pomagając Ci komunikować się z pewnością siebie i precyzją.',
+
+  // Target Users Section
+  forCareWorkersTitle: "Dla opiekunów",
+  forCareWorkersDescription: "Opanuj codzienną komunikację z pacjentami i kolegami, pewnie obsługuj dokumentację i z łatwością rozumiej instrukcje dotyczące opieki.",
+  forDoctorsTitle: "Dla lekarzy",
+  forDoctorsDescription: "Doskonal swoje konsultacje z pacjentami, od zbierania wywiadu po wyjaśnianie skomplikowanych diagnoz i planów leczenia. Przygotuj się do egzaminu FSP dzięki realistycznym scenariuszom.",
+  forMedicalStudentsTitle: "Dla studentów medycyny",
+  forMedicalStudentsDescription: "Zbuduj solidne podstawy do praktyk klinicznych (Famulatur/PJ) i przyszłej kariery w Niemczech. Ćwicz realistyczne scenariusze i przygotuj się do egzaminów.",
+  comingSoon: "Wkrótce"
 };

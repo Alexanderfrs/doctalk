@@ -171,5 +171,14 @@ export const spanishTranslations = {
   errorOccurred: "Ocurrió un error",
   pleaseRetryLater: "Por favor, inténtalo de nuevo más tarde.",
   tailoredForMedicalCareer: "Adaptado para cada paso de tu carrera médica",
-  doctalkDesignedFor: "DocTalk está diseñado para satisfacer las necesidades lingüísticas específicas de diferentes profesionales de la salud, ayudándote a comunicarte con confianza y precisión."
+  doctalkDesignedFor: "DocTalk está diseñado para satisfacer las necesidades lingüísticas específicas de diferentes profesionales de la salud, ayudándote a comunicarte con confianza y precisión.",
+  
+  // Target Users Section
+  forCareWorkersTitle: "Para Cuidadores",
+  forCareWorkersDescription: "Domina la comunicación diaria con pacientes y colegas, maneja la documentación con confianza y entiende las instrucciones de cuidado con facilidad.",
+  forDoctorsTitle: "Para Médicos",
+  forDoctorsDescription: "Perfecciona tus consultas con pacientes, desde la toma de historiales hasta la explicación de diagnósticos y planes de tratamiento complejos. Prepárate para el examen FSP con escenarios realistas.",
+  forMedicalStudentsTitle: "Para Estudiantes de Medicina",
+  forMedicalStudentsDescription: "Construye una base sólida para tus rotaciones clínicas (Famulatur/PJ) y tu futura carrera en Alemania. Practica scenarios realistas y prepárate para tus exámenes.",
+  comingSoon: "Próximamente"
 };

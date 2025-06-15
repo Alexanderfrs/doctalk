@@ -1,4 +1,3 @@
-
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -303,7 +302,7 @@ export const germanTranslations = {
   bottomLineDesc: "DocTalk ist die einzige Sprachlernlösung, die speziell für medizinische Fachkräfte entwickelt wurde, die im deutschen Gesundheitswesen erfolgreich sein müssen.",
   
   // Mobile onboarding translations
-  "mobileOnboarding.screen1.subtitle": "Die App, um auf Deutsch zu sprechen, zu arbeiten und dazuzugehören.",
+  "mobileOnboarding.screen1.subtitle": "Die App, um auf Deutsch zu sprechen, zu arbeiten und dazugehören.",
   "mobileOnboarding.screen1.description": "Ihr Tor zu selbstbewusster Kommunikation im deutschen Gesundheitswesen.",
   "mobileOnboarding.screen2.title": "Sprache & Rollenspiele",
   "mobileOnboarding.screen2.subtitle": "Üben Sie reale Gespräche", 
@@ -316,5 +315,14 @@ export const germanTranslations = {
   "mobileOnboarding.screen4.description": "Üben Sie reale Szenarien mit KI",
   start: "Start",
   tailoredForMedicalCareer: "Maßgeschneidert für jeden Schritt Ihrer medizinischen Karriere",
-  doctalkDesignedFor: "DocTalk ist darauf ausgelegt, die spezifischen sprachlichen Bedürfnisse verschiedener Fachkräfte im Gesundheitswesen zu erfüllen und Ihnen zu helfen, mit Selbstvertrauen und Präzision zu kommunizieren."
+  doctalkDesignedFor: "DocTalk ist darauf ausgelegt, die spezifischen sprachlichen Bedürfnisse verschiedener Fachkräfte im Gesundheitswesen zu erfüllen und Ihnen zu helfen, mit Selbstvertrauen und Präzision zu kommunizieren.",
+  
+  // Target Users Section
+  forCareWorkersTitle: "Für Pflegekräfte",
+  forCareWorkersDescription: "Meistern Sie die alltägliche Kommunikation mit Patienten und Kollegen, erledigen Sie die Dokumentation souverän und verstehen Sie Pflegeanweisungen mühelos.",
+  forDoctorsTitle: "Für Ärzte",
+  forDoctorsDescription: "Perfektionieren Sie Ihre Patientengespräche, von der Anamnese bis zur Erläuterung komplexer Diagnosen und Behandlungspläne. Bereiten Sie sich mit realistischen Szenarien auf die FSP-Prüfung vor.",
+  forMedicalStudentsTitle: "Für Medizinstudenten",
+  forMedicalStudentsDescription: "Schaffen Sie eine solide Grundlage für Ihre Famulaturen/PJ und Ihre zukünftige Karriere in Deutschland. Üben Sie realistische Szenarien und bereiten Sie sich auf Ihre Prüfungen vor.",
+  comingSoon: "Demnächst"
 };

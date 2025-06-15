@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -314,5 +313,14 @@ export const englishTranslations = {
   "mobileOnboarding.screen4.description": "Practice Real-World Scenarios with AI",
   start: "Start",
   tailoredForMedicalCareer: "Tailored for every step of your medical career",
-  doctalkDesignedFor: "DocTalk is designed to meet the specific language needs of different healthcare professionals, helping you communicate with confidence and precision."
+  doctalkDesignedFor: "DocTalk is designed to meet the specific language needs of different healthcare professionals, helping you communicate with confidence and precision.",
+  
+  // Target Users Section
+  forCareWorkersTitle: "For Care Workers",
+  forCareWorkersDescription: "Master everyday communication with patients and colleagues, confidently handle documentation, and understand care instructions with ease.",
+  forDoctorsTitle: "For Doctors",
+  forDoctorsDescription: "Perfect your patient consultations, from taking histories to explaining complex diagnoses and treatment plans. Prepare for the FSP exam with realistic scenarios.",
+  forMedicalStudentsTitle: "For Medical Students",
+  forMedicalStudentsDescription: "Build a strong foundation for your clinical rotations (Famulatur/PJ) and future career in Germany. Practice realistic scenarios and get ready for your exams.",
+  comingSoon: "Coming Soon"
 };
