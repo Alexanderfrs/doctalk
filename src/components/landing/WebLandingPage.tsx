@@ -8,7 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import HeroSection from "@/components/home/HeroSection";
 import CtaSection from "@/components/home/CtaSection";
 import FeaturesGrid from "@/components/landing/FeaturesGrid";
-import ComparisonTable from "@/components/landing/ComparisonTable";
+import TargetUsersSection from "@/components/landing/TargetUsersSection";
 import PricingSection from "@/components/landing/PricingSection";
 import { LandingPageProps } from "@/types/landing";
 import { useSwipeable } from "react-swipeable";
@@ -24,7 +24,7 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   const sections = [
     { id: "hero", label: translate("home") },
     { id: "features", label: translate("features") },
-    { id: "comparison", label: translate("whyChooseDocTalk") },
+    { id: "target-users", label: "Who it's for" },
     { id: "pricing", label: translate("pricingTitle") }
   ];
 
@@ -114,9 +114,9 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
           </div>
         </section>
 
-        <section id="comparison" className="py-16 px-4">
+        <section id="target-users" className="py-16 px-4">
           <div className="container mx-auto">
-            <ComparisonTable />
+            <TargetUsersSection />
           </div>
         </section>
         
