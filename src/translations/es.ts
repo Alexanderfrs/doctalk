@@ -1,4 +1,3 @@
-
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -50,8 +49,8 @@ export const spanishTranslations = {
   learnTerms: 'Domina la terminología médica esencial, incluyendo términos clínicos, nombres de equipos, abreviaturas comunes y coloquialismos cotidianos utilizados en entornos sanitarios.',
   practicalDialogs: 'Escenarios de diálogo prácticos',
   practiceConversations: 'Practica con conversaciones realistas de la rutina hospitalaria diaria, desde la admisión de pacientes hasta las rondas médicas.',
-  allLanguageLevels: 'Para todos los niveles de idioma',
-  customContent: 'Contenido adaptado para cada nivel de idioma, desde A1 hasta C1 - puedes comenzar inmediatamente, independientemente de tu nivel actual.',
+  allLanguageLevels: 'Navegador Profesional y del Sistema',
+  customContent: 'Navega por el sistema sanitario alemán con facilidad. Obtén información sobre procesos burocráticos, normas culturales, oportunidades profesionales y búsqueda de vacantes.',
   expertDeveloped: 'Desarrollado con expertos',
   contentDevelopment: 'Todo el contenido fue desarrollado y revisado en colaboración con médicos, enfermeras y profesores de idiomas.',
   safeFlexibleTraining: 'Entrenamiento seguro y flexible',

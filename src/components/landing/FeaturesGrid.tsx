@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Heart, MessageCircle, Globe, Users, Award, ShieldCheck } from "lucide-react";
+import { Heart, MessageCircle, Compass, Users, Award, ShieldCheck } from "lucide-react";
 
 const FeaturesGrid = () => {
   const { t } = useTranslation();
@@ -18,9 +18,10 @@ const FeaturesGrid = () => {
       description: t("practiceConversations")
     },
     {
-      icon: <Globe className="h-8 w-8 text-medical-600" />,
+      icon: <Compass className="h-8 w-8 text-medical-600" />,
       title: t("allLanguageLevels"),
-      description: t("customContent")
+      description: t("customContent"),
+      comingSoon: true
     },
     {
       icon: <Users className="h-8 w-8 text-medical-600" />,
