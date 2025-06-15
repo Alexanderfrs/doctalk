@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import UILanguageSelector from "@/components/language/UILanguageSelector";
-import BetaSignupDialog from "@/components/beta/BetaSignupDialog";
 
 interface AuthButtonsProps {
   isAuthenticated: boolean;
@@ -54,9 +53,7 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({
                 {translate("register")}
               </Button>
             </>
-          ) : (
-            <BetaSignupDialog className="bg-medical-500 hover:bg-medical-600 text-white shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-95" />
-          )}
+          ) : null}
         </>
       )}
     </div>
