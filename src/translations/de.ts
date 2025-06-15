@@ -127,6 +127,8 @@ export const germanTranslations = {
   customContent: 'Inhalte, die für jedes Sprachniveau von A1 bis C1 zugeschnitten sind - Sie können sofort beginnen, unabhängig von Ihrem aktuellen Niveau.',
   expertDeveloped: 'Entwickelt mit Experten',
   contentDevelopment: 'Alle Inhalte wurden in Zusammenarbeit mit Ärzten, Pflegekräften und Sprachlehrern entwickelt und überprüft.',
+  safeFlexibleTraining: 'Sicheres & Flexibles Training',
+  safeFlexibleTrainingDesc: 'Trainiere in einer sicheren Umgebung ohne Angst vor Fehlern. Bestimme dein Tempo, erhalte sofortiges Feedback und verfolge deinen Lernfortschritt.',
   anerkennungFspSupport: 'Anerkennung & FSP-Vorbereitung',
   anerkennungExamPreparation: 'Umfassende Vorbereitung für die berufliche Anerkennung und die Fachsprachenprüfung (FSP) im deutschen Gesundheitswesen. (Demnächst verfügbar)',
   nurseOptimized: 'Optimiert für Gesundheitsexperten',
