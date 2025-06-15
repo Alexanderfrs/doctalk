@@ -21,8 +21,8 @@ export const turkishTranslations = {
   recommendedExercises: 'Önerilen Alıştırmalar',
   showAll: 'Hepsini Göster',
   medicalGerman: 'Tüm dil seviyeleri için Tıbbi Almanca',
-  improveYour: 'Geliştirin',
-  medicalCommunication: 'tıbbi iletişiminizi',
+  improveYour: 'Özgüvenli İletişim',
+  medicalCommunication: 'Alman Sağlık Sektöründe',
   trainScenarios: 'Dil seviyeniz ne olursa olsun, sağlık hizmetlerindeki profesyonel günlük yaşamınız için diyalog senaryoları ve terminoloji pratik yapın.',
   targetAudience: 'Alman sağlık kurumlarında başarılı olmak isteyen doktorlar, hemşireler, bakıcılar ve tıp alanındaki öğrenciler için mükemmel.',
   // Registration page

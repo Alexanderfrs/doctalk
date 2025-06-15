@@ -21,8 +21,8 @@ export const englishTranslations = {
   recommendedExercises: 'Recommended Exercises',
   showAll: 'Show All',
   medicalGerman: 'Medical German for intermediate to advanced learners',
-  improveYour: 'Improve your',
-  medicalCommunication: 'medical communication',
+  improveYour: 'Confident Communication',
+  medicalCommunication: 'in German Healthcare',
   trainScenarios: 'Practice dialogue scenarios and terminology for your professional everyday life in healthcare, starting from B1 level.',
   targetAudience: 'Perfect for doctors, nurses, caregivers, and students in medical fields who want to excel in German healthcare environments and achieve professional recognition.',
   

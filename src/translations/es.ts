@@ -21,8 +21,8 @@ export const spanishTranslations = {
   recommendedExercises: 'Ejercicios recomendados',
   showAll: 'Mostrar todo',
   medicalGerman: 'Alemán médico para todos los niveles de idioma',
-  improveYour: 'Mejora tu',
-  medicalCommunication: 'comunicación médica',
+  improveYour: 'Comunicación Segura',
+  medicalCommunication: 'en la Sanidad Alemana',
   trainScenarios: 'Practica escenarios de diálogo y terminología para tu vida profesional diaria en el ámbito sanitario, independientemente de tu nivel de idioma.',
   targetAudience: 'Perfecto para médicos, enfermeras, cuidadores y estudiantes en campos médicos que desean destacar en entornos sanitarios alemanes.',
   // Registration page
