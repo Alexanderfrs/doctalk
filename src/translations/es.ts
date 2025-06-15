@@ -101,6 +101,26 @@ export const spanishTranslations = {
   teamFeature4: 'Informes de progreso para el equipo',
   teamFeature5: 'Simulaciones de exámenes orales',
   contactUs: 'Contáctanos',
+
+  // Pre-launch pricing
+  alphaTester: "Probador Alfa",
+  alphaTesterDesc: "Para pioneros listos para dar forma al futuro del aprendizaje médico.",
+  alphaFeature1: "Acceso completo durante la fase Alfa",
+  alphaFeature2: "Influencia directa en el desarrollo de funciones",
+  alphaFeature3: "Insignia exclusiva de 'Fundador' en tu perfil",
+  joinAlphaWaitlist: "Unirse a la lista de espera Alfa",
+
+  earlyBirdProfessional: "Profesional Early Bird",
+  earlyBirdProfessionalDesc: "Asegura un descuento de por vida antes del lanzamiento.",
+  launchSpecial: "Oferta de Lanzamiento",
+  reserveEarlyBirdSpot: "Reservar puesto Early Bird",
+
+  enterpriseSolutions: "Soluciones para Empresas",
+  enterpriseSolutionsDesc: "Para clínicas, hospitales e instituciones educativas.",
+  enterpriseFeature1: "Onboarding y soporte personalizados",
+  enterpriseFeature2: "Seguimiento y análisis del progreso del equipo",
+  enterpriseFeature3: "Licencias por volumen y facturación flexible",
+
   loyaltyProgram: 'Programa de fidelidad: 3+1',
   loyaltyDescription: 'Usa DocTalk regularmente durante 3 meses',
   loyaltyBenefit: '¡Y obtén el 4º mes de Premium gratis!',

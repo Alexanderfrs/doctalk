@@ -11,45 +11,45 @@ const PricingSection = () => {
 
   const plans: PricingPlan[] = [
     {
-      title: translate("basic"),
-      description: translate("forBeginners"),
+      title: translate("alphaTester"),
+      description: translate("alphaTesterDesc"),
       price: translate("free"),
       features: [
-        translate("basicFeature1"),
-        translate("basicFeature2"),
-        translate("basicFeature3"),
-        "Earn free Pro trial by maintaining learning streaks"
+        translate("alphaFeature1"),
+        translate("alphaFeature2"),
+        translate("alphaFeature3"),
       ],
-      buttonText: translate("startFree"),
-      buttonVariant: "outline"
+      buttonText: translate("joinAlphaWaitlist"),
+      buttonVariant: "outline",
     },
     {
-      title: translate("professional"),
-      description: translate("forActiveLearners"),
-      price: "€9,99",
+      title: translate("earlyBirdProfessional"),
+      description: translate("earlyBirdProfessionalDesc"),
+      price: "€7,99",
       features: [
         translate("proFeature1"),
         translate("proFeature2"),
         translate("proFeature3"),
         translate("proFeature4"),
-        translate("proFeature5")
+        translate("proFeature5"),
+        translate("proFeature6"),
       ],
-      buttonText: translate("startFree"),
-      highlighted: true
+      buttonText: translate("reserveEarlyBirdSpot"),
+      highlighted: true,
     },
     {
-      title: translate("team"),
-      description: translate("forInstitutions"),
+      title: translate("enterpriseSolutions"),
+      description: translate("enterpriseSolutionsDesc"),
       features: [
         translate("teamFeature1"),
-        translate("teamFeature2"),
-        translate("teamFeature3"),
-        translate("teamFeature4"),
-        translate("teamFeature5")
+        translate("enterpriseFeature1"),
+        translate("enterpriseFeature2"),
+        translate("enterpriseFeature3"),
+        translate("teamFeature5"),
       ],
       buttonText: translate("contactUs"),
-      buttonVariant: "outline"
-    }
+      buttonVariant: "outline",
+    },
   ];
 
   return (
@@ -64,8 +64,8 @@ const PricingSection = () => {
           } p-6 rounded-xl shadow-sm border relative`}
         >
           {plan.highlighted && (
-            <div className="absolute -top-3 right-4 bg-medical-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-              {translate("recommended")}
+            <div className="absolute -top-3 right-4 bg-yellow-400 text-neutral-800 px-3 py-1 rounded-full text-xs font-semibold">
+              {translate("launchSpecial")}
             </div>
           )}
           <div className="mb-4">
@@ -74,9 +74,14 @@ const PricingSection = () => {
           </div>
           {plan.price && (
             <div className="mb-6">
-              <span className="text-3xl font-bold">{plan.price}</span>
-              {plan.price !== translate("free") && (
-                <span className="text-neutral-500"> / {translate("month")}</span>
+              {plan.highlighted ? (
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-bold">{plan.price}</span>
+                  <span className="text-neutral-500">/ {translate("month")}</span>
+                  <span className="text-neutral-500 line-through">€12,99</span>
+                </div>
+              ) : (
+                <span className="text-3xl font-bold">{plan.price}</span>
               )}
             </div>
           )}
@@ -88,7 +93,7 @@ const PricingSection = () => {
               </li>
             ))}
           </ul>
-          {plan.title === translate("team") ? (
+          {plan.title === translate("enterpriseSolutions") ? (
             <Link to="/contact">
               <Button className="w-full" variant={plan.buttonVariant}>
                 {plan.buttonText}
