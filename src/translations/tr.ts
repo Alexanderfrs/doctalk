@@ -1,4 +1,3 @@
-
 export const turkishTranslations = {
   welcome: 'Hoş Geldiniz',
   language: 'Dil',
@@ -254,8 +253,7 @@ export const turkishTranslations = {
   forMedicalStudentsDescription: "Klinik stajlarınızda (Famulatur/PJ) ve gelecekteki kariyerinizde belirleyici bir avantaj için sağlam bir dil temeli oluşturun.",
   comingSoon: "Yakında",
   careerAccelerator: "Kariyer Hızlandırıcı",
-  careerAcceleratorDesc: "Mesleki tanınırlığınızı hızlandırın. Hedeflenmiş eğitimimiz sizi Almanya'daki günlük iş rutinine verimli bir şekilde hazırlar.",
-  fspPreparation: "FSP ve Tanınma Hazırlığı",
+  careerAcceleratorDesc: "Mesleki tanınırlığınızı hızlandırın. Hedeflenmiş eğitimimiz sizi Almanya'daki günlük iş rutinine verimli bir şekilde hazırlar. (Yakında FSP ve Tanınma hazırlığı da dahil edilecektir)",
   safeTraining: "Esnek ve Güvenli Eğitim",
   safeTrainingDesc: "Güvenli, yargılamayan bir ortamda pratik yapın. Yapay zekamız, baskı olmadan öğrenip gelişebilmeniz için size yapıcı geri bildirimler verir."
 };

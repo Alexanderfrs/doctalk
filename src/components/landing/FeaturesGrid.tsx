@@ -31,8 +31,7 @@ const FeaturesGrid = () => {
     {
       icon: <Rocket className="h-8 w-8 text-medical-600" />,
       title: t("careerAccelerator"),
-      description: t("careerAcceleratorDesc"),
-      comingSoonFeature: t("fspPreparation")
+      description: t("careerAcceleratorDesc")
     },
     {
       icon: <Shield className="h-8 w-8 text-medical-600" />,
@@ -54,18 +53,6 @@ const FeaturesGrid = () => {
           <p className="text-neutral-600 flex-grow">
             {feature.description}
           </p>
-          {feature.comingSoonFeature && (
-            <div className="mt-4">
-              <div className="flex flex-wrap gap-2">
-                <Badge variant="outline" className="text-xs font-semibold uppercase tracking-wider bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-100">
-                  {feature.comingSoonFeature}
-                </Badge>
-                <Badge variant="outline" className="text-xs font-semibold uppercase tracking-wider bg-sky-100 text-sky-800 border-sky-200 hover:bg-sky-100">
-                  {t('comingSoon')}
-                </Badge>
-              </div>
-            </div>
-          )}
         </div>
       ))}
     </div>
