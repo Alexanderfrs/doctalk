@@ -23,7 +23,7 @@ export const englishTranslations = {
   medicalGerman: 'Medical German for intermediate to advanced learners',
   improveYour: 'Confident Communication',
   medicalCommunication: 'in German Healthcare',
-  trainScenarios: 'Practice dialogue scenarios and terminology for your professional everyday life in healthcare, starting from B1 level.',
+  trainScenarios: 'Practice real-world work scenarios and terminology for your professional everyday life in healthcare, starting from intermediate German proficiency.',
   targetAudience: 'Perfect for international care workers, doctors, and students in medical fields who want to enter and excel in German healthcare environments and achieve professional recognition.',
   
   // Onboarding specific translations
@@ -252,8 +252,8 @@ export const englishTranslations = {
 
   // New text below buttons
   alphaAccessLimitedPre: "Alpha access limited to",
-  alphaAccessLimitedBold: "50 spots",
-  alphaAccessLimitedPost: "limited.",
+  alphaAccessLimitedBold: "50 spots.",
+  alphaAccessLimitedPost: "",
   alphaAccessCta: "Secure your place!",
   
   // Admin translations

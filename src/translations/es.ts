@@ -1,4 +1,3 @@
-
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -201,8 +200,8 @@ export const spanishTranslations = {
   
   // New text below buttons
   alphaAccessLimitedPre: "Acceso Alfa limitado a",
-  alphaAccessLimitedBold: "50 plazas",
-  alphaAccessLimitedPost: "limitado.",
+  alphaAccessLimitedBold: "50 plazas.",
+  alphaAccessLimitedPost: "",
   alphaAccessCta: "¡Asegura tu lugar!",
   
   // Target Users Section

@@ -244,11 +244,17 @@ export const germanTranslations = {
   emailAddress: "E-Mail-Adresse",
   getEarlyAccess: "Frühzeitigen Zugang erhalten",
   submitting: "Wird gesendet...",
-  
+  thankYouForJoining: "Vielen Dank für die Teilnahme an der Warteliste!",
+  betaConfirmationMessage: "Wir benachrichtigen Sie, wenn DocTalk für Alpha-Tests bereit ist.",
+  alreadySignedUp: "Sie stehen bereits auf der Liste",
+  emailAlreadyRegistered: "Diese E-Mail-Adresse steht bereits auf der Alpha-Warteliste.",
+  errorOccurred: "Ein Fehler ist aufgetreten",
+  pleaseRetryLater: "Bitte versuchen Sie es später noch einmal.",
+
   // New text below buttons
   alphaAccessLimitedPre: "Alpha-Zugang auf",
-  alphaAccessLimitedBold: "50 Plätze",
-  alphaAccessLimitedPost: "limitiert.",
+  alphaAccessLimitedBold: "50 Plätze.",
+  alphaAccessLimitedPost: "",
   alphaAccessCta: "Sichern Sie sich Ihren Platz!",
   
   // Comparison section translations
