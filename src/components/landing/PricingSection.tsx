@@ -1,10 +1,10 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CheckCircle } from "lucide-react";
 import { PricingPlan } from "@/types/landing";
+import BetaSignupDialog from "@/components/beta/BetaSignupDialog";
 
 const PricingSection = () => {
   const { translate } = useLanguage();
@@ -94,22 +94,22 @@ const PricingSection = () => {
             ))}
           </ul>
           {plan.title === translate("enterpriseSolutions") ? (
-            <Link to="/contact">
-              <Button className="w-full" variant={plan.buttonVariant}>
-                {plan.buttonText}
-              </Button>
-            </Link>
+            <Button asChild className="w-full" variant={plan.buttonVariant}>
+              <a href="mailto:doctalk.ai@gmail.com">{plan.buttonText}</a>
+            </Button>
           ) : (
-            <Link to="/register">
-              <Button
-                className={`w-full ${
-                  plan.highlighted ? "bg-medical-500 hover:bg-medical-600" : ""
-                }`}
-                variant={plan.buttonVariant}
-              >
-                {plan.buttonText}
-              </Button>
-            </Link>
+            <BetaSignupDialog
+              triggerElement={
+                <Button
+                  className={`w-full ${
+                    plan.highlighted ? "bg-medical-500 hover:bg-medical-600" : ""
+                  }`}
+                  variant={plan.buttonVariant}
+                >
+                  {plan.buttonText}
+                </Button>
+              }
+            />
           )}
         </div>
       ))}
