@@ -1,4 +1,3 @@
-
 export const romanianTranslations = {
   welcome: 'Bun venit',
   language: 'Limba',
@@ -221,6 +220,8 @@ export const romanianTranslations = {
   rigidSchedules: "Programe rigide de clasă",
   generalContent: "Conținut lingvistic general",
   medicalTeamWorking: "Echipă medicală fericită lucrând împreună",
+  hospitalScene: "Scenă hospitalară",
+  medicalEducation: "Educație medicală",
   tailoredForMedicalCareer: 'Adaptat pentru fiecare pas al carierei tale medicale',
   doctalkDesignedFor: 'DocTalk este conceput pentru a satisface nevoile lingvistice specifice ale diferitelor profesii din domeniul sănătății, ajutându-vă să comunicați cu încredere și precizie.',
 
@@ -453,6 +454,8 @@ export const polishTranslations = {
   rigidSchedules: "Sztywne harmonogramy zajęć",
   generalContent: "Ogólne treści językowe",
   medicalTeamWorking: "Szczęśliwy zespół medyczny pracujący razem",
+  hospitalScene: "Hastane sahnesi",
+  medicalEducation: "Tıp eğitimi",
   tailoredForMedicalCareer: 'Dostosowane do każdego etapu Twojej kariery medycznej',
   doctalkDesignedFor: 'DocTalk został zaprojektowany, aby sprostać specyficznym potrzebom językowym różnych zawodów medycznych, pomagając Ci komunikować się z pewnością siebie i precyzją.',
 
