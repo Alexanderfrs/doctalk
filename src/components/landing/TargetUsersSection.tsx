@@ -9,13 +9,13 @@ const TargetUsersSection = () => {
     {
       title: "For Care Workers",
       description: "Master everyday communication with patients and colleagues, confidently handle documentation, and understand care instructions with ease.",
-      image: "https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?q=80&w=2070&auto=format&fit=crop",
+      image: "/lovable-uploads/cea1be79-a723-482d-81f1-17e0c03d04a4.png",
       icon: <HeartHandshake className="h-8 w-8" />
     },
     {
       title: "For Doctors",
       description: "Perfect your patient consultations, from taking histories to explaining complex diagnoses and treatment plans. Prepare for the FSP exam with realistic scenarios.",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba9996a?q=80&w=2070&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2070&auto=format&fit=crop",
       icon: <Stethoscope className="h-8 w-8" />,
       isComingSoon: true
     },
