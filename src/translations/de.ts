@@ -19,10 +19,10 @@ export const germanTranslations = {
   days: 'Tage',
   recommendedExercises: 'Empfohlene Übungen',
   showAll: 'Alle anzeigen',
-  medicalGerman: 'Medizinisches Deutsch für alle Sprachniveaus',
+  medicalGerman: 'Medizinisches Deutsch für Lernende mit mittleren bis fortgeschrittenen Kenntnissen',
   improveYour: 'Verbessere deine',
   medicalCommunication: 'medizinische Kommunikation',
-  trainScenarios: 'Üben Sie Dialogszenarien und Terminologie für Ihren beruflichen Alltag im Gesundheitswesen, unabhängig von Ihrem Sprachniveau.',
+  trainScenarios: 'Üben Sie praxisnahe Arbeitsszenarien und Terminologie für Ihren Berufsalltag im Gesundheitswesen, beginnend ab mittlerer deutscher Sprachkompetenz.',
   targetAudience: 'Perfekt für internationale Pflegekräfte, Ärzte und Medizinstudenten, die im deutschen Gesundheitswesen einsteigen, sich dort hervortun und eine berufliche Anerkennung erlangen möchten.',
   
   // Onboarding specific translations
@@ -209,7 +209,7 @@ export const germanTranslations = {
   recommended: 'Empfohlen',
   selectLanguage: 'Sprache auswählen',
   ctaHeading: 'Bereit, Ihre Sprachkenntnisse zu verbessern?',
-  ctaText: 'Beginnen Sie jetzt mit den Übungen und verbessern Sie Ihre professionelle Kommunikation im medizinischen Bereich - für alle Sprachniveaus von A1 bis C1.',
+  ctaText: 'Beginnen Sie jetzt mit den Übungen und verbessern Sie Ihre professionelle Kommunikation im medizinischen Bereich - für Lernende mit mittleren bis fortgeschrittenen Kenntnissen (B1-C1).',
   startWithExercises: 'Mit Übungen beginnen',
   swipeToSwitch: 'Wischen Sie nach links oder rechts, um zwischen den Tabs zu wechseln',
   features: 'Funktionen',

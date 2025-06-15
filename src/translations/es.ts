@@ -1,4 +1,3 @@
-
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -20,10 +19,10 @@ export const spanishTranslations = {
   days: 'días',
   recommendedExercises: 'Ejercicios recomendados',
   showAll: 'Mostrar todo',
-  medicalGerman: 'Alemán médico para todos los niveles de idioma',
+  medicalGerman: 'Alemán médico para estudiantes de nivel intermedio a avanzado',
   improveYour: 'Comunicación Segura',
   medicalCommunication: 'en la Sanidad Alemana',
-  trainScenarios: 'Practica escenarios de diálogo y terminología para tu vida profesional diaria en el ámbito sanitario, independientemente de tu nivel de idioma.',
+  trainScenarios: 'Practique escenarios de trabajo y terminología del mundo real para su vida profesional diaria en el sector de la salud, a partir de un dominio intermedio del alemán.',
   targetAudience: 'Perfecto para cuidadores internacionales, médicos y estudiantes de medicina que quieren entrar y destacar en el sistema sanitario alemán y conseguir el reconocimiento profesional.',
   // Registration page
   createAccount: 'Crear cuenta',
@@ -138,7 +137,7 @@ export const spanishTranslations = {
   recommended: 'Recomendado',
   selectLanguage: 'Seleccionar idioma',
   ctaHeading: '¿Listo para mejorar tus habilidades lingüísticas?',
-  ctaText: 'Comienza ahora con los ejercicios y mejora tu comunicación profesional en el campo médico - para todos los niveles de idioma desde A1 hasta C1.',
+  ctaText: 'Comienza ahora con los ejercicios y mejora tu comunicación profesional en el campo médico - para estudiantes de nivel intermedio a avanzado (B1-C1).',
   startWithExercises: 'Comenzar con ejercicios',
   swipeToSwitch: 'Desliza hacia la izquierda o derecha para cambiar entre pestañas',
   features: 'Características',

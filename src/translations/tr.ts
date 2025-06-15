@@ -1,4 +1,3 @@
-
 export const turkishTranslations = {
   welcome: 'Hoş Geldiniz',
   language: 'Dil',
@@ -20,10 +19,10 @@ export const turkishTranslations = {
   days: 'gün',
   recommendedExercises: 'Önerilen Alıştırmalar',
   showAll: 'Hepsini Göster',
-  medicalGerman: 'Tüm dil seviyeleri için Tıbbi Almanca',
+  medicalGerman: 'Orta ila ileri düzey öğrenciler için Tıbbi Almanca',
   improveYour: 'Özgüvenli İletişim',
   medicalCommunication: 'Alman Sağlık Sektöründe',
-  trainScenarios: 'Dil seviyeniz ne olursa olsun, sağlık hizmetlerindeki profesyonel günlük yaşamınız için diyalog senaryoları ve terminoloji pratik yapın.',
+  trainScenarios: 'Sağlık hizmetlerindeki profesyonel günlük yaşamınız için gerçek dünya çalışma senaryoları ve terminolojisi pratiği yapın, orta düzeyde Almanca yeterliliğinden başlayarak.',
   targetAudience: 'Alman sağlık kurumlarında başarılı olmak isteyen doktorlar, hemşireler, bakıcılar ve tıp alanındaki öğrenciler için mükemmel.',
   // Registration page
   createAccount: 'Hesap Oluştur',
@@ -116,7 +115,7 @@ export const turkishTranslations = {
   recommended: 'Önerilen',
   selectLanguage: 'Dil seçin',
   ctaHeading: 'Dil becerilerinizi geliştirmeye hazır mısınız?',
-  ctaText: 'Şimdi alıştırmalarla başlayın ve tıp alanında profesyonel iletişiminizi geliştirin - A1\'den C1\'e kadar tüm dil seviyeleri için.',
+  ctaText: 'Alıştırmalara şimdi başlayın ve tıp alanındaki profesyonel iletişiminizi geliştirin - orta ila ileri düzey öğrenciler için (B1-C1).',
   startWithExercises: 'Alıştırmalarla başlayın',
   swipeToSwitch: 'Sekmeler arasında geçiş yapmak için sola veya sağa kaydırın',
   features: 'Özellikler',
