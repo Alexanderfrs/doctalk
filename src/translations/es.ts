@@ -1,3 +1,4 @@
+
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -77,6 +78,8 @@ export const spanishTranslations = {
   minimal: 'Mínimo',
   specificPreparation: 'Preparación específica para la vida profesional diaria',
   pricingTitle: 'Precios simples y transparentes',
+  pricing: 'Precios',
+  audience: 'Audiencia',
   pricingDescription: 'Elige el plan que mejor se adapte a tus objetivos de aprendizaje.',
   basic: 'Básico',
   forBeginners: 'Para principiantes',

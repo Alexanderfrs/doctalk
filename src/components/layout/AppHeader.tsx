@@ -148,7 +148,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   // For non-authenticated users, show basic navigation
   const navItems = [
     { path: "/#features", label: translate("features"), icon: null },
-    { path: "/#pricing", label: translate("pricingTitle"), icon: null },
+    { path: "/#target-users", label: translate("audience"), icon: null },
+    { path: "/#pricing", label: translate("pricing"), icon: null },
   ];
 
   return (

@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -149,6 +150,8 @@ export const englishTranslations = {
   minimal: 'Minimal',
   specificPreparation: 'Specific preparation for professional daily life',
   pricingTitle: 'Simple and transparent pricing',
+  pricing: 'Pricing',
+  audience: 'Audience',
   pricingDescription: 'Choose the plan that best suits your learning goals.',
   basic: 'Basic',
   forBeginners: 'For beginners',
