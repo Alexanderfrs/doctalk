@@ -1,3 +1,4 @@
+
 import { useLanguage } from '@/contexts/LanguageContext';
 
 // Create a vocabulary translation map for different languages
@@ -113,7 +114,6 @@ const uiTranslations: Record<string, Record<string, string>> = {
     'practiceMorePronunciation': 'Keep practicing! Focus on the pronunciation of German specific sounds.',
     'backToExercises': 'Back to Exercises',
     'vocabulary': 'Vocabulary',
-    'practicePronunciation': 'Practice Pronunciation',
     'dialog': 'Dialog',
     // Domain categories
     'patient-care': 'Patient Care',
