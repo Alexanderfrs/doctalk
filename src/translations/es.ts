@@ -58,7 +58,7 @@ export const spanishTranslations = {
   safeFlexibleTrainingDesc: 'Practica en un entorno seguro sin miedo a cometer errores. Tú marcas el ritmo y el enfoque de tu aprendizaje.',
   anerkennungFspSupport: 'Apoyo para Anerkennung y FSP',
   anerkennungExamPreparation: 'Preparación integral para el reconocimiento profesional (Anerkennung) y el examen de lenguaje técnico (Fachsprachenprüfung - FSP) en el sistema de salud alemán. (Próximamente)',
-  anerkennungExamPreparationLong: 'Navega por el sistema médico alemán con confianza. Ofrecemos preparación integral para el reconocimiento profesional (Anerkennung) y el examen de lenguaje técnico (FSP), allanando tu camino hacia una carrera exitosa en Alemania. (Próximamente)',
+  anerkennungExamPreparationLong: 'Benefíciate de una preparación integral para el reconocimiento profesional (Anerkennung) y el examen de lenguaje técnico (Fachsprachenprüfung), allanando tu camino hacia una carrera exitosa en Alemania.',
   nurseOptimized: 'Optimizado para profesionales de la salud',
   internationalNurses: 'Enfoque especial en las necesidades lingüísticas de los profesionales de la salud internacionales en Alemania.',
   certificationRecognition: 'Preparación FSP',
