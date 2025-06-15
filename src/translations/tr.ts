@@ -58,7 +58,7 @@ export const turkishTranslations = {
   safeFlexibleTrainingDesc: 'Hata yapma korkusu olmadan güvenli bir ortamda pratik yapın. Öğrenme hızınızı ve odağınızı siz belirlersiniz.',
   anerkennungFspSupport: 'Anerkennung ve FSP Desteği',
   anerkennungExamPreparation: 'Alman sağlık sisteminde mesleki tanınma (Anerkennung) ve Fachsprachenprüfung (FSP) için kapsamlı hazırlık. (Yakında gelecek)',
-  anerkennungExamPreparationLong: 'Mesleki tanınma (Anerkennung) ve özel dil sınavı (Fachsprachenprüfung) için kapsamlı hazırlıktan yararlanarak Almanya\'da başarılı bir kariyere giden yolunuzu açın.',
+  anerkennungExamPreparationLong: 'Mesleki tanınma (Anerkennung) ve özel dil sınavı (Fachsprachenprüfung) için etkili bir şekilde hazırlanın, Almanya\'da başarılı bir kariyere giden yolunuzu açın.',
   nurseOptimized: 'Sağlık Profesyonelleri İçin Optimize Edilmiştir',
   internationalNurses: 'Almanya\'daki uluslararası sağlık profesyonellerinin dil ihtiyaçlarına özel odaklanma.',
   certificationRecognition: 'FSP Hazırlığı',
