@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Heart } from "lucide-react";
+import { Heart, Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import AppLogo from "./AppLogo";
 
@@ -11,70 +11,25 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-medical-50 pt-12 pb-8 px-4 md:px-0 mt-auto">
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="col-span-1 md:col-span-1">
-            <div className="mb-4">
-              <AppLogo path="/" size="medium" />
-            </div>
-            <p className="text-neutral-600 text-sm">
-              {translate("footerTagline")}
-            </p>
-            <div className="flex items-center mt-4 text-sm text-neutral-500">
-              <Heart className="h-4 w-4 text-medical-400 mr-1" />
-              <span>{translate("madeWithLove")}</span>
-            </div>
+        <div className="flex flex-col items-center text-center">
+          <div className="mb-4">
+            <AppLogo path="/" size="medium" />
           </div>
-
-          <div className="col-span-1">
-            <h3 className="font-semibold text-neutral-800 mb-4">{translate("navigation")}</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  {translate("home")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/practice" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  {translate("practice")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/vocabulary" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  {translate("vocabulary")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/profile" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  {translate("profile")}
-                </Link>
-              </li>
-            </ul>
+          <p className="text-neutral-600 text-sm max-w-md">
+            Language training for healthcare professionals
+          </p>
+          <div className="flex items-center mt-4 text-sm text-neutral-500">
+            <Heart className="h-4 w-4 text-medical-400 mr-1" />
+            <span>{translate("madeWithLove")}</span>
           </div>
-
-          <div className="col-span-1">
-            <h3 className="font-semibold text-neutral-800 mb-4">{translate("categories")}</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/practice?category=patient-care" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  {translate("patientCare")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/practice?category=emergency" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  {translate("emergency")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/practice?category=documentation" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  {translate("documentation")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/practice?category=teamwork" className="text-neutral-600 hover:text-medical-600 transition-colors">
-                  {translate("teamwork")}
-                </Link>
-              </li>
-            </ul>
+          <div className="flex items-center mt-4 text-sm text-neutral-600">
+            <Mail className="h-4 w-4 mr-2" />
+            <a
+              href="mailto:Doctalk.ai@gmail.com"
+              className="hover:text-medical-600 transition-colors"
+            >
+              Doctalk.ai@gmail.com
+            </a>
           </div>
         </div>
 
@@ -100,3 +55,4 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+
