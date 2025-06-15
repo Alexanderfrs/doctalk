@@ -7,22 +7,24 @@ const TargetUsersSection = () => {
   // To support multiple languages, these strings should be moved to translation files.
   const users = [
     {
-      title: "For Doctors",
-      description: "Perfect your patient consultations, from taking histories to explaining complex diagnoses and treatment plans. Prepare for the FSP exam with realistic scenarios.",
-      image: "https://images.unsplash.com/photo-1551198298-95851d2e2aCF?q=80&w=2070&auto=format&fit=crop",
-      icon: <Stethoscope className="h-8 w-8" />
-    },
-    {
       title: "For Care Workers",
       description: "Master everyday communication with patients and colleagues, confidently handle documentation, and understand care instructions with ease.",
       image: "https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?q=80&w=2070&auto=format&fit=crop",
       icon: <HeartHandshake className="h-8 w-8" />
     },
     {
+      title: "For Doctors",
+      description: "Perfect your patient consultations, from taking histories to explaining complex diagnoses and treatment plans. Prepare for the FSP exam with realistic scenarios.",
+      image: "https://images.unsplash.com/photo-1576091160550-2173dba9996a?q=80&w=2070&auto=format&fit=crop",
+      icon: <Stethoscope className="h-8 w-8" />,
+      isComingSoon: true
+    },
+    {
       title: "For Medical Students",
       description: "Build a strong foundation for your clinical rotations (Famulatur/PJ) and future career in Germany. Practice realistic scenarios and get ready for your exams.",
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop",
-      icon: <GraduationCap className="h-8 w-8" />
+      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop",
+      icon: <GraduationCap className="h-8 w-8" />,
+      isComingSoon: true
     }
   ];
 
@@ -40,7 +42,18 @@ const TargetUsersSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {users.map((user, index) => (
           <div key={index} className="bg-white rounded-xl shadow-sm border border-neutral-100 hover:shadow-md transition-shadow overflow-hidden flex flex-col">
-            <img src={user.image} alt={user.title} className="w-full h-48 object-cover" />
+            <div className="relative">
+              <img 
+                src={user.image} 
+                alt={user.title} 
+                className={`w-full h-48 object-cover ${user.isComingSoon ? 'filter grayscale' : ''}`}
+              />
+              {user.isComingSoon && (
+                <div className="absolute top-3 right-3 bg-medical-500 text-white text-xs font-bold uppercase px-3 py-1.5 rounded-full shadow-md">
+                  Coming Soon
+                </div>
+              )}
+            </div>
             <div className="p-6 flex flex-col flex-grow">
               <div className="flex items-center gap-4 mb-4">
                  <div className="flex-shrink-0 bg-medical-50 text-medical-600 rounded-full p-3">
