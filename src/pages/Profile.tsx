@@ -48,7 +48,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col dark:bg-neutral-900">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white dark:bg-neutral-900">
       {isMobile ? <MobileHeader /> : <AppHeader />}
       
       <main className={`flex-grow ${isMobile ? 'pt-16 pb-20' : 'pt-24'} px-4 md:px-8`}>

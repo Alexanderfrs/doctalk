@@ -64,7 +64,7 @@ const ScenarioDetail = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
       {isMobile ? <MobileHeader /> : <AppHeader />}
       <main className={cn("flex-grow", isMobile ? "pt-20 pb-24" : "pt-24")}>
         <div className="container mx-auto px-4">

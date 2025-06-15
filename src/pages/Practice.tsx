@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AppHeader from "@/components/layout/AppHeader";
@@ -75,91 +74,6 @@ const Practice: React.FC = () => {
               Verbessern Sie Ihre medizinischen Deutschkenntnisse mit realistischen Patientensituationen.
             </p>
           </div>
-
-          {/* Progress Overview - Mobile: Collapsible, Desktop: Always visible */}
-          {isMobile ? (
-            <CollapsibleSection
-              title="Fortschritt"
-              icon={<TrendingUp className="h-4 w-4" />}
-              defaultOpen={false}
-            >
-              <div className="grid grid-cols-2 gap-3">
-                <div className="text-center p-3 bg-blue-50 rounded-lg">
-                  <MessageCircle className="h-5 w-5 text-blue-600 mx-auto mb-1" />
-                  <p className="text-xs text-gray-600">Szenarien</p>
-                  <p className="text-lg font-bold">{userProgress?.scenarios_completed || 0}</p>
-                </div>
-                <div className="text-center p-3 bg-green-50 rounded-lg">
-                  <Target className="h-5 w-5 text-green-600 mx-auto mb-1" />
-                  <p className="text-xs text-gray-600">Streak</p>
-                  <p className="text-lg font-bold">{userProgress?.current_streak || 0} Tage</p>
-                </div>
-              </div>
-              <div className="mt-3 text-center p-3 bg-purple-50 rounded-lg">
-                <p className="text-xs text-gray-600">Gesamtfortschritt</p>
-                <p className="text-lg font-bold">{Math.round(((userProgress?.scenarios_completed || 0) / Math.max(scenarios.length, 1)) * 100)}%</p>
-                <p className="text-xs text-gray-500">Level: {profile?.german_level || 'B1'}</p>
-              </div>
-            </CollapsibleSection>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8" data-tutorial-target="practice-progress">
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <MessageCircle className="h-5 w-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Szenarien</p>
-                      <p className="text-xl font-bold">{userProgress?.scenarios_completed || 0}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-green-100 rounded-lg">
-                      <Target className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Streak</p>
-                      <p className="text-xl font-bold">{userProgress?.current_streak || 0} Tage</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-100 rounded-lg">
-                      <TrendingUp className="h-5 w-5 text-purple-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Fortschritt</p>
-                      <p className="text-xl font-bold">{Math.round(((userProgress?.scenarios_completed || 0) / Math.max(scenarios.length, 1)) * 100)}%</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-yellow-100 rounded-lg">
-                      <MessageCircle className="h-5 w-5 text-yellow-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Level</p>
-                      <p className="text-xl font-bold">{profile?.german_level || 'B1'}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
 
           {/* Quick Start Section */}
           <div className="mb-6" data-tutorial-target="quick-start">

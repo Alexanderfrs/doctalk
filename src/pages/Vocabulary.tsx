@@ -132,7 +132,7 @@ const Vocabulary = () => {
 
   if (showPractice) {
     return (
-      <div className="min-h-screen flex flex-col bg-neutral-50">
+      <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
         {isMobile ? <MobileHeader /> : <AppHeader showSlogan={false} showAuthButtons={true} />}
         <main className={cn("flex-grow", isMobile ? "pt-20 pb-24" : "pt-24", "px-4")}>
           <div className="container mx-auto">
@@ -153,7 +153,7 @@ const Vocabulary = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
       {isMobile ? <MobileHeader /> : <AppHeader showSlogan={false} showAuthButtons={true} />}
       <main className={cn("flex-grow", isMobile ? "pt-20 pb-24" : "pt-24", "px-4")}>
         <div className="container mx-auto">
