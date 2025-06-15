@@ -123,8 +123,8 @@ export const germanTranslations = {
   learnTerms: 'Lernen Sie aus einer umfangreichen Bibliothek medizinischer Begriffe, Diagnosen und Phrasen, die in der täglichen klinischen Praxis wirklich relevant sind.',
   practicalDialogs: 'Praktische Dialogszenarien',
   practiceConversations: 'Üben Sie mit realistischen Gesprächen aus dem Krankenhausalltag - von der Patientenaufnahme bis zu den Visiten.',
-  allLanguageLevels: 'Für alle Sprachniveaus',
-  customContent: 'Inhalte, die für jedes Sprachniveau von A1 bis C1 zugeschnitten sind - Sie können sofort beginnen, unabhängig von Ihrem aktuellen Niveau.',
+  allLanguageLevels: 'Karriere & System-Navigator',
+  customContent: 'Navigieren Sie mühelos durch das deutsche Gesundheitssystem. Erhalten Sie wertvolle Einblicke in die Gesundheitsbürokratie, die Arbeitsplatzkultur und Karrierewege – und entdecken Sie Stellenangebote über ein Netzwerk von vertrauenswürdigen Gesundheitseinrichtungen.',
   expertDeveloped: 'Entwickelt mit Experten',
   contentDevelopment: 'Alle Inhalte wurden in Zusammenarbeit mit Ärzten, Pflegekräften und Sprachlehrern entwickelt und überprüft.',
   safeFlexibleTraining: 'Sicheres & Flexibles Training',
@@ -237,7 +237,7 @@ export const germanTranslations = {
   swipeRight: 'Nach rechts wischen',
   
   // Beta signup translations to Alpha
-  joinBeta: "Anmeldung zur priorisierten Alpha-Warteliste",
+  joinBeta: "Alpha-Release-Prioritätszugang",
   signupForBetaRelease: "Treten Sie der Alpha-Prioritäts-Warteliste bei",
   betaAccessTitle: "Alpha-Release-Prioritätszugang",
   betaAccessDescription: "Seien Sie einer der ersten 50 Tester, die Zugang zu DocTalk erhalten. Geben Sie Ihre E-Mail-Adresse ein, um unserer Prioritäts-Warteliste beizutreten.",
