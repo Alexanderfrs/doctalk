@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -69,7 +68,7 @@ const HeroSection = () => {
                <p className="text-center text-sm text-neutral-500 mt-2">
                 {translate('alphaAccessLimitedPre')}{' '}
                 <span className="font-bold">{translate('alphaAccessLimitedBold')}</span>{' '}
-                {translate('alphaAccessLimitedPost')}
+                {translate('alphaAccessCta')}
               </p>
             </div>
           </div>
@@ -148,7 +147,6 @@ const HeroSection = () => {
             <p className="text-sm text-neutral-500 mt-2">
               {translate('alphaAccessLimitedPre')}{' '}
               <span className="font-bold">{translate('alphaAccessLimitedBold')}</span>{' '}
-              {translate('alphaAccessLimitedPost')}{' '}
               {translate('alphaAccessCta')}
             </p>
           </div>
