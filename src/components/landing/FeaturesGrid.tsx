@@ -1,5 +1,4 @@
 
-```tsx
 import React from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Heart, MessageCircle, Globe, Users, Award, ShieldCheck } from "lucide-react";
@@ -68,4 +67,3 @@ const FeaturesGrid = () => {
 };
 
 export default FeaturesGrid;
-```
