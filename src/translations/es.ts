@@ -54,7 +54,7 @@ export const spanishTranslations = {
   expertDeveloped: 'Desarrollado con expertos',
   contentDevelopment: 'Todo el contenido fue desarrollado y revisado en colaboración con médicos, enfermeras y profesores de idiomas.',
   safeFlexibleTraining: 'Entrenamiento seguro y flexible',
-  safeFlexibleTrainingDesc: 'Practica de forma segura, recibe feedback instantáneo (incluso de pronunciación) y sigue tu progreso en tu ruta de aprendizaje personalizada.',
+  safeFlexibleTrainingDesc: 'Practica en un entorno seguro, recibe retroalimentación instantánea, incluida la pronunciación, y sigue el progreso en tu ruta de aprendizaje personalizada.',
   anerkennungFspSupport: 'Apoyo para Anerkennung y FSP',
   anerkennungExamPreparation: 'Preparación integral para el reconocimiento profesional (Anerkennung) y el examen de lenguaje técnico (Fachsprachenprüfung - FSP) en el sistema de salud alemán. (Próximamente)',
   anerkennungExamPreparationLong: 'Prepárate eficazmente para el reconocimiento profesional (Anerkennung) y el examen de lenguaje técnico (Fachsprachenprüfung), allanando tu camino hacia una carrera exitosa en Alemania.',

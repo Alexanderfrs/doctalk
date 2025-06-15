@@ -1,4 +1,3 @@
-
 import { useLanguage } from '@/contexts/LanguageContext';
 
 // Create a vocabulary translation map for different languages
@@ -143,9 +142,10 @@ const uiTranslations: Record<string, Record<string, string>> = {
     'showFilters': 'Show Filters',
     'hideFilters': 'Hide Filters',
     'viewVocabulary': 'View Vocabulary',
+    'practicePronunciation': 'Practice Pronunciation',
     'practiceDescription': 'Practice medical German in realistic scenarios from your professional activities',
     'safeFlexibleTraining': 'Safe & Flexible Training',
-    'safeFlexibleTrainingDesc': 'Practice safely, get instant feedback (including pronunciation), and track progress on your custom learning path.',
+    'safeFlexibleTrainingDesc': 'Practice in a safe environment, get instant feedback - including pronunciation - and track the progress on your tailored learning path.',
   }
 };
 
@@ -191,14 +191,14 @@ uiTranslations.ro = {
   'practice': 'Exerciții',
   'practiceDescription': 'Exersează germana medicală în scenarii realiste din activitatea ta profesională',
   'safeFlexibleTraining': 'Antrenament Sigur și Flexibil',
-  'safeFlexibleTrainingDesc': 'Exersați în siguranță, obțineți feedback instantaneu (inclusiv pronunția) și urmăriți progresul pe calea dvs. de învățare personalizată.',
+  'safeFlexibleTrainingDesc': 'Exersați într-un mediu sigur, primiți feedback instantaneu - inclusiv pronunția - și urmăriți progresul pe calea dvs. de învățare personalizată.',
 };
 
 // Add specific translations for German
 uiTranslations.de = {
   ...uiTranslations.en,
   'safeFlexibleTraining': 'Sicheres & Flexibles Training',
-  'safeFlexibleTrainingDesc': 'Üben Sie sicher, erhalten Sie sofortiges Feedback (einschließlich Aussprache) und verfolgen Sie den Fortschritt auf Ihrem individuellen Lernpfad.',
+  'safeFlexibleTrainingDesc': 'Üben Sie in einer sicheren Umgebung, erhalten Sie sofortiges Feedback - einschließlich Aussprache - und verfolgen Sie den Fortschritt auf Ihrem maßgeschneiderten Lernpfad.',
 };
 
 // Add specific translations for Polish
@@ -210,10 +210,32 @@ uiTranslations.pl = {
   'noVocabularyFound': 'Nie znaleziono słownictwa z wybranymi filtrami.',
   'resetFilters': 'Resetuj filtry',
   'searchVocabulary': 'Szukaj słownictwa...',
+  'showTranslation': 'Arată tłumaczenie',
+  'hideTranslation': 'Ukryj tłumaczenie',
+  'recording': 'Nagrywanie...',
+  'repeatAfterMe': 'Powtórz za mną',
+  'pronunciationFeedback': 'Informacje zwrotne dotyczące wymowy',
+  'hint': 'Wskazówka',
+  'repeat': 'Powtórz',
+  'languageHint': 'Wskazówka językowa',
+  'defaultLanguageHint': 'Zwróć uwagę na poprawne użycie artykułu i wymowę terminów medycznych.',
+  'importantVocabularyInScenario': 'Ważne słownictwo w tym scenariuszu',
+  'listenToPronunciation': 'Posłuchaj wymowy',
+  'noVocabularyForScenario': 'Brak słownictwa dla tego scenariusza.',
+  'aboutThisScenario': 'O tym scenariuszu',
+  'context': 'Kontekst',
+  'learningObjectives': 'Cele uczenia się',
+  'involvedPersons': 'Zaangażowane osoby',
+  'similarScenarios': 'Podobne scenariusze',
+  'doctor': 'Lekarz',
+  'patient': 'Pacjent',
+  'nurse': 'Pielęgniarka',
+  'colleague': 'Kolega',
+  'user': 'Ty',
   'practice': 'Ćwiczenia',
   'practiceDescription': 'Ćwicz niemiecki medyczny w realistycznych scenariuszach z twojej działalności zawodowej',
   'safeFlexibleTraining': 'Bezpieczny i Elastyczny Trening',
-  'safeFlexibleTrainingDesc': 'Ćwicz bezpiecznie, otrzymuj natychmiastową informację zwrotną (w tym wymowę) i śledź postępy na swojej spersonalizowanej ścieżce nauki.',
+  'safeFlexibleTrainingDesc': 'Ćwicz w bezpiecznym środowisku, otrzymuj natychmiastowe informacje zwrotne - w tym wymowę - i śledź postępy na swojej dostosowanej ścieżce nauki.',
 };
 
 export const useTranslation = () => {
