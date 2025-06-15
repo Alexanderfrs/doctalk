@@ -53,6 +53,8 @@ export const turkishTranslations = {
   customContent: 'A1\'den C1\'e kadar her dil seviyesi için uyarlanmış içerik - mevcut seviyeniz ne olursa olsun hemen başlayabilirsiniz.',
   expertDeveloped: 'Uzmanlarla Geliştirildi',
   contentDevelopment: 'Tüm içerik, doktorlar, hemşireler ve dil öğretmenleriyle işbirliği içinde geliştirildi ve gözden geçirildi.',
+  anerkennungFspSupport: 'Anerkennung ve FSP Desteği',
+  anerkennungExamPreparation: 'Alman sağlık sisteminde mesleki tanınma (Anerkennung) ve Fachsprachenprüfung (FSP) için kapsamlı hazırlık. (Yakında gelecek)',
   nurseOptimized: 'Sağlık Profesyonelleri İçin Optimize Edilmiştir',
   internationalNurses: 'Almanya\'daki uluslararası sağlık profesyonellerinin dil ihtiyaçlarına özel odaklanma.',
   certificationRecognition: 'FSP Hazırlığı',

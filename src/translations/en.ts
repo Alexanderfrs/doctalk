@@ -128,7 +128,7 @@ export const englishTranslations = {
   expertDeveloped: 'Developed with Experts',
   contentDevelopment: 'All content was developed and reviewed in collaboration with doctors, nurses, and language teachers.',
   anerkennungFspSupport: 'Anerkennung & FSP Support',
-  anerkennungExamPreparation: 'Comprehensive preparation for professional recognition (Anerkennung) and the Fachsprachenprüfung (FSP) in German healthcare.',
+  anerkennungExamPreparation: 'Comprehensive preparation for professional recognition (Anerkennung) and the Fachsprachenprüfung (FSP) in German healthcare. (Coming Soon)',
   flexibleLearning: 'Flexible Learning',
   flexibleLearningDesc: 'Learn at your own pace with immediate practical application in your daily medical work environment.',
   comparisonTitle: 'Compared to general language learning apps',

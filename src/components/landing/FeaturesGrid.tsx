@@ -29,8 +29,8 @@ const FeaturesGrid = () => {
     },
     {
       icon: <Rocket className="h-8 w-8 text-medical-600" />,
-      title: "Karriere-Beschleuniger", // "Career Accelerator"
-      description: "Verschaffen Sie sich einen Wettbewerbsvorteil. Unser gezieltes Training ist darauf ausgelegt, Sie schneller zertifizieren zu lassen und in Deutschland arbeitsfähig zu machen."
+      title: t('anerkennungFspSupport'),
+      description: t('anerkennungExamPreparation')
     },
     {
       icon: <ShieldCheck className="h-8 w-8 text-medical-600" />,
