@@ -129,7 +129,7 @@ export const englishTranslations = {
   expertDeveloped: 'Developed with Experts',
   contentDevelopment: 'All content was developed and reviewed in collaboration with doctors, nurses, and language teachers.',
   safeFlexibleTraining: 'Safe & Flexible Training',
-  safeFlexibleTrainingDesc: 'Practice in a safe environment without fear of making mistakes. Set your pace, get instant feedback, and track your learning progress.',
+  safeFlexibleTrainingDesc: 'Practice safely, get instant feedback (including pronunciation), and track progress on your custom learning path.',
   anerkennungFspSupport: 'Anerkennung & FSP Support',
   anerkennungExamPreparation: 'Comprehensive preparation for professional recognition (Anerkennung) and the Fachsprachenprüfung (FSP) in German healthcare. (Coming Soon)',
   anerkennungExamPreparationLong: 'Prepare effectively for professional recognition (Anerkennung) and the specialized language exam (Fachsprachenprüfung), paving your way to a successful career in Germany.',

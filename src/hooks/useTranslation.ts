@@ -190,7 +190,7 @@ uiTranslations.ro = {
   'practice': 'Exerciții',
   'practiceDescription': 'Exersează germana medicală în scenarii realiste din activitatea ta profesională',
   'safeFlexibleTraining': 'Antrenament Sigur și Flexibil',
-  'safeFlexibleTrainingDesc': 'Exersează într-un mediu sigur, fără teama de a greși. Tu stabilești ritmul și focusul învățării tale.',
+  'safeFlexibleTrainingDesc': 'Exersează în siguranță, primește feedback instant (inclusiv la pronunție) și urmărește progresul pe parcursul tău de învățare personalizat.',
 };
 
 // Add specific translations for German
@@ -211,7 +211,7 @@ uiTranslations.pl = {
   'practice': 'Ćwiczenia',
   'practiceDescription': 'Ćwicz niemiecki medyczny w realistycznych scenariuszach z twojej działalności zawodowej',
   'safeFlexibleTraining': 'Bezpieczny i Elastyczny Trening',
-  'safeFlexibleTrainingDesc': 'Ćwicz w bezpiecznym środowisku bez obawy o popełnienie błędów. Ty decydujesz o tempie i zakresie swojej nauki.',
+  'safeFlexibleTrainingDesc': 'Ćwicz bezpiecznie, otrzymuj natychmiastową informację zwrotną (w tym wymowę) i śledź postępy na swojej niestandardowej ścieżce nauki.',
 };
 
 export const useTranslation = () => {
