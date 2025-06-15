@@ -210,7 +210,7 @@ uiTranslations.pl = {
   'noVocabularyFound': 'Nie znaleziono słownictwa z wybranymi filtrami.',
   'resetFilters': 'Resetuj filtry',
   'searchVocabulary': 'Szukaj słownictwa...',
-  'showTranslation': 'Arată tłumaczenie',
+  'showTranslation': 'Pokaż tłumaczenie',
   'hideTranslation': 'Ukryj tłumaczenie',
   'recording': 'Nagrywanie...',
   'repeatAfterMe': 'Powtórz za mną',
