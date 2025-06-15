@@ -163,8 +163,8 @@ export const spanishTranslations = {
   medicalEducation: "Educación médica",
   
   // Beta signup translations to Alpha
-  joinBeta: "Inscripción en la lista de espera prioritaria de Alpha",
-  signupForBetaRelease: "Únete a la lista de espera prioritaria Alfa",
+  joinBeta: "Obtener Acceso Prioritario",
+  signupForBetaRelease: "Acceso Prioritario Alfa",
   betaAccessTitle: "Acceso prioritario Alfa",
   betaAccessDescription: "Sé uno de los primeros 50 profesionales en obtener acceso a DocTalk. Ingresa tu correo electrónico para unirte a nuestra lista de espera prioritaria.",
   emailAddress: "Dirección de correo electrónico",

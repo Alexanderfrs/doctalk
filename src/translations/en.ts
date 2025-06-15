@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -214,12 +215,12 @@ export const englishTranslations = {
   swipeRight: 'Swipe right',
   
   // Beta signup translations to Alpha
-  joinBeta: "Alpha release priority waitlist sign-up",
-  signupForBetaRelease: "Join the Alpha priority waitlist",
+  joinBeta: "Get Priority Access",
+  signupForBetaRelease: "Get Alpha Priority Access",
   betaAccessTitle: "Alpha Priority Access",
   betaAccessDescription: "Be one of the first 50 professionals to get access to DocTalk. Enter your email to join our priority waitlist.",
   emailAddress: "Email Address",
-  getEarlyAccess: "Get Early Access",
+  getEarlyAccess: "Get Priority Access",
   submitting: "Submitting...",
   thankYouForJoining: "Thank you for joining the waitlist!",
   betaConfirmationMessage: "We'll notify you when DocTalk is ready for Alpha testing.",

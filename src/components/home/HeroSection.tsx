@@ -61,7 +61,7 @@ const HeroSection = () => {
               </Button>
               <BetaSignupDialog
                 triggerElement={
-                  <Button variant="outline" size="lg" className="btn-secondary w-full">
+                  <Button variant="secondary" size="lg" className="w-full">
                     {translate("joinBeta")}
                   </Button>
                 }
@@ -139,7 +139,7 @@ const HeroSection = () => {
               </Button>
               <BetaSignupDialog
                 triggerElement={
-                  <Button variant="outline" size="lg" className="btn-secondary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
+                  <Button variant="secondary" size="lg" className="shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
                     {translate("joinBeta")}
                   </Button>
                 }
