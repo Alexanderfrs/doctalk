@@ -117,8 +117,8 @@ export const germanTranslations = {
   // Landing page
   startFree: 'Kostenlos starten',
   learnMore: 'Mehr erfahren',
-  specializedForMedical: 'Spezialisiert für den medizinischen Bereich',
-  doctalkDifference: 'DocTalk unterscheidet sich von allgemeinen Sprachlern-Apps durch die Fokussierung auf den medizinischen Kontext.',
+  specializedForMedical: 'Warum DocTalk wählen?',
+  doctalkDifference: 'Entdecken Sie, wie DocTalk gezieltes, flexibles Training bietet, das allgemeine Apps, Privatlehrer und Sprachschulen einfach nicht erreichen können.',
   medicalVocabulary: 'Medizinische Terminologie',
   learnTerms: 'Lernen Sie aus einer umfangreichen Bibliothek medizinischer Begriffe, Diagnosen und Phrasen, die in der täglichen klinischen Praxis wirklich relevant sind.',
   practicalDialogs: 'Praktische Dialogszenarien',

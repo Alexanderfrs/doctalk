@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -118,8 +117,8 @@ export const englishTranslations = {
   // Landing page
   startFree: 'Start for free',
   learnMore: 'Learn more',
-  specializedForMedical: 'Specialized for the medical field',
-  doctalkDifference: 'DocTalk differs from general language learning apps by focusing on the medical context.',
+  specializedForMedical: 'Why Choose DocTalk?',
+  doctalkDifference: 'Discover how DocTalk provides targeted, flexible training that general apps, personal tutors, and language schools simply can\'t match.',
   medicalVocabulary: 'Essential Medical Vocabulary',
   learnTerms: 'Master essential medical terminology, including clinical terms, equipment names, common abbreviations, and everyday colloquialisms used in healthcare settings.',
   practicalDialogs: 'Real-World Medical Dialogues',

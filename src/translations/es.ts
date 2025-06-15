@@ -43,8 +43,8 @@ export const spanishTranslations = {
   // Landing page
   startFree: 'Comienza gratis',
   learnMore: 'Saber más',
-  specializedForMedical: 'Especializado para el campo médico',
-  doctalkDifference: 'DocTalk se diferencia de las aplicaciones generales de aprendizaje de idiomas al centrarse en el contexto médico.',
+  specializedForMedical: '¿Por qué elegir DocTalk?',
+  doctalkDifference: 'Descubra cómo DocTalk proporciona una formación específica y flexible que las aplicaciones generales, los tutores personales y las escuelas de idiomas simplemente no pueden igualar.',
   medicalVocabulary: 'Vocabulario Médico Esencial',
   learnTerms: 'Domina la terminología médica esencial, incluyendo términos clínicos, nombres de equipos, abreviaturas comunes y coloquialismos cotidianos utilizados en entornos sanitarios.',
   practicalDialogs: 'Diálogos Médicos del Mundo Real',
