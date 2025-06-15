@@ -1,3 +1,4 @@
+
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -53,6 +54,8 @@ export const spanishTranslations = {
   customContent: 'Contenido adaptado para cada nivel de idioma, desde A1 hasta C1 - puedes comenzar inmediatamente, independientemente de tu nivel actual.',
   expertDeveloped: 'Desarrollado con expertos',
   contentDevelopment: 'Todo el contenido fue desarrollado y revisado en colaboración con médicos, enfermeras y profesores de idiomas.',
+  safeFlexibleTraining: 'Entrenamiento seguro y flexible',
+  safeFlexibleTrainingDesc: 'Practica en un entorno seguro sin miedo a cometer errores. Tú marcas el ritmo y el enfoque de tu aprendizaje.',
   nurseOptimized: 'Optimizado para profesionales de la salud',
   internationalNurses: 'Enfoque especial en las necesidades lingüísticas de los profesionales de la salud internacionales en Alemania.',
   certificationRecognition: 'Preparación FSP',

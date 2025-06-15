@@ -1,4 +1,3 @@
-
 import { useLanguage } from '@/contexts/LanguageContext';
 
 // Create a vocabulary translation map for different languages
@@ -143,7 +142,9 @@ const uiTranslations: Record<string, Record<string, string>> = {
     'showFilters': 'Show Filters',
     'hideFilters': 'Hide Filters',
     'viewVocabulary': 'View Vocabulary',
-    'practiceDescription': 'Practice medical German in realistic scenarios from your professional activities'
+    'practiceDescription': 'Practice medical German in realistic scenarios from your professional activities',
+    'safeFlexibleTraining': 'Safe & Flexible Training',
+    'safeFlexibleTrainingDesc': 'Practice in a safe environment without fear of making mistakes. You set the pace and focus of your learning.',
   }
 };
 
@@ -187,7 +188,15 @@ uiTranslations.ro = {
   'colleague': 'Coleg',
   'user': 'Tu',
   'practice': 'Exerciții',
-  'practiceDescription': 'Exersează germana medicală în scenarii realiste din activitatea ta profesională'
+  'practiceDescription': 'Exersează germana medicală în scenarii realiste din activitatea ta profesională',
+  'safeFlexibleTraining': 'Antrenament Sigur și Flexibil',
+  'safeFlexibleTrainingDesc': 'Exersează într-un mediu sigur, fără teama de a greși. Tu stabilești ritmul și focusul învățării tale.',
+};
+
+// Add specific translations for German
+uiTranslations.de = {
+  'safeFlexibleTraining': 'Sicheres & Flexibles Training',
+  'safeFlexibleTrainingDesc': 'Trainiere in einer sicheren Umgebung ohne Angst vor Fehlern. Du bestimmst das Tempo und den Fokus deines Lernens.',
 };
 
 // Add specific translations for Polish
@@ -200,19 +209,21 @@ uiTranslations.pl = {
   'resetFilters': 'Resetuj filtry',
   'searchVocabulary': 'Szukaj słownictwa...',
   'practice': 'Ćwiczenia',
-  'practiceDescription': 'Ćwicz niemiecki medyczny w realistycznych scenariuszach z twojej działalności zawodowej'
+  'practiceDescription': 'Ćwicz niemiecki medyczny w realistycznych scenariuszach z twojej działalności zawodowej',
+  'safeFlexibleTraining': 'Bezpieczny i Elastyczny Trening',
+  'safeFlexibleTrainingDesc': 'Ćwicz w bezpiecznym środowisku bez obawy o popełnienie błędów. Ty decydujesz o tempie i zakresie swojej nauki.',
 };
 
 export const useTranslation = () => {
-  const { translate, getGermanContent, userLanguage } = useLanguage();
+  const { translate, getGermanContent, userLanguage, interfaceLanguage } = useLanguage();
 
   // Enhanced translate function that checks first in our local UI translations
   const t = (key: string): string => {
     if (!key) return '';
     
     // Check if we have this key in our local UI translations
-    if (uiTranslations[userLanguage]?.[key]) {
-      return uiTranslations[userLanguage][key];
+    if (uiTranslations[interfaceLanguage]?.[key]) {
+      return uiTranslations[interfaceLanguage][key];
     }
     
     // If not, fall back to the context's translate function
