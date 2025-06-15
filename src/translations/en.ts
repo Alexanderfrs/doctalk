@@ -312,5 +312,7 @@ export const englishTranslations = {
   "mobileOnboarding.screen4.title": "Practice Real-World Scenarios",
   "mobileOnboarding.screen4.subtitle": "Speak and Listen to Real Medical Dialogue", 
   "mobileOnboarding.screen4.description": "Practice Real-World Scenarios with AI",
-  start: "Start"
+  start: "Start",
+  tailoredForMedicalCareer: "Tailored for every step of your medical career",
+  doctalkDesignedFor: "DocTalk is designed to meet the specific language needs of different healthcare professionals, helping you communicate with confidence and precision."
 };

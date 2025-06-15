@@ -169,5 +169,7 @@ export const spanishTranslations = {
   alreadySignedUp: "Ya registrado",
   emailAlreadyRegistered: "Este correo electrónico ya está registrado para acceso beta.",
   errorOccurred: "Ocurrió un error",
-  pleaseRetryLater: "Por favor, inténtalo de nuevo más tarde."
+  pleaseRetryLater: "Por favor, inténtalo de nuevo más tarde.",
+  tailoredForMedicalCareer: "Adaptado para cada paso de tu carrera médica",
+  doctalkDesignedFor: "DocTalk está diseñado para satisfacer las necesidades lingüísticas específicas de diferentes profesionales de la salud, ayudándote a comunicarte con confianza y precisión."
 };

@@ -62,6 +62,8 @@ export const romanianTranslations = {
   generalApps: 'Aplicații generale',
   medicalVocabularyComparison: 'Limitat sau inexistent',
   comprehensiveSpecialized: 'Cuprinzător și specializat',
+  tailoredForMedicalCareer: 'Adaptat pentru fiecare pas al carierei tale medicale',
+  doctalkDesignedFor: 'DocTalk este conceput pentru a satisface nevoile lingvistice specifice ale diferitelor profesii din domeniul sănătății, ajutându-vă să comunicați cu încredere și precizie.',
   dialogScenarios: 'Scenarii de dialog practice',
   everydayConversations: 'Conversații generale de zi cu zi',
   realisticMedical: 'Situații medicale realiste',
@@ -217,7 +219,9 @@ export const romanianTranslations = {
   genericConversations: "Conversații generale zilnice",
   rigidSchedules: "Programe rigide de clasă",
   generalContent: "Conținut lingvistic general",
-  medicalTeamWorking: "Echipă medicală fericită lucrând împreună"
+  medicalTeamWorking: "Echipă medicală fericită lucrând împreună",
+  tailoredForMedicalCareer: 'Adaptat pentru fiecare pas al carierei tale medicale',
+  doctalkDesignedFor: 'DocTalk este conceput pentru a satisface nevoile lingvistice specifice ale diferitelor profesii din domeniul sănătății, ajutându-vă să comunicați cu încredere și precizie.'
 };
 
 export const polishTranslations = {
@@ -245,7 +249,7 @@ export const polishTranslations = {
   improveYour: 'Popraw swój',
   medicalCommunication: 'komunikację medyczną',
   trainScenarios: 'Ćwicz scenariusze dialogowe i terminologię do codziennego życia zawodowego w opiece zdrowotnej, niezależnie od poziomu języka.',
-  targetAudience: 'Idealny dla lekarzy, pielęgniarek, opiekunów i studentów kierunków medycznych, którzy chcą doskonalić się w niemieckich placówkach opieki zdrowotnej.',
+  targetAudience: 'Idealny dla lekarzy, pielęgniarek, opiekunów i studentów medycyny, którzy chcą odnosić sukcesy w niemieckich placówkach opieki zdrowotnej.',
   // Registration page
   createAccount: 'Utwórz konto',
   startJourney: 'Rozpocznij swoją podróż, aby stać się ekspertem w języku medycznym',
@@ -284,6 +288,8 @@ export const polishTranslations = {
   generalApps: 'Ogólne aplikacje',
   medicalVocabularyComparison: 'Ograniczone lub nieistniejące',
   comprehensiveSpecialized: 'Kompleksowe i specjalistyczne',
+  tailoredForMedicalCareer: 'Dostosowane do każdego etapu Twojej kariery medycznej',
+  doctalkDesignedFor: 'DocTalk został zaprojektowany, aby sprostać specyficznym potrzebom językowym różnych zawodów medycznych, pomagając Ci komunikować się z pewnością siebie i precyzją.',
   dialogScenarios: 'Praktyczne scenariusze dialogowe',
   everydayConversations: 'Ogólne codzienne rozmowy',
   realisticMedical: 'Realistyczne sytuacje medyczne',
@@ -436,5 +442,7 @@ export const polishTranslations = {
   genericConversations: "Ogólne codzienne rozmowy",
   rigidSchedules: "Sztywne harmonogramy zajęć",
   generalContent: "Ogólne treści językowe",
-  medicalTeamWorking: "Szczęśliwy zespół medyczny pracujący razem"
+  medicalTeamWorking: "Szczęśliwy zespół medyczny pracujący razem",
+  tailoredForMedicalCareer: 'Dostosowane do każdego etapu Twojej kariery medycznej',
+  doctalkDesignedFor: 'DocTalk został zaprojektowany, aby sprostać specyficznym potrzebom językowym różnych zawodów medycznych, pomagając Ci komunikować się z pewnością siebie i precyzją.'
 };

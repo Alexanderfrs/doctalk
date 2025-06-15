@@ -119,7 +119,7 @@ export const russianTranslations = {
   // Footer translations
   footerTagline: 'Языковое обучение для медицинских работников - улучшите свое общение для оптимального ухода за пациентами.',
   madeWithLove: 'Сделано с любовью для всех медицинских работников',
-  navigation: 'Навигация',
+   navigation: 'Навигация',
   categories: 'Категории',
   patientCare: 'Уход за пациентами',
   emergency: 'Неотложная помощь',
@@ -149,7 +149,6 @@ export const russianTranslations = {
   emailAlreadyRegistered: "Этот адрес электронной почты уже зарегистрирован для бета-доступа.",
   errorOccurred: "Произошла ошибка",
   pleaseRetryLater: "Пожалуйста, повторите попытку позже.",
-  
   // Admin translations
   betaSignups: "Beta Signups",
   betaSubscribers: "Beta Subscribers",
@@ -159,7 +158,6 @@ export const russianTranslations = {
   noSubscribersYet: "No beta subscribers yet",
   signupDate: "Signup Date",
   failedToLoadSubscribers: "Failed to load beta subscribers",
-  
   // General translations
   overview: "Overview",
   dashboard: "Dashboard",
@@ -169,12 +167,10 @@ export const russianTranslations = {
   progressDescription: "Track the progress of your beta program here.",
   recentActivity: "Recent Activity",
   noRecentActivity: "No recent activity to display.",
-  
   // Common UI translations
   back: "Back",
   dismiss: "Dismiss",
   processing: "Processing",
-  
   // Scenario translations
   listening: "Listening",
   startSpeaking: "Start Speaking",
@@ -184,15 +180,12 @@ export const russianTranslations = {
   conversationReset: "Conversation reset",
   notFound: "Not found",
   scenarioNotFound: "Scenario not found",
-  
   // Audio translations
   playAudio: "Play Audio",
   stopAudio: "Stop Audio",
-  
   // Resources translations
   relevantGuidelines: "Relevant Guidelines",
   recommendedReadings: "Recommended Readings",
-  
   // Practice page translations
   searchExercises: "Search exercises...",
   showFilters: "Show Filters",
@@ -200,7 +193,6 @@ export const russianTranslations = {
   viewVocabulary: "View Vocabulary",
   practicePronunciation: "Practice Pronunciation",
   practiceDescription: "Practice medical German in realistic scenarios from your professional activities",
-  
   // New comparison section translations
   whyChooseDocTalk: "Почему стоит выбрать DocTalk?",
   whyChooseDocTalkDesc: "Узнайте, как DocTalk предоставляет уникальные преимущества, которые другие решения для изучения языков просто не могут предложить.",
@@ -220,5 +212,7 @@ export const russianTranslations = {
   otherSolutionsSpecific: 'Языковые школы, частные преподаватели, общие приложения',
   medicalTeamWorking: "Счастливая медицинская команда работает вместе",
   hospitalScene: "Больничная сцена",
-  medicalEducation: "Медицинское образование"
+  medicalEducation: "Медицинское образование",
+  tailoredForMedicalCareer: "Разработано для каждого шага вашей медицинской карьеры",
+  doctalkDesignedFor: "DocTalk разработан для удовлетворения специфических языковых потребностей различных медицинских работников, помогая вам общаться уверенно и точно."
 };

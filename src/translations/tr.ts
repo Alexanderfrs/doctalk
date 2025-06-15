@@ -1,3 +1,4 @@
+
 export const turkishTranslations = {
   welcome: 'Hoş Geldiniz',
   language: 'Dil',
@@ -241,4 +242,6 @@ export const turkishTranslations = {
   // Recommendations
   recommendation: 'Öneri:',
   lowerLevelRecommendation: 'Almanca seviyeniz B1\'in altında olduğu için, DocTalk\'ı kullanırken paralel olarak genel Almanca becerilerinizi geliştirmenizi öneririz.',
+  tailoredForMedicalCareer: "Tıbbi kariyerinizin her adımı için özel olarak tasarlandı",
+  doctalkDesignedFor: "DocTalk, farklı sağlık profesyonellerinin özel dil ihtiyaçlarını karşılamak üzere tasarlanmıştır ve güvenle ve hassasiyetle iletişim kurmanıza yardımcı olur."
 };

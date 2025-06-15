@@ -314,5 +314,7 @@ export const germanTranslations = {
   "mobileOnboarding.screen4.title": "Üben Sie reale Szenarien",
   "mobileOnboarding.screen4.subtitle": "Sprechen und hören Sie echten medizinischen Dialog", 
   "mobileOnboarding.screen4.description": "Üben Sie reale Szenarien mit KI",
-  start: "Start"
+  start: "Start",
+  tailoredForMedicalCareer: "Maßgeschneidert für jeden Schritt Ihrer medizinischen Karriere",
+  doctalkDesignedFor: "DocTalk ist darauf ausgelegt, die spezifischen sprachlichen Bedürfnisse verschiedener Fachkräfte im Gesundheitswesen zu erfüllen und Ihnen zu helfen, mit Selbstvertrauen und Präzision zu kommunizieren."
 };
