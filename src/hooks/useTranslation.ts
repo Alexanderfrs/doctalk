@@ -144,7 +144,8 @@ const uiTranslations: Record<string, Record<string, string>> = {
     'viewVocabulary': 'View Vocabulary',
     'practiceDescription': 'Practice medical German in realistic scenarios from your professional activities',
     'safeFlexibleTraining': 'Safe & Flexible Training',
-    'safeFlexibleTrainingDesc': 'Practice in a safe environment without fear of making mistakes. You set the pace and focus of your learning.',
+    'hideTranslation': 'Hide Translation',
+    'safeFlexibleTrainingDesc': 'Safe & Flexible Training',
   }
 };
 
@@ -190,13 +191,11 @@ uiTranslations.ro = {
   'practice': 'Exerciții',
   'practiceDescription': 'Exersează germana medicală în scenarii realiste din activitatea ta profesională',
   'safeFlexibleTraining': 'Antrenament Sigur și Flexibil',
-  'safeFlexibleTrainingDesc': 'Exersează în siguranță, primește feedback instant (inclusiv la pronunție) și urmărește progresul pe parcursul tău de învățare personalizat.',
 };
 
 // Add specific translations for German
 uiTranslations.de = {
   'safeFlexibleTraining': 'Sicheres & Flexibles Training',
-  'safeFlexibleTrainingDesc': 'Trainiere in einer sicheren Umgebung ohne Angst vor Fehlern. Du bestimmst das Tempo und den Fokus deines Lernens.',
 };
 
 // Add specific translations for Polish
@@ -211,7 +210,6 @@ uiTranslations.pl = {
   'practice': 'Ćwiczenia',
   'practiceDescription': 'Ćwicz niemiecki medyczny w realistycznych scenariuszach z twojej działalności zawodowej',
   'safeFlexibleTraining': 'Bezpieczny i Elastyczny Trening',
-  'safeFlexibleTrainingDesc': 'Ćwicz bezpiecznie, otrzymuj natychmiastową informację zwrotną (w tym wymowę) i śledź postępy na swojej niestandardowej ścieżce nauki.',
 };
 
 export const useTranslation = () => {
