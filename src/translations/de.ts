@@ -218,18 +218,12 @@ export const germanTranslations = {
   // Beta signup translations to Alpha
   joinBeta: "Anmeldung zur priorisierten Alpha-Warteliste",
   signupForBetaRelease: "Treten Sie der Alpha-Prioritäts-Warteliste bei",
-  betaAccessTitle: "Alpha-Prioritätszugang",
-  betaAccessDescription: "Seien Sie einer der ersten 50 Fachleute, die Zugang zu DocTalk erhalten. Geben Sie Ihre E-Mail-Adresse ein, um unserer Prioritäts-Warteliste beizutreten.",
+  betaAccessTitle: "Alpha-Release-Prioritätszugang",
+  betaAccessDescription: "Seien Sie einer der ersten 50 Tester, die Zugang zu DocTalk erhalten. Geben Sie Ihre E-Mail-Adresse ein, um unserer Prioritäts-Warteliste beizutreten.",
   emailAddress: "E-Mail-Adresse",
   getEarlyAccess: "Frühzeitigen Zugang erhalten",
   submitting: "Wird gesendet...",
-  thankYouForJoining: "Vielen Dank für den Beitritt zur Warteliste!",
-  betaConfirmationMessage: "Wir benachrichtigen Sie, wenn DocTalk für Alpha-Tests bereit ist.",
-  alreadySignedUp: "Sie sind bereits auf der Liste",
-  emailAlreadyRegistered: "Diese E-Mail ist bereits auf der Alpha-Warteliste.",
-  errorOccurred: "Ein Fehler ist aufgetreten",
-  pleaseRetryLater: "Bitte versuchen Sie es später noch einmal.",
-
+  
   // New text below buttons
   alphaAccessLimitedPre: "Alpha-Zugang auf",
   alphaAccessLimitedBold: "50 Plätze",

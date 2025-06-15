@@ -165,8 +165,8 @@ export const spanishTranslations = {
   // Beta signup translations to Alpha
   joinBeta: "Obtener Acceso Prioritario",
   signupForBetaRelease: "Acceso Prioritario Alfa",
-  betaAccessTitle: "Acceso prioritario Alfa",
-  betaAccessDescription: "Sé uno de los primeros 50 profesionales en obtener acceso a DocTalk. Ingresa tu correo electrónico para unirte a nuestra lista de espera prioritaria.",
+  betaAccessTitle: "Acceso Prioritario a la Versión Alfa",
+  betaAccessDescription: "Sé uno de los primeros 50 testers en obtener acceso a DocTalk. Ingresa tu correo electrónico para unirte a nuestra lista de espera prioritaria.",
   emailAddress: "Dirección de correo electrónico",
   getEarlyAccess: "Obtener acceso prioritario",
   submitting: "Enviando...",

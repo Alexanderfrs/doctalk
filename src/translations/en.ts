@@ -217,8 +217,8 @@ export const englishTranslations = {
   // Beta signup translations to Alpha
   joinBeta: "Get Priority Access",
   signupForBetaRelease: "Get Alpha Priority Access",
-  betaAccessTitle: "Alpha Priority Access",
-  betaAccessDescription: "Be one of the first 50 professionals to get access to DocTalk. Enter your email to join our priority waitlist.",
+  betaAccessTitle: "Alpha Release Priority Access",
+  betaAccessDescription: "Be one of the first 50 testers to get access to DocTalk. Enter your email to join our priority waitlist.",
   emailAddress: "Email Address",
   getEarlyAccess: "Get Priority Access",
   submitting: "Submitting...",
