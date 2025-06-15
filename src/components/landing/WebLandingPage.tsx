@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/layout/Footer";
@@ -91,7 +90,7 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
 
   return (
     <div className="min-h-screen flex flex-col relative" {...swipeHandlers}>
-      <AppHeader onLogin={handleLogin} showSlogan={true} showAuthButtons={false} />
+      <AppHeader onLogin={handleLogin} showSlogan={false} showAuthButtons={false} />
       <SideNavigator sections={sections} />
       
       <main className="flex-grow pt-24">
