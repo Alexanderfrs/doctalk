@@ -12,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useMobileOnboarding } from "@/hooks/useMobileOnboarding";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileTabs from "@/components/profile/ProfileTabs";
+import BottomNavigation from "@/components/navigation/BottomNavigation";
 
 const Profile = () => {
   const { profile } = useAuth();
@@ -77,6 +78,7 @@ const Profile = () => {
       
       {!isMobile && <Footer />}
       <HelpButton />
+      {isMobile && <BottomNavigation />}
     </div>
   );
 };

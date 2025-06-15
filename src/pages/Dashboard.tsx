@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { useMobileOnboarding } from "@/hooks/useMobileOnboarding";
 import AppHeader from "@/components/layout/AppHeader";
@@ -10,6 +11,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { TutorialProvider } from "@/contexts/TutorialContext";
 import { LearningObjective } from "@/hooks/useLearningRoadmap";
+import BottomNavigation from "@/components/navigation/BottomNavigation";
 
 const Dashboard = () => {
   const isMobile = useIsMobile();
@@ -55,6 +57,7 @@ const Dashboard = () => {
         
         {!isMobile && <Footer />}
         <HelpButton />
+        {isMobile && <BottomNavigation />}
       </div>
     </TutorialProvider>
   );

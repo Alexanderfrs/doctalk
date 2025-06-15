@@ -6,11 +6,14 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useVocabulary } from "@/hooks/useVocabulary";
 import { useVocabularyDeduplication } from "@/hooks/useVocabularyDeduplication";
 import AppHeader from "@/components/layout/AppHeader";
+import MobileHeader from "@/components/layout/MobileHeader";
+import Footer from "@/components/layout/Footer";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import VocabularyBrowseTab from "@/components/vocabulary/VocabularyBrowseTab";
 import VocabularyPracticeTab from "@/components/vocabulary/VocabularyPracticeTab";
 import VocabularyMobileView from "@/components/vocabulary/VocabularyMobileView";
 import VocabularyPracticeView from "@/components/vocabulary/VocabularyPracticeView";
+import { cn } from "@/lib/utils";
 
 const Vocabulary = () => {
   const isMobile = useIsMobile();
@@ -129,9 +132,9 @@ const Vocabulary = () => {
 
   if (showPractice) {
     return (
-      <div className="min-h-screen bg-neutral-50">
-        <AppHeader showSlogan={false} showAuthButtons={true} />
-        <main className="pt-20 pb-20 px-4">
+      <div className="min-h-screen flex flex-col bg-neutral-50">
+        {isMobile ? <MobileHeader /> : <AppHeader showSlogan={false} showAuthButtons={true} />}
+        <main className={cn("flex-grow", isMobile ? "pt-20 pb-24" : "pt-24", "px-4")}>
           <div className="container mx-auto">
             <VocabularyPracticeView
               practiceWords={practiceWords}
@@ -143,15 +146,16 @@ const Vocabulary = () => {
             />
           </div>
         </main>
-        <BottomNavigation />
+        {!isMobile && <Footer />}
+        {isMobile && <BottomNavigation />}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50">
-      <AppHeader showSlogan={false} showAuthButtons={true} />
-      <main className="pt-20 pb-20 px-4">
+    <div className="min-h-screen flex flex-col bg-neutral-50">
+      {isMobile ? <MobileHeader /> : <AppHeader showSlogan={false} showAuthButtons={true} />}
+      <main className={cn("flex-grow", isMobile ? "pt-20 pb-24" : "pt-24", "px-4")}>
         <div className="container mx-auto">
           {isMobile ? (
             <VocabularyMobileView
@@ -196,7 +200,8 @@ const Vocabulary = () => {
           )}
         </div>
       </main>
-      <BottomNavigation />
+      {!isMobile && <Footer />}
+      {isMobile && <BottomNavigation />}
     </div>
   );
 };
