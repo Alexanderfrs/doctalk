@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -119,8 +120,8 @@ export const englishTranslations = {
   learnMore: 'Learn more',
   specializedForMedical: 'Specialized for the medical field',
   doctalkDifference: 'DocTalk differs from general language learning apps by focusing on the medical context.',
-  medicalVocabulary: 'Medical Terminology',
-  learnTerms: 'Learn from an extensive library of medical terms, diagnoses, and phrases that are truly relevant in daily clinical practice.',
+  medicalVocabulary: 'Comprehensive Medical Vocabulary',
+  learnTerms: 'Master essential medical terminology, including clinical terms, equipment names, common abbreviations, and everyday colloquialisms used in healthcare settings.',
   practicalDialogs: 'Practical Dialogue Scenarios',
   practiceConversations: 'Practice with realistic conversations from healthcare daily routines - from patient care to team communication in hospitals, clinics, and home care settings.',
   allLanguageLevels: 'For Intermediate to Advanced Learners',

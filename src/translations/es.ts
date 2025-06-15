@@ -1,3 +1,4 @@
+
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -45,8 +46,8 @@ export const spanishTranslations = {
   learnMore: 'Saber más',
   specializedForMedical: 'Especializado para el campo médico',
   doctalkDifference: 'DocTalk se diferencia de las aplicaciones generales de aprendizaje de idiomas al centrarse en el contexto médico.',
-  medicalVocabulary: 'Terminología médica',
-  learnTerms: 'Aprende de una extensa biblioteca de términos médicos, diagnósticos y frases que son realmente relevantes en la práctica clínica diaria.',
+  medicalVocabulary: 'Vocabulario Médico Integral',
+  learnTerms: 'Domina la terminología médica esencial, incluyendo términos clínicos, nombres de equipos, abreviaturas comunes y coloquialismos cotidianos utilizados en entornos sanitarios.',
   practicalDialogs: 'Escenarios de diálogo prácticos',
   practiceConversations: 'Practica con conversaciones realistas de la rutina hospitalaria diaria, desde la admisión de pacientes hasta las rondas médicas.',
   allLanguageLevels: 'Para todos los niveles de idioma',

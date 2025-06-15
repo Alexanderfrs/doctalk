@@ -1,3 +1,4 @@
+
 export const turkishTranslations = {
   welcome: 'Hoş Geldiniz',
   language: 'Dil',
@@ -45,8 +46,8 @@ export const turkishTranslations = {
   learnMore: 'Daha fazla bilgi',
   specializedForMedical: 'Tıp alanı için özelleştirilmiş',
   doctalkDifference: 'DocTalk, tıbbi bağlama odaklanarak genel dil öğrenme uygulamalarından farklılaşır.',
-  medicalVocabulary: 'Tıbbi Terminoloji',
-  learnTerms: 'Günlük klinik uygulamada gerçekten ilgili olan geniş bir tıbbi terim, teşhis ve ifade kütüphanesinden öğrenin.',
+  medicalVocabulary: 'Kapsamlı Tıbbi Terminoloji',
+  learnTerms: 'Klinik terimler, ekipman adları, yaygın kısaltmalar ve sağlık hizmeti ortamlarında kullanılan günlük konuşma dilindeki ifadeler dahil olmak üzere temel tıbbi terminolojide ustalaşın.',
   practicalDialogs: 'Pratik Diyalog Senaryoları',
   practiceConversations: 'Hastane günlük rutinlerinden gerçekçi konuşmalar pratik yapın - hasta kabulünden vizitlere kadar.',
   allLanguageLevels: 'Tüm Dil Seviyeleri İçin',

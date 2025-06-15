@@ -56,9 +56,7 @@ const FeaturesGrid = () => {
             {feature.title}
           </h3>
           <p className="text-neutral-600">
-            {feature.comingSoon 
-              ? feature.description.replace(/ \(.+\)$/, '') 
-              : feature.description}
+            {feature.description}
           </p>
         </div>
       ))}
