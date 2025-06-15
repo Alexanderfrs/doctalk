@@ -24,7 +24,7 @@ export const englishTranslations = {
   improveYour: 'Confident Communication',
   medicalCommunication: 'in German Healthcare',
   trainScenarios: 'Practice dialogue scenarios and terminology for your professional everyday life in healthcare, starting from B1 level.',
-  targetAudience: 'Perfect for doctors, nurses, caregivers, and students in medical fields who want to excel in German healthcare environments and achieve professional recognition.',
+  targetAudience: 'Perfect for international care workers, doctors, and students in medical fields who want to enter and excel in German healthcare environments and achieve professional recognition.',
   
   // Onboarding specific translations
   onboardingSetup: 'Setup',

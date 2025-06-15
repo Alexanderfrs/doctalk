@@ -23,7 +23,7 @@ export const germanTranslations = {
   improveYour: 'Verbessere deine',
   medicalCommunication: 'medizinische Kommunikation',
   trainScenarios: 'Üben Sie Dialogszenarien und Terminologie für Ihren beruflichen Alltag im Gesundheitswesen, unabhängig von Ihrem Sprachniveau.',
-  targetAudience: 'Perfekt für Ärzte, Krankenschwestern, Pflegekräfte und Studenten in medizinischen Bereichen, die in deutschen Gesundheitseinrichtungen erfolgreich sein wollen.',
+  targetAudience: 'Perfekt für internationale Pflegekräfte, Ärzte und Medizinstudenten, die im deutschen Gesundheitswesen einsteigen, sich dort hervortun und eine berufliche Anerkennung erlangen möchten.',
   
   // Onboarding specific translations
   onboardingSetup: 'Einrichtung',

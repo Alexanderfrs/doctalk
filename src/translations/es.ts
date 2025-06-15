@@ -24,7 +24,7 @@ export const spanishTranslations = {
   improveYour: 'Comunicación Segura',
   medicalCommunication: 'en la Sanidad Alemana',
   trainScenarios: 'Practica escenarios de diálogo y terminología para tu vida profesional diaria en el ámbito sanitario, independientemente de tu nivel de idioma.',
-  targetAudience: 'Perfecto para médicos, enfermeras, cuidadores y estudiantes en campos médicos que desean destacar en entornos sanitarios alemanes.',
+  targetAudience: 'Perfecto para cuidadores internacionales, médicos y estudiantes de medicina que quieren entrar y destacar en el sistema sanitario alemán y conseguir el reconocimiento profesional.',
   // Registration page
   createAccount: 'Crear cuenta',
   startJourney: 'Comienza tu viaje para convertirte en un experto en idioma médico',
