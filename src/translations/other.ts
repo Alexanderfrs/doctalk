@@ -144,7 +144,7 @@ export const romanianTranslations = {
   emailAddress: "Adresă de e-mail",
   getEarlyAccess: "Obține acces timpuriu",
   submitting: "Se trimite...",
-  thankYouForJoining: "Mulțumim că te-ai alăturat!",
+  thankYouForJoining: "Mulțumim că te-ai alătura!",
   betaConfirmationMessage: "Te vom notifica când DocTalk este gata pentru testarea beta.",
   alreadySignedUp: "Deja te-ai înscris",
   emailAlreadyRegistered: "Această adresă de e-mail este deja înregistrată pentru acces beta.",
