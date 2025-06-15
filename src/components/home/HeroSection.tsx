@@ -65,10 +65,13 @@ const HeroSection = () => {
               <BetaSignupDialog
                 triggerElement={
                   <Button variant="outline" size="lg" className="btn-secondary w-full">
-                    {translate("signupForBetaRelease")}
+                    {translate("joinBeta")}
                   </Button>
                 }
               />
+               <p className="text-center text-sm text-neutral-500 mt-2">
+                Alpha-Zugang auf <span className="font-bold">50 Plätze</span> limitiert.
+              </p>
             </div>
           </div>
           
@@ -141,11 +144,14 @@ const HeroSection = () => {
               <BetaSignupDialog
                 triggerElement={
                   <Button variant="outline" size="lg" className="btn-secondary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                    {translate("signupForBetaRelease")}
+                    {translate("joinBeta")}
                   </Button>
                 }
               />
             </div>
+            <p className="text-sm text-neutral-500 mt-2">
+              Alpha-Zugang auf <span className="font-bold">50 Plätze</span> limitiert. Sichern Sie sich Ihren Platz!
+            </p>
           </div>
         </div>
         

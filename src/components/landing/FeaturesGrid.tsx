@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Heart, MessageCircle, Globe, Award, Clock, Users } from "lucide-react";
+import { Heart, MessageCircle, Globe, Users, Award, Rocket } from "lucide-react";
 
 const FeaturesGrid = () => {
   const { translate } = useLanguage();
@@ -28,14 +28,14 @@ const FeaturesGrid = () => {
       description: translate("contentDevelopment")
     },
     {
-      icon: <Award className="h-8 w-8 text-medical-600" />,
-      title: translate("anerkennungFspSupport"),
-      description: translate("anerkennungExamPreparation")
+      icon: <Rocket className="h-8 w-8 text-medical-600" />,
+      title: "Karriere-Beschleuniger", // "Career Accelerator"
+      description: "Verschaffen Sie sich einen Wettbewerbsvorteil. Unser gezieltes Training ist darauf ausgelegt, Sie schneller zertifizieren zu lassen und in Deutschland arbeitsfähig zu machen."
     },
     {
-      icon: <Clock className="h-8 w-8 text-medical-600" />,
-      title: translate("flexibleLearning"),
-      description: translate("flexibleLearningDesc")
+      icon: <Award className="h-8 w-8 text-medical-600" />,
+      title: "Exklusiver Gründerstatus", // "Exclusive Founder Status"
+      description: "Die ersten 50 Mitglieder erhalten den Gründerstatus mit lebenslangen Vorteilen und dem Privileg, die Zukunft von DocTalk mitzugestalten."
     }
   ];
 
