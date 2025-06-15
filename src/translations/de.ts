@@ -180,8 +180,8 @@ export const germanTranslations = {
   oneFreeMonth: '= 1 Monat Premium kostenlos',
   unlimitedRepeatable: 'Unbegrenzt wiederholbar',
   readyToImprove: 'Bereit, Ihre medizinischen Sprachkenntnisse zu verbessern?',
-  startTodayCta: 'Starten Sie noch heute und bereiten Sie sich auf Ihren beruflichen Alltag im deutschen Gesundheitswesen vor.',
-  registerFree: 'Kostenlos registrieren',
+  startTodayCta: 'Sichern Sie sich Ihren Platz auf der Alpha-Prioritäts-Warteliste. Nur 50 Plätze für engagierte Fachkräfte verfügbar.',
+  registerFree: 'Auf die Warteliste',
   languageSelection: 'Sprachauswahl',
   month: 'Monat',
   year: 'Jahr',
@@ -215,20 +215,26 @@ export const germanTranslations = {
   swipeLeft: 'Nach links wischen',
   swipeRight: 'Nach rechts wischen',
   
-  // Beta signup translations
-  joinBeta: "Für die Beta-Version anmelden",
-  signupForBetaRelease: "Für die Beta-Version anmelden",
-  betaAccessTitle: "Beta-Zugang anfordern",
-  betaAccessDescription: "Geben Sie Ihre E-Mail-Adresse ein, um unserem Beta-Programm beizutreten. Wir benachrichtigen Sie, wenn der Zugang verfügbar ist.",
+  // Beta signup translations to Alpha
+  joinBeta: "Anmeldung zur priorisierten Alpha-Warteliste",
+  signupForBetaRelease: "Treten Sie der Alpha-Prioritäts-Warteliste bei",
+  betaAccessTitle: "Alpha-Prioritätszugang",
+  betaAccessDescription: "Seien Sie einer der ersten 50 Fachleute, die Zugang zu DocTalk erhalten. Geben Sie Ihre E-Mail-Adresse ein, um unserer Prioritäts-Warteliste beizutreten.",
   emailAddress: "E-Mail-Adresse",
   getEarlyAccess: "Frühzeitigen Zugang erhalten",
   submitting: "Wird gesendet...",
-  thankYouForJoining: "Danke für Ihre Teilnahme!",
-  betaConfirmationMessage: "Wir benachrichtigen Sie, wenn DocTalk für Beta-Tests bereit ist.",
-  alreadySignedUp: "Bereits angemeldet",
-  emailAlreadyRegistered: "Diese E-Mail ist bereits für den Beta-Zugang registriert.",
+  thankYouForJoining: "Vielen Dank für den Beitritt zur Warteliste!",
+  betaConfirmationMessage: "Wir benachrichtigen Sie, wenn DocTalk für Alpha-Tests bereit ist.",
+  alreadySignedUp: "Sie sind bereits auf der Liste",
+  emailAlreadyRegistered: "Diese E-Mail ist bereits auf der Alpha-Warteliste.",
   errorOccurred: "Ein Fehler ist aufgetreten",
   pleaseRetryLater: "Bitte versuchen Sie es später noch einmal.",
+
+  // New text below buttons
+  alphaAccessLimitedPre: "Alpha-Zugang auf",
+  alphaAccessLimitedBold: "50 Plätze",
+  alphaAccessLimitedPost: "limitiert.",
+  alphaAccessCta: "Sichern Sie sich Ihren Platz!",
   
   // Comparison section translations
   whyChooseDocTalk: "Warum DocTalk wählen?",

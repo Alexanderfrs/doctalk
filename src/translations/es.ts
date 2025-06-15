@@ -1,3 +1,4 @@
+
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -162,7 +163,7 @@ export const spanishTranslations = {
   medicalEducation: "Educación médica",
   
   // Beta signup translations to Alpha
-  joinBeta: "Unirse a la lista de espera Alfa",
+  joinBeta: "Inscripción en la lista de espera prioritaria de Alpha",
   signupForBetaRelease: "Únete a la lista de espera prioritaria Alfa",
   betaAccessTitle: "Acceso prioritario Alfa",
   betaAccessDescription: "Sé uno de los primeros 50 profesionales en obtener acceso a DocTalk. Ingresa tu correo electrónico para unirte a nuestra lista de espera prioritaria.",
@@ -177,6 +178,12 @@ export const spanishTranslations = {
   pleaseRetryLater: "Por favor, inténtalo de nuevo más tarde.",
   tailoredForMedicalCareer: "Adaptado para cada paso de tu carrera médica",
   doctalkDesignedFor: "DocTalk está diseñado para satisfacer las necesidades lingüísticas específicas de diferentes profesionales de la salud, ayudándote a comunicarte con confianza y precisión.",
+  
+  // New text below buttons
+  alphaAccessLimitedPre: "Acceso Alfa limitado a",
+  alphaAccessLimitedBold: "50 plazas",
+  alphaAccessLimitedPost: "limitado.",
+  alphaAccessCta: "¡Asegura tu lugar!",
   
   // Target Users Section
   forCareWorkersTitle: "Para Cuidadores",

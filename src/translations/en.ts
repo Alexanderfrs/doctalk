@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -132,7 +131,6 @@ export const englishTranslations = {
   safeFlexibleTrainingDesc: 'Practice in a safe environment, get instant feedback - including pronunciation - and track the progress on your tailored learning path.',
   anerkennungFspSupport: 'Anerkennung & FSP Support',
   anerkennungExamPreparation: 'Comprehensive preparation for professional recognition (Anerkennung) and the Fachsprachenprüfung (FSP) in German healthcare. (Coming Soon)',
-  anerkennungExamPreparationLong: 'Prepare effectively for professional recognition (Anerkennung) and the specialized language exam (Fachsprachenprüfung), paving your way to a successful career in Germany.',
   flexibleLearning: 'Flexible Learning',
   flexibleLearningDesc: 'Learn at your own pace with immediate practical application in your daily medical work environment.',
   comparisonTitle: 'Compared to general language learning apps',
@@ -180,8 +178,8 @@ export const englishTranslations = {
   oneFreeMonth: '= 1 month Premium free',
   unlimitedRepeatable: 'Unlimitedly repeatable',
   readyToImprove: 'Ready to improve your medical language skills?',
-  startTodayCta: 'Start today and prepare yourself for your professional everyday life in German healthcare.',
-  registerFree: 'Register for free',
+  startTodayCta: 'Secure your place on the Alpha priority waitlist. Only 50 spots available for dedicated professionals.',
+  registerFree: 'Join the Waitlist',
   languageSelection: 'Select language',
   month: 'month',
   year: 'year',
@@ -215,20 +213,26 @@ export const englishTranslations = {
   swipeLeft: 'Swipe left',
   swipeRight: 'Swipe right',
   
-  // Beta signup translations
-  joinBeta: "Sign up for beta release",
-  signupForBetaRelease: "Sign up for beta release",
-  betaAccessTitle: "Request Beta Access",
-  betaAccessDescription: "Enter your email to join our beta program. We'll notify you when access is available.",
+  // Beta signup translations to Alpha
+  joinBeta: "Alpha release priority waitlist sign-up",
+  signupForBetaRelease: "Join the Alpha priority waitlist",
+  betaAccessTitle: "Alpha Priority Access",
+  betaAccessDescription: "Be one of the first 50 professionals to get access to DocTalk. Enter your email to join our priority waitlist.",
   emailAddress: "Email Address",
   getEarlyAccess: "Get Early Access",
   submitting: "Submitting...",
-  thankYouForJoining: "Thank you for joining!",
-  betaConfirmationMessage: "We'll notify you when DocTalk is ready for beta testing.",
-  alreadySignedUp: "Already Signed Up",
-  emailAlreadyRegistered: "This email is already registered for beta access.",
+  thankYouForJoining: "Thank you for joining the waitlist!",
+  betaConfirmationMessage: "We'll notify you when DocTalk is ready for Alpha testing.",
+  alreadySignedUp: "You're on the list",
+  emailAlreadyRegistered: "This email is already on the Alpha waitlist.",
   errorOccurred: "Error Occurred",
   pleaseRetryLater: "Please try again later.",
+
+  // New text below buttons
+  alphaAccessLimitedPre: "Alpha access limited to",
+  alphaAccessLimitedBold: "50 spots",
+  alphaAccessLimitedPost: "limited.",
+  alphaAccessCta: "Secure your place!",
   
   // Admin translations
   betaSignups: "Beta Signups",
