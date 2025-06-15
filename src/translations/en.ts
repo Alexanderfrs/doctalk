@@ -132,7 +132,7 @@ export const englishTranslations = {
   safeFlexibleTrainingDesc: 'Practice in a safe environment, get instant feedback - including pronunciation - and track the progress on your tailored learning path.',
   anerkennungFspSupport: 'Anerkennung & FSP Preparation',
   anerkennungExamPreparation: 'Comprehensive preparation for professional recognition (Anerkennung) and the Fachsprachenprüfung (FSP) in German healthcare. (Coming Soon)',
-  anerkennungExamPreparationLong: 'Effectively prepare for professional recognition (Anerkennung) and the technical language exam (Fachsprachenprüfung), paving your way to a successful career in Germany. (Coming Soon)',
+  anerkennungExamPreparationLong: 'Effectively prepare for professional recognition (Anerkennung) and the technical language exam (Fachsprachenprüfung), paving your way to a successful career in Germany.',
   flexibleLearning: 'Flexible Learning',
   flexibleLearningDesc: 'Learn at your own pace with immediate practical application in your daily medical work environment.',
   comparisonTitle: 'Compared to general language learning apps',

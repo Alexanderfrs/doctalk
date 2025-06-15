@@ -131,7 +131,7 @@ export const germanTranslations = {
   safeFlexibleTrainingDesc: 'Üben Sie in einer sicheren Umgebung, erhalten Sie sofortiges Feedback - einschließlich Aussprache - und verfolgen Sie den Fortschritt auf Ihrem maßgeschneiderten Lernpfad.',
   anerkennungFspSupport: 'Anerkennung & FSP Vorbereitung',
   anerkennungExamPreparation: 'Umfassende Vorbereitung für die berufliche Anerkennung und die Fachsprachenprüfung (FSP) im deutschen Gesundheitswesen. (Demnächst verfügbar)',
-  anerkennungExamPreparationLong: 'Bereiten Sie sich effektiv auf die berufliche Anerkennung und die Fachsprachenprüfung vor, und ebnen Sie Ihren Weg für eine erfolgreiche Karriere in Deutschland. (Demnächst verfügbar)',
+  anerkennungExamPreparationLong: 'Bereiten Sie sich effektiv auf die berufliche Anerkennung und die Fachsprachenprüfung vor, und ebnen Sie Ihren Weg für eine erfolgreiche Karriere in Deutschland.',
   nurseOptimized: 'Optimiert für Gesundheitsexperten',
   internationalNurses: 'Besonderer Fokus auf die sprachlichen Bedürfnisse internationaler Gesundheitsexperten in Deutschland.',
   certificationRecognition: 'FSP Vorbereitung',
