@@ -353,6 +353,6 @@ export const englishTranslations = {
   forDoctorsTitle: "For Doctors",
   forDoctorsDescription: "Perfect your patient consultations, from taking histories to explaining complex diagnoses and treatment plans. Prepare for the FSP exam with realistic scenarios.",
   forMedicalStudentsTitle: "For Medical Students",
-  forMedicalStudentsDescription: "Build a strong foundation for your clinical rotations (Famulatur/PJ) and future career in Germany. Practice realistic scenarios and get ready for your exams.",
+  forMedicalStudentsDescription: "Build a strong foundation for your clinical rotations and internships and future career in Germany. Practice realistic scenarios and get ready for your exams.",
   comingSoon: "Coming Soon"
 };

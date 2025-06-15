@@ -354,6 +354,6 @@ export const germanTranslations = {
   forDoctorsTitle: "Für Ärzte",
   forDoctorsDescription: "Perfektionieren Sie Ihre Patientengespräche, von der Anamnese bis zur Erläuterung komplexer Diagnosen und Behandlungspläne. Bereiten Sie sich mit realistischen Szenarien auf die FSP-Prüfung vor.",
   forMedicalStudentsTitle: "Für Medizinstudenten",
-  forMedicalStudentsDescription: "Schaffen Sie eine solide Grundlage für Ihre Famulaturen/PJ und Ihre zukünftige Karriere in Deutschland. Üben Sie realistische Szenarien und bereiten Sie sich auf Ihre Prüfungen vor.",
+  forMedicalStudentsDescription: "Schaffen Sie eine solide Grundlage für Ihre klinischen Rotationen und Praktika und Ihre zukünftige Karriere in Deutschland. Üben Sie realistische Szenarien und bereiten Sie sich auf Ihre Prüfungen vor.",
   comingSoon: "Demnächst"
 };

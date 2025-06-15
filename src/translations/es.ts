@@ -213,6 +213,6 @@ export const spanishTranslations = {
   forDoctorsTitle: "Para Médicos",
   forDoctorsDescription: "Desde la anamnesis hasta discusiones complejas, domina la comunicación que acelera tu reconocimiento profesional.",
   forMedicalStudentsTitle: "Para Estudiantes de Medicina",
-  forMedicalStudentsDescription: "Construye una base lingüística sólida para una ventaja decisiva en tus rotaciones clínicas (Famulatur/PJ) y tu futura carrera.",
+  forMedicalStudentsDescription: "Construye una base lingüística sólida para una ventaja decisiva en tus rotaciones clínicas y prácticas y tu futura carrera.",
   comingSoon: "Próximamente"
 };
