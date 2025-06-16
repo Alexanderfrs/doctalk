@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/layout/Footer";
@@ -9,6 +10,7 @@ import CtaSection from "@/components/home/CtaSection";
 import FeaturesGrid from "@/components/landing/FeaturesGrid";
 import TargetUsersSection from "@/components/landing/TargetUsersSection";
 import PricingSection from "@/components/landing/PricingSection";
+import ProblemSolutionSection from "@/components/landing/ProblemSolutionSection";
 import { LandingPageProps } from "@/types/landing";
 import { useSwipeable } from "react-swipeable";
 
@@ -22,6 +24,7 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
 
   const sections = [
     { id: "hero", label: translate("home") },
+    { id: "problem-solution", label: "The Challenge" },
     { id: "features", label: translate("features") },
     { id: "target-users", label: "Who it's for" },
     { id: "pricing", label: translate("pricingTitle") }
@@ -97,6 +100,10 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         <div id="hero">
           <HeroSection />
         </div>
+        
+        <section id="problem-solution">
+          <ProblemSolutionSection />
+        </section>
         
         <section id="features" className="py-16 bg-neutral-50 px-4">
           <div className="container mx-auto">

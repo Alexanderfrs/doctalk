@@ -353,5 +353,54 @@ export const englishTranslations = {
   forDoctorsDescription: "From anamnesis to complex discussions, master the communication that accelerates your professional recognition.",
   forMedicalStudentsTitle: "For Medical Students",
   forMedicalStudentsDescription: "Build a solid linguistic foundation for a decisive advantage in your clinical rotations (Famulatur/PJ) and future career.",
-  comingSoon: "Coming Soon"
+  comingSoon: "Coming Soon",
+  
+  // Problem-Solution Section
+  realityForInternationalProfessionals: "The Reality for International Healthcare Professionals",
+  realityForInternationalProfessionalsDesc: "Despite critical staff shortages, international healthcare professionals face significant barriers that limit their success in German healthcare systems.",
+  
+  theProblem: "The Problem",
+  challengesFacingHealthcareProfessionals: "Challenges Facing Healthcare Professionals",
+  
+  // Problems
+  problemHighCosts: "Prohibitive Training Costs",
+  problemHighCostsDesc: "Traditional medical German courses cost €3,000-8,000, putting quality training out of reach for many professionals.",
+  problemHighCostsStat: "€3,000-8,000 per course",
+  
+  problemTimeConstraints: "Time Constraints",
+  problemTimeConstraintsDesc: "Healthcare professionals work demanding schedules, making attendance at fixed-time language classes nearly impossible.",
+  problemTimeConstraintsStat: "No time for fixed schedules",
+  
+  problemGenericSolutions: "Generic Language Solutions",
+  problemGenericSolutionsDesc: "General language apps lack medical context, while tutors often don't understand healthcare-specific communication needs.",
+  problemGenericSolutionsStat: "Limited medical context",
+  
+  problemIntegrationChallenges: "Integration Challenges",
+  problemIntegrationChallengesDesc: "Cultural workplace norms, medical hierarchies, and bureaucratic processes create additional barriers beyond language.",
+  problemIntegrationChallengesStat: "Complex integration process",
+  
+  introducingDocTalk: "Introducing DocTalk",
+  
+  theSolution: "The Solution",
+  revolutionaryApproachToMedicalGerman: "A Revolutionary Approach to Medical German Learning",
+  
+  // Solutions
+  solutionAffordable: "Radically Affordable",
+  solutionAffordableDesc: "Professional medical German training at a fraction of traditional course costs.",
+  solutionAffordableHighlight: "10x more affordable",
+  
+  solutionFlexible: "Ultimate Flexibility",
+  solutionFlexibleDesc: "Learn anytime, anywhere with personalized AI conversations that adapt to your schedule.",
+  solutionFlexibleHighlight: "24/7 availability",
+  
+  solutionSpecialized: "100% Medical-Focused",
+  solutionSpecialized: "Only solution designed exclusively for healthcare professionals by medical experts.",
+  solutionSpecializedHighlight: "Expert-developed content",
+  
+  solutionNetworked: "Career Network Integration",
+  solutionNetworkedDesc: "Direct connections to trusted healthcare facilities and insights into German medical workplace culture.",
+  solutionNetworkedHighlight: "Trusted partner network",
+  
+  readyToTransformYourCareer: "Ready to Transform Your Medical Career in Germany?",
+  joinThousandsOfProfessionals: "Join the professionals who are already preparing for success in German healthcare."
 };

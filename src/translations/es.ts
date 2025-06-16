@@ -213,5 +213,54 @@ export const spanishTranslations = {
   forDoctorsDescription: "Desde la anamnesis hasta discusiones complejas, domina la comunicación que acelera tu reconocimiento profesional.",
   forMedicalStudentsTitle: "Para Estudiantes de Medicina",
   forMedicalStudentsDescription: "Construye una base lingüística sólida para una ventaja decisiva en tus rotaciones clínicas y prácticas y tu futura carrera.",
-  comingSoon: "Próximamente"
+  comingSoon: "Próximamente",
+  
+  // Problem-Solution Section
+  realityForInternationalProfessionals: "La Realidad de los Profesionales Sanitarios Internacionales",
+  realityForInternationalProfessionalsDesc: "A pesar de la escasez crítica de personal, los profesionales sanitarios internacionales enfrentan barreras significativas que limitan su éxito en los sistemas de salud alemanes.",
+  
+  theProblem: "El Problema",
+  challengesFacingHealthcareProfessionals: "Desafíos que Enfrentan los Profesionales de la Salud",
+  
+  // Problems
+  problemHighCosts: "Costos Prohibitivos de Formación",
+  problemHighCostsDesc: "Los cursos tradicionales de alemán médico cuestan €3,000-8,000, poniendo la formación de calidad fuera del alcance de muchos profesionales.",
+  problemHighCostsStat: "€3,000-8,000 por curso",
+  
+  problemTimeConstraints: "Limitaciones de Tiempo",
+  problemTimeConstraintsDesc: "Los profesionales de la salud trabajan horarios exigentes, haciendo casi imposible asistir a clases de idiomas con horarios fijos.",
+  problemTimeConstraintsStat: "Sin tiempo para horarios fijos",
+  
+  problemGenericSolutions: "Soluciones Genéricas de Idiomas",
+  problemGenericSolutionsDesc: "Las apps de idiomas generales carecen de contexto médico, mientras que los tutores a menudo no entienden las necesidades específicas de comunicación en salud.",
+  problemGenericSolutionsStat: "Contexto médico limitado",
+  
+  problemIntegrationChallenges: "Desafíos de Integración",
+  problemIntegrationChallengesDesc: "Las normas culturales del lugar de trabajo, las jerarquías médicas y los procesos burocráticos crean barreras adicionales más allá del idioma.",
+  problemIntegrationChallengesStat: "Proceso de integración complejo",
+  
+  introducingDocTalk: "Presentamos DocTalk",
+  
+  theSolution: "La Solución",
+  revolutionaryApproachToMedicalGerman: "Un Enfoque Revolucionario para Aprender Alemán Médico",
+  
+  // Solutions
+  solutionAffordable: "Radicalmente Asequible",
+  solutionAffordableDesc: "Formación profesional en alemán médico a una fracción del costo de los cursos tradicionales.",
+  solutionAffordableHighlight: "10x más asequible",
+  
+  solutionFlexible: "Flexibilidad Máxima",
+  solutionFlexibleDesc: "Aprende cuando quieras, donde quieras con conversaciones de IA personalizadas que se adaptan a tu horario.",
+  solutionFlexibleHighlight: "Disponible 24/7",
+  
+  solutionSpecialized: "100% Enfocado en Medicina",
+  solutionSpecializedDesc: "La única solución diseñada exclusivamente para profesionales de la salud por expertos médicos.",
+  solutionSpecializedHighlight: "Contenido desarrollado por expertos",
+  
+  solutionNetworked: "Integración de Red Profesional",
+  solutionNetworkedDesc: "Conexiones directas con instalaciones de salud de confianza e información sobre la cultura laboral médica alemana.",
+  solutionNetworkedHighlight: "Red de socios de confianza",
+  
+  readyToTransformYourCareer: "¿Listo para Transformar tu Carrera Médica en Alemania?",
+  joinThousandsOfProfessionals: "Únete a los profesionales que ya se están preparando para el éxito en la sanidad alemana."
 };

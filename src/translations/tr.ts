@@ -256,5 +256,54 @@ export const turkishTranslations = {
   forDoctorsDescription: "Anamnezden karmaşık tartışmalara kadar, mesleki tanınırlığınızı hızlandıran iletişime hakim olun.",
   forMedicalStudentsTitle: "Tıp Öğrencileri İçin",
   forMedicalStudentsDescription: "Klinik stajlarınızda (Famulatur/PJ) ve gelecekteki kariyerinizde belirleyici bir avantaj için sağlam bir dil temeli oluşturun.",
-  comingSoon: "Yakında"
+  comingSoon: "Yakında",
+  
+  // Problem-Solution Section
+  realityForInternationalProfessionals: "Uluslararası Sağlık Profesyonellerinin Gerçeği",
+  realityForInternationalProfessionalsDesc: "Kritik personel kıtlığına rağmen, uluslararası sağlık profesyonelleri Alman sağlık sistemlerindeki başarılarını sınırlayan önemli engellerle karşılaşıyor.",
+  
+  theProblem: "Problem",
+  challengesFacingHealthcareProfessionals: "Sağlık Profesyonellerinin Karşılaştığı Zorluklar",
+  
+  // Problems
+  problemHighCosts: "Engelleyici Eğitim Maliyetleri",
+  problemHighCostsDesc: "Geleneksel tıbbi Almanca kursları €3,000-8,000 maliyetinde, kaliteli eğitimi birçok profesyonelin erişemeyeceği seviyeye çıkarıyor.",
+  problemHighCostsStat: "Kurs başına €3,000-8,000",
+  
+  problemTimeConstraints: "Zaman Kısıtlamaları",
+  problemTimeConstraintsDesc: "Sağlık profesyonelleri zorlu çalışma programlarına sahip, sabit zamanlı dil derslerine katılmayı neredeyse imkansız hale getiriyor.",
+  problemTimeConstraintsStat: "Sabit programlar için zaman yok",
+  
+  problemGenericSolutions: "Genel Dil Çözümleri",
+  problemGenericSolutionsDesc: "Genel dil uygulamaları tıbbi bağlamdan yoksun, öğretmenler ise genellikle sağlık alanına özgü iletişim ihtiyaçlarını anlamıyor.",
+  problemGenericSolutionsStat: "Sınırlı tıbbi bağlam",
+  
+  problemIntegrationChallenges: "Entegrasyon Zorlukları",
+  problemIntegrationChallengesDesc: "Kültürel işyeri normları, tıbbi hiyerarşiler ve bürokratik süreçler dilin ötesinde ek engeller yaratıyor.",
+  problemIntegrationChallengesStat: "Karmaşık entegrasyon süreci",
+  
+  introducingDocTalk: "DocTalk'ı Tanıtıyoruz",
+  
+  theSolution: "Çözüm",
+  revolutionaryApproachToMedicalGerman: "Tıbbi Almanca Öğreniminde Devrimci Yaklaşım",
+  
+  // Solutions
+  solutionAffordable: "Radikal Olarak Uygun Fiyatlı",
+  solutionAffordableDesc: "Geleneksel kurs maliyetlerinin çok altında profesyonel tıbbi Almanca eğitimi.",
+  solutionAffordableHighlight: "10x daha uygun fiyatlı",
+  
+  solutionFlexible: "Maksimum Esneklik",
+  solutionFlexibleDesc: "Programınıza uyum sağlayan kişiselleştirilmiş AI konuşmaları ile istediğiniz zaman, istediğiniz yerde öğrenin.",
+  solutionFlexibleHighlight: "7/24 erişilebilirlik",
+  
+  solutionSpecialized: "%100 Tıp Odaklı",
+  solutionSpecializedDesc: "Sadece sağlık profesyonelleri için tıp uzmanları tarafından tasarlanan tek çözüm.",
+  solutionSpecializedHighlight: "Uzman geliştirilmiş içerik",
+  
+  solutionNetworked: "Kariyer Ağı Entegrasyonu",
+  solutionNetworkedDesc: "Güvenilir sağlık tesisleriyle doğrudan bağlantılar ve Alman tıp işyeri kültürü hakkında içgörüler.",
+  solutionNetworkedHighlight: "Güvenilir partner ağı",
+  
+  readyToTransformYourCareer: "Almanya'daki Tıp Kariyerinizi Dönüştürmeye Hazır mısınız?",
+  joinThousandsOfProfessionals: "Alman sağlık hizmetlerinde başarıya hazırlanan profesyonellere katılın."
 };
