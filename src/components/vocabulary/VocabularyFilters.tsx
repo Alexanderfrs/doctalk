@@ -16,10 +16,8 @@ interface VocabularyFiltersProps {
 
 const VocabularyFilters: React.FC<VocabularyFiltersProps> = ({
   activeCategory,
-  activeDomain,
   isFiltersOpen,
   onCategoryChange,
-  onDomainChange,
   onFiltersToggle,
   onResetFilters,
 }) => {
@@ -34,15 +32,6 @@ const VocabularyFilters: React.FC<VocabularyFiltersProps> = ({
     { id: "abbreviations", label: "Abkürzungen" },
     { id: "elderly-care", label: "Altenpflege" },
     { id: "disability-care", label: "Behindertenbetreuung" }
-  ];
-
-  const domains = [
-    { id: "all", label: "Alle Bereiche" },
-    { id: "hospital", label: "Krankenhaus" },
-    { id: "elderly-care", label: "Altenpflege" },
-    { id: "disability-care", label: "Behindertenbetreuung" },
-    { id: "daily-care", label: "Tägliche Pflege" },
-    { id: "emergency", label: "Notfallmedizin" }
   ];
 
   return (
@@ -83,30 +72,7 @@ const VocabularyFilters: React.FC<VocabularyFiltersProps> = ({
           </div>
         </div>
         
-        <div className="flex flex-col md:flex-row gap-2 md:items-center mb-4">
-          <p className="text-sm font-medium text-neutral-700 md:mr-2">Berufsbereich:</p>
-          <div className="flex flex-wrap gap-2">
-            {domains.map((domain) => (
-              <Button
-                key={domain.id}
-                variant="outline"
-                size="sm"
-                className={cn(
-                  "rounded-full",
-                  activeDomain === domain.id
-                    ? "bg-medical-50 text-medical-700 border-medical-200"
-                    : "bg-white text-neutral-700 hover:bg-neutral-50"
-                )}
-                onClick={() => onDomainChange(domain.id)}
-              >
-                {domain.label}
-                {activeDomain === domain.id && <Check className="ml-1 h-3 w-3" />}
-              </Button>
-            ))}
-          </div>
-        </div>
-        
-        {(activeCategory !== "all" || activeDomain !== "all") && (
+        {activeCategory !== "all" && (
           <Button
             variant="ghost"
             size="sm"

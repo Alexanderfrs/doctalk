@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -9,9 +10,7 @@ import MobileHeader from "@/components/layout/MobileHeader";
 import Footer from "@/components/layout/Footer";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import VocabularyBrowseTab from "@/components/vocabulary/VocabularyBrowseTab";
-import VocabularyPracticeTab from "@/components/vocabulary/VocabularyPracticeTab";
 import VocabularyMobileView from "@/components/vocabulary/VocabularyMobileView";
-import NewVocabularyPracticeView from "@/components/vocabulary/NewVocabularyPracticeView";
 import { cn } from "@/lib/utils";
 
 const Vocabulary = () => {
@@ -20,11 +19,7 @@ const Vocabulary = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
   const [activeCategory, setActiveCategory] = useState(searchParams.get("category") || "all");
-  const [activeDomain, setActiveDomain] = useState(searchParams.get("domain") || "all");
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [showPractice, setShowPractice] = useState(false);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [practiceCompleted, setPracticeCompleted] = useState(false);
   
   const { allWords } = useVocabulary();
   const words = useVocabularyDeduplication(allWords);
@@ -46,13 +41,6 @@ const Vocabulary = () => {
 
     return filtered;
   }, [words, searchTerm, activeCategory]);
-
-  const practiceWords = useMemo(() => {
-    const filtered = filteredWords;
-    // Shuffle the array to randomize order
-    const shuffled = [...filtered].sort(() => Math.random() - 0.5);
-    return shuffled;
-  }, [filteredWords]);
 
   const availableCategories = useMemo(() => {
     const categories = allWords
@@ -77,14 +65,6 @@ const Vocabulary = () => {
     });
   }, [setSearchParams]);
 
-  const handleDomainChange = useCallback((domain: string) => {
-    setActiveDomain(domain);
-    setSearchParams(params => {
-      params.set("domain", domain);
-      return params;
-    });
-  }, [setSearchParams]);
-
   const handleFiltersToggle = useCallback(() => {
     setIsFiltersOpen(prev => !prev);
   }, []);
@@ -92,56 +72,15 @@ const Vocabulary = () => {
   const handleResetFilters = useCallback(() => {
     setSearchTerm("");
     setActiveCategory("all");
-    setActiveDomain("all");
     setIsFiltersOpen(false);
     setSearchParams({});
   }, [setSearchParams]);
-
-  const handleStartPractice = useCallback(() => {
-    setCurrentWordIndex(0);
-    setPracticeCompleted(false);
-    setShowPractice(true);
-  }, []);
-
-  const handlePracticeComplete = useCallback((correct: boolean) => {
-    if (currentWordIndex < practiceWords.length - 1) {
-      setCurrentWordIndex(prev => prev + 1);
-    } else {
-      setPracticeCompleted(true);
-    }
-  }, [currentWordIndex, practiceWords.length]);
-
-  const handleResetPractice = useCallback(() => {
-    setCurrentWordIndex(0);
-  }, []);
-
-  const handleEndPractice = useCallback(() => {
-    setShowPractice(false);
-  }, []);
 
   // Show loading state if no words are available yet
   if (allWords.length === 0) {
     return <div className="min-h-screen flex items-center justify-center">
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-medical-500"></div>
     </div>;
-  }
-
-  if (showPractice) {
-    return (
-      <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
-        {isMobile ? <MobileHeader /> : <AppHeader showSlogan={false} showAuthButtons={true} />}
-        <main className={cn("flex-grow", isMobile ? "pt-20 pb-24" : "pt-24", "px-4")}>
-          <div className="container mx-auto">
-            <NewVocabularyPracticeView
-              practiceWords={practiceWords}
-              onEndPractice={handleEndPractice}
-            />
-          </div>
-        </main>
-        {!isMobile && <Footer />}
-        {isMobile && <BottomNavigation />}
-      </div>
-    );
   }
 
   return (
@@ -154,33 +93,28 @@ const Vocabulary = () => {
               searchTerm={searchTerm}
               onSearchChange={handleSearchChange}
               activeCategory={activeCategory}
-              activeDomain={activeDomain}
+              activeDomain="all"
               onCategoryChange={handleCategoryChange}
-              onDomainChange={handleDomainChange}
+              onDomainChange={() => {}}
               onResetFilters={handleResetFilters}
               words={filteredWords}
               availableCategories={availableCategories}
-              onStartPractice={handleStartPractice}
+              onStartPractice={() => {}}
             />
           ) : (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h1 className="text-3xl font-bold">{translate("vocabulary")}</h1>
-                <VocabularyPracticeTab
-                  availableCategories={availableCategories}
-                  totalWords={words.length}
-                  onStartPractice={handleStartPractice}
-                />
               </div>
               
               <VocabularyBrowseTab
                 searchTerm={searchTerm}
                 onSearchChange={handleSearchChange}
                 activeCategory={activeCategory}
-                activeDomain={activeDomain}
+                activeDomain="all"
                 isFiltersOpen={isFiltersOpen}
                 onCategoryChange={handleCategoryChange}
-                onDomainChange={handleDomainChange}
+                onDomainChange={() => {}}
                 onFiltersToggle={handleFiltersToggle}
                 onResetFilters={handleResetFilters}
                 words={filteredWords}
