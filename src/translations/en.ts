@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -241,7 +240,7 @@ export const englishTranslations = {
   joinBeta: "Get Priority Access",
   signupForBetaRelease: "Get Alpha Priority Access",
   betaAccessTitle: "Alpha Release Priority Access",
-  betaAccessDescription: "Be one of the first 50 testers to get access to DocTalk. Enter your email to join our priority waitlist.",
+  betaAccessDescription: "Be one of the first 50 testers to get access to DocTalk. Enter your email to join our priority waitlist. We'll notify you when the app is ready to be tested.",
   emailAddress: "Email Address",
   getEarlyAccess: "Get Priority Access",
   submitting: "Submitting...",
@@ -349,10 +348,10 @@ export const englishTranslations = {
   
   // Target Users Section
   forCareWorkersTitle: "For Care Workers",
-  forCareWorkersDescription: "Master everyday communication with patients and colleagues, confidently handle documentation, and understand care instructions with ease.",
+  forCareWorkersDescription: "Essential communication to provide exceptional care and quickly integrate into your German team.",
   forDoctorsTitle: "For Doctors",
-  forDoctorsDescription: "Perfect your patient consultations, from taking histories to explaining complex diagnoses and treatment plans. Prepare for the FSP exam with realistic scenarios.",
+  forDoctorsDescription: "From anamnesis to complex discussions, master the communication that accelerates your professional recognition.",
   forMedicalStudentsTitle: "For Medical Students",
-  forMedicalStudentsDescription: "Build a strong foundation for your clinical rotations and internships and future career in Germany. Practice realistic scenarios and get ready for your exams.",
+  forMedicalStudentsDescription: "Build a solid linguistic foundation for a decisive advantage in your clinical rotations (Famulatur/PJ) and future career.",
   comingSoon: "Coming Soon"
 };

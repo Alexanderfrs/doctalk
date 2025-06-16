@@ -144,7 +144,7 @@ export const turkishTranslations = {
   joinBeta: "Alfa bekleme listesine katıl",
   signupForBetaRelease: "Alfa öncelikli bekleme listesine katıl",
   betaAccessTitle: "Alfa öncelikli erişim",
-  betaAccessDescription: "DocTalk'a erişim kazanan ilk 50 profesyonelden biri olun. Öncelikli bekleme listemize katılmak için e-posta adresinizi girin.",
+  betaAccessDescription: "DocTalk'a erişim kazanan ilk 50 profesyonelden biri olun. Öncelikli bekleme listemize katılmak için e-posta adresinizi girin. Uygulama test edilmeye hazır olduğunda sizi bilgilendireceğiz.",
   emailAddress: "E-posta Adresi",
   getEarlyAccess: "Öncelikli erişim sağla",
   submitting: "Gönderiliyor...",

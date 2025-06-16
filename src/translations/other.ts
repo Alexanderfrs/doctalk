@@ -140,7 +140,7 @@ export const romanianTranslations = {
   // Beta signup translations to Alpha
   joinBeta: "Alătură-te listei de așteptare Alpha",
   betaAccessTitle: "Acces prioritar la versiunea Alpha",
-  betaAccessDescription: "Fii printre primii 50 de profesioniști care obțin acces la DocTalk. Introdu adresa ta de e-mail pentru a te alătura listei de așteptare prioritare.",
+  betaAccessDescription: "Fii printre primii 50 de profesioniști care obțin acces la DocTalk. Introdu adresa ta de e-mail pentru a te alătura listei de așteptare prioritare. Te vom notifica când aplicația este gata să fie testată.",
   emailAddress: "Adresă de e-mail",
   getEarlyAccess: "Obține acces prioritar",
   submitting: "Se trimite...",
@@ -375,7 +375,7 @@ export const polishTranslations = {
   // Beta signup translations to Alpha
   joinBeta: "Dołącz do listy oczekujących Alpha",
   betaAccessTitle: "Dostęp priorytetowy do wersji Alpha",
-  betaAccessDescription: "Bądź jednym z pierwszych 50 profesjonalistów, którzy uzyskają dostęp do DocTalk. Wprowadź swój adres e-mail, aby dołączyć do priorytetowej listy oczekujących.",
+  betaAccessDescription: "Bądź jednym z pierwszych 50 profesjonalistów, którzy uzyskają dostęp do DocTalk. Wprowadź swój adres e-mail, aby dołączyć do priorytetowej listy oczekujących. Poinformujemy Cię, gdy aplikacja będzie gotowa do testowania.",
   emailAddress: "Adres e-mail",
   getEarlyAccess: "Uzyskaj dostęp priorytetowy",
   submitting: "Wysyłanie...",
