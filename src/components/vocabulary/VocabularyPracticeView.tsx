@@ -102,12 +102,10 @@ const VocabularyPracticeView: React.FC<VocabularyPracticeViewProps> = ({
 
       {currentWord && (
         <EnhancedVocabularyPracticeCard
-          key={`word-${currentWordIndex}-${currentWord.id}`}
-          word={{
-            ...currentWord,
-            difficulty: 'B1'
-          }}
+          key={`practice-${currentWordIndex}-${currentWord.id}-${Date.now()}`}
+          word={currentWord}
           onComplete={onPracticeComplete}
+          autoAdvanceDelay={3000}
         />
       )}
     </div>

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +11,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { DeduplicatedVocabularyWord } from "@/hooks/useVocabularyDeduplication";
 
 interface EnhancedVocabularyPracticeCardProps {
-  word: DeduplicatedVocabularyWord & { difficulty?: string };
+  word: DeduplicatedVocabularyWord;
   onComplete: (correct: boolean) => void;
   autoAdvanceDelay?: number;
 }
@@ -19,7 +19,7 @@ interface EnhancedVocabularyPracticeCardProps {
 const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardProps> = ({
   word,
   onComplete,
-  autoAdvanceDelay = 2000
+  autoAdvanceDelay = 3000
 }) => {
   const [userAnswer, setUserAnswer] = useState('');
   const [isAnswered, setIsAnswered] = useState(false);
@@ -29,6 +29,8 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
   const { speak, hasSpeechSupport } = useTextToSpeech();
   const isMobile = useIsMobile();
   const inputRef = useRef<HTMLInputElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const completedRef = useRef(false);
 
   const {
     text: voiceText,
@@ -40,19 +42,35 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
   } = useVoiceRecognition({
     language: 'en-US',
     onResult: (result, isFinal) => {
-      if (isFinal) {
+      if (isFinal && !isAnswered) {
         setUserAnswer(result.trim());
         setShowSubmit(true);
       }
     }
   });
 
+  // Reset component state when word changes
   useEffect(() => {
-    if (voiceText) {
+    setUserAnswer('');
+    setIsAnswered(false);
+    setIsCorrect(false);
+    setShowSubmit(false);
+    completedRef.current = false;
+    resetText();
+    
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, [word.id, resetText]);
+
+  useEffect(() => {
+    if (voiceText && !isAnswered) {
       setUserAnswer(voiceText);
       setShowSubmit(true);
     }
-  }, [voiceText]);
+  }, [voiceText, isAnswered]);
 
   useEffect(() => {
     if (userAnswer.trim().length > 0 && !isAnswered) {
@@ -78,8 +96,15 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
     return isExactMatch || (isCloseMatch && Math.abs(normalizedAnswer.length - normalizedCorrect.length) <= 2);
   };
 
+  const handleComplete = useCallback((correct: boolean) => {
+    if (completedRef.current) return;
+    
+    completedRef.current = true;
+    onComplete(correct);
+  }, [onComplete]);
+
   const handleSubmitAnswer = () => {
-    if (isAnswered || userAnswer.trim().length === 0) return;
+    if (isAnswered || userAnswer.trim().length === 0 || completedRef.current) return;
 
     const correct = checkAnswer(userAnswer);
     setIsAnswered(true);
@@ -89,9 +114,9 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
     // Record the practice session
     recordVocabularyPractice(word.id, word.categories[0], correct);
     
-    // Auto-advance after delay
-    setTimeout(() => {
-      onComplete(correct);
+    // Set timeout for auto-advance
+    timeoutRef.current = setTimeout(() => {
+      handleComplete(correct);
     }, autoAdvanceDelay);
   };
 
@@ -119,36 +144,26 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
     }
   };
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'A1': return 'bg-green-500';
-      case 'A2': return 'bg-green-600';
-      case 'B1': return 'bg-yellow-500';
-      case 'B2': return 'bg-yellow-600';
-      case 'C1': return 'bg-red-500';
-      case 'C2': return 'bg-red-600';
-      default: return 'bg-gray-500';
-    }
-  };
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <Card className="max-w-md mx-auto">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">Vokabel-Übung</CardTitle>
-          <div className="flex items-center gap-2">
-            {word.difficulty && (
-              <Badge className={getDifficultyColor(word.difficulty)}>
-                {word.difficulty}
+          <div className="flex flex-wrap gap-1">
+            {word.categories.map((category, index) => (
+              <Badge key={index} variant="outline" className="text-xs">
+                {category}
               </Badge>
-            )}
-            <div className="flex flex-wrap gap-1">
-              {word.categories.map((category, index) => (
-                <Badge key={index} variant="outline" className="text-xs">
-                  {category}
-                </Badge>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </CardHeader>
