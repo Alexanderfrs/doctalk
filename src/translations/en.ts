@@ -394,7 +394,7 @@ export const englishTranslations = {
   solutionFlexibleHighlight: "24/7 availability",
   
   solutionSpecialized: "100% Medical-Focused",
-  solutionSpecialized: "Only solution designed exclusively for healthcare professionals by medical experts.",
+  solutionSpecializedDesc: "Only solution designed exclusively for healthcare professionals by medical experts.",
   solutionSpecializedHighlight: "Expert-developed content",
   
   solutionNetworked: "Career Network Integration",
