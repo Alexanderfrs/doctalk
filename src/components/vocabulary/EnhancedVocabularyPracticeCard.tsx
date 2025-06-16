@@ -19,18 +19,21 @@ interface EnhancedVocabularyPracticeCardProps {
 const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardProps> = ({
   word,
   onComplete,
-  autoAdvanceDelay = 3000
+  autoAdvanceDelay = 2000
 }) => {
   const [userAnswer, setUserAnswer] = useState('');
   const [isAnswered, setIsAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [showSubmit, setShowSubmit] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  
   const { recordVocabularyPractice } = useVocabularyProgress();
   const { speak, hasSpeechSupport } = useTextToSpeech();
   const isMobile = useIsMobile();
   const inputRef = useRef<HTMLInputElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const completedRef = useRef(false);
+  const currentWordIdRef = useRef(word.id);
 
   const {
     text: voiceText,
@@ -42,43 +45,67 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
   } = useVoiceRecognition({
     language: 'en-US',
     onResult: (result, isFinal) => {
-      if (isFinal && !isAnswered) {
+      if (isFinal && !isAnswered && !isProcessing) {
         setUserAnswer(result.trim());
         setShowSubmit(true);
       }
     }
   });
 
-  // Reset component state when word changes
-  useEffect(() => {
-    setUserAnswer('');
-    setIsAnswered(false);
-    setIsCorrect(false);
-    setShowSubmit(false);
-    completedRef.current = false;
-    resetText();
-    
-    // Clear any existing timeout
+  // Clear any existing timeout when component unmounts or word changes
+  const clearExistingTimeout = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
-  }, [word.id, resetText]);
+  }, []);
 
+  // Reset component state when word changes
   useEffect(() => {
-    if (voiceText && !isAnswered) {
+    // Only reset if the word actually changed
+    if (currentWordIdRef.current !== word.id) {
+      console.log('Word changed from', currentWordIdRef.current, 'to', word.id);
+      
+      // Clear any existing timeout first
+      clearExistingTimeout();
+      
+      // Reset all state
+      setUserAnswer('');
+      setIsAnswered(false);
+      setIsCorrect(false);
+      setShowSubmit(false);
+      setIsProcessing(false);
+      completedRef.current = false;
+      currentWordIdRef.current = word.id;
+      resetText();
+      
+      console.log('Component state reset for word:', word.id);
+    }
+  }, [word.id, resetText, clearExistingTimeout]);
+
+  // Handle voice text updates
+  useEffect(() => {
+    if (voiceText && !isAnswered && !isProcessing) {
       setUserAnswer(voiceText);
       setShowSubmit(true);
     }
-  }, [voiceText, isAnswered]);
+  }, [voiceText, isAnswered, isProcessing]);
 
+  // Handle user answer input
   useEffect(() => {
-    if (userAnswer.trim().length > 0 && !isAnswered) {
+    if (userAnswer.trim().length > 0 && !isAnswered && !isProcessing) {
       setShowSubmit(true);
     } else {
       setShowSubmit(false);
     }
-  }, [userAnswer, isAnswered]);
+  }, [userAnswer, isAnswered, isProcessing]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      clearExistingTimeout();
+    };
+  }, [clearExistingTimeout]);
 
   const normalizeText = (text: string) => {
     return text.toLowerCase().trim().replace(/[^a-z\s]/g, '');
@@ -97,14 +124,25 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
   };
 
   const handleComplete = useCallback((correct: boolean) => {
-    if (completedRef.current) return;
+    // Prevent multiple completions
+    if (completedRef.current || isProcessing) {
+      console.log('Completion blocked - already completed or processing');
+      return;
+    }
     
+    console.log('Completing word:', word.id, 'correct:', correct);
     completedRef.current = true;
     onComplete(correct);
-  }, [onComplete]);
+  }, [onComplete, word.id, isProcessing]);
 
   const handleSubmitAnswer = () => {
-    if (isAnswered || userAnswer.trim().length === 0 || completedRef.current) return;
+    if (isAnswered || userAnswer.trim().length === 0 || completedRef.current || isProcessing) {
+      console.log('Submit blocked - answered:', isAnswered, 'empty:', userAnswer.trim().length === 0, 'completed:', completedRef.current, 'processing:', isProcessing);
+      return;
+    }
+
+    console.log('Submitting answer for word:', word.id);
+    setIsProcessing(true);
 
     const correct = checkAnswer(userAnswer);
     setIsAnswered(true);
@@ -116,12 +154,13 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
     
     // Set timeout for auto-advance
     timeoutRef.current = setTimeout(() => {
+      console.log('Auto-advancing after timeout for word:', word.id);
       handleComplete(correct);
     }, autoAdvanceDelay);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && showSubmit && !isAnswered) {
+    if (e.key === 'Enter' && showSubmit && !isAnswered && !isProcessing) {
       handleSubmitAnswer();
     }
   };
@@ -133,7 +172,7 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
   };
 
   const handleVoiceInput = async () => {
-    if (!hasRecognitionSupport) return;
+    if (!hasRecognitionSupport || isProcessing) return;
 
     if (isListening) {
       stopListening();
@@ -143,15 +182,6 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
       await startListening();
     }
   };
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
 
   return (
     <Card className="max-w-md mx-auto">
@@ -181,6 +211,7 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
                 size="sm"
                 onClick={handleSpeak}
                 className="text-medical-600 touch-target"
+                disabled={isProcessing}
               >
                 <Volume2 className="h-4 w-4" />
               </Button>
@@ -211,11 +242,11 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
                     : 'border-red-500 bg-red-50'
                   : 'border-gray-300 focus:border-medical-500'
               }`}
-              disabled={isAnswered}
+              disabled={isAnswered || isProcessing}
             />
             
             {/* Voice Input Button */}
-            {hasRecognitionSupport && !isAnswered && (
+            {hasRecognitionSupport && !isAnswered && !isProcessing && (
               <Button
                 variant="ghost"
                 size="sm"
@@ -236,7 +267,7 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
                 ) : (
                   <XCircle className="h-5 w-5 text-red-500" />
                 )
-              ) : showSubmit ? (
+              ) : showSubmit && !isProcessing ? (
                 <Button
                   variant="ghost"
                   size="sm"
@@ -250,7 +281,7 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
           </div>
 
           {/* Mobile Submit Button */}
-          {isMobile && showSubmit && !isAnswered && (
+          {isMobile && showSubmit && !isAnswered && !isProcessing && (
             <Button
               onClick={handleSubmitAnswer}
               className="w-full bg-medical-500 hover:bg-medical-600 touch-target"
@@ -260,7 +291,7 @@ const EnhancedVocabularyPracticeCard: React.FC<EnhancedVocabularyPracticeCardPro
           )}
 
           {/* Voice Recognition Status */}
-          {isListening && (
+          {isListening && !isProcessing && (
             <div className="text-center text-sm text-medical-600">
               🎤 Hört zu... (Sprechen Sie Ihre Antwort)
             </div>
