@@ -1,6 +1,7 @@
 
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Play } from "lucide-react";
 import PracticeSetupDialog, { PracticeConfig } from "./PracticeSetupDialog";
 
 interface VocabularyPracticeTabProps {
@@ -15,20 +16,17 @@ const VocabularyPracticeTab: React.FC<VocabularyPracticeTabProps> = ({
   onStartPractice
 }) => {
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardContent className="p-6 text-center">
-          <h3 className="text-xl font-semibold mb-4">Vokabeltraining</h3>
-          <p className="text-gray-600 mb-6">
-            Testen Sie Ihr Wissen mit {totalWords} Vokabeln.
-          </p>
-          <PracticeSetupDialog
-            availableCategories={availableCategories}
-            onStartPractice={onStartPractice}
-            totalWords={totalWords}
-          />
-        </CardContent>
-      </Card>
+    <div className="flex items-center gap-4">
+      <div className="text-right">
+        <p className="text-sm text-gray-600">
+          {totalWords} Vokabeln verfügbar
+        </p>
+      </div>
+      <PracticeSetupDialog
+        availableCategories={availableCategories}
+        onStartPractice={onStartPractice}
+        totalWords={totalWords}
+      />
     </div>
   );
 };

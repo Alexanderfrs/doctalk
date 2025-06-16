@@ -45,9 +45,6 @@ const Vocabulary = () => {
       filtered = filtered.filter(word => word.categories.includes(activeCategory));
     }
 
-    // Remove domain filtering since DeduplicatedVocabularyWord doesn't have domain property
-    // Domain filtering logic would need to be implemented differently if needed
-
     return filtered;
   }, [words, searchTerm, activeCategory]);
 
@@ -171,32 +168,29 @@ const Vocabulary = () => {
               onStartPractice={handleStartPractice}
             />
           ) : (
-            <>
-              <h1 className="text-3xl font-bold mb-6">{translate("vocabulary")}</h1>
-              <div className="md:flex gap-8">
-                <div className="md:w-3/4">
-                  <VocabularyBrowseTab
-                    searchTerm={searchTerm}
-                    onSearchChange={handleSearchChange}
-                    activeCategory={activeCategory}
-                    activeDomain={activeDomain}
-                    isFiltersOpen={isFiltersOpen}
-                    onCategoryChange={handleCategoryChange}
-                    onDomainChange={handleDomainChange}
-                    onFiltersToggle={handleFiltersToggle}
-                    onResetFilters={handleResetFilters}
-                    words={filteredWords}
-                  />
-                </div>
-                <div className="md:w-1/4">
-                  <VocabularyPracticeTab
-                    availableCategories={availableCategories}
-                    totalWords={words.length}
-                    onStartPractice={handleStartPractice}
-                  />
-                </div>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h1 className="text-3xl font-bold">{translate("vocabulary")}</h1>
+                <VocabularyPracticeTab
+                  availableCategories={availableCategories}
+                  totalWords={words.length}
+                  onStartPractice={handleStartPractice}
+                />
               </div>
-            </>
+              
+              <VocabularyBrowseTab
+                searchTerm={searchTerm}
+                onSearchChange={handleSearchChange}
+                activeCategory={activeCategory}
+                activeDomain={activeDomain}
+                isFiltersOpen={isFiltersOpen}
+                onCategoryChange={handleCategoryChange}
+                onDomainChange={handleDomainChange}
+                onFiltersToggle={handleFiltersToggle}
+                onResetFilters={handleResetFilters}
+                words={filteredWords}
+              />
+            </div>
           )}
         </div>
       </main>

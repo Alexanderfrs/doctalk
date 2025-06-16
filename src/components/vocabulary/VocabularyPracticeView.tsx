@@ -43,6 +43,19 @@ const VocabularyPracticeView: React.FC<VocabularyPracticeViewProps> = ({
     );
   }
 
+  if (practiceWords.length === 0) {
+    return (
+      <Card>
+        <CardContent className="text-center p-8">
+          <p className="text-gray-600 mb-4">Keine Vokabeln zum Üben verfügbar.</p>
+          <Button onClick={onEndPractice}>Zurück zur Übersicht</Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const currentWord = practiceWords[currentWordIndex];
+
   return (
     <div className="space-y-6">
       <Card>
@@ -87,10 +100,11 @@ const VocabularyPracticeView: React.FC<VocabularyPracticeViewProps> = ({
         </CardContent>
       </Card>
 
-      {practiceWords[currentWordIndex] && (
+      {currentWord && (
         <EnhancedVocabularyPracticeCard
+          key={`word-${currentWordIndex}-${currentWord.id}`}
           word={{
-            ...practiceWords[currentWordIndex],
+            ...currentWord,
             difficulty: 'B1'
           }}
           onComplete={onPracticeComplete}
