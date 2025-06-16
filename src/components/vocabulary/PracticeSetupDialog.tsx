@@ -18,6 +18,18 @@ export interface PracticeConfig {
   category: string;
 }
 
+// Key medical categories that are most useful for healthcare professionals
+const KEY_MEDICAL_CATEGORIES = [
+  { value: "vital-signs", label: "Vitale Zeichen" },
+  { value: "emergency", label: "Notfall" },
+  { value: "medications", label: "Medikamente" },
+  { value: "diagnoses", label: "Diagnosen" },
+  { value: "equipment", label: "Geräte" },
+  { value: "general-care", label: "Allgemeine Pflege" },
+  { value: "elderly-care", label: "Altenpflege" },
+  { value: "ward-routines", label: "Stationsroutine" }
+];
+
 const PracticeSetupDialog: React.FC<PracticeSetupDialogProps> = ({
   availableCategories,
   onStartPractice,
@@ -39,6 +51,11 @@ const PracticeSetupDialog: React.FC<PracticeSetupDialogProps> = ({
     { value: 20, label: "20 Karten" },
     { value: -1, label: `Alle verfügbaren (${totalWords})` }
   ];
+
+  // Filter available categories to only show key medical ones
+  const filteredCategories = KEY_MEDICAL_CATEGORIES.filter(cat => 
+    availableCategories.includes(cat.value)
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -75,17 +92,17 @@ const PracticeSetupDialog: React.FC<PracticeSetupDialogProps> = ({
 
           <div>
             <Label htmlFor="category-select" className="text-base font-medium mb-3 block">
-              Kategorie
+              Medizinischer Bereich
             </Label>
             <Select value={category} onValueChange={setCategory}>
               <SelectTrigger>
-                <SelectValue placeholder="Kategorie wählen" />
+                <SelectValue placeholder="Bereich wählen" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Alle Kategorien</SelectItem>
-                {availableCategories.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
+                <SelectItem value="all">Alle Bereiche</SelectItem>
+                {filteredCategories.map((cat) => (
+                  <SelectItem key={cat.value} value={cat.value}>
+                    {cat.label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -93,6 +110,7 @@ const PracticeSetupDialog: React.FC<PracticeSetupDialogProps> = ({
           </div>
 
           <Button onClick={handleStartPractice} className="w-full bg-medical-500 hover:bg-medical-600">
+            <Play className="h-4 w-4 mr-2" />
             Training starten
           </Button>
         </div>

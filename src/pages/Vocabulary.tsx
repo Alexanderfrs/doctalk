@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -12,7 +11,7 @@ import BottomNavigation from "@/components/navigation/BottomNavigation";
 import VocabularyBrowseTab from "@/components/vocabulary/VocabularyBrowseTab";
 import VocabularyPracticeTab from "@/components/vocabulary/VocabularyPracticeTab";
 import VocabularyMobileView from "@/components/vocabulary/VocabularyMobileView";
-import VocabularyPracticeView from "@/components/vocabulary/VocabularyPracticeView";
+import NewVocabularyPracticeView from "@/components/vocabulary/NewVocabularyPracticeView";
 import { cn } from "@/lib/utils";
 
 const Vocabulary = () => {
@@ -133,12 +132,8 @@ const Vocabulary = () => {
         {isMobile ? <MobileHeader /> : <AppHeader showSlogan={false} showAuthButtons={true} />}
         <main className={cn("flex-grow", isMobile ? "pt-20 pb-24" : "pt-24", "px-4")}>
           <div className="container mx-auto">
-            <VocabularyPracticeView
+            <NewVocabularyPracticeView
               practiceWords={practiceWords}
-              currentWordIndex={currentWordIndex}
-              practiceCompleted={practiceCompleted}
-              onPracticeComplete={handlePracticeComplete}
-              onResetPractice={handleResetPractice}
               onEndPractice={handleEndPractice}
             />
           </div>
