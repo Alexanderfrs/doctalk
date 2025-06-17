@@ -38,21 +38,13 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({
       ) : (
         <>
           {showAuthButtons ? (
-            <>
-              <Button 
-                variant="outline"
-                onClick={onLogin}
-                className="active:scale-95 transition-transform duration-150"
-              >
-                {translate("login")}
-              </Button>
-              <Button
-                className="bg-medical-500 hover:bg-medical-600 active:bg-medical-700 active:scale-95 transition-all duration-150"
-                onClick={onRegister}
-              >
-                {translate("register")}
-              </Button>
-            </>
+            <Button 
+              variant="outline"
+              onClick={onLogin}
+              className="active:scale-95 transition-transform duration-150"
+            >
+              {translate("login")}
+            </Button>
           ) : null}
         </>
       )}

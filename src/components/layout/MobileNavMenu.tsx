@@ -109,27 +109,16 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
           ) : (
             <>
               {showAuthButtons ? (
-                <>
-                  <Button 
-                    variant="outline"
-                    className="flex justify-center active:scale-95 transition-transform duration-150"
-                    onClick={() => {
-                      handleLogin();
-                      onClose();
-                    }}
-                  >
-                    {translate("login")}
-                  </Button>
-                  <Button
-                    className="bg-medical-500 hover:bg-medical-600 active:bg-medical-700 flex justify-center active:scale-95 transition-transform duration-150"
-                    onClick={() => {
-                      handleRegister();
-                      onClose();
-                    }}
-                  >
-                    {translate("register")}
-                  </Button>
-                </>
+                <Button 
+                  variant="outline"
+                  className="flex justify-center active:scale-95 transition-transform duration-150"
+                  onClick={() => {
+                    handleLogin();
+                    onClose();
+                  }}
+                >
+                  {translate("login")}
+                </Button>
               ) : (
                 <BetaSignupDialog 
                   triggerElement={

@@ -21,20 +21,6 @@ const PricingSection = () => {
       ],
       buttonText: translate("joinAlphaWaitlist"),
       buttonVariant: "outline",
-    },
-    {
-      title: translate("earlyBirdProfessional"),
-      description: translate("earlyBirdProfessionalDesc"),
-      price: "€7,99",
-      features: [
-        translate("proFeature1"),
-        translate("proFeature2"),
-        translate("proFeature3"),
-        translate("proFeature4"),
-        translate("proFeature5"),
-        translate("proFeature6"),
-      ],
-      buttonText: translate("reserveEarlyBirdSpot"),
       highlighted: true,
     },
     {
@@ -53,7 +39,7 @@ const PricingSection = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
       {plans.map((plan, index) => (
         <div
           key={index}
@@ -74,15 +60,7 @@ const PricingSection = () => {
           </div>
           {plan.price && (
             <div className="mb-6">
-              {plan.highlighted ? (
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold">{plan.price}</span>
-                  <span className="text-neutral-500">/ {translate("month")}</span>
-                  <span className="text-neutral-500 line-through">€12,99</span>
-                </div>
-              ) : (
-                <span className="text-3xl font-bold">{plan.price}</span>
-              )}
+              <span className="text-3xl font-bold">{plan.price}</span>
             </div>
           )}
           <ul className="space-y-3 mb-8">
