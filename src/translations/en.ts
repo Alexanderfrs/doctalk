@@ -25,6 +25,33 @@ export const englishTranslations = {
   trainScenarios: 'Practice real-world work scenarios and terminology for your professional everyday life in healthcare, starting from intermediate German proficiency.',
   targetAudience: 'Perfect for international care workers, doctors, and students in medical fields who want to enter and excel in German healthcare environments and achieve professional recognition.',
   
+  // New conversion-focused headlines
+  landYourDreamMedicalJob: 'Land Your Dream Medical Job',
+  inGermany: 'in Germany',
+  skipExpensiveCoursesAndGetFluent: 'Skip expensive language courses and get fluent in medical German with AI-powered practice scenarios.',
+  
+  // Trust signals and urgency
+  limitedAlphaSpots: 'Limited Alpha Spots Available',
+  exclusiveAlphaAccess: 'Exclusive alpha access -',
+  limitedSpots: 'Limited spots available',
+  joinPioneers: 'Join the pioneers',
+  getPriorityAccess: 'Get Priority Access',
+  exploreDemo: 'Explore Demo',
+  
+  // Enhanced CTA and pricing
+  claimAlphaSpot: 'Claim Your Alpha Spot',
+  exclusiveAccess: 'Exclusive Access',
+  limitedTime: 'Limited Time',
+  usuallyPaid: 'Usually paid',
+  joinExclusiveAlpha: 'Join the Exclusive Alpha Program',
+  beAmongFirstProfessionals: 'Be among the first 50 medical professionals to master German healthcare communication.',
+  exclusiveCommunity: 'Exclusive community',
+  secureAlphaSpot: 'Secure Your Alpha Spot',
+  
+  // Enhanced alpha features
+  exclusiveAlphaFeature1: 'Priority access to all future features',
+  exclusiveAlphaFeature2: 'Exclusive alpha tester community access',
+  
   // Onboarding specific translations
   onboardingSetup: 'Setup',
   profileAndGoals: 'Profile & Goals',
