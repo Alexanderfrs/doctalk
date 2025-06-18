@@ -25,6 +25,22 @@ export const germanTranslations = {
   trainScenarios: 'Üben Sie praxisnahe Arbeitsszenarien und Terminologie für Ihren Berufsalltag im Gesundheitswesen, beginnend ab mittlerer deutscher Sprachkompetenz.',
   targetAudience: 'Perfekt für internationale Pflegekräfte, Ärzte und Medizinstudenten, die im deutschen Gesundheitswesen einsteigen, sich dort hervortun und eine berufliche Anerkennung erlangen möchten.',
   
+  // Navigation translations
+  whoItsFor: 'Für wen es ist',
+  whyDocTalk: 'Warum DocTalk',
+  pricing: 'Preise',
+  
+  // Landing page hero section translations
+  limitedFreeSpotsAvailable: 'Begrenzte kostenlose Plätze verfügbar',
+  confidentCommunicationInGermanHealthcare: 'Selbstbewusste Kommunikation im deutschen Gesundheitswesen',
+  skipExpensiveLanguageCourses: 'Überspringen Sie teure Sprachkurse oder Privatlehrer und werden Sie fließend in medizinischem Deutsch mit praxisnahen Übungsszenarien.',
+  perfectForInternationalWorkers: 'Perfekt für internationale Pflegekräfte, Ärzte und Medizinstudenten, die im deutschen Gesundheitswesen einsteigen und sich hervortun möchten und eine berufliche Anerkennung erlangen wollen.',
+  developedWithExperts: 'Entwickelt mit Experten',
+  joinThePioneers: 'Schließen Sie sich den Pionieren an',
+  getPriorityAccess: 'Prioritätszugang erhalten',
+  comingSoonDemo: 'Demnächst: Demo',
+  exclusiveAlphaAccessLimitedSpots: 'Exklusiver Alpha-Zugang - Begrenzte Plätze verfügbar',
+
   // Onboarding specific translations
   onboardingSetup: 'Einrichtung',
   profileAndGoals: 'Profil & Ziele',
@@ -353,6 +369,9 @@ export const germanTranslations = {
   limitedFreeSpotsAvailable: 'Begrenzte kostenlose Plätze verfügbar',
   confidentCommunicationInGermanHealthcare: 'Selbstbewusste Kommunikation im deutschen Gesundheitswesen',
   skipExpensiveLanguageCourses: 'Überspringen Sie teure Sprachkurse oder Privatlehrer und werden Sie fließend in medizinischem Deutsch mit praxisnahen Übungsszenarien.',
+  perfectForInternationalWorkers: 'Perfekt für internationale Pflegekräfte, Ärzte und Medizinstudenten, die im deutschen Gesundheitswesen einsteigen und sich hervortun möchten und eine berufliche Anerkennung erlangen wollen.',
+  developedWithExperts: 'Entwickelt mit Experten',
+  joinThePioneers: 'Schließen Sie sich den Pionieren an',
   getPriorityAccess: 'Prioritätszugang erhalten',
   comingSoonDemo: 'Demnächst: Demo',
   exclusiveAlphaAccessLimitedSpots: 'Exklusiver Alpha-Zugang - Begrenzte Plätze verfügbar',

@@ -1,4 +1,3 @@
-
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -26,6 +25,22 @@ export const spanishTranslations = {
   trainScenarios: 'Practique escenarios de trabajo y terminología del mundo real para su vida profesional diaria en el sector de la salud, a partir de un dominio intermedio del alemán.',
   targetAudience: 'Perfecto para cuidadores internacionales, médicos y estudiantes de medicina que quieren entrar y destacar en el sistema sanitario alemán y conseguir el reconocimiento profesional.',
   
+  // Navigation translations
+  whoItsFor: 'Para Quién Es',
+  whyDocTalk: 'Por Qué DocTalk',
+  pricing: 'Precios',
+  
+  // Landing page hero section translations
+  limitedFreeSpotsAvailable: 'Plazas gratuitas limitadas disponibles',
+  confidentCommunicationInGermanHealthcare: 'Comunicación segura en la sanidad alemana',
+  skipExpensiveLanguageCourses: 'Evita costosos cursos de idiomas o tutores personales y domina el alemán médico con escenarios de práctica del mundo real.',
+  perfectForInternationalWorkers: 'Perfecto para cuidadores internacionales, médicos y estudiantes de medicina que quieren entrar y destacar en el sistema sanitario alemán y conseguir el reconocimiento profesional.',
+  developedWithExperts: 'Desarrollado con expertos',
+  joinThePioneers: 'Únete a los pioneros',
+  getPriorityAccess: 'Obtener acceso prioritario',
+  comingSoonDemo: 'Próximamente: Demo',
+  exclusiveAlphaAccessLimitedSpots: 'Acceso alfa exclusivo - Plazas limitadas disponibles',
+
   // Registration page
   createAccount: 'Crear cuenta',
   startJourney: 'Comienza tu viaje para convertirte en un experto en idioma médico',
@@ -80,8 +95,6 @@ export const spanishTranslations = {
   minimal: 'Mínimo',
   specificPreparation: 'Preparación específica para la vida profesional diaria',
   pricingTitle: 'Precios simples y transparentes',
-  pricing: 'Precios',
-  audience: 'Audiencia',
   pricingDescription: 'Elige el plan que mejor se adapte a tus objetivos de aprendizaje.',
   basic: 'Básico',
   forBeginners: 'Para principiantes',
@@ -272,16 +285,4 @@ export const spanishTranslations = {
   
   readyToTransformYourCareer: "¿Listo para Transformar tu Carrera Médica en Alemania?",
   joinThousandsOfProfessionals: "Únete a los profesionales que ya se están preparando para el éxito en la sanidad alemana.",
-
-  // Navigation translations
-  whoItsFor: 'Para Quién',
-  whyDocTalk: 'Por Qué DocTalk',
-  
-  // Landing page hero section missing translations
-  limitedFreeSpotsAvailable: 'Plazas gratuitas limitadas disponibles',
-  confidentCommunicationInGermanHealthcare: 'Comunicación segura en la sanidad alemana',
-  skipExpensiveLanguageCourses: 'Evita costosos cursos de idiomas o tutores personales y domina el alemán médico con escenarios de práctica del mundo real.',
-  getPriorityAccess: 'Obtener acceso prioritario',
-  comingSoonDemo: 'Próximamente: Demo',
-  exclusiveAlphaAccessLimitedSpots: 'Acceso alfa exclusivo - Plazas limitadas disponibles',
 };
