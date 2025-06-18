@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Heart, Mail, Twitter } from "lucide-react";
+import { Heart, Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import AppLogo from "./AppLogo";
 
@@ -22,27 +22,14 @@ const Footer: React.FC = () => {
             <Heart className="h-4 w-4 text-medical-400 mr-1" />
             <span>{translate("madeWithLove")}</span>
           </div>
-          <div className="flex items-center gap-4 mt-4 text-sm text-neutral-600">
-            <div className="flex items-center">
-              <Mail className="h-4 w-4 mr-2" />
-              <a
-                href="mailto:Doctalk.ai@gmail.com"
-                className="hover:text-medical-600 transition-colors"
-              >
-                Doctalk.ai@gmail.com
-              </a>
-            </div>
-            <div className="flex items-center">
-              <Twitter className="h-4 w-4 mr-2" />
-              <a
-                href="https://x.com/DocTalk4877"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-medical-600 transition-colors"
-              >
-                @DocTalk4877
-              </a>
-            </div>
+          <div className="flex items-center mt-4 text-sm text-neutral-600">
+            <Mail className="h-4 w-4 mr-2" />
+            <a
+              href="mailto:Doctalk.ai@gmail.com"
+              className="hover:text-medical-600 transition-colors"
+            >
+              Doctalk.ai@gmail.com
+            </a>
           </div>
         </div>
 
@@ -68,3 +55,4 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+
