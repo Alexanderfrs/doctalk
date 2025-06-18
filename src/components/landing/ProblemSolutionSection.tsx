@@ -4,7 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, TrendingUp, Clock, DollarSign, Users } from "lucide-react";
+import { CheckCircle, Clock, DollarSign, Users } from "lucide-react";
 
 const ProblemSolutionSection: React.FC = () => {
   const { translate } = useLanguage();
@@ -29,7 +29,7 @@ const ProblemSolutionSection: React.FC = () => {
       stat: translate("problemGenericSolutionsStat")
     },
     {
-      icon: TrendingUp,
+      icon: CheckCircle,
       title: translate("problemIntegrationChallenges"),
       description: translate("problemIntegrationChallengesDesc"),
       stat: translate("problemIntegrationChallengesStat")
@@ -104,16 +104,6 @@ const ProblemSolutionSection: React.FC = () => {
               </Card>
             ))}
           </div>
-        </div>
-
-        {/* Arrow Transition */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-medical-500 rounded-full mb-4">
-            <TrendingUp className="w-8 h-8 text-white" />
-          </div>
-          <p className="text-lg font-medium text-medical-600">
-            {translate("introducingDocTalk")}
-          </p>
         </div>
 
         {/* Solutions Section */}

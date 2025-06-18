@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -413,9 +412,9 @@ export const englishTranslations = {
   revolutionaryApproachToMedicalGerman: "A Revolutionary Approach to Medical German Learning",
   
   // Updated solutions
-  solutionAffordable: "Radically Affordable",
-  solutionAffordableDesc: "Professional medical German training at a fraction of traditional course costs.",
-  solutionAffordableHighlight: "10x more affordable",
+  solutionAffordable: "Radically Affordable & Flexible",
+  solutionAffordableDesc: "Professional medical German training at a fraction of traditional language school and personal tutor costs. Learn at your own pace with bite-sized, personalized lessons in a safe practice environment.",
+  solutionAffordableHighlight: "Flexible & cost-effective",
   
   solutionFlexible: "Dialogue-First Learning Innovation",
   solutionFlexibleDesc: "Master German through realistic practice scenarios specifically designed for healthcare environments, leading to faster language mastery than traditional methods.",
