@@ -4,10 +4,15 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CheckCircle, Star, Crown } from "lucide-react";
 import { PricingPlan } from "@/types/landing";
-import BetaSignupDialog from "@/components/beta/BetaSignupDialog";
+import waitlist from '@zootools/waitlist-js';
 
 const PricingSection = () => {
   const { translate } = useLanguage();
+
+  const handleWaitlistClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
+  };
 
   const plans: PricingPlan[] = [
     {
@@ -90,18 +95,15 @@ const PricingSection = () => {
               <a href="mailto:doctalk.ai@gmail.com">{plan.buttonText}</a>
             </Button>
           ) : (
-            <BetaSignupDialog
-              triggerElement={
-                <Button
-                  className={`w-full ${
-                    plan.highlighted ? "bg-medical-500 hover:bg-medical-600" : ""
-                  }`}
-                  variant={plan.buttonVariant}
-                >
-                  {plan.buttonText}
-                </Button>
-              }
-            />
+            <Button
+              onClick={handleWaitlistClick}
+              className={`w-full ${
+                plan.highlighted ? "bg-medical-500 hover:bg-medical-600" : ""
+              }`}
+              variant={plan.buttonVariant}
+            >
+              {plan.buttonText}
+            </Button>
           )}
         </div>
       ))}

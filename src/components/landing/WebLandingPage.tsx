@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/layout/Footer";
@@ -10,6 +11,7 @@ import PricingSection from "@/components/landing/PricingSection";
 import ProblemSolutionSection from "@/components/landing/ProblemSolutionSection";
 import { LandingPageProps } from "@/types/landing";
 import { useSwipeable } from "react-swipeable";
+import waitlist from '@zootools/waitlist-js';
 
 const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -23,7 +25,8 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
     { id: "hero", label: translate("home") },
     { id: "target-users", label: "Who it's for" },
     { id: "problem-solution", label: "Why DocTalk" },
-    { id: "pricing", label: translate("pricingTitle") }
+    { id: "pricing", label: translate("pricingTitle") },
+    { id: "cta", label: "Get Started" }
   ];
 
   // Add swipe gesture to navigate between sections on web
@@ -87,6 +90,11 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
     return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
 
+  const handleWaitlistClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
+  };
+
   return (
     <div className="min-h-screen flex flex-col relative" {...swipeHandlers}>
       <AppHeader onLogin={handleLogin} showSlogan={false} showAuthButtons={false} />
@@ -119,6 +127,28 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             </div>
             
             <PricingSection />
+          </div>
+        </section>
+
+        {/* New CTA Section moved to bottom */}
+        <section id="cta" className="py-16 bg-gradient-to-b from-neutral-50 to-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center bg-white rounded-2xl p-8 shadow-lg border border-medical-200">
+              <h3 className="text-2xl font-bold text-neutral-800 mb-4">
+                {translate("readyToTransformYourCareer")}
+              </h3>
+              <p className="text-neutral-600 mb-6 max-w-2xl mx-auto">
+                {translate("joinThousandsOfProfessionals")}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button 
+                  onClick={handleWaitlistClick}
+                  className="bg-medical-500 hover:bg-medical-600 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors"
+                >
+                  {translate("joinAlphaWaitlist")}
+                </button>
+              </div>
+            </div>
           </div>
         </section>
       </main>

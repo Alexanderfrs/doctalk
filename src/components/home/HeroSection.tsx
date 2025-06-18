@@ -6,13 +6,18 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight, ChevronLeft, ChevronRight, Clock, Users, Shield } from "lucide-react";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
-import BetaSignupDialog from "@/components/beta/BetaSignupDialog";
+import waitlist from '@zootools/waitlist-js';
 
 const HeroSection = () => {
   const { translate } = useLanguage();
   const isMobile = useIsMobile();
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleWaitlistClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
+  };
 
   const heroContents = [
     {
@@ -77,13 +82,9 @@ const HeroSection = () => {
             </div>
 
             <div className="flex flex-col gap-4 w-full">
-              <BetaSignupDialog
-                triggerElement={
-                  <Button size="lg" className="btn-primary w-full">
-                    {translate("getPriorityAccess")}
-                  </Button>
-                }
-              />
+              <Button size="lg" className="btn-primary w-full" onClick={handleWaitlistClick}>
+                {translate("getPriorityAccess")}
+              </Button>
               <Button asChild variant="outline" size="lg" className="w-full">
                 <Link to="/practice">{translate("exploreDemo")}</Link>
               </Button>
@@ -175,13 +176,9 @@ const HeroSection = () => {
 
           <div className="flex flex-col gap-4">
             <div className="flex flex-wrap gap-4">
-              <BetaSignupDialog
-                triggerElement={
-                  <Button size="lg" className="btn-primary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                    {translate("getPriorityAccess")}
-                  </Button>
-                }
-              />
+              <Button size="lg" className="btn-primary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95" onClick={handleWaitlistClick}>
+                {translate("getPriorityAccess")}
+              </Button>
               <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
                 <Link to="/practice">{translate("exploreDemo")}</Link>
               </Button>
