@@ -10,6 +10,8 @@ import PricingSection from "@/components/landing/PricingSection";
 import ProblemSolutionSection from "@/components/landing/ProblemSolutionSection";
 import { LandingPageProps } from "@/types/landing";
 import { useSwipeable } from "react-swipeable";
+import { Button } from "@/components/ui/button";
+import waitlist from '@zootools/waitlist-js';
 
 const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -23,7 +25,8 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
     { id: "hero", label: translate("home") },
     { id: "target-users", label: "Who it's for" },
     { id: "problem-solution", label: "Why DocTalk" },
-    { id: "pricing", label: translate("pricingTitle") }
+    { id: "pricing", label: translate("pricingTitle") },
+    { id: "transform-career", label: "Transform Career" }
   ];
 
   // Add swipe gesture to navigate between sections on web
@@ -87,6 +90,11 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
     return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
 
+  const handleWaitlistClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
+  };
+
   return (
     <div className="min-h-screen flex flex-col relative" {...swipeHandlers}>
       <AppHeader onLogin={handleLogin} showSlogan={false} showAuthButtons={false} />
@@ -119,6 +127,26 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             </div>
             
             <PricingSection />
+          </div>
+        </section>
+
+        <section id="transform-career" className="py-16 bg-white px-4">
+          <div className="container mx-auto">
+            <div className="text-center bg-gradient-to-br from-medical-50 to-white rounded-2xl p-8 shadow-lg border border-medical-200 max-w-4xl mx-auto">
+              <h3 className="text-2xl md:text-3xl font-bold text-neutral-800 mb-4">
+                Ready to Transform Your Medical Career in Germany?
+              </h3>
+              <p className="text-neutral-600 mb-6 max-w-2xl mx-auto text-lg">
+                Join the professionals who are already preparing for success in German healthcare.
+              </p>
+              <Button 
+                size="lg" 
+                className="bg-medical-500 hover:bg-medical-600 text-white px-8"
+                onClick={handleWaitlistClick}
+              >
+                Join Alpha Waitlist
+              </Button>
+            </div>
           </div>
         </section>
       </main>

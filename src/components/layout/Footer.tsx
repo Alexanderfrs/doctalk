@@ -31,6 +31,19 @@ const Footer: React.FC = () => {
               Doctalk.ai@gmail.com
             </a>
           </div>
+          <div className="flex items-center mt-4 text-sm text-neutral-600">
+            <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+            <a
+              href="https://x.com/DocTalk4877"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-medical-600 transition-colors"
+            >
+              @DocTalk4877
+            </a>
+          </div>
         </div>
 
         <div className="border-t border-neutral-200 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
@@ -55,4 +68,3 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
-
