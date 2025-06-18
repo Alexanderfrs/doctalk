@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { CheckCircle, Star, Crown } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { PricingPlan } from "@/types/landing";
 import BetaSignupDialog from "@/components/beta/BetaSignupDialog";
 
@@ -18,10 +18,8 @@ const PricingSection = () => {
         translate("alphaFeature1"),
         translate("alphaFeature2"),
         translate("alphaFeature3"),
-        translate("exclusiveAlphaFeature1"),
-        translate("exclusiveAlphaFeature2"),
       ],
-      buttonText: translate("claimAlphaSpot"),
+      buttonText: translate("joinAlphaWaitlist"),
       buttonVariant: "outline",
       highlighted: true,
     },
@@ -47,21 +45,14 @@ const PricingSection = () => {
           key={index}
           className={`${
             plan.highlighted
-              ? "bg-medical-50 border-medical-200 relative"
+              ? "bg-medical-50 border-medical-200"
               : "bg-white border-neutral-100"
-          } p-6 rounded-xl shadow-sm border`}
+          } p-6 rounded-xl shadow-sm border relative`}
         >
           {plan.highlighted && (
-            <>
-              <div className="absolute -top-3 right-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-neutral-800 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
-                <Crown className="h-3 w-3 mr-1" />
-                {translate("exclusiveAccess")}
-              </div>
-              <div className="absolute -top-3 left-4 bg-gradient-to-r from-green-400 to-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center">
-                <Star className="h-3 w-3 mr-1" />
-                {translate("limitedTime")}
-              </div>
-            </>
+            <div className="absolute -top-3 right-4 bg-yellow-400 text-neutral-800 px-3 py-1 rounded-full text-xs font-semibold">
+              {translate("launchSpecial")}
+            </div>
           )}
           <div className="mb-4">
             <h3 className="text-xl font-semibold">{plan.title}</h3>
@@ -70,11 +61,6 @@ const PricingSection = () => {
           {plan.price && (
             <div className="mb-6">
               <span className="text-3xl font-bold">{plan.price}</span>
-              {plan.highlighted && (
-                <span className="text-sm text-green-600 ml-2 font-medium">
-                  {translate("usuallyPaid")}
-                </span>
-              )}
             </div>
           )}
           <ul className="space-y-3 mb-8">

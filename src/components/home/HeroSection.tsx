@@ -1,10 +1,9 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ArrowRight, ChevronLeft, ChevronRight, Clock, Users, Shield } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import BetaSignupDialog from "@/components/beta/BetaSignupDialog";
 
@@ -46,50 +45,30 @@ const HeroSection = () => {
       <section className="container mx-auto mb-12 landing-mobile-section">
         <div className="glass-panel hero-mobile-fix flex flex-col items-center gap-6">
           <div className="w-full opacity-100 visible">
-            {/* Limited Spots Counter */}
-            <div className="flex items-center justify-center mb-4 bg-yellow-100 border border-yellow-300 rounded-full px-4 py-2">
-              <Clock className="h-4 w-4 text-yellow-600 mr-2" />
-              <span className="text-sm font-medium text-yellow-800">
-                {translate("limitedAlphaSpots")}
-              </span>
-            </div>
-
             <h1 className="text-3xl font-bold mb-4 text-neutral-800">
-              {translate("landYourDreamMedicalJob")} <span className="text-gradient">{translate("inGermany")}</span>
+              {translate("improveYour")} <span className="text-gradient">{translate("medicalCommunication")}</span>
             </h1>
             <p className="text-lg text-neutral-600 mb-4">
-              {translate("skipExpensiveCoursesAndGetFluent")}
+              {translate("trainScenarios")}
             </p>
             <p className="text-md text-neutral-500 mb-6">
               {translate("targetAudience")}
             </p>
-
-            {/* Trust Signals */}
-            <div className="flex items-center justify-center gap-4 mb-6 text-sm text-neutral-500">
-              <div className="flex items-center">
-                <Shield className="h-4 w-4 mr-1" />
-                <span>{translate("expertDeveloped")}</span>
-              </div>
-              <div className="flex items-center">
-                <Users className="h-4 w-4 mr-1" />
-                <span>{translate("joinPioneers")}</span>
-              </div>
-            </div>
-
             <div className="flex flex-col gap-4 w-full">
+              <Button asChild size="lg" className="btn-primary w-full">
+                <Link to="/practice">{translate("startExercise")}</Link>
+              </Button>
               <BetaSignupDialog
                 triggerElement={
-                  <Button size="lg" className="btn-primary w-full">
-                    {translate("getPriorityAccess")}
+                  <Button variant="secondary" size="lg" className="w-full">
+                    {translate("joinBeta")}
                   </Button>
                 }
               />
-              <Button asChild variant="outline" size="lg" className="w-full">
-                <Link to="/practice">{translate("exploreDemo")}</Link>
-              </Button>
                <p className="text-center text-sm text-neutral-500 mt-2">
-                {translate('exclusiveAlphaAccess')}{' '}
-                <span className="font-bold">{translate('limitedSpots')}</span>
+                {translate('alphaAccessLimitedPre')}{' '}
+                <span className="font-bold">{translate('alphaAccessLimitedBold')}</span>{' '}
+                {translate('alphaAccessCta')}
               </p>
             </div>
           </div>
@@ -143,52 +122,32 @@ const HeroSection = () => {
     <section className="container mx-auto mb-12">
       <div className="glass-panel p-8 flex flex-col md:flex-row items-center gap-8">
         <div className="md:w-1/2 opacity-100 visible">
-          {/* Limited Spots Counter */}
-          <div className="flex items-center justify-center md:justify-start mb-4 bg-yellow-100 border border-yellow-300 rounded-full px-4 py-2 w-fit">
-            <Clock className="h-4 w-4 text-yellow-600 mr-2" />
-            <span className="text-sm font-medium text-yellow-800">
-              {translate("limitedAlphaSpots")}
-            </span>
-          </div>
-
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
-            {translate("landYourDreamMedicalJob")} <span className="text-gradient">{translate("inGermany")}</span>
+            {translate("improveYour")} <span className="text-gradient">{translate("medicalCommunication")}</span>
           </h1>
           <p className="text-lg text-neutral-600 mb-4">
-            {translate("skipExpensiveCoursesAndGetFluent")}
+            {translate("trainScenarios")}
           </p>
           <p className="text-md text-neutral-500 mb-6">
             {translate("targetAudience")}
           </p>
-
-          {/* Trust Signals */}
-          <div className="flex items-center gap-6 mb-6 text-sm text-neutral-500">
-            <div className="flex items-center">
-              <Shield className="h-4 w-4 mr-2" />
-              <span>{translate("expertDeveloped")}</span>
-            </div>
-            <div className="flex items-center">
-              <Users className="h-4 w-4 mr-2" />
-              <span>{translate("joinPioneers")}</span>
-            </div>
-          </div>
-
           <div className="flex flex-col gap-4">
             <div className="flex flex-wrap gap-4">
+              <Button asChild size="lg" className="btn-primary active:scale-95 transition-transform duration-150">
+                <Link to="/practice">{translate("startExercise")}</Link>
+              </Button>
               <BetaSignupDialog
                 triggerElement={
-                  <Button size="lg" className="btn-primary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                    {translate("getPriorityAccess")}
+                  <Button variant="secondary" size="lg" className="shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
+                    {translate("joinBeta")}
                   </Button>
                 }
               />
-              <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                <Link to="/practice">{translate("exploreDemo")}</Link>
-              </Button>
             </div>
             <p className="text-sm text-neutral-500 mt-2">
-              {translate('exclusiveAlphaAccess')}{' '}
-              <span className="font-bold">{translate('limitedSpots')}</span>
+              {translate('alphaAccessLimitedPre')}{' '}
+              <span className="font-bold">{translate('alphaAccessLimitedBold')}</span>{' '}
+              {translate('alphaAccessCta')}
             </p>
           </div>
         </div>
