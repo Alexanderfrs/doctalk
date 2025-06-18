@@ -1,139 +1,74 @@
 
 import React from "react";
+import { Stethoscope, HeartHandshake, GraduationCap } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Stethoscope, 
-  Users, 
-  BookOpen, 
-  Calendar, 
-  Network, 
-  Award,
-  Clock
-} from "lucide-react";
 
-const TargetUsersSection: React.FC = () => {
+const TargetUsersSection = () => {
   const { translate } = useLanguage();
 
-  const targetUsers = [
+  const users = [
     {
       title: translate("forCareWorkersTitle"),
       description: translate("forCareWorkersDescription"),
-      icon: Stethoscope,
-      color: "text-blue-600"
+      image: "/lovable-uploads/cea1be79-a723-482d-81f1-17e0c03d04a4.png",
+      icon: <HeartHandshake className="h-8 w-8" />,
     },
     {
-      title: translate("forDoctorsTitle"), 
+      title: translate("forDoctorsTitle"),
       description: translate("forDoctorsDescription"),
-      icon: Users,
-      color: "text-green-600"
+      image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2070&auto=format&fit=crop",
+      icon: <Stethoscope className="h-8 w-8" />,
+      isComingSoon: true,
     },
     {
       title: translate("forMedicalStudentsTitle"),
       description: translate("forMedicalStudentsDescription"),
-      icon: BookOpen,
-      color: "text-purple-600"
-    }
-  ];
-
-  const features = [
-    {
-      icon: Stethoscope,
-      title: translate("medicalScenarioSimulation"),
-      description: translate("medicalScenarioSimulationDesc"),
-      highlight: translate("realWorldPractice")
+      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop",
+      icon: <GraduationCap className="h-8 w-8" />,
+      isComingSoon: true,
     },
-    {
-      icon: BookOpen,
-      title: translate("smartVocabularyBuilder"),
-      description: translate("smartVocabularyBuilderDesc"), 
-      highlight: translate("personalizedLearning")
-    },
-    {
-      icon: Calendar,
-      title: translate("flexibleScheduling"),
-      description: translate("flexibleSchedulingDesc"),
-      highlight: translate("studyAnytime")
-    },
-    {
-      icon: Award,
-      title: translate("progressTracking"),
-      description: translate("progressTrackingDesc"),
-      highlight: translate("trackImprovement")
-    },
-    {
-      icon: Users,
-      title: translate("peerNetwork"),
-      description: translate("peerNetworkDesc"),
-      highlight: translate("communitySupport")
-    },
-    {
-      icon: Network,
-      title: translate("careerNetworkIntegration"),
-      description: translate("careerNetworkIntegrationDesc"),
-      highlight: translate("trustedPartnerNetwork"),
-      soon: true
-    }
   ];
 
   return (
-    <div className="text-center">
-      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-800">
-        {translate("tailoredForMedicalCareer")}
-      </h2>
-      <p className="text-lg text-neutral-600 mb-12 max-w-3xl mx-auto">
-        {translate("doctalkDesignedFor")}
-      </p>
-      
-      <div className="grid md:grid-cols-3 gap-8 mb-16">
-        {targetUsers.map((user, index) => (
-          <div key={index} className="text-center">
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100 h-full">
-              <user.icon className={`w-12 h-12 ${user.color} mx-auto mb-4`} />
-              <h3 className="font-semibold text-neutral-800 mb-3">
-                {user.title}
-              </h3>
-              <p className="text-neutral-600">
+    <div className="mt-16">
+      <div className="text-center mb-12">
+        <h3 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
+          {translate("tailoredForMedicalCareer")}
+        </h3>
+        <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+          {translate("doctalkDesignedFor")}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {users.map((user, index) => (
+          <div key={index} className="bg-white rounded-xl shadow-sm border border-neutral-100 hover:shadow-md transition-shadow overflow-hidden flex flex-col">
+            <div className="relative">
+              <img 
+                src={user.image} 
+                alt={user.title} 
+                className={`w-full h-48 object-cover ${user.isComingSoon ? 'filter grayscale' : ''}`}
+              />
+              {user.isComingSoon && (
+                <div className="absolute top-3 right-3 bg-medical-500 text-white text-xs font-bold uppercase px-3 py-1.5 rounded-full shadow-md">
+                  {translate("comingSoon")}
+                </div>
+              )}
+            </div>
+            <div className="p-6 flex flex-col flex-grow">
+              <div className="flex items-center gap-4 mb-4">
+                 <div className="flex-shrink-0 bg-medical-50 text-medical-600 rounded-full p-3">
+                    {user.icon}
+                  </div>
+                <h4 className="font-semibold text-neutral-800 text-xl">
+                  {user.title}
+                </h4>
+              </div>
+              <p className="text-neutral-600 text-base">
                 {user.description}
               </p>
             </div>
           </div>
-        ))}
-      </div>
-
-      <h3 className="text-2xl md:text-3xl font-bold mb-4 text-neutral-800">
-        {translate("comprehensiveMedicalGermanSolution")}
-      </h3>
-      <p className="text-lg text-neutral-600 mb-12 max-w-3xl mx-auto">
-        {translate("everythingYouNeedToSucceed")}
-      </p>
-      
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {features.map((feature, index) => (
-          <Card key={index} className="border-medical-100 hover:border-medical-200 transition-colors relative">
-            {feature.soon && (
-              <Badge 
-                variant="secondary" 
-                className="absolute -top-2 -right-2 bg-yellow-100 text-yellow-800 border-yellow-300 text-xs flex items-center"
-              >
-                <Clock className="h-3 w-3 mr-1" />
-                Soon
-              </Badge>
-            )}
-            <CardContent className="p-6 text-center">
-              <feature.icon className="w-12 h-12 text-medical-500 mx-auto mb-4" />
-              <h3 className="font-semibold text-neutral-800 mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-neutral-600 mb-4">
-                {feature.description}
-              </p>
-              <div className="text-medical-600 font-medium text-sm">
-                {feature.highlight}
-              </div>
-            </CardContent>
-          </Card>
         ))}
       </div>
     </div>

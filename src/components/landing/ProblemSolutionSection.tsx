@@ -3,9 +3,7 @@ import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { CheckCircle, Clock, DollarSign, Users } from "lucide-react";
-import waitlist from '@zootools/waitlist-js';
 
 const ProblemSolutionSection: React.FC = () => {
   const { translate } = useLanguage();
@@ -60,14 +58,10 @@ const ProblemSolutionSection: React.FC = () => {
       icon: CheckCircle,
       title: translate("solutionNetworked"),
       description: translate("solutionNetworkedDesc"),
-      highlight: translate("solutionNetworkedHighlight")
+      highlight: translate("solutionNetworkedHighlight"),
+      isUpcoming: true
     }
   ];
-
-  const handleWaitlistClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
-  };
 
   return (
     <section className="py-16 bg-gradient-to-b from-red-50 to-neutral-50">
@@ -125,7 +119,15 @@ const ProblemSolutionSection: React.FC = () => {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {solutions.map((solution, index) => (
-              <Card key={index} className="border-medical-200 bg-gradient-to-br from-medical-50 to-white">
+              <Card key={index} className="border-medical-200 bg-gradient-to-br from-medical-50 to-white relative">
+                {solution.isUpcoming && (
+                  <Badge 
+                    variant="secondary" 
+                    className="absolute -top-2 -right-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1"
+                  >
+                    Soon
+                  </Badge>
+                )}
                 <CardContent className="p-6 text-center">
                   <solution.icon className="w-12 h-12 text-medical-500 mx-auto mb-4" />
                   <h4 className="font-semibold text-neutral-800 mb-3">
@@ -140,28 +142,6 @@ const ProblemSolutionSection: React.FC = () => {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-
-        {/* New CTA Section */}
-        <div className="text-center bg-white rounded-2xl p-8 shadow-lg border border-medical-200">
-          <h3 className="text-2xl font-bold text-neutral-800 mb-4">
-            {translate("readyToTransformYourCareer")}
-          </h3>
-          <p className="text-neutral-600 mb-6 max-w-2xl mx-auto">
-            {translate("joinThousandsOfProfessionals")}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="bg-medical-500 hover:bg-medical-600"
-              onClick={handleWaitlistClick}
-            >
-              {translate("joinAlphaWaitlist")}
-            </Button>
-            <Button size="lg" variant="outline" className="border-medical-500 text-medical-600 hover:bg-medical-50">
-              {translate("learnMore")}
-            </Button>
           </div>
         </div>
       </div>

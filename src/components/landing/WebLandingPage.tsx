@@ -26,8 +26,13 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
     { id: "target-users", label: "Who it's for" },
     { id: "problem-solution", label: "Why DocTalk" },
     { id: "pricing", label: translate("pricingTitle") },
-    { id: "transform-career", label: "Transform Career" }
+    { id: "transform-career", label: "Get Started" }
   ];
+
+  const handleWaitlistClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
+  };
 
   // Add swipe gesture to navigate between sections on web
   const swipeHandlers = useSwipeable({
@@ -90,11 +95,6 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
     return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
 
-  const handleWaitlistClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
-  };
-
   return (
     <div className="min-h-screen flex flex-col relative" {...swipeHandlers}>
       <AppHeader onLogin={handleLogin} showSlogan={false} showAuthButtons={false} />
@@ -130,18 +130,19 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
           </div>
         </section>
 
-        <section id="transform-career" className="py-16 bg-white px-4">
+        {/* Final CTA Section */}
+        <section id="transform-career" className="py-16 px-4">
           <div className="container mx-auto">
-            <div className="text-center bg-gradient-to-br from-medical-50 to-white rounded-2xl p-8 shadow-lg border border-medical-200 max-w-4xl mx-auto">
-              <h3 className="text-2xl md:text-3xl font-bold text-neutral-800 mb-4">
+            <div className="text-center bg-white rounded-2xl p-8 shadow-lg border border-medical-200 max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold text-neutral-800 mb-4">
                 Ready to Transform Your Medical Career in Germany?
-              </h3>
-              <p className="text-neutral-600 mb-6 max-w-2xl mx-auto text-lg">
+              </h2>
+              <p className="text-lg text-neutral-600 mb-8 max-w-2xl mx-auto">
                 Join the professionals who are already preparing for success in German healthcare.
               </p>
               <Button 
                 size="lg" 
-                className="bg-medical-500 hover:bg-medical-600 text-white px-8"
+                className="bg-medical-500 hover:bg-medical-600"
                 onClick={handleWaitlistClick}
               >
                 Join Alpha Waitlist

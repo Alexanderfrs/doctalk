@@ -1,207 +1,126 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ArrowRight, ChevronLeft, ChevronRight, Clock, Users, Shield } from "lucide-react";
-import SwipeableContainer from "@/components/ui/SwipeableContainer";
+import { ChevronRight, Play, Globe, Users, Clock } from "lucide-react";
 import waitlist from '@zootools/waitlist-js';
 
 const HeroSection = () => {
-  const { translate } = useLanguage();
   const isMobile = useIsMobile();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const { translate } = useLanguage();
 
   const handleWaitlistClick = (event: React.MouseEvent) => {
     event.preventDefault();
     waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
   };
 
-  const heroContents = [
-    {
-      image: "/lovable-uploads/2cee5e65-91a5-46de-8fc0-957b2d81ef0f.png",
-      alt: translate("medicalTeamWorking"),
-    },
-    {
-      image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
-      alt: translate("hospitalScene"),
-    },
-    {
-      image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
-      alt: translate("medicalEducation"),
-    },
+  const stats = [
+    { icon: Users, label: translate("internationalProfessionals"), value: "500+" },
+    { icon: Clock, label: translate("hoursOfContent"), value: "50+" },
+    { icon: Globe, label: translate("countriesServed"), value: "15+" },
   ];
-
-  const handleSwipeChange = (index: number) => {
-    setActiveIndex(index);
-  };
-
-  const handlePrevious = () => {
-    setActiveIndex((prev) => Math.max(prev - 1, 0));
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prev) => Math.min(prev + 1, heroContents.length - 1));
-  };
 
   if (isMobile) {
     return (
-      <section className="container mx-auto mb-12 landing-mobile-section">
-        <div className="glass-panel hero-mobile-fix flex flex-col items-center gap-6">
-          <div className="w-full opacity-100 visible">
-            {/* Limited Spots Counter */}
-            <div className="flex items-center justify-center mb-4 bg-yellow-100 border border-yellow-300 rounded-full px-4 py-2">
-              <Clock className="h-4 w-4 text-yellow-600 mr-2" />
-              <span className="text-sm font-medium text-yellow-800">
-                {translate("limitedAlphaSpots")}
-              </span>
-            </div>
-
-            <h1 className="text-3xl font-bold mb-4 text-neutral-800">
-              {translate("landYourDreamMedicalJob")} <span className="text-gradient">{translate("inGermany")}</span>
+      <section className="bg-gradient-to-br from-medical-50 to-white pt-8 pb-16 relative overflow-hidden">
+        <div className="container mx-auto px-4 text-center">
+          <div className="mb-8 animate-fade-in">
+            <h1 className="text-3xl font-bold text-neutral-900 mb-4 leading-tight">
+              {translate("heroTitle")}
             </h1>
-            <p className="text-lg text-neutral-600 mb-4">
-              {translate("skipExpensiveCoursesAndGetFluent")}
+            <p className="text-lg text-neutral-600 mb-8 max-w-2xl mx-auto">
+              {translate("heroSubtitle")}
             </p>
-            <p className="text-md text-neutral-500 mb-6">
-              {translate("targetAudience")}
-            </p>
-
-            {/* Trust Signals */}
-            <div className="flex items-center justify-center gap-4 mb-6 text-sm text-neutral-500">
-              <div className="flex items-center">
-                <Shield className="h-4 w-4 mr-1" />
-                <span>{translate("expertDeveloped")}</span>
-              </div>
-              <div className="flex items-center">
-                <Users className="h-4 w-4 mr-1" />
-                <span>{translate("joinPioneers")}</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-4 w-full">
-              <Button size="lg" className="btn-primary w-full" onClick={handleWaitlistClick}>
+            
+            <div className="flex flex-col gap-4 mb-8">
+              <Button 
+                size="lg" 
+                className="bg-medical-500 hover:bg-medical-600 text-white w-full"
+                onClick={handleWaitlistClick}
+              >
                 {translate("getPriorityAccess")}
-              </Button>
-              <Button asChild variant="outline" size="lg" className="w-full">
-                <Link to="/practice">{translate("exploreDemo")}</Link>
-              </Button>
-               <p className="text-center text-sm text-neutral-500 mt-2">
-                {translate('exclusiveAlphaAccess')}{' '}
-                <span className="font-bold">{translate('limitedSpots')}</span>
-              </p>
-            </div>
-          </div>
-          
-          <div className="w-full opacity-100 visible" ref={containerRef}>
-            <div className="relative">
-              <SwipeableContainer 
-                showArrows={false} 
-                showIndicators={true}
-                onSwipe={handleSwipeChange}
-                initialIndex={activeIndex}
-                className="swipeable-mobile"
-              >
-                {heroContents.map((content, i) => (
-                  <div key={i} className="relative border-4 border-white rounded-2xl shadow-xl overflow-hidden w-full">
-                    <img 
-                      src={content.image} 
-                      alt={content.alt} 
-                      className="hero-image-mobile opacity-100 visible"
-                      loading="eager"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>
-                  </div>
-                ))}
-              </SwipeableContainer>
-              
-              <Button 
-                variant="ghost" 
-                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
-                onClick={handlePrevious}
-                disabled={activeIndex === 0}
-              >
-                <ChevronLeft className="h-5 w-5" />
+                <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
               <Button 
-                variant="ghost" 
-                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
-                onClick={handleNext}
-                disabled={activeIndex === heroContents.length - 1}
+                size="lg" 
+                variant="outline" 
+                className="border-medical-200 text-medical-700 hover:bg-medical-50 w-full"
               >
-                <ChevronRight className="h-5 w-5" />
+                <Play className="mr-2 h-5 w-5" />
+                {translate("exploreDemo")}
               </Button>
             </div>
           </div>
+
+          <div className="grid grid-cols-3 gap-4 mb-8">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <stat.icon className="h-6 w-6 text-medical-500 mx-auto mb-2" />
+                <div className="text-lg font-bold text-neutral-900">{stat.value}</div>
+                <div className="text-xs text-neutral-600">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-sm text-neutral-500 text-center">
+            {translate("heroDescription")}
+          </p>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="container mx-auto mb-12">
-      <div className="glass-panel p-8 flex flex-col md:flex-row items-center gap-8">
-        <div className="md:w-1/2 opacity-100 visible">
-          {/* Limited Spots Counter */}
-          <div className="flex items-center justify-center md:justify-start mb-4 bg-yellow-100 border border-yellow-300 rounded-full px-4 py-2 w-fit">
-            <Clock className="h-4 w-4 text-yellow-600 mr-2" />
-            <span className="text-sm font-medium text-yellow-800">
-              {translate("limitedAlphaSpots")}
-            </span>
-          </div>
-
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
-            {translate("landYourDreamMedicalJob")} <span className="text-gradient">{translate("inGermany")}</span>
-          </h1>
-          <p className="text-lg text-neutral-600 mb-4">
-            {translate("skipExpensiveCoursesAndGetFluent")}
-          </p>
-          <p className="text-md text-neutral-500 mb-6">
-            {translate("targetAudience")}
-          </p>
-
-          {/* Trust Signals */}
-          <div className="flex items-center gap-6 mb-6 text-sm text-neutral-500">
-            <div className="flex items-center">
-              <Shield className="h-4 w-4 mr-2" />
-              <span>{translate("expertDeveloped")}</span>
-            </div>
-            <div className="flex items-center">
-              <Users className="h-4 w-4 mr-2" />
-              <span>{translate("joinPioneers")}</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap gap-4">
+    <section className="bg-gradient-to-br from-medical-50 to-white pt-16 pb-24 relative overflow-hidden">
+      <div className="container mx-auto px-4">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left animate-fade-in">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 mb-6 leading-tight">
+              {translate("heroTitle")}
+            </h1>
+            <p className="text-lg md:text-xl text-neutral-600 mb-8 max-w-2xl mx-auto lg:mx-0">
+              {translate("heroSubtitle")}
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
               <Button 
                 size="lg" 
-                className="btn-primary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95"
+                className="bg-medical-500 hover:bg-medical-600 text-white"
                 onClick={handleWaitlistClick}
               >
                 {translate("getPriorityAccess")}
+                <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                <Link to="/practice">{translate("exploreDemo")}</Link>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-medical-200 text-medical-700 hover:bg-medical-50"
+              >
+                <Play className="mr-2 h-5 w-5" />
+                {translate("exploreDemo")}
               </Button>
             </div>
-            <p className="text-sm text-neutral-500 mt-2">
-              {translate('exclusiveAlphaAccess')}{' '}
-              <span className="font-bold">{translate('limitedSpots')}</span>
+
+            <div className="flex justify-center lg:justify-start gap-8 mb-8">
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <stat.icon className="h-8 w-8 text-medical-500 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-neutral-900">{stat.value}</div>
+                  <div className="text-sm text-neutral-600">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-neutral-500 text-center lg:text-left">
+              {translate("heroDescription")}
             </p>
           </div>
-        </div>
-        
-        <div className="md:w-1/2 opacity-100 visible">
-          <div className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden">
-            <img 
-              src="/lovable-uploads/2cee5e65-91a5-46de-8fc0-957b2d81ef0f.png" 
-              alt={translate("medicalTeamWorking")}
-              className="w-full h-[300px] object-cover opacity-100 visible"
-              loading="eager"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>
+
+          <div className="relative animate-fade-in" style={{ animationDelay: '400ms' }}>
+            <div className="aspect-square bg-gradient-to-br from-medical-100 to-medical-200 rounded-2xl flex items-center justify-center">
+              <div className="text-medical-600 text-6xl font-bold">DocTalk</div>
+            </div>
           </div>
         </div>
       </div>

@@ -2,9 +2,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { CheckCircle, Star, Crown, Clock } from "lucide-react";
+import { CheckCircle, Star, Crown } from "lucide-react";
 import { PricingPlan } from "@/types/landing";
-import { Badge } from "@/components/ui/badge";
 import waitlist from '@zootools/waitlist-js';
 
 const PricingSection = () => {
