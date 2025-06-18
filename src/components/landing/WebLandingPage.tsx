@@ -10,6 +10,8 @@ import PricingSection from "@/components/landing/PricingSection";
 import ProblemSolutionSection from "@/components/landing/ProblemSolutionSection";
 import { LandingPageProps } from "@/types/landing";
 import { useSwipeable } from "react-swipeable";
+import { Button } from "@/components/ui/button";
+import waitlist from '@zootools/waitlist-js';
 
 const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -23,8 +25,14 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
     { id: "hero", label: translate("home") },
     { id: "target-users", label: "Who it's for" },
     { id: "problem-solution", label: "Why DocTalk" },
-    { id: "pricing", label: translate("pricingTitle") }
+    { id: "pricing", label: translate("pricingTitle") },
+    { id: "transform-career", label: "Get Started" }
   ];
+
+  const handleWaitlistClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
+  };
 
   // Add swipe gesture to navigate between sections on web
   const swipeHandlers = useSwipeable({
@@ -119,6 +127,27 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             </div>
             
             <PricingSection />
+          </div>
+        </section>
+
+        {/* Final CTA Section */}
+        <section id="transform-career" className="py-16 px-4">
+          <div className="container mx-auto">
+            <div className="text-center bg-white rounded-2xl p-8 shadow-lg border border-medical-200 max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold text-neutral-800 mb-4">
+                Ready to Transform Your Medical Career in Germany?
+              </h2>
+              <p className="text-lg text-neutral-600 mb-8 max-w-2xl mx-auto">
+                Join the professionals who are already preparing for success in German healthcare.
+              </p>
+              <Button 
+                size="lg" 
+                className="bg-medical-500 hover:bg-medical-600"
+                onClick={handleWaitlistClick}
+              >
+                Join Alpha Waitlist
+              </Button>
+            </div>
           </div>
         </section>
       </main>
