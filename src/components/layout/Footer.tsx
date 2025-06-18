@@ -18,17 +18,17 @@ const Footer: React.FC = () => {
                 <img 
                   src="/lovable-uploads/fbff1d77-b805-4a84-9721-79292aad57c6.png"
                   alt="DocTalk Logo"
-                  className="h-16 w-auto"
+                  className="h-20 w-auto"
                 />
               </div>
             </Link>
           </div>
           <p className="text-neutral-600 text-sm max-w-md">
-            Language training for healthcare professionals
+            Communicate. Connect. Care
           </p>
           <div className="flex items-center mt-4 text-sm text-neutral-500">
             <Heart className="h-4 w-4 text-medical-400 mr-1" />
-            <span>{translate("madeWithLove")}</span>
+            <span>Made with love by a former nurse, health specialist, and cognitive psychologist</span>
           </div>
           <div className="flex items-center gap-6 mt-4">
             <a
