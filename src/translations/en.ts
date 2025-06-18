@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -25,18 +26,18 @@ export const englishTranslations = {
   trainScenarios: 'Practice real-world work scenarios and terminology for your professional everyday life in healthcare, starting from intermediate German proficiency.',
   targetAudience: 'Perfect for international care workers, doctors, and students in medical fields who want to enter and excel in German healthcare environments and achieve professional recognition.',
   
-  // New conversion-focused headlines
-  landYourDreamMedicalJob: 'Land Your Dream Medical Job',
-  inGermany: 'in Germany',
-  skipExpensiveCoursesAndGetFluent: 'Skip expensive language courses and get fluent in medical German with AI-powered practice scenarios.',
+  // Updated conversion-focused headlines
+  landYourDreamMedicalJob: 'Confident Communication',
+  inGermany: 'in German Healthcare',
+  skipExpensiveCoursesAndGetFluent: 'Skip expensive language courses or personal tutors and get fluent in medical German with real-world practice scenarios.',
   
-  // Trust signals and urgency
-  limitedAlphaSpots: 'Limited Alpha Spots Available',
+  // Updated trust signals and urgency
+  limitedAlphaSpots: 'Limited Free Spots Available',
   exclusiveAlphaAccess: 'Exclusive alpha access -',
   limitedSpots: 'Limited spots available',
   joinPioneers: 'Join the pioneers',
   getPriorityAccess: 'Get Priority Access',
-  exploreDemo: 'Explore Demo',
+  exploreDemo: 'Coming Soon: Demo',
   
   // Enhanced CTA and pricing
   claimAlphaSpot: 'Claim Your Alpha Spot',
@@ -411,18 +412,18 @@ export const englishTranslations = {
   theSolution: "The Solution",
   revolutionaryApproachToMedicalGerman: "A Revolutionary Approach to Medical German Learning",
   
-  // Solutions
+  // Updated solutions
   solutionAffordable: "Radically Affordable",
   solutionAffordableDesc: "Professional medical German training at a fraction of traditional course costs.",
   solutionAffordableHighlight: "10x more affordable",
   
-  solutionFlexible: "Ultimate Flexibility",
-  solutionFlexibleDesc: "Learn anytime, anywhere with personalized AI conversations that adapt to your schedule.",
-  solutionFlexibleHighlight: "24/7 availability",
+  solutionFlexible: "Dialogue-First Learning Innovation",
+  solutionFlexibleDesc: "Master German through realistic practice scenarios specifically designed for healthcare environments, leading to faster language mastery than traditional methods.",
+  solutionFlexibleHighlight: "Efficient language learning",
   
-  solutionSpecialized: "100% Medical-Focused",
-  solutionSpecializedDesc: "Only solution designed exclusively for healthcare professionals by medical experts.",
-  solutionSpecializedHighlight: "Expert-developed content",
+  solutionSpecialized: "Medical-Focused with Certification Prep",
+  solutionSpecializedDesc: "Exclusively designed for healthcare professionals by medical experts, with upcoming Anerkennung and FSP certification preparation support.",
+  solutionSpecializedHighlight: "Expert-developed + certification prep",
   
   solutionNetworked: "Career Network Integration",
   solutionNetworkedDesc: "Direct connections to trusted healthcare facilities and insights into German medical workplace culture.",
