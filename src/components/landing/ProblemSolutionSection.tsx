@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Clock, DollarSign, Users } from "lucide-react";
+import waitlist from '@zootools/waitlist-js';
 
 const ProblemSolutionSection: React.FC = () => {
   const { translate } = useLanguage();
@@ -62,6 +63,11 @@ const ProblemSolutionSection: React.FC = () => {
       highlight: translate("solutionNetworkedHighlight")
     }
   ];
+
+  const handleWaitlistClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
+  };
 
   return (
     <section className="py-16 bg-gradient-to-b from-red-50 to-neutral-50">
@@ -137,7 +143,7 @@ const ProblemSolutionSection: React.FC = () => {
           </div>
         </div>
 
-        {/* CTA Section */}
+        {/* New CTA Section */}
         <div className="text-center bg-white rounded-2xl p-8 shadow-lg border border-medical-200">
           <h3 className="text-2xl font-bold text-neutral-800 mb-4">
             {translate("readyToTransformYourCareer")}
@@ -146,7 +152,11 @@ const ProblemSolutionSection: React.FC = () => {
             {translate("joinThousandsOfProfessionals")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-medical-500 hover:bg-medical-600">
+            <Button 
+              size="lg" 
+              className="bg-medical-500 hover:bg-medical-600"
+              onClick={handleWaitlistClick}
+            >
               {translate("joinAlphaWaitlist")}
             </Button>
             <Button size="lg" variant="outline" className="border-medical-500 text-medical-600 hover:bg-medical-50">

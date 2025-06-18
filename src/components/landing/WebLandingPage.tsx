@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/layout/Footer";
@@ -6,7 +5,6 @@ import AppHeader from "@/components/layout/AppHeader";
 import SideNavigator from "@/components/navigation/SideNavigator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import HeroSection from "@/components/home/HeroSection";
-import CtaSection from "@/components/home/CtaSection";
 import TargetUsersSection from "@/components/landing/TargetUsersSection";
 import PricingSection from "@/components/landing/PricingSection";
 import ProblemSolutionSection from "@/components/landing/ProblemSolutionSection";
@@ -123,8 +121,6 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             <PricingSection />
           </div>
         </section>
-        
-        <CtaSection />
       </main>
       
       <Footer />
