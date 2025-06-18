@@ -1,3 +1,4 @@
+
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -181,6 +182,8 @@ export const germanTranslations = {
   alphaFeature1: "Voller Zugriff während der Alpha-Phase",
   alphaFeature2: "Direkter Einfluss auf die Feature-Entwicklung",
   alphaFeature3: "Exklusives 'Gründer'-Abzeichen im Profil",
+  exclusiveAlphaFeature1: "Einfluss auf Roadmap und Features",
+  exclusiveAlphaFeature2: "Lebenslanger 'Founding Member'-Status",
   joinAlphaWaitlist: "Alpha-Warteliste beitreten",
 
   earlyBirdProfessional: "Early Bird Professional",
@@ -211,21 +214,21 @@ export const germanTranslations = {
   ctaHeading: 'Bereit, Ihre Sprachkenntnisse zu verbessern?',
   ctaText: 'Beginnen Sie jetzt mit den Übungen und verbessern Sie Ihre professionelle Kommunikation im medizinischen Bereich - für Lernende mit mittleren bis fortgeschrittenen Kenntnissen (B1-C1).',
   startWithExercises: 'Mit Übungen beginnen',
-  swipeToSwitch: 'Wischen Sie nach links oder rechts, um zwischen den Tabs zu wechseln',
+  swipeToSwitch: 'Links oder rechts wischen, um zwischen Tabs zu wechseln',
   features: 'Funktionen',
   login: 'Anmelden',
   logout: 'Abmelden',
   
   // Footer translations
-  footerTagline: 'Sprachtraining für medizinische Fachkräfte - verbessern Sie Ihre Kommunikation für eine optimale Patientenversorgung.',
-  madeWithLove: 'Mit Liebe gemacht für alle Gesundheitsberufe',
+  footerTagline: 'Sprachtraining für medizinische Fachkräfte - verbessern Sie Ihre Kommunikation für optimale Patientenversorgung.',
+  madeWithLove: 'Mit Liebe für alle Gesundheitsfachkräfte gemacht',
   navigation: 'Navigation',
   categories: 'Kategorien',
   patientCare: 'Patientenversorgung',
   emergency: 'Notfall',
   documentation: 'Dokumentation',
   teamwork: 'Teamarbeit',
-  languageLevels: 'Sprachlevel',
+  languageLevels: 'Sprachniveaus',
   beginner: 'Anfänger (A1-A2)',
   intermediate: 'Mittelstufe (B1-B2)',
   advanced: 'Fortgeschritten (C1)',
@@ -236,124 +239,108 @@ export const germanTranslations = {
   swipeLeft: 'Nach links wischen',
   swipeRight: 'Nach rechts wischen',
   
-  // Beta signup translations to Alpha
-  joinBeta: "Alpha-Release-Prioritätszugang",
-  signupForBetaRelease: "Treten Sie der Alpha-Prioritäts-Warteliste bei",
-  betaAccessTitle: "Alpha-Release-Prioritätszugang",
-  betaAccessDescription: "Seien Sie einer der ersten 50 Tester, die Zugang zu DocTalk erhalten. Geben Sie Ihre E-Mail-Adresse ein, um unserer Prioritäts-Warteliste beizutreten.",
-  emailAddress: "E-Mail-Adresse",
-  getEarlyAccess: "Frühzeitigen Zugang erhalten",
-  submitting: "Wird gesendet...",
-  thankYouForJoining: "Vielen Dank für die Teilnahme an der Warteliste!",
-  betaConfirmationMessage: "Wir benachrichtigen Sie, wenn DocTalk für Alpha-Tests bereit ist.",
-  alreadySignedUp: "Sie stehen bereits auf der Liste",
-  emailAlreadyRegistered: "Diese E-Mail-Adresse steht bereits auf der Alpha-Warteliste.",
-  errorOccurred: "Ein Fehler ist aufgetreten",
-  pleaseRetryLater: "Bitte versuchen Sie es später noch einmal.",
-
-  // New text below buttons
-  alphaAccessLimitedPre: "Alpha-Zugang auf",
-  alphaAccessLimitedBold: "50 Plätze.",
-  alphaAccessLimitedPost: "",
-  alphaAccessCta: "Sichern Sie sich Ihren Platz!",
-  
   // Comparison section translations
   whyChooseDocTalk: "Warum DocTalk wählen?",
   whyChooseDocTalkDesc: "Sehen Sie, wie DocTalk einzigartige Vorteile bietet, die andere Sprachlernlösungen einfach nicht erreichen können.",
-  specializedMedicalContent: "Spezialisierte medizinische Inhalte",
-  specializedMedicalContentDesc: "Umfassendes medizinisches Vokabular und Terminologie, die speziell für medizinische Fachkräfte entwickelt wurden.",
-  realisticHospitalScenarios: "Realistische Krankenhausszenarien",
-  realisticHospitalScenariosDesc: "Üben Sie mit authentischen Dialogszenarien aus realen Krankenhausumgebungen und medizinischen Situationen.",
-  flexibleProfessionalFocus: "Flexibler beruflicher Fokus",
-  flexibleProfessionalFocusDesc: "Lernen Sie in Ihrem eigenen Tempo mit sofortiger praktischer Anwendung in Ihrem medizinischen Arbeitsalltag.",
-  expertDevelopedContent: "Von Experten entwickelte Inhalte",
-  expertDevelopedContentDesc: "Alle Inhalte wurden von medizinischen Fachkräften und Sprachexperten erstellt und überprüft.",
+  specializedMedicalContent: "Spezialisierte Medizinische Inhalte",
+  specializedMedicalContentDesc: "Umfassendes medizinisches Vokabular und Terminologie, speziell für Gesundheitsfachkräfte entwickelt.",
+  realisticHospitalScenarios: "Realistische Krankenhaus-Szenarien",
+  realisticHospitalScenariosDesc: "Üben Sie mit authentischen Dialogszenarien aus echten Krankenhausumgebungen und medizinischen Situationen.",
+  flexibleProfessionalFocus: "Flexibler Professioneller Fokus",
+  flexibleProfessionalFocusDesc: "Lernen Sie in Ihrem eigenen Tempo mit sofortiger praktischer Anwendung in Ihrer täglichen medizinischen Arbeit.",
+  expertDevelopedContent: "Von Experten Entwickelte Inhalte",
+  expertDevelopedContentDesc: "Alle Inhalte wurden von Medizinern und Sprachexperten erstellt und überprüft.",
   limitedOrNone: "Begrenzt oder nicht vorhanden",
   genericConversations: "Allgemeine Alltagsgespräche",
-  rigidSchedules: "Starre Stundenpläne",
+  rigidSchedules: "Starre Unterrichtspläne",
   generalContent: "Allgemeine Sprachinhalte",
   otherSolutions: 'Andere Lösungen',
-  otherSolutionsSpecific: 'Sprachschulen, Privatlehrer, generische Apps',
-  medicalTeamWorking: "Glückliches medizinisches Team, das zusammenarbeitet",
-  hospitalScene: "Krankenhausszene",
+  otherSolutionsSpecific: 'Sprachschulen, Privatlehrer, allgemeine Apps',
+  medicalTeamWorking: "Glückliches medizinisches Team arbeitet zusammen",
+  hospitalScene: "Krankenhaus-Szene",
   medicalEducation: "Medizinische Ausbildung",
   
-  // Admin translations
-  betaSignups: "Beta-Anmeldungen",
-  betaSubscribers: "Beta-Abonnenten",
-  totalSubscribers: "Gesamtzahl der Abonnenten",
-  refresh: "Aktualisieren",
-  downloadCSV: "CSV herunterladen",
-  noSubscribersYet: "Noch keine Beta-Abonnenten",
-  signupDate: "Anmeldedatum",
-  failedToLoadSubscribers: "Beta-Abonnenten konnten nicht geladen werden",
+  // Beta signup translations to Alpha
+  joinBeta: "Alpha-Prioritätszugang erhalten",
+  signupForBetaRelease: "Alpha-Prioritäts-Warteliste",
+  betaAccessTitle: "Alpha-Prioritätszugang",
+  betaAccessDescription: "Seien Sie einer der ersten 50 Tester, die Zugang zu DocTalk erhalten. Geben Sie Ihre E-Mail-Adresse ein, um unserer Prioritäts-Warteliste beizutreten. Wir benachrichtigen Sie, wenn die App zum Testen bereit ist.",
+  emailAddress: "E-Mail-Adresse",
+  getEarlyAccess: "Prioritätszugang erhalten",
+  submitting: "Wird gesendet...",
+  thankYouForJoining: "Danke, dass Sie der Warteliste beigetreten sind!",
+  betaConfirmationMessage: "Wir benachrichtigen Sie, wenn DocTalk für Alpha-Tests bereit ist.",
+  alreadySignedUp: "Bereits auf der Liste",
+  emailAlreadyRegistered: "Diese E-Mail-Adresse steht bereits auf der Alpha-Warteliste.",
+  errorOccurred: "Ein Fehler ist aufgetreten",
+  pleaseRetryLater: "Bitte versuchen Sie es später erneut.",
+  tailoredForMedicalCareer: "Maßgeschneidert für jeden Schritt Ihrer medizinischen Laufbahn",
+  doctalkDesignedFor: "DocTalk ist darauf ausgelegt, die spezifischen Sprachbedürfnisse verschiedener Gesundheitsfachkräfte zu erfüllen und Ihnen zu helfen, selbstbewusst und präzise zu kommunizieren.",
   
-  // General translations
-  overview: "Übersicht",
-  dashboard: "Dashboard",
-  welcomeBack: "Willkommen zurück",
-  dashboardWelcomeMessage: "Hier ist eine Zusammenfassung Ihrer Beta-Anmeldungen und anderer Metriken.",
-  yourProgress: "Ihr Fortschritt",
-  progressDescription: "Verfolgen Sie hier den Fortschritt Ihres Beta-Programms.",
-  recentActivity: "Letzte Aktivität",
-  noRecentActivity: "Keine letzte Aktivität zum Anzeigen.",
-  
-  // Common UI translations
-  dismiss: "Verwerfen",
-  processing: "Wird verarbeitet",
-  
-  // Scenario translations
-  listening: "Zuhören",
-  startSpeaking: "Sprechen beginnen",
-  stopListening: "Aufhören zuzuhören",
-  generatingResponse: "Antwort generieren",
-  generatingFeedback: "Feedback generieren",
-  conversationReset: "Konversation zurücksetzen",
-  notFound: "Nicht gefunden",
-  scenarioNotFound: "Szenario nicht gefunden",
-  
-  // Audio translations
-  playAudio: "Audio abspielen",
-  stopAudio: "Audio stoppen",
-  
-  // Resources translations
-  relevantGuidelines: "Relevante Richtlinien",
-  recommendedReadings: "Empfohlene Lektüre",
-  
-  // Practice page translations
-  searchExercises: "Übungen suchen...",
-  showFilters: "Filter anzeigen",
-  hideFilters: "Filter ausblenden",
-  viewVocabulary: "Vokabular anzeigen",
-  practicePronunciation: "Aussprache üben",
-  practiceDescription: "Üben Sie medizinisches Deutsch in realistischen Szenarien aus Ihren beruflichen Tätigkeiten",
-  
-  // New comparison section translations
-  bottomLine: "Das Fazit",
-  bottomLineDesc: "DocTalk ist die einzige Sprachlernlösung, die speziell für medizinische Fachkräfte entwickelt wurde, die im deutschen Gesundheitswesen erfolgreich sein müssen.",
-  
-  // Mobile onboarding translations
-  "mobileOnboarding.screen1.subtitle": "Die App, um auf Deutsch zu sprechen, zu arbeiten und dazugehören.",
-  "mobileOnboarding.screen1.description": "Ihr Tor zu selbstbewusster Kommunikation im deutschen Gesundheitswesen.",
-  "mobileOnboarding.screen2.title": "Sprache & Rollenspiele",
-  "mobileOnboarding.screen2.subtitle": "Üben Sie reale Gespräche", 
-  "mobileOnboarding.screen2.description": "Verstehen Sie den Anerkennungsprozess in Deutschland",
-  "mobileOnboarding.screen3.title": "Medizinisches Lernen",
-  "mobileOnboarding.screen3.subtitle": "Meistern Sie medizinisches Vokabular & Terminologie",
-  "mobileOnboarding.screen3.description": "• Echtes Klinikvokabular\n• Medizinische Abkürzungen\n• Medizinische Dokumentation\n• Lokale Dialekte\n\nLernen Sie die Sprache, die auf den Stationen gesprochen wird.",
-  "mobileOnboarding.screen4.title": "Üben Sie reale Szenarien",
-  "mobileOnboarding.screen4.subtitle": "Sprechen und hören Sie echten medizinischen Dialog", 
-  "mobileOnboarding.screen4.description": "Üben Sie reale Szenarien mit KI",
-  start: "Start",
-  tailoredForMedicalCareer: "Maßgeschneidert für jeden Schritt Ihrer medizinischen Karriere",
-  doctalkDesignedFor: "DocTalk ist darauf ausgelegt, die spezifischen sprachlichen Bedürfnisse verschiedener Fachkräfte im Gesundheitswesen zu erfüllen und Ihnen zu helfen, mit Selbstvertrauen und Präzision zu kommunizieren.",
+  // New text below buttons
+  alphaAccessLimitedPre: "Alpha-Zugang begrenzt auf",
+  alphaAccessLimitedBold: "50 Plätze.",
+  alphaAccessLimitedPost: "",
+  alphaAccessCta: "Sichern Sie sich Ihren Platz!",
+  exclusiveAccess: "Exklusiver Zugang",
+  limitedTime: "Begrenzte Zeit",
+  usuallyPaid: "normalerweise kostenpflichtig",
   
   // Target Users Section
   forCareWorkersTitle: "Für Pflegekräfte",
-  forCareWorkersDescription: "Meistern Sie die alltägliche Kommunikation mit Patienten und Kollegen, erledigen Sie die Dokumentation souverän und verstehen Sie Pflegeanweisungen mühelos.",
+  forCareWorkersDescription: "Grundlegende Kommunikation für außergewöhnliche Pflege und schnelle Integration in Ihr deutsches Team.",
   forDoctorsTitle: "Für Ärzte",
-  forDoctorsDescription: "Perfektionieren Sie Ihre Patientengespräche, von der Anamnese bis zur Erläuterung komplexer Diagnosen und Behandlungspläne. Bereiten Sie sich mit realistischen Szenarien auf die FSP-Prüfung vor.",
+  forDoctorsDescription: "Von der Anamnese bis zu komplexen Diskussionen - beherrschen Sie die Kommunikation, die Ihre berufliche Anerkennung beschleunigt.",
   forMedicalStudentsTitle: "Für Medizinstudenten",
-  forMedicalStudentsDescription: "Schaffen Sie eine solide Grundlage für Ihre klinischen Rotationen und Praktika und Ihre zukünftige Karriere in Deutschland. Üben Sie realistische Szenarien und bereiten Sie sich auf Ihre Prüfungen vor.",
-  comingSoon: "Demnächst"
+  forMedicalStudentsDescription: "Bauen Sie eine solide sprachliche Grundlage für einen entscheidenden Vorteil in Ihren klinischen Rotationen und Praktika sowie Ihrer zukünftigen Laufbahn auf.",
+  comingSoon: "Demnächst",
+  
+  // Problem-Solution Section
+  realityForInternationalProfessionals: "Die Realität Internationaler Gesundheitsfachkräfte",
+  realityForInternationalProfessionalsDesc: "Trotz kritischem Personalmangel stehen internationale Gesundheitsfachkräfte vor erheblichen Hürden, die ihren Erfolg in deutschen Gesundheitssystemen begrenzen.",
+  
+  theProblem: "Das Problem",
+  challengesFacingHealthcareProfessionals: "Herausforderungen für Gesundheitsfachkräfte",
+  
+  // Problems
+  problemHighCosts: "Prohibitive Ausbildungskosten",
+  problemHighCostsDesc: "Traditionelle medizinische Deutschkurse kosten €3.000-8.000 und machen qualitativ hochwertige Ausbildung für viele Fachkräfte unerschwinglich.",
+  problemHighCostsStat: "€3.000-8.000 pro Kurs",
+  
+  problemTimeConstraints: "Zeitliche Beschränkungen",
+  problemTimeConstraintsDesc: "Gesundheitsfachkräfte arbeiten anspruchsvolle Schichten und können kaum an festen Sprachkursen teilnehmen.",
+  problemTimeConstraintsStat: "Keine Zeit für feste Zeitpläne",
+  
+  problemGenericSolutions: "Allgemeine Sprachlösungen",
+  problemGenericSolutionsDesc: "Allgemeine Sprach-Apps fehlen medizinischer Kontext, während Tutoren oft die spezifischen Kommunikationsbedürfnisse im Gesundheitswesen nicht verstehen.",
+  problemGenericSolutionsStat: "Begrenzter medizinischer Kontext",
+  
+  problemIntegrationChallenges: "Integrations-Herausforderungen",
+  problemIntegrationChallengesDesc: "Kulturelle Arbeitsplatznormen, medizinische Hierarchien und bürokratische Prozesse schaffen zusätzliche Barrieren über die Sprache hinaus.",
+  problemIntegrationChallengesStat: "Komplexer Integrationsprozess",
+  
+  introducingDocTalk: "Wir stellen DocTalk vor",
+  
+  theSolution: "Die Lösung",
+  revolutionaryApproachToMedicalGerman: "Ein Revolutionärer Ansatz zum Medizinischen Deutsch Lernen",
+  
+  // Solutions
+  solutionAffordable: "Radikal Erschwinglich",
+  solutionAffordableDesc: "Professionelles medizinisches Deutschtraining zu einem Bruchteil der Kosten traditioneller Kurse.",
+  solutionAffordableHighlight: "10x erschwinglicher",
+  
+  solutionFlexible: "Maximale Flexibilität",
+  solutionFlexibleDesc: "Lernen Sie wann und wo Sie wollen mit personalisierten KI-Gesprächen, die sich Ihrem Zeitplan anpassen.",
+  solutionFlexibleHighlight: "24/7 verfügbar",
+  
+  solutionSpecialized: "100% Medizin-Fokussiert",
+  solutionSpecializedDesc: "Die einzige Lösung, die ausschließlich für Gesundheitsfachkräfte von medizinischen Experten entwickelt wurde.",
+  solutionSpecializedHighlight: "Expertenentwickelte Inhalte",
+  
+  solutionNetworked: "Berufsnetzwerk-Integration",
+  solutionNetworkedDesc: "Direkte Verbindungen zu vertrauenswürdigen Gesundheitseinrichtungen und Einblicke in die deutsche medizinische Arbeitsplatzkultur.",
+  solutionNetworkedHighlight: "Vertrauenswürdiges Partnernetzwerk",
+  
+  readyToTransformYourCareer: "Bereit, Ihre Medizinische Laufbahn in Deutschland zu Transformieren?",
+  joinThousandsOfProfessionals: "Schließen Sie sich den Fachkräften an, die sich bereits auf den Erfolg im deutschen Gesundheitswesen vorbereiten."
 };
