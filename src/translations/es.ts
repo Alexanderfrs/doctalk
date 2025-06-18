@@ -1,3 +1,4 @@
+
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -216,7 +217,7 @@ export const spanishTranslations = {
   
   // Target Users Section
   forCareWorkersTitle: "Para Cuidadores",
-  forCareWorkersDescription: "Comunicación esencial para brindar un cuidado excepcional e integrarte rápidamente en tu equipo alemán.",
+  forCareWorkersDescription: "Comunicación esencial para brindar un cuidado excepcional e integrarse rápidamente en tu equipo alemán.",
   forDoctorsTitle: "Para Médicos",
   forDoctorsDescription: "Desde la anamnesis hasta discusiones complejas, domina la comunicación que acelera tu reconocimiento profesional.",
   forMedicalStudentsTitle: "Para Estudiantes de Medicina",
@@ -275,7 +276,6 @@ export const spanishTranslations = {
   // Navigation translations
   whoItsFor: 'Para Quién',
   whyDocTalk: 'Por Qué DocTalk',
-  pricing: 'Precios',
   
   // Landing page hero section missing translations
   limitedFreeSpotsAvailable: 'Plazas gratuitas limitadas disponibles',
