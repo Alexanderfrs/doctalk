@@ -185,6 +185,7 @@ export const germanTranslations = {
   exclusiveAlphaFeature1: "Einfluss auf Roadmap und Features",
   exclusiveAlphaFeature2: "Lebenslanger 'Founding Member'-Status",
   joinAlphaWaitlist: "Alpha-Warteliste beitreten",
+  claimAlphaSpot: "Alpha-Platz sichern",
 
   earlyBirdProfessional: "Early Bird Professional",
   earlyBirdProfessionalDesc: "Sichern Sie sich einen lebenslangen Rabatt vor dem Start.",
@@ -220,8 +221,8 @@ export const germanTranslations = {
   logout: 'Abmelden',
   
   // Footer translations
-  footerTagline: 'Sprachtraining für medizinische Fachkräfte - verbessern Sie Ihre Kommunikation für optimale Patientenversorgung.',
-  madeWithLove: 'Mit Liebe für alle Gesundheitsfachkräfte gemacht',
+  footerTagline: 'Communicate. Connect. Care',
+  madeWithLove: 'Mit Liebe von einer ehemaligen Krankenschwester, Gesundheitsspezialistin und Kognitionspsychologin',
   navigation: 'Navigation',
   categories: 'Kategorien',
   patientCare: 'Patientenversorgung',

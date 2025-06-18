@@ -24,6 +24,7 @@ export const spanishTranslations = {
   medicalCommunication: 'en la Sanidad Alemana',
   trainScenarios: 'Practique escenarios de trabajo y terminología del mundo real para su vida profesional diaria en el sector de la salud, a partir de un dominio intermedio del alemán.',
   targetAudience: 'Perfecto para cuidadores internacionales, médicos y estudiantes de medicina que quieren entrar y destacar en el sistema sanitario alemán y conseguir el reconocimiento profesional.',
+  
   // Registration page
   createAccount: 'Crear cuenta',
   startJourney: 'Comienza tu viaje para convertirte en un experto en idioma médico',
@@ -40,6 +41,7 @@ export const spanishTranslations = {
   registration: 'Registro',
   termsAndConditions: 'Al registrarte, aceptas nuestros Términos de servicio y Política de privacidad.',
   alreadyRegistered: '¿Ya estás registrado? Inicia sesión ahora',
+  
   // Landing page
   startFree: 'Comienza gratis',
   learnMore: 'Saber más',
@@ -110,6 +112,7 @@ export const spanishTranslations = {
   alphaFeature2: "Influencia directa en el desarrollo de funciones",
   alphaFeature3: "Insignia exclusiva de 'Fundador' en tu perfil",
   joinAlphaWaitlist: "Unirse a la lista de espera Alfa",
+  claimAlphaSpot: "Reclamar lugar Alfa",
 
   earlyBirdProfessional: "Profesional Early Bird",
   earlyBirdProfessionalDesc: "Asegura un descuento de por vida antes del lanzamiento.",
@@ -143,9 +146,10 @@ export const spanishTranslations = {
   features: 'Características',
   login: 'Iniciar Sesión',
   logout: 'Cerrar Sesión',
+  
   // Footer translations
-  footerTagline: 'Entrenamiento de idiomas para profesionales médicos - mejore su comunicación para una atención óptima al paciente.',
-  madeWithLove: 'Hecho con amor para todos los profesionales de la salud',
+  footerTagline: 'Communicate. Connect. Care',
+  madeWithLove: 'Hecho con amor por una ex enfermera, especialista en salud y psicóloga cognitiva',
   navigation: 'Navegación',
   categories: 'Categorías',
   patientCare: 'Atención al Paciente',
@@ -162,6 +166,7 @@ export const spanishTranslations = {
   contact: 'Contacto',
   swipeLeft: 'Deslizar a la izquierda',
   swipeRight: 'Deslizar a la derecha',
+  
   // Comparison section translations
   whyChooseDocTalk: "¿Por qué elegir DocTalk?",
   whyChooseDocTalkDesc: "Vea cómo DocTalk proporciona beneficios únicos que otras soluciones de aprendizaje de idiomas simplemente no pueden igualar.",
@@ -205,6 +210,9 @@ export const spanishTranslations = {
   alphaAccessLimitedBold: "50 plazas.",
   alphaAccessLimitedPost: "",
   alphaAccessCta: "¡Asegura tu lugar!",
+  exclusiveAccess: "Acceso Exclusivo",
+  limitedTime: "Tiempo Limitado",
+  usuallyPaid: "usualmente de pago",
   
   // Target Users Section
   forCareWorkersTitle: "Para Cuidadores",
