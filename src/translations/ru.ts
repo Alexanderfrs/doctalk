@@ -302,4 +302,17 @@ export const russianTranslations = {
   
   readyToTransformYourCareer: "Готовы трансформировать свою медицинскую карьеру в Германии?",
   joinThousandsOfProfessionals: "Присоединяйтесь к профессионалам, которые уже готовятся к успеху в немецком здравоохранении."
+  ,
+  // Navigation translations
+  whoItsFor: 'Для Кого',
+  whyDocTalk: 'Почему DocTalk',
+  pricing: 'Цены',
+  
+  // Landing page hero section missing translations
+  limitedFreeSpotsAvailable: 'Ограниченные бесплатные места',
+  confidentCommunicationInGermanHealthcare: 'Уверенное общение в немецком здравоохранении',
+  skipExpensiveLanguageCourses: 'Пропустите дорогие языковые курсы или частных преподавателей и станьте свободно говорящим на медицинском немецком с практическими сценариями из реального мира.',
+  getPriorityAccess: 'Получить приоритетный доступ',
+  comingSoonDemo: 'Скоро: Демо',
+  exclusiveAlphaAccessLimitedSpots: 'Эксклюзивный альфа-доступ - Ограниченные места',
 };

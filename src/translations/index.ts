@@ -2,19 +2,16 @@
 import { englishTranslations } from './en';
 import { germanTranslations } from './de';
 import { spanishTranslations } from './es';
-import { romanianTranslations, polishTranslations } from './other';
+import { romanianTranslations } from './other';
 import { russianTranslations } from './ru';
-import { turkishTranslations } from './tr';
 
-// Combine all translations
+// Combine all translations (removed Turkish and Polish)
 export const translations: Record<string, Record<string, string>> = {
   en: englishTranslations,
   de: germanTranslations,
   es: spanishTranslations,
   ro: romanianTranslations,
-  pl: polishTranslations,
-  ru: russianTranslations,
-  tr: turkishTranslations
+  ru: russianTranslations
 };
 
 export default translations;

@@ -1,4 +1,3 @@
-
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -343,5 +342,18 @@ export const germanTranslations = {
   solutionNetworkedHighlight: "Vertrauenswürdiges Partnernetzwerk",
   
   readyToTransformYourCareer: "Bereit, Ihre Medizinische Laufbahn in Deutschland zu Transformieren?",
-  joinThousandsOfProfessionals: "Schließen Sie sich den Fachkräften an, die sich bereits auf den Erfolg im deutschen Gesundheitswesen vorbereiten."
+  joinThousandsOfProfessionals: "Schließen Sie sich den Fachkräften an, die sich bereits auf den Erfolg im deutschen Gesundheitswesen vorbereiten.",
+  
+  // Navigation translations
+  whoItsFor: 'Für wen',
+  whyDocTalk: 'Warum DocTalk',
+  pricing: 'Preise',
+  
+  // Landing page hero section missing translations
+  limitedFreeSpotsAvailable: 'Begrenzte kostenlose Plätze verfügbar',
+  confidentCommunicationInGermanHealthcare: 'Selbstbewusste Kommunikation im deutschen Gesundheitswesen',
+  skipExpensiveLanguageCourses: 'Überspringen Sie teure Sprachkurse oder Privatlehrer und werden Sie fließend in medizinischem Deutsch mit praxisnahen Übungsszenarien.',
+  getPriorityAccess: 'Prioritätszugang erhalten',
+  comingSoonDemo: 'Demnächst: Demo',
+  exclusiveAlphaAccessLimitedSpots: 'Exklusiver Alpha-Zugang - Begrenzte Plätze verfügbar',
 };
