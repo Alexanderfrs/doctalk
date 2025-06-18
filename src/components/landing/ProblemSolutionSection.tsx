@@ -58,7 +58,8 @@ const ProblemSolutionSection: React.FC = () => {
       icon: CheckCircle,
       title: translate("solutionNetworked"),
       description: translate("solutionNetworkedDesc"),
-      highlight: translate("solutionNetworkedHighlight")
+      highlight: translate("solutionNetworkedHighlight"),
+      isComingSoon: true
     }
   ];
 
@@ -118,8 +119,13 @@ const ProblemSolutionSection: React.FC = () => {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {solutions.map((solution, index) => (
-              <Card key={index} className="border-medical-200 bg-gradient-to-br from-medical-50 to-white">
+              <Card key={index} className="border-medical-200 bg-gradient-to-br from-medical-50 to-white relative">
                 <CardContent className="p-6 text-center">
+                  {solution.isComingSoon && (
+                    <Badge variant="secondary" className="absolute top-3 right-3 bg-blue-100 text-blue-800 text-xs">
+                      Soon
+                    </Badge>
+                  )}
                   <solution.icon className="w-12 h-12 text-medical-500 mx-auto mb-4" />
                   <h4 className="font-semibold text-neutral-800 mb-3">
                     {solution.title}

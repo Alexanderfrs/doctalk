@@ -22,14 +22,29 @@ const Footer: React.FC = () => {
             <Heart className="h-4 w-4 text-medical-400 mr-1" />
             <span>{translate("madeWithLove")}</span>
           </div>
-          <div className="flex items-center mt-4 text-sm text-neutral-600">
-            <Mail className="h-4 w-4 mr-2" />
-            <a
-              href="mailto:Doctalk.ai@gmail.com"
-              className="hover:text-medical-600 transition-colors"
-            >
-              Doctalk.ai@gmail.com
-            </a>
+          <div className="flex items-center gap-4 mt-4 text-sm text-neutral-600">
+            <div className="flex items-center">
+              <Mail className="h-4 w-4 mr-2" />
+              <a
+                href="mailto:Doctalk.ai@gmail.com"
+                className="hover:text-medical-600 transition-colors"
+              >
+                Doctalk.ai@gmail.com
+              </a>
+            </div>
+            <div className="flex items-center">
+              <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              <a
+                href="https://x.com/DocTalk4877"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-medical-600 transition-colors"
+              >
+                @DocTalk4877
+              </a>
+            </div>
           </div>
         </div>
 
@@ -55,4 +70,3 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
-
