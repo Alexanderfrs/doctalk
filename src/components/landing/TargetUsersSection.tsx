@@ -16,6 +16,27 @@ import {
 const TargetUsersSection: React.FC = () => {
   const { translate } = useLanguage();
 
+  const targetUsers = [
+    {
+      title: translate("forCareWorkersTitle"),
+      description: translate("forCareWorkersDescription"),
+      icon: Stethoscope,
+      color: "text-blue-600"
+    },
+    {
+      title: translate("forDoctorsTitle"), 
+      description: translate("forDoctorsDescription"),
+      icon: Users,
+      color: "text-green-600"
+    },
+    {
+      title: translate("forMedicalStudentsTitle"),
+      description: translate("forMedicalStudentsDescription"),
+      icon: BookOpen,
+      color: "text-purple-600"
+    }
+  ];
+
   const features = [
     {
       icon: Stethoscope,
@@ -59,8 +80,31 @@ const TargetUsersSection: React.FC = () => {
   return (
     <div className="text-center">
       <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-800">
-        {translate("comprehensiveMedicalGermanSolution")}
+        {translate("tailoredForMedicalCareer")}
       </h2>
+      <p className="text-lg text-neutral-600 mb-12 max-w-3xl mx-auto">
+        {translate("doctalkDesignedFor")}
+      </p>
+      
+      <div className="grid md:grid-cols-3 gap-8 mb-16">
+        {targetUsers.map((user, index) => (
+          <div key={index} className="text-center">
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100 h-full">
+              <user.icon className={`w-12 h-12 ${user.color} mx-auto mb-4`} />
+              <h3 className="font-semibold text-neutral-800 mb-3">
+                {user.title}
+              </h3>
+              <p className="text-neutral-600">
+                {user.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <h3 className="text-2xl md:text-3xl font-bold mb-4 text-neutral-800">
+        {translate("comprehensiveMedicalGermanSolution")}
+      </h3>
       <p className="text-lg text-neutral-600 mb-12 max-w-3xl mx-auto">
         {translate("everythingYouNeedToSucceed")}
       </p>
