@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NavItem {
   path: string;
-  label: string;
+  labelKey: string;
   icon: React.ReactNode;
 }
 
@@ -34,7 +34,7 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ navItems }) => {
               )}
             >
               {item.icon}
-              <span className="ml-2">{item.label}</span>
+              <span className="ml-2">{translate(item.labelKey)}</span>
             </a>
           ) : (
             <Link
@@ -48,7 +48,7 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ navItems }) => {
               )}
             >
               {item.icon}
-              <span className="ml-2">{item.label}</span>
+              <span className="ml-2">{translate(item.labelKey)}</span>
             </Link>
           )
         );

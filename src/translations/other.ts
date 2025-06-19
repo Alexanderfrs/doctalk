@@ -6,13 +6,34 @@ export const romanianTranslations = {
   pricing: 'Prețuri',
   
   // Landing page hero section translations
+  limitedAlphaSpots: 'Locuri Alfa Limitate Disponibile',
+  landYourDreamMedicalJob: 'Obțineți jobul medical de vis',
+  inGermany: 'în Germania',
+  skipExpensiveCoursesAndGetFluent: 'Săriți peste cursurile scumpe de limbă sau tutorii privați și deveniți fluent în germana medicală cu scenarii de practică din lumea reală.',
+  targetAudience: 'Perfect pentru lucrătorii internaționali de îngrijire, medici și studenți la medicină care vor să intre și să exceleze în sistemul de sănătate german și să obțină recunoaștere profesională.',
+  expertDeveloped: 'Dezvoltat cu experți',
+  joinPioneers: 'Alăturați-vă pionierilor',
+  getPriorityAccess: 'Obține acces prioritar',
+  exploreDemo: 'Explorează Demo',
+  exclusiveAlphaAccess: 'Acces alfa exclusiv',
+  limitedSpots: 'Locuri limitate',
+  medicalTeamWorking: 'Echipă medicală lucrând împreună',
+  hospitalScene: 'Scenă spitalicească',
+  medicalEducation: 'Educație medicală',
+  
+  // Navigation items
+  home: 'Acasă',
+  practice: 'Practică',
+  vocabulary: 'Vocabular',
+  profile: 'Profil',
+  
+  // Additional missing translations
   limitedFreeSpotsAvailable: 'Locuri gratuite limitate disponibile',
   confidentCommunicationInGermanHealthcare: 'Comunicare încrezătoare în sistemul de sănătate german',
   skipExpensiveLanguageCourses: 'Săriți peste cursurile scumpe de limbă sau tutorii privați și deveniți fluent în germana medicală cu scenarii de practică din lumea reală.',
   perfectForInternationalWorkers: 'Perfect pentru lucrătorii internaționali de îngrijire, medici și studenți la medicină care vor să intre și să exceleze în sistemul de sănătate german și să obțină recunoaștere profesională.',
   developedWithExperts: 'Dezvoltat cu experți',
   joinThePioneers: 'Alăturați-vă pionierilor',
-  getPriorityAccess: 'Obține acces prioritar',
   comingSoonDemo: 'În curând: Demo',
   exclusiveAlphaAccessLimitedSpots: 'Acces alfa exclusiv - Locuri limitate disponibile',
   getStarted: 'Începeți',
@@ -21,11 +42,6 @@ export const romanianTranslations = {
   welcome: 'Bun venit',
   language: 'Limba',
   settings: 'Setări',
-  home: 'Acasă',
-  practice: 'Practică',
-  vocabulary: 'Vocabular',
-  dialog: 'Dialog',
-  profile: 'Profil',
   medicalGerman: 'Germana medicală pentru studenții de nivel intermediar până la avansat',
   improveYour: 'Îmbunătățește-ți',
   medicalCommunication: 'comunicarea medicală',
@@ -82,6 +98,8 @@ export const romanianTranslations = {
   joinThousandsOfProfessionals: "Alătură-te profesioniștilor care se pregătesc deja pentru succesul în sistemul de sănătate german.",
   
   // Target Users Section
+  tailoredForMedicalCareer: "Adaptat pentru fiecare pas al carierei tale medicale",
+  doctalkDesignedFor: "DocTalk este proiectat să satisfacă nevoile lingvistice specifice ale diferiților profesioniști din sănătate, ajutându-te să comunici cu încredere și precizie.",
   forCareWorkersTitle: "Pentru Lucrătorii de Îngrijire",
   forCareWorkersDescription: "Comunicare esențială pentru îngrijire excepțională și integrare rapidă în echipa dumneavoastră germană.",
   forDoctorsTitle: "Pentru Medici",
@@ -142,8 +160,6 @@ export const romanianTranslations = {
   generalContent: "Conținut general de limbă",
   otherSolutions: 'Alte soluții',
   otherSolutionsSpecific: 'Școli de limbi, tutori privați, aplicații generice',
-  tailoredForMedicalCareer: "Adaptat pentru fiecare pas al carierei tale medicale",
-  doctalkDesignedFor: "DocTalk este proiectat să satisfacă nevoile lingvistice specifice ale diferiților profesioniști din sănătate, ajutându-te să comunici cu încredere și precizie.",
 
   // Additional missing translations
   simpleAndTransparentPricing: "Prețuri simple și transparente"
