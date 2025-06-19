@@ -1,3 +1,4 @@
+
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -45,6 +46,17 @@ export const spanishTranslations = {
   hospitalScene: 'Escena hospitalaria',
   medicalEducation: 'Educación médica',
 
+  // Additional missing translations from other languages
+  limitedFreeSpotsAvailable: 'Plazas gratuitas limitadas disponibles',
+  confidentCommunicationInGermanHealthcare: 'Comunicación segura en la sanidad alemana',
+  skipExpensiveLanguageCourses: 'Evita costosos cursos de idiomas o tutores personales y domina el alemán médico con escenarios de práctica del mundo real.',
+  perfectForInternationalWorkers: 'Perfecto para cuidadores internacionales, médicos y estudiantes de medicina que quieren entrar y destacar en el sistema sanitario alemán y conseguir el reconocimiento profesional.',
+  developedWithExperts: 'Desarrollado con expertos',
+  joinThePioneers: 'Únete a los pioneros',
+  comingSoonDemo: 'Próximamente: Demo',
+  exclusiveAlphaAccessLimitedSpots: 'Acceso alfa exclusivo - Plazas limitadas disponibles',
+  getStarted: 'Empezar',
+
   // Registration page
   createAccount: 'Crear cuenta',
   startJourney: 'Comienza tu viaje para convertirte en un experto en idioma médico',
@@ -73,7 +85,6 @@ export const spanishTranslations = {
   practiceConversations: 'Practica conversaciones realistas de la rutina sanitaria, desde la atención al paciente hasta la comunicación en equipo en hospitales, clínicas y atención domiciliaria, incluyendo dialectos locales.',
   allLanguageLevels: 'Navegador Profesional y del Sistema',
   customContent: 'Navega por el sistema sanitario alemán con facilidad. Obtén información valiosa sobre la burocracia sanitaria, la cultura laboral y las trayectorias profesionales, y explora ofertas de trabajo a través de una red de centros sanitarios de confianza.',
-  expertDeveloped: 'Desarrollado con expertos',
   contentDevelopment: 'Todo el contenido fue desarrollado y revisado en colaboración con médicos, enfermeras y profesores de idiomas.',
   safeFlexibleTraining: 'Entrenamiento seguro y flexible',
   safeFlexibleTrainingDesc: 'Practica en un entorno seguro, recibe retroalimentación instantánea, incluida la pronunciación, y sigue el progreso en tu ruta de aprendizaje personalizada.',
@@ -202,9 +213,6 @@ export const spanishTranslations = {
   generalContent: "Contenido de idioma general",
   otherSolutions: 'Otras soluciones',
   otherSolutionsSpecific: 'Escuelas de idiomas, tutores personales, aplicaciones genéricas',
-  medicalTeamWorking: "Equipo médico feliz trabajando juntos",
-  hospitalScene: "Escena hospitalaria",
-  medicalEducation: "Educación médica",
   
   // Beta signup translations to Alpha
   joinBeta: "Obtener Acceso Prioritario",

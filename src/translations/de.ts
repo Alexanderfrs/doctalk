@@ -1,3 +1,4 @@
+
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -20,8 +21,8 @@ export const germanTranslations = {
   recommendedExercises: 'Empfohlene Übungen',
   showAll: 'Alle anzeigen',
   medicalGerman: 'Medizinisches Deutsch für Lernende mit mittleren bis fortgeschrittenen Kenntnissen',
-  improveYour: 'Verbessere deine',
-  medicalCommunication: 'medizinische Kommunikation',
+  improveYour: 'Selbstbewusste Kommunikation',
+  medicalCommunication: 'im deutschen Gesundheitswesen',
   trainScenarios: 'Üben Sie praxisnahe Arbeitsszenarien und Terminologie für Ihren Berufsalltag im Gesundheitswesen, beginnend ab mittlerer deutscher Sprachkompetenz.',
   targetAudience: 'Perfekt für internationale Pflegekräfte, Ärzte und Medizinstudenten, die im deutschen Gesundheitswesen einsteigen, sich dort hervortun und eine berufliche Anerkennung erlangen möchten.',
   
@@ -31,7 +32,7 @@ export const germanTranslations = {
   pricing: 'Preise',
   
   // Landing page hero section translations
-  limitedAlphaSpots: 'Begrenzte Alpha-Plätze verfügbar',
+  limitedAlphaSpots: 'Begrenzte kostenlose Plätze verfügbar',
   landYourDreamMedicalJob: 'Selbstbewusste Kommunikation',
   inGermany: 'im deutschen Gesundheitswesen',
   skipExpensiveCoursesAndGetFluent: 'Überspringen Sie teure Sprachkurse oder Privatlehrer und werden Sie fließend in medizinischem Deutsch mit praxisnahen Übungsszenarien.',
@@ -44,6 +45,17 @@ export const germanTranslations = {
   medicalTeamWorking: 'Medizinisches Team arbeitet zusammen',
   hospitalScene: 'Krankenhaus-Szene',
   medicalEducation: 'Medizinische Ausbildung',
+
+  // Additional missing translations from other languages
+  limitedFreeSpotsAvailable: 'Begrenzte kostenlose Plätze verfügbar',
+  confidentCommunicationInGermanHealthcare: 'Selbstbewusste Kommunikation im deutschen Gesundheitswesen',
+  skipExpensiveLanguageCourses: 'Überspringen Sie teure Sprachkurse oder Privatlehrer und werden Sie fließend in medizinischem Deutsch mit praxisnahen Übungsszenarien.',
+  perfectForInternationalWorkers: 'Perfekt für internationale Pflegekräfte, Ärzte und Medizinstudenten, die im deutschen Gesundheitswesen einsteigen, sich dort hervortun und eine berufliche Anerkennung erlangen möchten.',
+  developedWithExperts: 'Entwickelt mit Experten',
+  joinThePioneers: 'Schließen Sie sich den Pionieren an',
+  comingSoonDemo: 'Demnächst: Demo',
+  exclusiveAlphaAccessLimitedSpots: 'Exklusiver Alpha-Zugang - Begrenzte Plätze verfügbar',
+  getStarted: 'Loslegen',
 
   // Onboarding specific translations
   onboardingSetup: 'Einrichtung',
@@ -145,7 +157,6 @@ export const germanTranslations = {
   practiceConversations: 'Üben Sie mit realistischen Gesprächen aus dem Krankenhausalltag - von der Patientenaufnahme bis zu den Visiten.',
   allLanguageLevels: 'Karriere & System-Navigator',
   customContent: 'Navigieren Sie mühelos durch das deutsche Gesundheitssystem. Erhalten Sie wertvolle Einblicke in die Gesundheitsbürokratie, die Arbeitsplatzkultur und Karrierewege – und entdecken Sie Stellenangebote über ein Netzwerk von vertrauenswürdigen Gesundheitseinrichtungen.',
-  expertDeveloped: 'Entwickelt mit Experten',
   contentDevelopment: 'Alle Inhalte wurden in Zusammenarbeit mit Ärzten, Pflegekräften und Sprachlehrern entwickelt und überprüft.',
   safeFlexibleTraining: 'Sicheres & Flexibles Training',
   safeFlexibleTrainingDesc: 'Üben Sie in einer sicheren Umgebung, erhalten Sie sofortiges Feedback - einschließlich Aussprache - und verfolgen Sie den Fortschritt auf Ihrem maßgeschneiderten Lernpfad.',
@@ -276,9 +287,6 @@ export const germanTranslations = {
   generalContent: "Allgemeine Sprachinhalte",
   otherSolutions: 'Andere Lösungen',
   otherSolutionsSpecific: 'Sprachschulen, Privatlehrer, allgemeine Apps',
-  medicalTeamWorking: "Glückliches medizinisches Team arbeitet zusammen",
-  hospitalScene: "Krankenhaus-Szene",
-  medicalEducation: "Medizinische Ausbildung",
   
   // Beta signup translations to Alpha
   joinBeta: "Alpha-Prioritätszugang erhalten",

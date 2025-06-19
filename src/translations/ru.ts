@@ -58,12 +58,6 @@ export const russianTranslations = {
   getStarted: 'Начать',
 
   // Basic translations
-  welcome: 'Добро пожаловать',
-  language: 'Язык',
-  settings: 'Настройки',
-  medicalGerman: 'Медицинский немецкий для учащихся среднего и продвинутого уровня',
-  improveYour: 'Улучшите свою',
-  medicalCommunication: 'медицинскую коммуникацию',
   startFree: 'Начать бесплатно',
   learnMore: 'Узнать больше',
 
