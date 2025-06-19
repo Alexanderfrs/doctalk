@@ -31,16 +31,19 @@ export const germanTranslations = {
   pricing: 'Preise',
   
   // Landing page hero section translations
-  limitedFreeSpotsAvailable: 'Begrenzte kostenlose Plätze verfügbar',
-  confidentCommunicationInGermanHealthcare: 'Selbstbewusste Kommunikation im deutschen Gesundheitswesen',
-  skipExpensiveLanguageCourses: 'Überspringen Sie teure Sprachkurse oder Privatlehrer und werden Sie fließend in medizinischem Deutsch mit praxisnahen Übungsszenarien.',
-  perfectForInternationalWorkers: 'Perfekt für internationale Pflegekräfte, Ärzte und Medizinstudenten, die im deutschen Gesundheitswesen einsteigen und sich hervortun möchten und eine berufliche Anerkennung erlangen wollen.',
-  developedWithExperts: 'Entwickelt mit Experten',
-  joinThePioneers: 'Schließen Sie sich den Pionieren an',
+  limitedAlphaSpots: 'Begrenzte Alpha-Plätze verfügbar',
+  landYourDreamMedicalJob: 'Selbstbewusste Kommunikation',
+  inGermany: 'im deutschen Gesundheitswesen',
+  skipExpensiveCoursesAndGetFluent: 'Überspringen Sie teure Sprachkurse oder Privatlehrer und werden Sie fließend in medizinischem Deutsch mit praxisnahen Übungsszenarien.',
+  expertDeveloped: 'Entwickelt mit Experten',
+  joinPioneers: 'Schließen Sie sich den Pionieren an',
   getPriorityAccess: 'Prioritätszugang erhalten',
-  comingSoonDemo: 'Demnächst: Demo',
-  exclusiveAlphaAccessLimitedSpots: 'Exklusiver Alpha-Zugang - Begrenzte Plätze verfügbar',
-  getStarted: 'Loslegen',
+  exploreDemo: 'Demnächst: Demo',
+  exclusiveAlphaAccess: 'Exklusiver Alpha-Zugang',
+  limitedSpots: 'Begrenzte Plätze verfügbar',
+  medicalTeamWorking: 'Medizinisches Team arbeitet zusammen',
+  hospitalScene: 'Krankenhaus-Szene',
+  medicalEducation: 'Medizinische Ausbildung',
 
   // Onboarding specific translations
   onboardingSetup: 'Einrichtung',

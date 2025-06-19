@@ -1,4 +1,3 @@
-
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -32,16 +31,19 @@ export const spanishTranslations = {
   pricing: 'Precios',
   
   // Landing page hero section translations
-  limitedFreeSpotsAvailable: 'Plazas gratuitas limitadas disponibles',
-  confidentCommunicationInGermanHealthcare: 'Comunicación segura en la sanidad alemana',
-  skipExpensiveLanguageCourses: 'Evita costosos cursos de idiomas o tutores personales y domina el alemán médico con escenarios de práctica del mundo real.',
-  perfectForInternationalWorkers: 'Perfecto para cuidadores internacionales, médicos y estudiantes de medicina que quieren entrar y destacar en el sistema sanitario alemán y conseguir el reconocimiento profesional.',
-  developedWithExperts: 'Desarrollado con expertos',
-  joinThePioneers: 'Únete a los pioneros',
+  limitedAlphaSpots: 'Plazas Alfa Limitadas Disponibles',
+  landYourDreamMedicalJob: 'Comunicación Segura',
+  inGermany: 'en la Sanidad Alemana',
+  skipExpensiveCoursesAndGetFluent: 'Evita costosos cursos de idiomas o tutores personales y domina el alemán médico con escenarios de práctica del mundo real.',
+  expertDeveloped: 'Desarrollado con expertos',
+  joinPioneers: 'Únete a los pioneros',
   getPriorityAccess: 'Obtener acceso prioritario',
-  comingSoonDemo: 'Próximamente: Demo',
-  exclusiveAlphaAccessLimitedSpots: 'Acceso alfa exclusivo - Plazas limitadas disponibles',
-  getStarted: 'Comenzar',
+  exploreDemo: 'Próximamente: Demo',
+  exclusiveAlphaAccess: 'Acceso alfa exclusivo',
+  limitedSpots: 'Plazas limitadas disponibles',
+  medicalTeamWorking: 'Equipo médico trabajando juntos',
+  hospitalScene: 'Escena hospitalaria',
+  medicalEducation: 'Educación médica',
 
   // Registration page
   createAccount: 'Crear cuenta',
