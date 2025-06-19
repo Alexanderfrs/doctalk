@@ -1,4 +1,3 @@
-
 export const russianTranslations = {
   welcome: 'Добро пожаловать',
   language: 'Язык',
@@ -46,21 +45,6 @@ export const russianTranslations = {
   hospitalScene: 'Больничная сцена',
   medicalEducation: 'Медицинское образование',
 
-  // Additional missing translations from other languages
-  limitedFreeSpotsAvailable: 'Ограниченные бесплатные места доступны',
-  confidentCommunicationInGermanHealthcare: 'Уверенное общение в немецкой медицине',
-  skipExpensiveLanguageCourses: 'Пропустите дорогие языковые курсы или частных преподавателей и свободно владейте медицинским немецким с реальными практическими сценариями.',
-  perfectForInternationalWorkers: 'Идеально для международных медработников, врачей и студентов-медиков, которые хотят войти и преуспеть в немецкой системе здравоохранения и получить профессиональное признание.',
-  developedWithExperts: 'Разработано экспертами',
-  joinThePioneers: 'Присоединяйтесь к пионерам',
-  comingSoonDemo: 'Скоро: Демо',
-  exclusiveAlphaAccessLimitedSpots: 'Эксклюзивный альфа-доступ - Ограниченные места доступны',
-  getStarted: 'Начать',
-
-  // Basic translations
-  startFree: 'Начать бесплатно',
-  learnMore: 'Узнать больше',
-
   // Problem-Solution Section
   realityForInternationalProfessionals: "Реальность международных медицинских работников",
   realityForInternationalProfessionalsDesc: "Несмотря на критическую нехватку персонала, международные медицинские работники сталкиваются со значительными барьерами, которые ограничивают их успех в немецких системах здравоохранения.",
@@ -90,18 +74,18 @@ export const russianTranslations = {
   theSolution: "Решение",
   revolutionaryApproachToMedicalGerman: "Революционный подход к изучению медицинского немецкого",
   
-  // Solutions
-  solutionAffordable: "Радикально доступно",
-  solutionAffordableDesc: "Профессиональное обучение медицинскому немецкому за долю стоимости традиционных курсов.",
-  solutionAffordableHighlight: "В 10 раз доступнее",
+  // Updated solutions to match English version
+  solutionAffordable: "Радикально доступно и гибко",
+  solutionAffordableDesc: "Профессиональное обучение медицинскому немецкому за долю стоимости традиционных языковых школ и частных преподавателей. Учитесь в своем темпе с персонализированными, управляемыми уроками в безопасной среде для практики.",
+  solutionAffordableHighlight: "Гибко и экономично",
   
-  solutionFlexible: "Максимальная гибкость",
-  solutionFlexibleDesc: "Учитесь когда и где хотите с персонализированными ИИ-разговорами, которые адаптируются к вашему расписанию.",
-  solutionFlexibleHighlight: "Доступно 24/7",
+  solutionFlexible: "Инновация обучения с приоритетом диалога",
+  solutionFlexibleDesc: "Овладейте немецким языком через реалистичные практические сценарии, специально разработанные для медицинских сред, что приводит к более быстрому овладению языком, чем традиционные методы.",
+  solutionFlexibleHighlight: "Эффективное изучение языка",
   
-  solutionSpecialized: "100% медицинская направленность",
-  solutionSpecializedDesc: "Единственное решение, разработанное исключительно для медицинских работников медицинскими экспертами.",
-  solutionSpecializedHighlight: "Контент, разработанный экспертами",
+  solutionSpecialized: "Медицинская направленность с подготовкой к сертификации",
+  solutionSpecializedDesc: "Исключительно разработано для медицинских работников медицинскими экспертами, с предстоящей поддержкой подготовки к сертификации Anerkennung и FSP.",
+  solutionSpecializedHighlight: "Разработано экспертами + подготовка к сертификации",
   
   solutionNetworked: "Интеграция профессиональной сети",
   solutionNetworkedDesc: "Прямые связи с надежными медицинскими учреждениями и информация о немецкой медицинской рабочей культуре.",
@@ -109,8 +93,17 @@ export const russianTranslations = {
   
   readyToTransformYourCareer: "Готовы преобразовать свою медицинскую карьеру в Германии?",
   joinThousandsOfProfessionals: "Присоединяйтесь к профессионалам, которые уже готовятся к успеху в немецком здравоохранении.",
-
-  // Target Users Section
+  limitedFreeSpotsAvailable: 'Ограниченные бесплатные места доступны',
+  confidentCommunicationInGermanHealthcare: 'Уверенное общение в немецкой медицине',
+  skipExpensiveLanguageCourses: 'Пропустите дорогие языковые курсы или частных преподавателей и свободно владейте медицинским немецким с реальными практическими сценариями.',
+  perfectForInternationalWorkers: 'Идеально для международных медработников, врачей и студентов-медиков, которые хотят войти и преуспеть в немецкой системе здравоохранения и получить профессиональное признание.',
+  developedWithExperts: 'Разработано экспертами',
+  joinThePioneers: 'Присоединяйтесь к пионерам',
+  comingSoonDemo: 'Скоро: Демо',
+  exclusiveAlphaAccessLimitedSpots: 'Эксклюзивный альфа-доступ - Ограниченные места доступны',
+  getStarted: 'Начать',
+  startFree: 'Начать бесплатно',
+  learnMore: 'Узнать больше',
   tailoredForMedicalCareer: "Адаптировано для каждого этапа вашей медицинской карьеры",
   doctalkDesignedFor: "DocTalk разработан для удовлетворения конкретных языковых потребностей различных медицинских работников, помогая вам общаться уверенно и точно.",
   forCareWorkersTitle: "Для медработников",
@@ -120,8 +113,20 @@ export const russianTranslations = {
   forMedicalStudentsTitle: "Для студентов-медиков",
   forMedicalStudentsDescription: "Постройте прочную языковую основу для решающего преимущества в ваших клинических ротациях и стажировках, а также будущей карьере.",
   comingSoon: "Скоро",
-
-  // Beta signup translations
+  alphaTester: "Альфа-тестер",
+  alphaTesterDesc: "Для пионеров, готовых формировать будущее медицинского обучения.",
+  alphaFeature1: "Полный доступ во время фазы Альфа",
+  alphaFeature2: "Прямое влияние на разработку функций",
+  alphaFeature3: "Эксклюзивный значок 'Основателя' в вашем профиле",
+  joinAlphaWaitlist: "Присоединиться к альфа-списку ожидания",
+  claimAlphaSpot: "Забронировать альфа-место",
+  alphaAccessLimitedPre: "Альфа-доступ ограничен",
+  alphaAccessLimitedBold: "50 местами.",
+  alphaAccessLimitedPost: "",
+  alphaAccessCta: "Обеспечьте свое место!",
+  exclusiveAccess: "Эксклюзивный доступ",
+  limitedTime: "Ограниченное время",
+  usuallyPaid: "обычно платно",
   joinBeta: "Получить приоритетный доступ",
   signupForBetaRelease: "Приоритетная регистрация Альфа",
   betaAccessTitle: "Приоритетный доступ к альфа-версии",
@@ -135,28 +140,6 @@ export const russianTranslations = {
   emailAlreadyRegistered: "Этот email уже в альфа-списке ожидания.",
   errorOccurred: "Произошла ошибка",
   pleaseRetryLater: "Пожалуйста, попробуйте позже.",
-
-  // Pricing section
-  alphaTester: "Альфа-тестер",
-  alphaTesterDesc: "Для пионеров, готовых формировать будущее медицинского обучения.",
-  alphaFeature1: "Полный доступ во время фазы Альфа",
-  alphaFeature2: "Прямое влияние на разработку функций",
-  alphaFeature3: "Эксклюзивный значок 'Основателя' в вашем профиле",
-  joinAlphaWaitlist: "Присоединиться к альфа-списку ожидания",
-  claimAlphaSpot: "Забронировать альфа-место",
-
-  // New text below buttons
-  alphaAccessLimitedPre: "Альфа-доступ ограничен",
-  alphaAccessLimitedBold: "50 местами.",
-  alphaAccessLimitedPost: "",
-  alphaAccessCta: "Обеспечьте свое место!",
-  exclusiveAccess: "Эксклюзивный доступ",
-  limitedTime: "Ограниченное время",
-  usuallyPaid: "обычно платно",
-
-  // Additional footer and comparison translations
-  footerTagline: 'Communicate. Connect. Care',
-  madeWithLove: 'Сделано с любовью бывшей медсестрой, специалистом по здравоохранению и когнитивным психологом',
   whyChooseDocTalk: "Почему выбрать DocTalk?",
   whyChooseDocTalkDesc: "Посмотрите, как DocTalk обеспечивает уникальные преимущества, которые другие решения изучения языков просто не могут предложить.",
   specializedMedicalContent: "Специализированный медицинский контент",
@@ -173,7 +156,7 @@ export const russianTranslations = {
   generalContent: "Общий языковой контент",
   otherSolutions: 'Другие решения',
   otherSolutionsSpecific: 'Языковые школы, частные преподаватели, общие приложения',
-
-  // Additional missing translations
+  footerTagline: 'Communicate. Connect. Care',
+  madeWithLove: 'Сделано с любовью бывшей медсестрой, специалистом по здравоохранению и когнитивным психологом',
   simpleAndTransparentPricing: "Простые и прозрачные цены"
 };
