@@ -1,4 +1,3 @@
-
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -41,6 +40,7 @@ export const germanTranslations = {
   getPriorityAccess: 'Prioritätszugang erhalten',
   comingSoonDemo: 'Demnächst: Demo',
   exclusiveAlphaAccessLimitedSpots: 'Exklusiver Alpha-Zugang - Begrenzte Plätze verfügbar',
+  getStarted: 'Loslegen',
 
   // Onboarding specific translations
   onboardingSetup: 'Einrichtung',
@@ -359,5 +359,8 @@ export const germanTranslations = {
   solutionNetworkedHighlight: "Vertrauenswürdiges Partnernetzwerk",
   
   readyToTransformYourCareer: "Bereit, Ihre Medizinische Laufbahn in Deutschland zu Transformieren?",
-  joinThousandsOfProfessionals: "Schließen Sie sich den Fachkräften an, die sich bereits auf den Erfolg im deutschen Gesundheitswesen vorbereiten."
+  joinThousandsOfProfessionals: "Schließen Sie sich den Fachkräften an, die sich bereits auf den Erfolg im deutschen Gesundheitswesen vorbereiten.",
+  
+  // Additional missing translations
+  simpleAndTransparentPricing: "Einfache und transparente Preise"
 };

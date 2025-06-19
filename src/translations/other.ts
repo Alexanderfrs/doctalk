@@ -15,6 +15,7 @@ export const romanianTranslations = {
   getPriorityAccess: 'Obține acces prioritar',
   comingSoonDemo: 'În curând: Demo',
   exclusiveAlphaAccessLimitedSpots: 'Acces alfa exclusiv - Locuri limitate disponibile',
+  getStarted: 'Începeți',
   
   // Basic translations
   welcome: 'Bun venit',
@@ -143,6 +144,9 @@ export const romanianTranslations = {
   otherSolutionsSpecific: 'Școli de limbi, tutori privați, aplicații generice',
   tailoredForMedicalCareer: "Adaptat pentru fiecare pas al carierei tale medicale",
   doctalkDesignedFor: "DocTalk este proiectat să satisfacă nevoile lingvistice specifice ale diferiților profesioniști din sănătate, ajutându-te să comunici cu încredere și precizie.",
+
+  // Additional missing translations
+  simpleAndTransparentPricing: "Prețuri simple și transparente"
 };
 
 // Remove Polish translations entirely

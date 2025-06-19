@@ -41,6 +41,7 @@ export const russianTranslations = {
   getPriorityAccess: 'Получить приоритетный доступ',
   comingSoonDemo: 'Скоро: Демо',
   exclusiveAlphaAccessLimitedSpots: 'Эксклюзивный альфа-доступ - Ограниченные места доступны',
+  getStarted: 'Начать',
 
   // Registration page
   createAccount: 'Создать аккаунт',
@@ -285,5 +286,8 @@ export const russianTranslations = {
   alphaAccessCta: "Обеспечьте свое место!",
   exclusiveAccess: "Эксклюзивный доступ",
   limitedTime: "Ограниченное время",
-  usuallyPaid: "обычно платно"
+  usuallyPaid: "обычно платно",
+
+  // Additional missing translations
+  simpleAndTransparentPricing: "Простое и прозрачное ценообразование"
 };

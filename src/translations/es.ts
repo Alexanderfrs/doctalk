@@ -1,3 +1,4 @@
+
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
@@ -40,6 +41,7 @@ export const spanishTranslations = {
   getPriorityAccess: 'Obtener acceso prioritario',
   comingSoonDemo: 'Próximamente: Demo',
   exclusiveAlphaAccessLimitedSpots: 'Acceso alfa exclusivo - Plazas limitadas disponibles',
+  getStarted: 'Comenzar',
 
   // Registration page
   createAccount: 'Crear cuenta',
@@ -285,4 +287,7 @@ export const spanishTranslations = {
   
   readyToTransformYourCareer: "¿Listo para Transformar tu Carrera Médica en Alemania?",
   joinThousandsOfProfessionals: "Únete a los profesionales que ya se están preparando para el éxito en la sanidad alemana.",
+
+  // Additional missing translations
+  simpleAndTransparentPricing: "Precios simples y transparentes"
 };
