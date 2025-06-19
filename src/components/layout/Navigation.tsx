@@ -5,7 +5,7 @@ import { Heart, BookOpen, MessageCircle, User, Home } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
-import LanguageSelector from "./LanguageSelector";
+import UILanguageSelector from "../language/UILanguageSelector";
 
 const Navigation = () => {
   const { translate } = useLanguage();
@@ -47,7 +47,7 @@ const Navigation = () => {
         <DesktopNav navItems={navItems} />
 
         {/* Language Selector */}
-        <LanguageSelector />
+        <UILanguageSelector />
 
         {/* Mobile Navigation */}
         <MobileNav navItems={navItems} />
