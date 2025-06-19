@@ -1,3 +1,4 @@
+
 export const russianTranslations = {
   welcome: 'Добро пожаловать',
   language: 'Язык',
@@ -162,9 +163,9 @@ export const russianTranslations = {
   logout: 'Выйти',
 
   // Footer translations
-  footerTagline: 'Языковое обучение для медицинских работников - улучшите свое общение для оптимального ухода за пациентами.',
-  madeWithLove: 'Сделано с любовью для всех медицинских работников',
-   navigation: 'Навигация',
+  footerTagline: 'Communicate. Connect. Care',
+  madeWithLove: 'Сделано с любовью бывшей медсестрой, специалистом по здравоохранению и когнитивным психологом',
+  navigation: 'Навигация',
   categories: 'Категории',
   patientCare: 'Уход за пациентами',
   emergency: 'Неотложная помощь',
@@ -180,64 +181,24 @@ export const russianTranslations = {
   contact: 'Контакт',
   swipeLeft: 'Провести влево',
   swipeRight: 'Провести вправо',
+  
   // Beta signup translations
-  joinBeta: "Зарегистрироваться на бета-версию",
-  signupForBetaRelease: "Зарегистрироваться на бета-версию",
-  betaAccessTitle: "Запросить доступ к бета-версии",
-  betaAccessDescription: "Введите вашу электронную почту, чтобы присоединиться к нашей бета-программе. Мы уведомим вас, когда доступ будет открыт. Мы уведомим вас, когда приложение будет готово к тестированию.",
-  emailAddress: "Электронная почта",
+  joinBeta: "Получить Приоритетный Доступ к Альфа-версии",
+  signupForBetaRelease: "Приоритетная Регистрация на Альфа-версию",
+  betaAccessTitle: "Запросить Приоритетный Доступ к Альфа-версии",
+  betaAccessDescription: "Станьте одним из первых 50 тестировщиков, получивших доступ к DocTalk. Введите свой адрес электронной почты, чтобы присоединиться к нашему приоритетному списку ожидания. Мы уведомим вас, когда приложение будет готово для тестирования.",
+  emailAddress: "Адрес электронной почты",
   getEarlyAccess: "Получить ранний доступ",
   submitting: "Отправка...",
-  thankYouForJoining: "Спасибо, что присоединились!",
-  betaConfirmationMessage: "Мы уведомим вас, когда DocTalk будет готов для бета-тестирования.",
+  thankYouForJoining: "Спасибо за присоединение к списку ожидания!",
+  betaConfirmationMessage: "Мы уведомим вас, когда DocTalk будет готов для альфа-тестирования.",
   alreadySignedUp: "Уже зарегистрированы",
-  emailAlreadyRegistered: "Этот адрес электронной почты уже зарегистрирован для бета-доступа.",
+  emailAlreadyRegistered: "Этот адрес электронной почты уже находится в альфа-списке ожидания.",
   errorOccurred: "Произошла ошибка",
   pleaseRetryLater: "Пожалуйста, повторите попытку позже.",
-  // Admin translations
-  betaSignups: "Beta Signups",
-  betaSubscribers: "Beta Subscribers",
-  totalSubscribers: "total subscribers",
-  refresh: "Refresh",
-  downloadCSV: "Download CSV",
-  noSubscribersYet: "No beta subscribers yet",
-  signupDate: "Signup Date",
-  failedToLoadSubscribers: "Failed to load beta subscribers",
-  // General translations
-  overview: "Overview",
-  dashboard: "Dashboard",
-  welcomeBack: "Welcome Back",
-  dashboardWelcomeMessage: "Here's a summary of your beta signups and other metrics.",
-  yourProgress: "Your Progress",
-  progressDescription: "Track the progress of your beta program here.",
-  recentActivity: "Recent Activity",
-  noRecentActivity: "No recent activity to display.",
-  // Common UI translations
-  back: "Back",
-  dismiss: "Dismiss",
-  processing: "Processing",
-  // Scenario translations
-  listening: "Listening",
-  startSpeaking: "Start Speaking",
-  stopListening: "Stop Listening",
-  generatingResponse: "Generating response",
-  generatingFeedback: "Generating feedback",
-  conversationReset: "Conversation reset",
-  notFound: "Not found",
-  scenarioNotFound: "Scenario not found",
-  // Audio translations
-  playAudio: "Play Audio",
-  stopAudio: "Stop Audio",
-  // Resources translations
-  relevantGuidelines: "Relevant Guidelines",
-  recommendedReadings: "Recommended Readings",
-  // Practice page translations
-  searchExercises: "Search exercises...",
-  showFilters: "Show Filters",
-  hideFilters: "Hide Filters",
-  viewVocabulary: "View Vocabulary",
-  practicePronunciation: "Practice Pronunciation",
-  practiceDescription: "Practice medical German in realistic scenarios from your professional activities",
+  tailoredForMedicalCareer: "Адаптировано для каждого этапа вашей медицинской карьеры",
+  doctalkDesignedFor: "DocTalk разработан для удовлетворения специфических языковых потребностей различных медицинских работников, помогая вам общаться уверенно и точно.",
+  
   // New comparison section translations
   whyChooseDocTalk: "Почему стоит выбрать DocTalk?",
   whyChooseDocTalkDesc: "Узнайте, как DocTalk предоставляет уникальные преимущества, которые другие решения для изучения языков просто не могут предложить.",
@@ -258,16 +219,14 @@ export const russianTranslations = {
   medicalTeamWorking: "Счастливая медицинская команда работает вместе",
   hospitalScene: "Больничная сцена",
   medicalEducation: "Медицинское образование",
-  tailoredForMedicalCareer: "Разработано для каждого шага вашей медицинской карьеры",
-  doctalkDesignedFor: "DocTalk разработан для удовлетворения специфических языковых потребностей различных медицинских работников, помогая вам общаться уверенно и точно.",
 
   // Target Users Section
   forCareWorkersTitle: "Для Работников по Уходу",
-  forCareWorkersDescription: "Освойте повседневное общение с пациентами и коллегами, уверенно ведите документацию и с легкостью понимайте инструкции по уходу.",
+  forCareWorkersDescription: "Основы общения для исключительного ухода и быстрой интеграции в вашу немецкую команду.",
   forDoctorsTitle: "Для Врачей",
-  forDoctorsDescription: "Совершенствуйте свои консультации с пациентами, от сбора анамнеза до объяснения сложных диагнозов и планов лечения. Готовьтесь к экзамену FSP с помощью реалистичных сценариев.",
+  forDoctorsDescription: "От анамнеза до сложных дискуссий — овладейте общением, которое ускорит ваше профессиональное признание.",
   forMedicalStudentsTitle: "Для Студентов-медиков",
-  forMedicalStudentsDescription: "Создайте прочную языковую основу для своих клинических стажировок (Famulatur/PJ) и будущей карьеры в Германии. Практикуйте реалистичные сценарии и готовьтесь к экзаменам.",
+  forMedicalStudentsDescription: "Создайте прочную языковую основу для решающего преимущества в ваших клинических ротациях и стажировках, а также будущей карьере.",
   comingSoon: "Скоро",
   
   // Problem-Solution Section
@@ -317,18 +276,14 @@ export const russianTranslations = {
   solutionNetworkedHighlight: "Доверенная партнерская сеть",
   
   readyToTransformYourCareer: "Готовы трансформировать свою медицинскую карьеру в Германии?",
-  joinThousandsOfProfessionals: "Присоединяйтесь к профессионалам, которые уже готовятся к успеху в немецком здравоохранении."
-  ,
-  // Navigation translations
-  whoItsFor: 'Для Кого',
-  whyDocTalk: 'Почему DocTalk',
-  pricing: 'Цены',
+  joinThousandsOfProfessionals: "Присоединяйтесь к профессионалам, которые уже готовятся к успеху в немецком здравоохранении.",
   
-  // Landing page hero section missing translations
-  limitedFreeSpotsAvailable: 'Ограниченные бесплатные места',
-  confidentCommunicationInGermanHealthcare: 'Уверенное общение в немецком здравоохранении',
-  skipExpensiveLanguageCourses: 'Пропустите дорогие языковые курсы или частных преподавателей и станьте свободно говорящим на медицинском немецком с практическими сценариями из реального мира.',
-  getPriorityAccess: 'Получить приоритетный доступ',
-  comingSoonDemo: 'Скоро: Демо',
-  exclusiveAlphaAccessLimitedSpots: 'Эксклюзивный альфа-доступ - Ограниченные места',
+  // New text below buttons
+  alphaAccessLimitedPre: "Альфа-доступ ограничен",
+  alphaAccessLimitedBold: "50 местами.",
+  alphaAccessLimitedPost: "",
+  alphaAccessCta: "Обеспечьте свое место!",
+  exclusiveAccess: "Эксклюзивный доступ",
+  limitedTime: "Ограниченное время",
+  usuallyPaid: "обычно платно"
 };
