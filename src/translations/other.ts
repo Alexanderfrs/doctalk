@@ -1,4 +1,3 @@
-
 export const romanianTranslations = {
   // Navigation translations
   whoItsFor: 'Pentru Cine Este',
@@ -144,7 +143,7 @@ export const romanianTranslations = {
   otherSolutionsSpecific: 'Școli de limbi, tutori privați, aplicații generice',
   tailoredForMedicalCareer: "Adaptat pentru fiecare pas al carierei tale medicale",
   doctalkDesignedFor: "DocTalk este proiectat să satisfacă nevoile lingvistice specifice ale diferiților profesioniști din sănătate, ajutându-te să comunici cu încredere și precizie.",
-
+  
   // Additional missing translations
   simpleAndTransparentPricing: "Prețuri simple și transparente"
 };

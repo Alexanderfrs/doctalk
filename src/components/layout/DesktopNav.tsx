@@ -1,58 +1,47 @@
 
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-interface NavItem {
-  path: string;
-  label: string;
-  icon: React.ReactNode;
-}
-
 interface DesktopNavProps {
-  navItems: NavItem[];
+  onNavigate?: (section: string) => void;
 }
 
-const DesktopNav: React.FC<DesktopNavProps> = ({ navItems }) => {
-  const location = useLocation();
+const DesktopNav: React.FC<DesktopNavProps> = ({ onNavigate }) => {
   const { translate } = useLanguage();
 
+  const handleNavClick = (section: string) => {
+    if (onNavigate) {
+      onNavigate(section);
+    } else {
+      // Default behavior for anchor navigation
+      const element = document.getElementById(section);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        window.history.pushState(null, '', `#${section}`);
+      }
+    }
+  };
+
   return (
-    <nav className="hidden md:flex space-x-1">
-      {navItems.map((item) => {
-        return (
-          item.path.startsWith('/#') ? (
-            <a
-              key={item.path}
-              href={item.path}
-              className={cn(
-                "flex items-center px-4 py-2 rounded-lg transition-colors",
-                location.pathname === item.path || (location.pathname === '/' && item.path.startsWith('/#'))
-                  ? "bg-medical-50 text-medical-700 font-medium"
-                  : "text-neutral-600 hover:bg-neutral-100"
-              )}
-            >
-              {item.icon}
-              <span className="ml-2">{item.label}</span>
-            </a>
-          ) : (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={cn(
-                "flex items-center px-4 py-2 rounded-lg transition-colors",
-                location.pathname === item.path
-                  ? "bg-medical-50 text-medical-700 font-medium"
-                  : "text-neutral-600 hover:bg-neutral-100"
-              )}
-            >
-              {item.icon}
-              <span className="ml-2">{item.label}</span>
-            </Link>
-          )
-        );
-      })}
+    <nav className="hidden md:flex items-center space-x-8">
+      <button 
+        onClick={() => handleNavClick('target-users')}
+        className="text-neutral-600 hover:text-medical-600 font-medium transition-colors"
+      >
+        {translate("whoItsFor")}
+      </button>
+      <button 
+        onClick={() => handleNavClick('problem-solution')}
+        className="text-neutral-600 hover:text-medical-600 font-medium transition-colors"
+      >
+        {translate("whyDocTalk")}
+      </button>
+      <button 
+        onClick={() => handleNavClick('pricing')}
+        className="text-neutral-600 hover:text-medical-600 font-medium transition-colors"
+      >
+        {translate("pricing")}
+      </button>
     </nav>
   );
 };

@@ -1,4 +1,3 @@
-
 export const spanishTranslations = {
   welcome: 'Bienvenido',
   language: 'Idioma',
