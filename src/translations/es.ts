@@ -26,8 +26,8 @@ export const spanishTranslations = {
   targetAudience: 'Perfecto para cuidadores internacionales, médicos y estudiantes de medicina que quieren entrar y destacar en el sistema sanitario alemán y conseguir el reconocimiento profesional.',
   
   // Navigation translations
-  whoItsFor: 'Para quién es',
-  whyDocTalk: 'Por qué DocTalk',
+  whoItsFor: 'Para Quién Es',
+  whyDocTalk: 'Por Qué DocTalk',
   pricing: 'Precios',
   
   // Landing page hero section translations
@@ -158,15 +158,5 @@ export const spanishTranslations = {
   otherSolutionsSpecific: 'Escuelas de idiomas, tutores personales, aplicaciones genéricas',
   footerTagline: 'Communicate. Connect. Care',
   madeWithLove: 'Hecho con amor por una ex enfermera, especialista en salud y psicóloga cognitiva',
-  simpleAndTransparentPricing: "Precios simples y transparentes",
-    // New alpha features for pricing section
-    priorityAccessAllFeatures: 'Acceso prioritario a todas las funciones futuras',
-    exclusiveAlphaTesterCommunity: 'Acceso exclusivo a la comunidad de probadores alfa',
-    // Enterprise Solutions
-    everythingFromProfessional: 'Todo del Profesional',
-    customOnboardingSupport: 'Incorporación personalizada y soporte',
-    teamProgressTracking: 'Seguimiento del progreso del equipo y análisis',
-    volumeLicensingBilling: 'Licencias por volumen y facturación flexible',
-    oralExamSimulations: 'Simulaciones de exámenes orales',
-    choosePlanThatSuits: 'Elige el plan que mejor se adapte a tus objetivos de aprendizaje.'
+  simpleAndTransparentPricing: "Precios simples y transparentes"
 };

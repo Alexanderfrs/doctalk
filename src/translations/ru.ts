@@ -30,18 +30,69 @@ export const russianTranslations = {
   whyDocTalk: 'Почему DocTalk',
   pricing: 'Цены',
   
-  // New alpha features for pricing section
-  priorityAccessAllFeatures: 'Приоритетный доступ ко всем будущим функциям',
-  exclusiveAlphaTesterCommunity: 'Эксклюзивный доступ к сообществу альфа-тестеров',
+  // Landing page hero section translations
+  limitedAlphaSpots: 'Ограниченные альфа-места доступны',
+  landYourDreamMedicalJob: 'Уверенное общение',
+  inGermany: 'в немецком здравоохранении',
+  skipExpensiveCoursesAndGetFluent: 'Избегайте дорогих языковых курсов или частных преподавателей и свободно владейте медицинским немецким с помощью реальных сценариев практики.',
+  expertDeveloped: 'Разработано с экспертами',
+  joinPioneers: 'Присоединяйтесь к пионерам',
+  getPriorityAccess: 'Получить приоритетный доступ',
+  exploreDemo: 'Скоро: Демо',
+  exclusiveAlphaAccess: 'Эксклюзивный альфа доступ',
+  limitedSpots: 'Ограниченные места',
+  medicalTeamWorking: 'Медицинская команда работает вместе',
+  hospitalScene: 'Больничная сцена',
+  medicalEducation: 'Медицинское образование',
+
+  // Problem-Solution Section
+  realityForInternationalProfessionals: "Реальность для Международных Медицинских Работников",
+  realityForInternationalProfessionalsDesc: "Несмотря на критическую нехватку персонала, международные медработники сталкиваются со значительными барьерами, которые ограничивают их успех в немецких системах здравоохранения.",
   
-  // Enterprise Solutions
-  everythingFromProfessional: 'Все из Профессионального',
-  customOnboardingSupport: 'Персонализированная адаптация и поддержка',
-  teamProgressTracking: 'Отслеживание прогресса команды и аналитика',
-  volumeLicensingBilling: 'Объемное лицензирование и гибкое выставление счетов',
-  oralExamSimulations: 'Симуляции устных экзаменов',
-  choosePlanThatSuits: 'Выберите план, который лучше всего подходит для ваших целей обучения.',
+  theProblem: "Проблема",
+  challengesFacingHealthcareProfessionals: "Вызовы, с которыми сталкиваются медицинские работники",
   
+  // Problems - Updated text
+  problemHighCosts: "Запретительные затраты на обучение",
+  problemHighCostsDesc: "Традиционные курсы медицинского немецкого стоят €3,000-8,000, делая качественное обучение недоступным для многих специалистов.",
+  problemHighCostsStat: "€3,000-8,000 за курс",
+  
+  problemTimeConstraints: "Критические пробелы в общении",
+  problemTimeConstraintsDesc: "Здравоохранение требует мгновенного, точного общения с различными пациентами, коллегами и местными диалектами. Недопонимание в стрессовых ситуациях ставит под угрозу безопасность пациентов и профессиональный успех.",
+  problemTimeConstraintsStat: "Барьеры общения влияют на результаты лечения пациентов",
+  
+  problemGenericSolutions: "Общие языковые решения",
+  problemGenericSolutionsDesc: "Общие языковые приложения лишены медицинского контекста, в то время как репетиторы часто не понимают специфических потребностей общения в здравоохранении.",
+  problemGenericSolutionsStat: "Ограниченный медицинский контекст",
+  
+  problemIntegrationChallenges: "Вызовы интеграции",
+  problemIntegrationChallengesDesc: "Культурные нормы рабочего места, медицинские иерархии и бюрократические процессы создают дополнительные барьеры помимо языка.",
+  problemIntegrationChallengesStat: "Сложный процесс интеграции",
+  
+  introducingDocTalk: "Представляем DocTalk",
+  
+  theSolution: "Решение",
+  revolutionaryApproachToMedicalGerman: "Революционный подход к изучению медицинского немецкого",
+  
+  // Updated solutions to match English version
+  solutionAffordable: "Радикально доступно и гибко",
+  solutionAffordableDesc: "Профессиональное обучение медицинскому немецкому за долю стоимости традиционных языковых школ и частных преподавателей. Учитесь в своем темпе с персонализированными уроками в безопасной среде практики.",
+  solutionAffordableHighlight: "Гибко и экономично",
+  
+  solutionFlexible: "Инновация обучения с акцентом на диалог",
+  solutionFlexibleDesc: "Овладейте немецким через реалистичные сценарии практики, специально разработанные для медицинских сред, что приводит к более быстрому овладению языком, чем традиционные методы.",
+  solutionFlexibleHighlight: "Подготовка к реальному миру",
+  
+  solutionSpecialized: "Сосредоточено на медицине с подготовкой к сертификации",
+  solutionSpecializedDesc: "Исключительно разработано для медработников медицинскими экспертами, с предстоящей поддержкой подготовки к сертификации Anerkennung и FSP.",
+  solutionSpecializedHighlight: "Разработано экспертами + подготовка к сертификации",
+  
+  solutionNetworked: "Интеграция профессиональной сети",
+  solutionNetworkedDesc: "Прямые связи с надежными медицинскими учреждениями и понимание немецкой медицинской рабочей культуры.",
+  solutionNetworkedHighlight: "Сеть надежных партнеров",
+  
+  readyToTransformYourCareer: "Готовы преобразовать вашу медицинскую карьеру в Германии?",
+  joinThousandsOfProfessionals: "Присоединяйтесь к специалистам, которые уже готовятся к успеху в немецком здравоохранении.",
   limitedFreeSpotsAvailable: 'Ограниченные бесплатные места доступны',
   confidentCommunicationInGermanHealthcare: 'Уверенное общение в немецком здравоохранении',
   skipExpensiveLanguageCourses: 'Избегайте дорогих языковых курсов или частных преподавателей и свободно владейте медицинским немецким с помощью реальных сценариев практики.',

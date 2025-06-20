@@ -373,43 +373,61 @@ export const englishTranslations = {
   tailoredForMedicalCareer: "Tailored for every step of your medical career",
   doctalkDesignedFor: "DocTalk is designed to meet the specific language needs of different healthcare professionals, helping you communicate with confidence and precision.",
   
-  // Navigation translations
-  whoItsFor: 'Who it\'s for',
-  whyDocTalk: 'Why DocTalk',
-  pricing: 'Pricing',
+  // Target Users Section
+  forCareWorkersTitle: "For Care Workers",
+  forCareWorkersDescription: "Essential communication to provide exceptional care and quickly integrate into your German team.",
+  forDoctorsTitle: "For Doctors",
+  forDoctorsDescription: "From anamnesis to complex discussions, master the communication that accelerates your professional recognition.",
+  forMedicalStudentsTitle: "For Medical Students",
+  forMedicalStudentsDescription: "Build a solid linguistic foundation for a decisive advantage in your clinical rotations (Famulatur/PJ) and future career.",
+  comingSoon: "Coming Soon",
   
-  // Pricing section translations
-  simpleAndTransparentPricing: 'Simple and transparent pricing',
-  choosePlanThatSuits: 'Choose the plan that best suits your learning goals.',
+  // Problem-Solution Section
+  realityForInternationalProfessionals: "The Reality for International Healthcare Professionals",
+  realityForInternationalProfessionalsDesc: "Despite critical staff shortages, international healthcare professionals face significant barriers that limit their success in German healthcare systems.",
   
-  // Alpha tester plan
-  alphaTester: 'Alpha Tester',
-  alphaTesterDesc: 'For pioneers ready to shape the future of medical learning.',
-  alphaFeature1: 'Full access during Alpha phase',
-  alphaFeature2: 'Direct influence on feature development',
-  alphaFeature3: 'Exclusive \'Founder\' badge on your profile',
+  theProblem: "The Problem",
+  challengesFacingHealthcareProfessionals: "Challenges Facing Healthcare Professionals",
   
-  // New alpha features
-  priorityAccessAllFeatures: 'Priority access to all future features',
-  exclusiveAlphaTesterCommunity: 'Exclusive alpha tester community access',
+  // Problems - Updated text for Real-World Communication Demands
+  problemHighCosts: "Prohibitive Training Costs",
+  problemHighCostsDesc: "Traditional medical German courses cost €3,000-8,000, putting quality training out of reach for many professionals.",
+  problemHighCostsStat: "€3,000-8,000 per course",
   
-  // Enterprise Solutions
-  enterpriseSolutions: 'Enterprise Solutions',
-  enterpriseSolutionsDesc: 'For clinics, hospitals, and educational institutions.',
-  everythingFromProfessional: 'Everything from Professional',
-  customOnboardingSupport: 'Custom onboarding and support',
-  teamProgressTracking: 'Team progress tracking and analytics',
-  volumeLicensingBilling: 'Volume licensing and flexible billing',
-  oralExamSimulations: 'Oral exam simulations',
-  contactUs: 'Contact us',
+  problemTimeConstraints: "Critical Communication Gaps",
+  problemTimeConstraintsDesc: "Healthcare demands instant, precise communication with diverse patients, colleagues, and local dialects. Miscommunication in high-stress situations endangers patient safety and professional success.",
+  problemTimeConstraintsStat: "Communication barriers affect patient outcomes",
   
-  // Plan features
-  claimAlphaSpot: 'Claim Alpha Spot',
-  free: 'Free',
-  usuallyPaid: 'usually paid',
+  problemGenericSolutions: "Generic Language Solutions",
+  problemGenericSolutionsDesc: "General language apps lack medical context, while tutors often don't understand healthcare-specific communication needs.",
+  problemGenericSolutionsStat: "Limited medical context",
   
-  // Additional missing translations
-  limitedAlphaSpots: 'Limited Alpha Spots Available',
-  exclusiveAlphaAccess: 'Exclusive alpha access',
-  limitedSpots: 'Limited spots available',
+  problemIntegrationChallenges: "Integration Challenges",
+  problemIntegrationChallengesDesc: "Cultural workplace norms, medical hierarchies, and bureaucratic processes create additional barriers beyond language.",
+  problemIntegrationChallengesStat: "Complex integration process",
+  
+  introducingDocTalk: "Introducing DocTalk",
+  
+  theSolution: "The Solution",
+  revolutionaryApproachToMedicalGerman: "A Revolutionary Approach to Medical German Learning",
+  
+  // Updated solutions
+  solutionAffordable: "Radically Affordable & Flexible",
+  solutionAffordableDesc: "Professional medical German training at a fraction of traditional language school and personal tutor costs. Learn at your own pace with bite-sized, personalized lessons in a safe practice environment.",
+  solutionAffordableHighlight: "Flexible & cost-effective",
+  
+  solutionFlexible: "Dialogue-First Learning Innovation",
+  solutionFlexibleDesc: "Master German through realistic practice scenarios specifically designed for healthcare environments, leading to faster language mastery than traditional methods.",
+  solutionFlexibleHighlight: "Real-world readiness training",
+  
+  solutionSpecialized: "Medical-Focused with Certification Prep",
+  solutionSpecializedDesc: "Exclusively designed for healthcare professionals by medical experts, with upcoming Anerkennung and FSP certification preparation support.",
+  solutionSpecializedHighlight: "Expert-developed + certification prep",
+  
+  solutionNetworked: "Career Network Integration",
+  solutionNetworkedDesc: "Direct connections to trusted healthcare facilities and insights into German medical workplace culture.",
+  solutionNetworkedHighlight: "Trusted partner network",
+  
+  readyToTransformYourCareer: "Ready to Transform Your Medical Career in Germany?",
+  joinThousandsOfProfessionals: "Join the professionals who are already preparing for success in German healthcare."
 };

@@ -1,7 +1,8 @@
+
 export const romanianTranslations = {
   // Navigation translations
-  whoItsFor: 'Pentru cine este',
-  whyDocTalk: 'De ce DocTalk',
+  whoItsFor: 'Pentru Cine Este',
+  whyDocTalk: 'De Ce DocTalk',
   pricing: 'Prețuri',
   
   // Landing page hero section translations
@@ -12,7 +13,7 @@ export const romanianTranslations = {
   targetAudience: 'Perfect pentru lucrătorii internaționali de îngrijire, medici și studenți la medicină care vor să intre și să exceleze în sistemul de sănătate german și să obțină recunoaștere profesională.',
   expertDeveloped: 'Dezvoltat cu experți',
   joinPioneers: 'Alăturați-vă pionierilor',
-  getPriorityAccess: 'Acces prioritar',
+  getPriorityAccess: 'Obține acces prioritar',
   exploreDemo: 'Explorează Demo',
   exclusiveAlphaAccess: 'Acces alfa exclusiv',
   limitedSpots: 'Locuri limitate',
@@ -126,7 +127,7 @@ export const romanianTranslations = {
   alphaTester: "Tester Alfa",
   alphaTesterDesc: "Pentru pionierii pregătiți să modeleze viitorul învățării medicale.",
   alphaFeature1: "Acces complet în timpul fazei Alfa",
-  alphaFeature2: "Influență directă asupra dezvoltării funcțiilor",
+  alphaFeature2: "Influență directă asupra dezvoltării funcționalităților",
   alphaFeature3: "Insignă exclusivă de 'Fondator' pe profilul tău",
   joinAlphaWaitlist: "Alătură-te listei de așteptare Alfa",
   claimAlphaSpot: "Revendică locul Alfa",
@@ -159,21 +160,9 @@ export const romanianTranslations = {
   generalContent: "Conținut general de limbă",
   otherSolutions: 'Alte soluții',
   otherSolutionsSpecific: 'Școli de limbi, tutori privați, aplicații generice',
-  
+
   // Additional missing translations
-  simpleAndTransparentPricing: "Prețuri simple și transparente",
-  
-  // New alpha features for pricing section
-  priorityAccessAllFeatures: 'Acces prioritar la toate funcțiile viitoare',
-  exclusiveAlphaTesterCommunity: 'Acces exclusiv la comunitatea de testeri alfa',
-  
-  // Enterprise Solutions
-  everythingFromProfessional: 'Tot de la Profesional',
-  customOnboardingSupport: 'Onboarding personalizat și suport',
-  teamProgressTracking: 'Urmărirea progresului echipei și analiză',
-  volumeLicensingBilling: 'Licențiere în volum și facturare flexibilă',
-  oralExamSimulations: 'Simulări de examene orale',
-  choosePlanThatSuits: 'Alegeți planul care se potrivește cel mai bine obiectivelor dumneavoastră de învățare.',
+  simpleAndTransparentPricing: "Prețuri simple și transparente"
 };
 
 // Remove Polish translations entirely

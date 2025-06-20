@@ -229,17 +229,5 @@ export const germanTranslations = {
   otherSolutionsSpecific: 'Sprachschulen, Privatlehrer, allgemeine Apps',
   footerTagline: 'Communicate. Connect. Care',
   madeWithLove: 'Mit Liebe von einer ehemaligen Krankenschwester, Gesundheitsspezialistin und Kognitionspsychologin',
-  simpleAndTransparentPricing: "Einfache und transparente Preise",
-  
-  // New alpha features for pricing section
-  priorityAccessAllFeatures: 'Prioritätszugang zu allen zukünftigen Funktionen',
-  exclusiveAlphaTesterCommunity: 'Exklusiver Alpha-Tester-Community-Zugang',
-  
-  // Enterprise Solutions
-  everythingFromProfessional: 'Alles vom Professional',
-  customOnboardingSupport: 'Angepasstes Onboarding und Support',
-  teamProgressTracking: 'Team-Fortschrittsverfolgung und Analysen',
-  volumeLicensingBilling: 'Volumen-Lizenzierung und flexible Abrechnung',
-  oralExamSimulations: 'Mündliche Prüfungssimulationen',
-  choosePlanThatSuits: 'Wählen Sie den Plan, der am besten zu Ihren Lernzielen passt.'
+  simpleAndTransparentPricing: "Einfache und transparente Preise"
 };
