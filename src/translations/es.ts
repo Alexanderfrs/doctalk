@@ -34,7 +34,7 @@ export const spanishTranslations = {
   limitedAlphaSpots: 'Plazas Alfa Limitadas Disponibles',
   landYourDreamMedicalJob: 'Comunicación Segura',
   inGermany: 'en la Sanidad Alemana',
-  skipExpensiveCoursesAndGetFluent: 'Evita costosos cursos de idiomas o tutores personales y domina el alemán médico con escenarios de práctica del mundo real.',
+  skipExpensiveCoursesAndGetFluent: 'Evita cursos de idiomas inflexibles, tutores personales costosos y aplicaciones genéricas y comienza a dominar el alemán médico rápidamente con escenarios de práctica del mundo real.',
   expertDeveloped: 'Desarrollado con expertos',
   joinPioneers: 'Únete a los pioneros',
   getPriorityAccess: 'Obtener acceso prioritario',
@@ -52,13 +52,13 @@ export const spanishTranslations = {
   theProblem: "El Problema",
   challengesFacingHealthcareProfessionals: "Desafíos que Enfrentan los Profesionales de la Salud",
   
-  // Problems
+  // Problems - Updated text
   problemHighCosts: "Costos Prohibitivos de Formación",
   problemHighCostsDesc: "Los cursos tradicionales de alemán médico cuestan €3,000-8,000, poniendo la formación de calidad fuera del alcance de muchos profesionales.",
   problemHighCostsStat: "€3,000-8,000 por curso",
   
-  problemTimeConstraints: "Demandas de Comunicación del Mundo Real",
-  problemTimeConstraintsDesc: "La atención sanitaria requiere comunicación instantánea y precisa con pacientes (incluidos aquellos con problemas del habla), colegas de diversos orígenes y dialectos locales. En situaciones de alta presión, la falta de comunicación puede comprometer la seguridad del paciente y la integración profesional.",
+  problemTimeConstraints: "Brechas Críticas de Comunicación",
+  problemTimeConstraintsDesc: "La atención sanitaria exige comunicación instantánea y precisa con diversos pacientes, colegas y dialectos locales. Los malentendidos en situaciones de estrés ponen en peligro la seguridad del paciente y el éxito profesional.",
   problemTimeConstraintsStat: "Las barreras comunicativas afectan los resultados del paciente",
   
   problemGenericSolutions: "Soluciones Genéricas de Idiomas",
@@ -93,8 +93,6 @@ export const spanishTranslations = {
   
   readyToTransformYourCareer: "¿Listo para Transformar tu Carrera Médica en Alemania?",
   joinThousandsOfProfessionals: "Únete a los profesionales que ya se están preparando para el éxito en la sanidad alemana.",
-
-  // ... keep existing code (all other translations remain the same)
   limitedFreeSpotsAvailable: 'Plazas gratuitas limitadas disponibles',
   confidentCommunicationInGermanHealthcare: 'Comunicación segura en la sanidad alemana',
   skipExpensiveLanguageCourses: 'Evita costosos cursos de idiomas o tutores personales y domina el alemán médico con escenarios de práctica del mundo real.',

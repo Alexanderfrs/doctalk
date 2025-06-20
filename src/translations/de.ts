@@ -34,7 +34,7 @@ export const germanTranslations = {
   limitedAlphaSpots: 'Begrenzte kostenlose Plätze verfügbar',
   landYourDreamMedicalJob: 'Selbstbewusste Kommunikation',
   inGermany: 'im deutschen Gesundheitswesen',
-  skipExpensiveCoursesAndGetFluent: 'Überspringen Sie teure Sprachkurse oder Privatlehrer und werden Sie fließend in medizinischem Deutsch mit praxisnahen Übungsszenarien.',
+  skipExpensiveCoursesAndGetFluent: 'Überspringen Sie unflexible Sprachkurse, teure Privatlehrer und allgemeine Apps und werden Sie schnell fließend in medizinischem Deutsch mit praxisnahen Übungsszenarien.',
   expertDeveloped: 'Entwickelt mit Experten',
   joinPioneers: 'Schließen Sie sich den Pionieren an',
   getPriorityAccess: 'Prioritätszugang erhalten',
@@ -52,13 +52,13 @@ export const germanTranslations = {
   theProblem: "Das Problem",
   challengesFacingHealthcareProfessionals: "Herausforderungen für Gesundheitsfachkräfte",
   
-  // Problems
+  // Problems - Updated text
   problemHighCosts: "Prohibitive Ausbildungskosten",
   problemHighCostsDesc: "Traditionelle medizinische Deutschkurse kosten €3.000-8.000 und machen qualitativ hochwertige Ausbildung für viele Fachkräfte unerschwinglich.",
   problemHighCostsStat: "€3.000-8.000 pro Kurs",
   
-  problemTimeConstraints: "Kommunikationsanforderungen der Realität",
-  problemTimeConstraintsDesc: "Das Gesundheitswesen erfordert sofortige, präzise Kommunikation mit Patienten (einschließlich sprachbeeinträchtigter), Kollegen verschiedener Herkunft und lokalen Dialekten. In Stresssituationen kann Missverständnis die Patientensicherheit und berufliche Integration gefährden.",
+  problemTimeConstraints: "Kritische Kommunikationslücken",
+  problemTimeConstraintsDesc: "Das Gesundheitswesen erfordert sofortige, präzise Kommunikation mit verschiedenen Patienten, Kollegen und lokalen Dialekten. Missverständnisse in Stresssituationen gefährden Patientensicherheit und beruflichen Erfolg.",
   problemTimeConstraintsStat: "Kommunikationsbarrieren beeinträchtigen Patientenergebnisse",
   
   problemGenericSolutions: "Allgemeine Sprachlösungen",

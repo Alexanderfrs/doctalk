@@ -7,9 +7,9 @@ export const romanianTranslations = {
   
   // Landing page hero section translations
   limitedAlphaSpots: 'Locuri Alfa Limitate Disponibile',
-  landYourDreamMedicalJob: 'Obțineți jobul medical de vis',
-  inGermany: 'în Germania',
-  skipExpensiveCoursesAndGetFluent: 'Săriți peste cursurile scumpe de limbă sau tutorii privați și deveniți fluent în germana medicală cu scenarii de practică din lumea reală.',
+  landYourDreamMedicalJob: 'Comunicare încrezătoare',
+  inGermany: 'în sistemul de sănătate german',
+  skipExpensiveCoursesAndGetFluent: 'Evită cursurile de limbă inflexibile, tutorii privați scumpi și aplicațiile generice și începe să stăpânești rapid germana medicală cu scenarii de practică din lumea reală.',
   targetAudience: 'Perfect pentru lucrătorii internaționali de îngrijire, medici și studenți la medicină care vor să intre și să exceleze în sistemul de sănătate german și să obțină recunoaștere profesională.',
   expertDeveloped: 'Dezvoltat cu experți',
   joinPioneers: 'Alăturați-vă pionierilor',
@@ -55,14 +55,14 @@ export const romanianTranslations = {
   theProblem: "Problema",
   challengesFacingHealthcareProfessionals: "Provocările cu care se confruntă profesioniștii din sănătate",
   
-  // Problems
+  // Problems - Updated text
   problemHighCosts: "Costuri prohibitive pentru formare",
   problemHighCostsDesc: "Cursurile tradiționale de germană medicală costă €3.000-8.000, făcând formarea de calitate inaccesibilă pentru mulți profesioniști.",
   problemHighCostsStat: "€3.000-8.000 per curs",
   
-  problemTimeConstraints: "Limitări de timp",
-  problemTimeConstraintsDesc: "Profesioniștii din sănătate lucrează în schimburi solicitante, făcând aproape imposibilă participarea la cursuri de limbă cu program fix.",
-  problemTimeConstraintsStat: "Fără timp pentru programul fix",
+  problemTimeConstraints: "Lacune critice de comunicare",
+  problemTimeConstraintsDesc: "Sistemul de sănătate necesită comunicare instantanee și precisă cu diverși pacienți, colegi și dialecte locale. Neînțelegerile în situații de stres pun în pericol siguranța pacientului și succesul profesional.",
+  problemTimeConstraintsStat: "Barierele de comunicare afectează rezultatele pacienților",
   
   problemGenericSolutions: "Soluții generice de limbă",
   problemGenericSolutionsDesc: "Aplicațiile generale de limbă nu au context medical, în timp ce tutorii adesea nu înțeleg nevoile specifice de comunicare în sănătate.",
@@ -77,18 +77,18 @@ export const romanianTranslations = {
   theSolution: "Soluția",
   revolutionaryApproachToMedicalGerman: "O Abordare Revoluționară pentru Învățarea Germanei Medicale",
   
-  // Solutions
-  solutionAffordable: "Radical accesibil",
-  solutionAffordableDesc: "Formare profesională în germana medicală la o fracțiune din costul cursurilor tradiționale.",
-  solutionAffordableHighlight: "De 10 ori mai accesibil",
+  // Solutions - Updated to match English version
+  solutionAffordable: "Radical accesibil și flexibil",
+  solutionAffordableDesc: "Formare profesională în germana medicală la o fracțiune din costul cursurilor tradiționale și tutorilor privați. Învățați în ritmul vostru cu lecții personalizate într-un mediu de practică sigur.",
+  solutionAffordableHighlight: "Flexibil și rentabil",
   
-  solutionFlexible: "Flexibilitate maximă",
-  solutionFlexibleDesc: "Învățați când și unde doriți cu conversații AI personalizate care se adaptează la programul dumneavoastră.",
-  solutionFlexibleHighlight: "Disponibil 24/7",
+  solutionFlexible: "Inovația învățării cu accent pe dialog",
+  solutionFlexibleDesc: "Stăpâniți germana prin scenarii de practică realiste proiectate special pentru mediile de sănătate, ducând la stăpânirea limbii mai rapidă decât metodele tradiționale.",
+  solutionFlexibleHighlight: "Pregătire pentru lumea reală",
   
-  solutionSpecialized: "100% focalizat pe medicină",
-  solutionSpecializedDesc: "Singura soluție proiectată exclusiv pentru profesioniștii din sănătate de către experți medicali.",
-  solutionSpecializedHighlight: "Conținut dezvoltat de experți",
+  solutionSpecialized: "Focalizat pe medicină cu pregătire pentru certificare",
+  solutionSpecializedDesc: "Proiectat exclusiv pentru profesioniștii din sănătate de către experți medicali, cu suport pentru pregătirea certificărilor Anerkennung și FSP.",
+  solutionSpecializedHighlight: "Dezvoltat de experți + pregătire pentru certificare",
   
   solutionNetworked: "Integrarea rețelei profesionale",
   solutionNetworkedDesc: "Conexiuni directe cu facilități de sănătate de încredere și informații despre cultura locului de muncă medical german.",

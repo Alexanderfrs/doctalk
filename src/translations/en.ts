@@ -28,7 +28,7 @@ export const englishTranslations = {
   // Updated conversion-focused headlines
   landYourDreamMedicalJob: 'Confident Communication',
   inGermany: 'in German Healthcare',
-  skipExpensiveCoursesAndGetFluent: 'Skip expensive language courses or personal tutors and get fluent in medical German with real-world practice scenarios.',
+  skipExpensiveCoursesAndGetFluent: 'Skip inflexible language courses, expensive personal tutors, and generic apps and start getting fluent in medical German fast with real-world practice scenarios.',
   
   // Updated trust signals and urgency
   limitedAlphaSpots: 'Limited Free Spots Available',
@@ -389,13 +389,13 @@ export const englishTranslations = {
   theProblem: "The Problem",
   challengesFacingHealthcareProfessionals: "Challenges Facing Healthcare Professionals",
   
-  // Problems
+  // Problems - Updated text for Real-World Communication Demands
   problemHighCosts: "Prohibitive Training Costs",
   problemHighCostsDesc: "Traditional medical German courses cost €3,000-8,000, putting quality training out of reach for many professionals.",
   problemHighCostsStat: "€3,000-8,000 per course",
   
-  problemTimeConstraints: "Real-World Communication Demands",
-  problemTimeConstraintsDesc: "Healthcare requires instant, precise communication with patients (including those with speech impairments), colleagues from diverse backgrounds, and local dialects. In high-pressure situations, miscommunication can compromise patient safety and professional integration.",
+  problemTimeConstraints: "Critical Communication Gaps",
+  problemTimeConstraintsDesc: "Healthcare demands instant, precise communication with diverse patients, colleagues, and local dialects. Miscommunication in high-stress situations endangers patient safety and professional success.",
   problemTimeConstraintsStat: "Communication barriers affect patient outcomes",
   
   problemGenericSolutions: "Generic Language Solutions",

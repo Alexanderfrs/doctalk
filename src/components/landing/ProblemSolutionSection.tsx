@@ -3,7 +3,7 @@ import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Clock, DollarSign, Users } from "lucide-react";
+import { CheckCircle, MessageSquareWarning, DollarSign, Users } from "lucide-react";
 
 const ProblemSolutionSection: React.FC = () => {
   const { translate } = useLanguage();
@@ -16,7 +16,7 @@ const ProblemSolutionSection: React.FC = () => {
       stat: translate("problemHighCostsStat")
     },
     {
-      icon: Clock,
+      icon: MessageSquareWarning,
       title: translate("problemTimeConstraints"),
       description: translate("problemTimeConstraintsDesc"),
       stat: translate("problemTimeConstraintsStat")
