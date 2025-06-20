@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -52,8 +51,12 @@ export const englishTranslations = {
   // Enhanced alpha features
   exclusiveAlphaFeature1: 'Priority access to all future features',
   exclusiveAlphaFeature2: 'Exclusive alpha tester community access',
+
+  // Navigation translations
+  whoItsFor: "Who it's for",
+  whyDocTalk: 'Why DocTalk',
   
-  // Onboarding specific translations
+  // ... keep existing code (all other translations)
   onboardingSetup: 'Setup',
   profileAndGoals: 'Profile & Goals',
   nativeLanguage: 'Native Language',
@@ -430,10 +433,6 @@ export const englishTranslations = {
   
   readyToTransformYourCareer: "Ready to Transform Your Medical Career in Germany?",
   joinThousandsOfProfessionals: "Join the professionals who are already preparing for success in German healthcare.",
-  
-  // Navigation translations
-  whoItsFor: 'Who It\'s For',
-  whyDocTalk: 'Why DocTalk',
   
   // Additional pricing section translations
   simpleAndTransparentPricing: "Simple and transparent pricing",

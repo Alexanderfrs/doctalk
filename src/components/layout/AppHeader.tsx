@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -147,8 +148,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({
 
   // For non-authenticated users, show basic navigation
   const navItems = [
-    { path: "/#target-users", label: "Who it's for", icon: null },
-    { path: "/#problem-solution", label: "Why DocTalk", icon: null },
+    { path: "/#target-users", label: translate("whoItsFor"), icon: null },
+    { path: "/#problem-solution", label: translate("whyDocTalk"), icon: null },
     { path: "/#pricing", label: translate("pricing"), icon: null },
   ];
 
