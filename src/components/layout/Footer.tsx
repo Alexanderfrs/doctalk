@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Heart, Mail, Instagram } from "lucide-react";
+import { Heart, Mail, Instagram, Linkedin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import AppLogo from "./AppLogo";
 
@@ -54,6 +54,14 @@ const Footer: React.FC = () => {
               className="text-neutral-600 hover:text-medical-600 transition-colors"
             >
               <Instagram className="h-6 w-6" />
+            </a>
+            <a
+              href="https://www.linkedin.com/company/doctalk-ai/?viewAsMember=true"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-neutral-600 hover:text-medical-600 transition-colors"
+            >
+              <Linkedin className="h-6 w-6" />
             </a>
           </div>
         </div>

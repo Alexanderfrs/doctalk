@@ -1,4 +1,3 @@
-
 export const romanianTranslations = {
   // Navigation translations
   whoItsFor: 'Pentru Cine Este',
@@ -162,7 +161,19 @@ export const romanianTranslations = {
   otherSolutionsSpecific: 'Școli de limbi, tutori privați, aplicații generice',
 
   // Additional missing translations
-  simpleAndTransparentPricing: "Prețuri simple și transparente"
+  simpleAndTransparentPricing: "Prețuri simple și transparente",
+  choosePlanBestSuits: "Alegeți planul care se potrivește cel mai bine obiectivelor dvs. de învățare.",
+  free: "Gratuit",
+  priorityAccessAllFutureFeatures: "Acces prioritar la toate funcțiile viitoare",
+  exclusiveAlphaTesterCommunity: "Acces exclusiv la comunitatea de testeri alfa",
+  enterpriseSolutions: "Soluții pentru Întreprinderi",
+  forClinicsHospitalsEducational: "Pentru clinici, spitale și instituții educaționale.",
+  everythingFromProfessional: "Tot din Profesional",
+  customOnboardingSupport: "Integrare personalizată și suport",
+  teamProgressTrackingAnalytics: "Urmărirea progresului echipei și analize",
+  volumeLicensingFlexibleBilling: "Licențiere în volum și facturare flexibilă",
+  oralExamSimulations: "Simulări de examene orale",
+  contactUs: "Contactați-ne"
 };
 
 // Remove Polish translations entirely

@@ -158,5 +158,17 @@ export const russianTranslations = {
   otherSolutionsSpecific: 'Языковые школы, частные преподаватели, общие приложения',
   footerTagline: 'Communicate. Connect. Care',
   madeWithLove: 'Сделано с любовью бывшей медсестрой, специалистом по здравоохранению и когнитивным психологом',
-  simpleAndTransparentPricing: "Простые и прозрачные цены"
+  simpleAndTransparentPricing: "Простые и прозрачные цены",
+  choosePlanBestSuits: "Выберите план, который лучше всего подходит для ваших учебных целей.",
+  free: "Бесплатно",
+  priorityAccessAllFutureFeatures: "Приоритетный доступ ко всем будущим функциям",
+  exclusiveAlphaTesterCommunity: "Эксклюзивный доступ к сообществу альфа-тестеров",
+  enterpriseSolutions: "Корпоративные решения",
+  forClinicsHospitalsEducational: "Для клиник, больниц и образовательных учреждений.",
+  everythingFromProfessional: "Все из Профессионального",
+  customOnboardingSupport: "Индивидуальная адаптация и поддержка",
+  teamProgressTrackingAnalytics: "Отслеживание прогресса команды и аналитика",
+  volumeLicensingFlexibleBilling: "Объемное лицензирование и гибкое выставление счетов",
+  oralExamSimulations: "Симуляции устных экзаменов",
+  contactUs: "Свяжитесь с нами"
 };

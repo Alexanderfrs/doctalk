@@ -158,5 +158,17 @@ export const spanishTranslations = {
   otherSolutionsSpecific: 'Escuelas de idiomas, tutores personales, aplicaciones genéricas',
   footerTagline: 'Communicate. Connect. Care',
   madeWithLove: 'Hecho con amor por una ex enfermera, especialista en salud y psicóloga cognitiva',
-  simpleAndTransparentPricing: "Precios simples y transparentes"
+  simpleAndTransparentPricing: "Precios simples y transparentes",
+  choosePlanBestSuits: "Elige el plan que mejor se adapte a tus objetivos de aprendizaje.",
+  free: "Gratis",
+  priorityAccessAllFutureFeatures: "Acceso prioritario a todas las funciones futuras",
+  exclusiveAlphaTesterCommunity: "Acceso exclusivo a la comunidad de testers alfa",
+  enterpriseSolutions: "Soluciones Empresariales",
+  forClinicsHospitalsEducational: "Para clínicas, hospitales e instituciones educativas.",
+  everythingFromProfessional: "Todo de Profesional",
+  customOnboardingSupport: "Incorporación personalizada y soporte",
+  teamProgressTrackingAnalytics: "Seguimiento del progreso del equipo y análisis",
+  volumeLicensingFlexibleBilling: "Licencias por volumen y facturación flexible",
+  oralExamSimulations: "Simulaciones de exámenes orales",
+  contactUs: "Contáctanos"
 };

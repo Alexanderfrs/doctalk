@@ -429,5 +429,20 @@ export const englishTranslations = {
   solutionNetworkedHighlight: "Trusted partner network",
   
   readyToTransformYourCareer: "Ready to Transform Your Medical Career in Germany?",
-  joinThousandsOfProfessionals: "Join the professionals who are already preparing for success in German healthcare."
+  joinThousandsOfProfessionals: "Join the professionals who are already preparing for success in German healthcare.",
+  
+  // Additional pricing section translations
+  simpleAndTransparentPricing: "Simple and transparent pricing",
+  choosePlanBestSuits: "Choose the plan that best suits your learning goals.",
+  free: "Free",
+  priorityAccessAllFutureFeatures: "Priority access to all future features",
+  exclusiveAlphaTesterCommunity: "Exclusive alpha tester community access",
+  enterpriseSolutions: "Enterprise Solutions",
+  forClinicsHospitalsEducational: "For clinics, hospitals, and educational institutions.",
+  everythingFromProfessional: "Everything from Professional",
+  customOnboardingSupport: "Custom onboarding and support",
+  teamProgressTrackingAnalytics: "Team progress tracking and analytics",
+  volumeLicensingFlexibleBilling: "Volume licensing and flexible billing",
+  oralExamSimulations: "Oral exam simulations",
+  contactUs: "Contact us"
 };

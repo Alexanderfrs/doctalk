@@ -229,5 +229,17 @@ export const germanTranslations = {
   otherSolutionsSpecific: 'Sprachschulen, Privatlehrer, allgemeine Apps',
   footerTagline: 'Communicate. Connect. Care',
   madeWithLove: 'Mit Liebe von einer ehemaligen Krankenschwester, Gesundheitsspezialistin und Kognitionspsychologin',
-  simpleAndTransparentPricing: "Einfache und transparente Preise"
+  simpleAndTransparentPricing: "Einfache und transparente Preise",
+  choosePlanBestSuits: "Wählen Sie den Plan, der am besten zu Ihren Lernzielen passt.",
+  free: "Kostenlos",
+  priorityAccessAllFutureFeatures: "Prioritätszugang zu allen zukünftigen Funktionen",
+  exclusiveAlphaTesterCommunity: "Exklusiver Alpha-Tester-Community-Zugang",
+  enterpriseSolutions: "Unternehmenslösungen",
+  forClinicsHospitalsEducational: "Für Kliniken, Krankenhäuser und Bildungseinrichtungen.",
+  everythingFromProfessional: "Alles aus Professional",
+  customOnboardingSupport: "Individuelle Einarbeitung und Unterstützung",
+  teamProgressTrackingAnalytics: "Team-Fortschrittsverfolgung und Analysen",
+  volumeLicensingFlexibleBilling: "Volumen-Lizenzierung und flexible Abrechnung",
+  oralExamSimulations: "Mündliche Prüfungssimulationen",
+  contactUs: "Kontaktieren Sie uns"
 };
