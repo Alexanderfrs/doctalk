@@ -1,3 +1,4 @@
+
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -57,9 +58,9 @@ export const germanTranslations = {
   problemHighCostsDesc: "Traditionelle medizinische Deutschkurse kosten €3.000-8.000 und machen qualitativ hochwertige Ausbildung für viele Fachkräfte unerschwinglich.",
   problemHighCostsStat: "€3.000-8.000 pro Kurs",
   
-  problemTimeConstraints: "Kritische Kommunikationslücken",
-  problemTimeConstraintsDesc: "Das Gesundheitswesen erfordert sofortige, präzise Kommunikation mit verschiedenen Patienten, Kollegen und lokalen Dialekten. Missverständnisse in Stresssituationen gefährden Patientensicherheit und beruflichen Erfolg.",
-  problemTimeConstraintsStat: "Kommunikationsbarrieren beeinträchtigen Patientenergebnisse",
+  realWorldCommunicationDemands: "Praxisnahe Kommunikationsanforderungen",
+  realWorldCommunicationDemandsDesc: "Das Gesundheitswesen erfordert schnelle, präzise Kommunikation mit verschiedenen Patienten, Kollegen und Dialekten. Missverständnisse gefährden Patientensicherheit und beruflichen Erfolg.",
+  communicationBarriersAffectPatientOutcomes: "Kommunikationsbarrieren beeinträchtigen Patientenergebnisse",
   
   problemGenericSolutions: "Allgemeine Sprachlösungen",
   problemGenericSolutionsDesc: "Allgemeine Sprach-Apps fehlen medizinischer Kontext, während Tutoren oft die spezifischen Kommunikationsbedürfnisse im Gesundheitswesen nicht verstehen.",
@@ -79,9 +80,9 @@ export const germanTranslations = {
   solutionAffordableDesc: "Professionelles medizinisches Deutschtraining zu einem Bruchteil der Kosten traditioneller Sprachschulen und Privatlehrer. Lernen Sie in Ihrem eigenen Tempo mit mundgerechten, personalisierten Lektionen in einer sicheren Übungsumgebung.",
   solutionAffordableHighlight: "Flexibel & kostengünstig",
   
-  solutionFlexible: "Dialog-First Learning Innovation",
-  solutionFlexibleDesc: "Meistern Sie Deutsch durch realistische Übungsszenarien, die speziell für Gesundheitsumgebungen entwickelt wurden und zu schnellerer Sprachbeherrschung führen als traditionelle Methoden.",
-  solutionFlexibleHighlight: "Praxisnahe Einsatzbereitschaft",
+  dialogueFirstLearningInnovation: "Dialog-First Learning Innovation",
+  dialogueFirstLearningInnovationDesc: "Meistern Sie Deutsch durch realistische Übungsszenarien, die speziell für Gesundheitsumgebungen entwickelt wurden und zu schnellerer Sprachbeherrschung führen als traditionelle Methoden.",
+  realWorldReadinessTraining: "Praxisnahe Einsatzbereitschaft",
   
   solutionSpecialized: "Medizin-Fokussiert mit Zertifizierungsvorbereitung",
   solutionSpecializedDesc: "Ausschließlich für Gesundheitsfachkräfte von medizinischen Experten entwickelt, mit kommender Anerkennung und FSP-Zertifizierungsvorbereitungsunterstützung.",
@@ -230,16 +231,21 @@ export const germanTranslations = {
   footerTagline: 'Communicate. Connect. Care',
   madeWithLove: 'Mit Liebe von einer ehemaligen Krankenschwester, Gesundheitsspezialistin und Kognitionspsychologin',
   simpleAndTransparentPricing: "Einfache und transparente Preise",
+  choosePlanThatSuits: 'Wählen Sie den Plan, der am besten zu Ihren Lernzielen passt.',
   
   // New alpha features for pricing section
   priorityAccessAllFeatures: 'Prioritätszugang zu allen zukünftigen Funktionen',
   exclusiveAlphaTesterCommunity: 'Exklusiver Alpha-Tester-Community-Zugang',
   
   // Enterprise Solutions
+  enterpriseSolutions: 'Unternehmenslösungen',
+  enterpriseSolutionsDesc: 'Für Kliniken, Krankenhäuser und Bildungseinrichtungen.',
   everythingFromProfessional: 'Alles vom Professional',
   customOnboardingSupport: 'Angepasstes Onboarding und Support',
   teamProgressTracking: 'Team-Fortschrittsverfolgung und Analysen',
   volumeLicensingBilling: 'Volumen-Lizenzierung und flexible Abrechnung',
   oralExamSimulations: 'Mündliche Prüfungssimulationen',
-  choosePlanThatSuits: 'Wählen Sie den Plan, der am besten zu Ihren Lernzielen passt.'
+  contactUs: 'Kontakt aufnehmen',
+  
+  free: 'Kostenlos'
 };

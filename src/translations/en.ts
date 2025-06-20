@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -176,12 +177,10 @@ export const englishTranslations = {
   minimal: 'Minimal',
   specificPreparation: 'Specific preparation for professional daily life',
   pricingTitle: 'Simple and transparent pricing',
-  pricing: 'Pricing',
   audience: 'Audience',
   pricingDescription: 'Choose the plan that best suits your learning goals.',
   basic: 'Basic',
   forBeginners: 'For beginners',
-  free: 'Free',
   professional: 'Professional',
   forActiveLearners: 'For active learners',
   team: 'Team',
@@ -200,26 +199,11 @@ export const englishTranslations = {
   teamFeature3: 'Administrator area',
   teamFeature4: 'Progress reports for the team',
   teamFeature5: 'Oral exam simulations',
-  contactUs: 'Contact us',
-
-  // Pre-launch pricing
-  alphaTester: "Alpha Tester",
-  alphaTesterDesc: "For pioneers ready to shape the future of medical learning.",
-  alphaFeature1: "Full access during the Alpha phase",
-  alphaFeature2: "Direct influence on feature development",
-  alphaFeature3: "Exclusive 'Founder' badge on your profile",
-  joinAlphaWaitlist: "Join Alpha Waitlist",
 
   earlyBirdProfessional: "Early Bird Professional",
   earlyBirdProfessionalDesc: "Lock in a lifetime discount before we launch.",
   launchSpecial: "Launch Special",
   reserveEarlyBirdSpot: "Reserve Early Bird Spot",
-
-  enterpriseSolutions: "Enterprise Solutions",
-  enterpriseSolutionsDesc: "For clinics, hospitals, and educational institutions.",
-  enterpriseFeature1: "Custom onboarding and support",
-  enterpriseFeature2: "Team progress tracking and analytics",
-  enterpriseFeature3: "Volume licensing and flexible billing",
 
   loyaltyProgram: 'Loyalty Program: 3+1',
   loyaltyDescription: 'Use DocTalk regularly for 3 months',
@@ -404,12 +388,14 @@ export const englishTranslations = {
   contactUs: 'Contact us',
   
   // Plan features
-  claimAlphaSpot: 'Claim Alpha Spot',
   free: 'Free',
-  usuallyPaid: 'usually paid',
   
-  // Additional missing translations
-  limitedAlphaSpots: 'Limited Alpha Spots Available',
-  exclusiveAlphaAccess: 'Exclusive alpha access',
-  limitedSpots: 'Limited spots available',
+  // Additional missing translations from problem-solution section
+  realWorldCommunicationDemands: "Real-World Communication Demands",
+  realWorldCommunicationDemandsDesc: "Healthcare requires fast, accurate communication with diverse patients, colleagues, and dialects. Miscommunication risks patient safety and professional success.",
+  communicationBarriersAffectPatientOutcomes: "Communication barriers affect patient outcomes",
+  
+  dialogueFirstLearningInnovation: "Dialogue-First Learning Innovation",
+  dialogueFirstLearningInnovationDesc: "Master German through realistic practice scenarios specifically designed for healthcare environments, leading to faster language mastery than traditional methods.",
+  realWorldReadinessTraining: "Real-world readiness training",
 };
