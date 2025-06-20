@@ -57,9 +57,9 @@ export const germanTranslations = {
   problemHighCostsDesc: "Traditionelle medizinische Deutschkurse kosten €3.000-8.000 und machen qualitativ hochwertige Ausbildung für viele Fachkräfte unerschwinglich.",
   problemHighCostsStat: "€3.000-8.000 pro Kurs",
   
-  problemTimeConstraints: "Zeitliche Beschränkungen",
-  problemTimeConstraintsDesc: "Gesundheitsfachkräfte arbeiten anspruchsvolle Schichten und können kaum an festen Sprachkursen teilnehmen.",
-  problemTimeConstraintsStat: "Keine Zeit für feste Zeitpläne",
+  problemTimeConstraints: "Kommunikationsanforderungen der Realität",
+  problemTimeConstraintsDesc: "Das Gesundheitswesen erfordert sofortige, präzise Kommunikation mit Patienten (einschließlich sprachbeeinträchtigter), Kollegen verschiedener Herkunft und lokalen Dialekten. In Stresssituationen kann Missverständnis die Patientensicherheit und berufliche Integration gefährden.",
+  problemTimeConstraintsStat: "Kommunikationsbarrieren beeinträchtigen Patientenergebnisse",
   
   problemGenericSolutions: "Allgemeine Sprachlösungen",
   problemGenericSolutionsDesc: "Allgemeine Sprach-Apps fehlen medizinischer Kontext, während Tutoren oft die spezifischen Kommunikationsbedürfnisse im Gesundheitswesen nicht verstehen.",
@@ -81,7 +81,7 @@ export const germanTranslations = {
   
   solutionFlexible: "Dialog-First Learning Innovation",
   solutionFlexibleDesc: "Meistern Sie Deutsch durch realistische Übungsszenarien, die speziell für Gesundheitsumgebungen entwickelt wurden und zu schnellerer Sprachbeherrschung führen als traditionelle Methoden.",
-  solutionFlexibleHighlight: "Effizientes Sprachenlernen",
+  solutionFlexibleHighlight: "Praxisnahe Einsatzbereitschaft",
   
   solutionSpecialized: "Medizin-Fokussiert mit Zertifizierungsvorbereitung",
   solutionSpecializedDesc: "Ausschließlich für Gesundheitsfachkräfte von medizinischen Experten entwickelt, mit kommender Anerkennung und FSP-Zertifizierungsvorbereitungsunterstützung.",

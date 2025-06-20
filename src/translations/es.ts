@@ -57,9 +57,9 @@ export const spanishTranslations = {
   problemHighCostsDesc: "Los cursos tradicionales de alemán médico cuestan €3,000-8,000, poniendo la formación de calidad fuera del alcance de muchos profesionales.",
   problemHighCostsStat: "€3,000-8,000 por curso",
   
-  problemTimeConstraints: "Limitaciones de Tiempo",
-  problemTimeConstraintsDesc: "Los profesionales de la salud trabajan horarios exigentes, haciendo casi imposible asistir a clases de idiomas con horarios fijos.",
-  problemTimeConstraintsStat: "Sin tiempo para horarios fijos",
+  problemTimeConstraints: "Demandas de Comunicación del Mundo Real",
+  problemTimeConstraintsDesc: "La atención sanitaria requiere comunicación instantánea y precisa con pacientes (incluidos aquellos con problemas del habla), colegas de diversos orígenes y dialectos locales. En situaciones de alta presión, la falta de comunicación puede comprometer la seguridad del paciente y la integración profesional.",
+  problemTimeConstraintsStat: "Las barreras comunicativas afectan los resultados del paciente",
   
   problemGenericSolutions: "Soluciones Genéricas de Idiomas",
   problemGenericSolutionsDesc: "Las apps de idiomas generales carecen de contexto médico, mientras que los tutores a menudo no entienden las necesidades específicas de comunicación en salud.",
@@ -81,7 +81,7 @@ export const spanishTranslations = {
   
   solutionFlexible: "Innovación de Aprendizaje Centrado en el Diálogo",
   solutionFlexibleDesc: "Domina el alemán a través de escenarios de práctica realistas diseñados específicamente para entornos de atención médica, lo que lleva a un dominio del idioma más rápido que los métodos tradicionales.",
-  solutionFlexibleHighlight: "Aprendizaje eficiente de idiomas",
+  solutionFlexibleHighlight: "Entrenamiento para la preparación del mundo real",
   
   solutionSpecialized: "Enfocado en Medicina con Preparación de Certificación",
   solutionSpecializedDesc: "Diseñado exclusivamente para profesionales de la salud por expertos médicos, con próximo soporte de preparación para certificaciones Anerkennung y FSP.",

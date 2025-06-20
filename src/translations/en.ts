@@ -394,9 +394,9 @@ export const englishTranslations = {
   problemHighCostsDesc: "Traditional medical German courses cost €3,000-8,000, putting quality training out of reach for many professionals.",
   problemHighCostsStat: "€3,000-8,000 per course",
   
-  problemTimeConstraints: "Time Constraints",
-  problemTimeConstraintsDesc: "Healthcare professionals work demanding schedules, making attendance at fixed-time language classes nearly impossible.",
-  problemTimeConstraintsStat: "No time for fixed schedules",
+  problemTimeConstraints: "Real-World Communication Demands",
+  problemTimeConstraintsDesc: "Healthcare requires instant, precise communication with patients (including those with speech impairments), colleagues from diverse backgrounds, and local dialects. In high-pressure situations, miscommunication can compromise patient safety and professional integration.",
+  problemTimeConstraintsStat: "Communication barriers affect patient outcomes",
   
   problemGenericSolutions: "Generic Language Solutions",
   problemGenericSolutionsDesc: "General language apps lack medical context, while tutors often don't understand healthcare-specific communication needs.",
@@ -418,7 +418,7 @@ export const englishTranslations = {
   
   solutionFlexible: "Dialogue-First Learning Innovation",
   solutionFlexibleDesc: "Master German through realistic practice scenarios specifically designed for healthcare environments, leading to faster language mastery than traditional methods.",
-  solutionFlexibleHighlight: "Efficient language learning",
+  solutionFlexibleHighlight: "Real-world readiness training",
   
   solutionSpecialized: "Medical-Focused with Certification Prep",
   solutionSpecializedDesc: "Exclusively designed for healthcare professionals by medical experts, with upcoming Anerkennung and FSP certification preparation support.",
