@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -200,7 +201,6 @@ export const englishTranslations = {
   teamFeature3: 'Administrator area',
   teamFeature4: 'Progress reports for the team',
   teamFeature5: 'Oral exam simulations',
-  contactUs: 'Contact us',
 
   // Pre-launch pricing
   alphaTester: "Alpha Tester",
@@ -431,13 +431,15 @@ export const englishTranslations = {
   readyToTransformYourCareer: "Ready to Transform Your Medical Career in Germany?",
   joinThousandsOfProfessionals: "Join the professionals who are already preparing for success in German healthcare.",
   
+  // Navigation translations
+  whoItsFor: 'Who It\'s For',
+  whyDocTalk: 'Why DocTalk',
+  
   // Additional pricing section translations
   simpleAndTransparentPricing: "Simple and transparent pricing",
   choosePlanBestSuits: "Choose the plan that best suits your learning goals.",
-  free: "Free",
   priorityAccessAllFutureFeatures: "Priority access to all future features",
   exclusiveAlphaTesterCommunity: "Exclusive alpha tester community access",
-  enterpriseSolutions: "Enterprise Solutions",
   forClinicsHospitalsEducational: "For clinics, hospitals, and educational institutions.",
   everythingFromProfessional: "Everything from Professional",
   customOnboardingSupport: "Custom onboarding and support",
