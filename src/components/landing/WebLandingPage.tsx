@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/layout/Footer";
@@ -12,45 +11,59 @@ import ProblemSolutionSection from "@/components/landing/ProblemSolutionSection"
 import { LandingPageProps } from "@/types/landing";
 import { useSwipeable } from "react-swipeable";
 import waitlist from '@zootools/waitlist-js';
-
-const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
+const WebLandingPage: React.FC<LandingPageProps> = ({
+  onLogin
+}) => {
   const navigate = useNavigate();
-  const { translate } = useLanguage();
-
+  const {
+    translate
+  } = useLanguage();
   const handleLogin = () => {
     navigate('/login');
   };
-
-  const sections = [
-    { id: "hero", label: translate("home") },
-    { id: "target-users", label: "Who it's for" },
-    { id: "problem-solution", label: "Why DocTalk" },
-    { id: "pricing", label: translate("pricingTitle") },
-    { id: "cta", label: "Get Started" }
-  ];
+  const sections = [{
+    id: "hero",
+    label: translate("home")
+  }, {
+    id: "target-users",
+    label: "Who it's for"
+  }, {
+    id: "problem-solution",
+    label: "Why DocTalk"
+  }, {
+    id: "pricing",
+    label: translate("pricingTitle")
+  }, {
+    id: "cta",
+    label: "Get Started"
+  }];
 
   // Add swipe gesture to navigate between sections on web
   const swipeHandlers = useSwipeable({
-    onSwipedUp: (eventData) => {
+    onSwipedUp: eventData => {
       const currentSection = window.location.hash.replace('#', '') || 'hero';
       const currentIndex = sections.findIndex(s => s.id === currentSection);
       if (currentIndex < sections.length - 1) {
         const nextSection = sections[currentIndex + 1];
         const element = document.getElementById(nextSection.id);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+          element.scrollIntoView({
+            behavior: 'smooth'
+          });
           window.history.pushState(null, '', `#${nextSection.id}`);
         }
       }
     },
-    onSwipedDown: (eventData) => {
+    onSwipedDown: eventData => {
       const currentSection = window.location.hash.replace('#', '') || 'hero';
       const currentIndex = sections.findIndex(s => s.id === currentSection);
       if (currentIndex > 0) {
         const prevSection = sections[currentIndex - 1];
         const element = document.getElementById(prevSection.id);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+          element.scrollIntoView({
+            behavior: 'smooth'
+          });
           window.history.pushState(null, '', `#${prevSection.id}`);
         }
       }
@@ -66,10 +79,11 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       const id = window.location.hash.replace('#', '');
       const element = document.getElementById(id);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        element.scrollIntoView({
+          behavior: 'smooth'
+        });
       }
     }
-
     const handleAnchorClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const anchor = target.closest('a[href^="#"]');
@@ -79,24 +93,22 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         if (id) {
           const element = document.getElementById(id);
           if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            element.scrollIntoView({
+              behavior: 'smooth'
+            });
             window.history.pushState(null, '', `#${id}`);
           }
         }
       }
     };
-
     document.addEventListener('click', handleAnchorClick);
     return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
-
   const handleWaitlistClick = (event: React.MouseEvent) => {
     event.preventDefault();
     waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
   };
-
-  return (
-    <div className="min-h-screen flex flex-col relative" {...swipeHandlers}>
+  return <div className="min-h-screen flex flex-col relative" {...swipeHandlers}>
       <AppHeader onLogin={handleLogin} showSlogan={false} showAuthButtons={false} />
       <SideNavigator sections={sections} />
       
@@ -117,14 +129,7 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         
         <section id="pricing" className="py-16 bg-neutral-50 px-4">
           <div className="container mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-800">
-                {translate("pricingTitle")}
-              </h2>
-              <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-                {translate("pricingDescription")}
-              </p>
-            </div>
+            
             
             <PricingSection />
           </div>
@@ -141,10 +146,7 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                 {translate("joinThousandsOfProfessionals")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button 
-                  onClick={handleWaitlistClick}
-                  className="bg-medical-500 hover:bg-medical-600 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors"
-                >
+                <button onClick={handleWaitlistClick} className="bg-medical-500 hover:bg-medical-600 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors">
                   {translate("joinAlphaWaitlist")}
                 </button>
               </div>
@@ -154,8 +156,6 @@ const WebLandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default WebLandingPage;
