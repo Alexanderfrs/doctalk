@@ -9,10 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, Send, RotateCcw, MessageCircle, Target, CheckCircle, X } from "lucide-react";
+import { ArrowLeft, Send, RotateCcw, MessageCircle, CheckCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CheckpointTracker from "./CheckpointTracker";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
+import { PerformanceInsightsModal } from "./PerformanceInsightsModal";
 
 interface Checkpoint {
   id: string;
@@ -36,6 +37,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [feedback, setFeedback] = useState<string>("");
   const [showExitConfirmation, setShowExitConfirmation] = useState(false);
   const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [completionInsights, setCompletionInsights] = useState("");
 
   const {
     generateUnifiedResponse,
@@ -85,6 +88,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             { id: '4', description: 'Wirkung und Nebenwirkungen erläutern', completed: false },
             { id: '5', description: 'Einnahme überwachen', completed: false }
           ];
+        case 'dementia-care':
+          return [
+            { id: '1', description: 'Ruhige und respektvolle Begrüßung', completed: false },
+            { id: '2', description: 'Einfache und klare Sprache verwenden', completed: false },
+            { id: '3', description: 'Geduld und Empathie zeigen', completed: false },
+            { id: '4', description: 'Sicherheit und Komfort gewährleisten', completed: false },
+            { id: '5', description: 'Würde des Patienten respektieren', completed: false }
+          ];
         default:
           return [
             { id: '1', description: 'Professionellen Kontakt herstellen', completed: false },
@@ -99,40 +110,137 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     setCheckpoints(getCheckpointsForScenario());
   }, [scenario.id]);
 
-  // Function to check and update checkpoints based on conversation
+  // Enhanced function to intelligently check and update checkpoints
   const updateCheckpoints = (userMessage: string, aiResponse: string) => {
     setCheckpoints(prev => {
       const updated = [...prev];
-      
-      // Simple keyword-based checkpoint completion logic
-      // In a real implementation, this would be more sophisticated
       const message = userMessage.toLowerCase();
+      const messageWords = message.split(' ');
       
+      // Enhanced evaluation logic based on scenario type
       switch (scenario.id) {
         case 'handover':
-          if (message.includes('name') || message.includes('frau') || message.includes('herr')) {
+          // Check for patient identification
+          if (!updated[0].completed && (
+            message.includes('name') || message.includes('frau') || message.includes('herr') ||
+            message.includes('patient') || /\b(ich bin|mein name|heiße)\b/.test(message)
+          )) {
             updated[0].completed = true;
           }
-          if (message.includes('zustand') || message.includes('situation') || message.includes('patient')) {
+          
+          // Check for SBAR methodology
+          if (!updated[1].completed && (
+            message.includes('zustand') || message.includes('situation') || 
+            message.includes('background') || message.includes('assessment') ||
+            messageWords.length > 15 && (message.includes('patient') || message.includes('diagnose'))
+          )) {
             updated[1].completed = true;
           }
-          if (message.includes('medikament') || message.includes('therapie') || message.includes('tablette')) {
+          
+          // Check for medication communication
+          if (!updated[2].completed && (
+            message.includes('medikament') || message.includes('therapie') || 
+            message.includes('tablette') || message.includes('dosierung') ||
+            message.includes('mg') || message.includes('behandlung')
+          )) {
             updated[2].completed = true;
           }
+          
+          // Check for special incidents
+          if (!updated[3].completed && (
+            message.includes('vorkommnis') || message.includes('besonder') ||
+            message.includes('auffällig') || message.includes('ereignis') ||
+            message.includes('problem') || message.includes('schwierig')
+          )) {
+            updated[3].completed = true;
+          }
+          
+          // Check for answering questions (if AI asked questions)
+          if (!updated[4].completed && conversation.length > 6) {
+            updated[4].completed = true;
+          }
           break;
-        case 'admission':
-          if (message.includes('hallo') || message.includes('guten') || message.includes('name')) {
+
+        case 'dementia-care':
+          // Check for calm and respectful greeting
+          if (!updated[0].completed && (
+            message.includes('hallo') || message.includes('guten') ||
+            message.includes('schön') || /\b(ruhe|ruhig|sanft)\b/.test(message) ||
+            messageWords.length < 10 // Simple, not overwhelming greeting
+          )) {
             updated[0].completed = true;
           }
-          if (message.includes('adresse') || message.includes('geboren') || message.includes('versicherung')) {
+          
+          // Check for simple and clear language (short sentences, common words)
+          if (!updated[1].completed && messageWords.length < 15 && 
+              !message.includes('kompliziert') && !message.includes('schwierig')) {
             updated[1].completed = true;
           }
+          
+          // Check for patience and empathy
+          if (!updated[2].completed && (
+            message.includes('verstehe') || message.includes('geduld') ||
+            message.includes('zeit') || message.includes('langsam') ||
+            message.includes('gefühl') || message.includes('sorge')
+          )) {
+            updated[2].completed = true;
+          }
+          
+          // Check for safety and comfort
+          if (!updated[3].completed && (
+            message.includes('sicher') || message.includes('komfort') ||
+            message.includes('wohl') || message.includes('hilfe') ||
+            message.includes('unterstütz')
+          )) {
+            updated[3].completed = true;
+          }
+          
+          // Check for respecting dignity
+          if (!updated[4].completed && (
+            message.includes('respekt') || message.includes('würde') ||
+            message.includes('selbstbestimm') || message.includes('entscheid') ||
+            !message.includes('können sie nicht') // Avoiding negative phrasing
+          )) {
+            updated[4].completed = true;
+          }
           break;
+
+        case 'admission':
+          // Similar enhanced logic for admission scenarios...
+          if (!updated[0].completed && (
+            message.includes('hallo') || message.includes('guten') ||
+            message.includes('willkommen') || message.includes('name')
+          )) {
+            updated[0].completed = true;
+          }
+          break;
+
         // Add more scenario-specific logic as needed
       }
       
       return updated;
     });
+  };
+
+  // Check if all checkpoints are completed
+  useEffect(() => {
+    const allCompleted = checkpoints.length > 0 && checkpoints.every(cp => cp.completed);
+    if (allCompleted && !showCompletionModal && conversation.length > 0) {
+      const insights = generateCompletionInsights();
+      setCompletionInsights(insights);
+      setShowCompletionModal(true);
+    }
+  }, [checkpoints, showCompletionModal, conversation.length]);
+
+  const generateCompletionInsights = () => {
+    const scenarioSpecificInsights = {
+      'handover': 'Ausgezeichnet! Sie haben alle wichtigen Aspekte einer professionellen Schichtübergabe berücksichtigt. Ihre strukturierte Herangehensweise und die Verwendung des SBAR-Schemas zeigen, dass Sie die Patientensicherheit ernst nehmen.',
+      'dementia-care': 'Wunderbar! Sie haben mit großer Empathie und Professionalität gehandelt. Ihre ruhige Art und die einfache Sprache sind genau das, was Patienten mit Demenz brauchen.',
+      'admission': 'Sehr gut! Sie haben den Patienten herzlich empfangen und alle notwendigen Informationen gesammelt. Ihre freundliche Art hilft dabei, Ängste abzubauen.',
+      'medication': 'Perfekt! Sie haben alle Sicherheitsaspekte der Medikamentengabe beachtet. Ihre sorgfältige Vorgehensweise schützt den Patienten vor Fehlern.'
+    };
+    
+    return scenarioSpecificInsights[scenario.id] || 'Herzlichen Glückwunsch! Sie haben alle Lernziele erfolgreich erreicht und gezeigt, dass Sie die Situation professionell meistern können.';
   };
 
   const handleSendMessage = async () => {
@@ -174,6 +282,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     setConversation([]);
     setCurrentMessage("");
     setFeedback("");
+    setShowCompletionModal(false);
     resetLLM();
     // Reset checkpoints
     setCheckpoints(prev => prev.map(cp => ({ ...cp, completed: false })));
@@ -185,8 +294,18 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     onExit();
   };
 
-  const completedTurns = Math.floor(conversation.length / 2);
-  const progressPercentage = Math.min((completedTurns / 5) * 100, 100);
+  const handleCompletionClose = () => {
+    setShowCompletionModal(false);
+    onExit();
+  };
+
+  const handleNextExercise = () => {
+    setShowCompletionModal(false);
+    // For now, go back to exercises - in future this could navigate to next scenario
+    onExit();
+  };
+
+  const completedCount = checkpoints.filter(cp => cp.completed).length;
 
   return (
     <div className="h-screen bg-gradient-to-br from-medical-50 to-white flex flex-col">
@@ -209,16 +328,6 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <Target className="h-4 w-4 text-medical-600" />
-              <div className="w-24 bg-medical-100 rounded-full h-2">
-                <div 
-                  className="bg-medical-600 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${progressPercentage}%` }}
-                />
-              </div>
-              <span className="text-sm text-medical-700">{completedTurns}/5</span>
-            </div>
             <Button
               variant="outline"
               size="sm"
@@ -367,6 +476,16 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         isOpen={showExitConfirmation}
         onClose={() => setShowExitConfirmation(false)}
         onConfirm={handleExit}
+      />
+
+      <PerformanceInsightsModal
+        isOpen={showCompletionModal}
+        insights={completionInsights}
+        completedGoals={completedCount}
+        totalGoals={checkpoints.length}
+        scenarioType={scenario.category}
+        onClose={handleCompletionClose}
+        onRestart={handleNextExercise}
       />
     </div>
   );
