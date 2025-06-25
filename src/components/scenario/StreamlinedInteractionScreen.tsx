@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Scenario, DialogueLine } from "@/data/scenarios";
 import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
@@ -10,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, Send, RotateCcw, MessageCircle, CheckCircle, X, Volume2, VolumeX, User, Lightbulb } from "lucide-react";
+import { ArrowLeft, Send, RotateCcw, MessageCircle, CheckCircle, X, Volume2, VolumeX, User, Lightbulb, Heart, MapPin, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CheckpointTracker from "./CheckpointTracker";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
@@ -45,6 +46,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [suggestionMessage, setSuggestionMessage] = useState("");
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [isTTSEnabled, setIsTTSEnabled] = useState(true);
+  const [conversationBlocked, setConversationBlocked] = useState(false);
 
   const patientProfile = createPatientProfile(scenario.category, scenario);
 
@@ -69,9 +71,11 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     onError: (error) => {
       console.error("LLM Error:", error);
       toast.error("Ein Fehler ist beim Generieren der Antwort aufgetreten.");
+      setConversationBlocked(false); // Unblock on error
     },
     onConversationComplete: () => {
       toast.success("Gespräch erfolgreich abgeschlossen!");
+      setConversationBlocked(false); // Ensure unblocked on completion
     }
   });
 
@@ -159,7 +163,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             message.includes('name') || message.includes('geburtsdatum') ||
             message.includes('adresse') || message.includes('versicherung') ||
             message.includes('personalien') || message.includes('daten') ||
-            message.includes('wie heißen sie') || message.includes('geboren')
+            message.includes('wie heißen sie') || message.includes('geboren') ||
+            message.includes('alter') || message.includes('wohnen')
           )) {
             updated[1].completed = true;
             checkpointCompleted = true;
@@ -169,7 +174,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           if (currentIndex === 2 && (
             message.includes('anamnese') || message.includes('vorerkrankung') ||
             message.includes('medikament') || message.includes('allergie') ||
-            message.includes('beschwerden') || message.includes('symptom')
+            message.includes('beschwerden') || message.includes('symptom') ||
+            message.includes('krank') || message.includes('gesundheit')
           )) {
             updated[2].completed = true;
             checkpointCompleted = true;
@@ -179,7 +185,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           if (currentIndex === 3 && (
             message.includes('ablauf') || message.includes('regel') ||
             message.includes('besuchszeit') || message.includes('station') ||
-            message.includes('erklär') || message.includes('inform')
+            message.includes('erklär') || message.includes('inform') ||
+            message.includes('routine') || message.includes('zeitplan')
           )) {
             updated[3].completed = true;
             checkpointCompleted = true;
@@ -189,7 +196,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           if (currentIndex === 4 && (
             message.includes('frage') || message.includes('sorge') ||
             message.includes('beruhig') || message.includes('keine angst') ||
-            message.includes('verstehe') || message.includes('hilfe')
+            message.includes('verstehe') || message.includes('hilfe') ||
+            message.includes('unterstütz') || message.includes('da sein')
           )) {
             updated[4].completed = true;
             checkpointCompleted = true;
@@ -202,6 +210,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             message.includes('patient') || /\b(ich bin|mein name|heiße)\b/.test(message)
           )) {
             updated[0].completed = true;
+            checkpointCompleted = true;
           }
           
           // Check for SBAR methodology
@@ -211,6 +220,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             messageWords.length > 15 && (message.includes('patient') || message.includes('diagnose'))
           )) {
             updated[1].completed = true;
+            checkpointCompleted = true;
           }
           
           // Check for medication communication
@@ -220,6 +230,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             message.includes('mg') || message.includes('behandlung')
           )) {
             updated[2].completed = true;
+            checkpointCompleted = true;
           }
           
           // Check for special incidents
@@ -229,11 +240,13 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             message.includes('problem') || message.includes('schwierig')
           )) {
             updated[3].completed = true;
+            checkpointCompleted = true;
           }
           
           // Check for answering questions (if AI asked questions)
           if (!updated[4].completed && conversation.length > 6) {
             updated[4].completed = true;
+            checkpointCompleted = true;
           }
           break;
           
@@ -245,12 +258,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             messageWords.length < 10 // Simple, not overwhelming greeting
           )) {
             updated[0].completed = true;
+            checkpointCompleted = true;
           }
           
           // Check for simple and clear language (short sentences, common words)
           if (!updated[1].completed && messageWords.length < 15 && 
               !message.includes('kompliziert') && !message.includes('schwierig')) {
             updated[1].completed = true;
+            checkpointCompleted = true;
           }
           
           // Check for patience and empathy
@@ -260,6 +275,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             message.includes('gefühl') || message.includes('sorge')
           )) {
             updated[2].completed = true;
+            checkpointCompleted = true;
           }
           
           // Check for safety and comfort
@@ -269,6 +285,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             message.includes('unterstütz')
           )) {
             updated[3].completed = true;
+            checkpointCompleted = true;
           }
           
           // Check for respecting dignity
@@ -278,12 +295,13 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             !message.includes('können sie nicht') // Avoiding negative phrasing
           )) {
             updated[4].completed = true;
+            checkpointCompleted = true;
           }
           break;
       }
       
-      // If checkpoint wasn't completed and we've reached 3 attempts, show suggestion
-      if (!checkpointCompleted && updated[currentIndex].attempts >= 3) {
+      // If checkpoint wasn't completed and we've reached 2 attempts, show suggestion
+      if (!checkpointCompleted && updated[currentIndex].attempts >= 2) {
         setSuggestionMessage(getSuggestionForCheckpoint(scenario.id, currentIndex));
         setShowSuggestion(true);
         // Reset attempts to give user another chance after suggestion
@@ -342,9 +360,11 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   };
 
   const handleSendMessage = async () => {
-    if (!currentMessage.trim() || isLLMLoading || isConversationComplete) return;
+    if (!currentMessage.trim() || isLLMLoading || conversationBlocked) return;
 
     try {
+      setConversationBlocked(true); // Block during processing
+      
       const userMessage: DialogueLine = {
         speaker: 'user',
         text: currentMessage.trim()
@@ -374,10 +394,13 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
       // Update checkpoints based on the conversation
       updateCheckpoints(currentMessage, response.patientReply);
+      
+      setConversationBlocked(false); // Unblock after successful processing
 
     } catch (error) {
       console.error("Error sending message:", error);
       toast.error("Fehler beim Senden der Nachricht");
+      setConversationBlocked(false); // Unblock on error
     }
   };
 
@@ -386,6 +409,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     setCurrentMessage("");
     setFeedback("");
     setShowCompletionModal(false);
+    setConversationBlocked(false);
     resetLLM();
     // Reset checkpoints
     setCheckpoints(prev => prev.map(cp => ({ ...cp, completed: false, attempts: 0 })));
@@ -479,12 +503,35 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     </Badge>
                   )}
                 </div>
-                {/* Patient Info */}
-                <div className="flex items-center gap-2 text-sm text-medical-600">
-                  <User className="h-4 w-4" />
-                  <span className="font-medium">{patientProfile.name}</span>
-                  <span>•</span>
-                  <span>{patientProfile.age} Jahre</span>
+                {/* Enhanced Patient Info */}
+                <div className="flex items-center gap-3 bg-medical-50 rounded-lg px-3 py-2">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                    {patientProfile.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div className="text-sm">
+                    <div className="font-medium text-medical-800">{patientProfile.name}</div>
+                    <div className="flex items-center gap-2 text-medical-600 text-xs">
+                      <span>{patientProfile.age} Jahre</span>
+                      {patientProfile.condition && (
+                        <>
+                          <span>•</span>
+                          <span className="flex items-center gap-1">
+                            <Heart className="h-3 w-3" />
+                            {patientProfile.condition}
+                          </span>
+                        </>
+                      )}
+                      {patientProfile.room && (
+                        <>
+                          <span>•</span>
+                          <span className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3" />
+                            Zimmer {patientProfile.room}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -494,7 +541,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 {conversation.length === 0 && (
                   <div className="text-center text-medical-500 py-8">
                     <MessageCircle className="h-8 w-8 mx-auto mb-2" />
-                    <p>Beginnen Sie das Gespräch mit {patientProfile.name}...</p>
+                    <p className="text-base">Beginnen Sie das Gespräch mit {patientProfile.name}...</p>
                   </div>
                 )}
                 {conversation.map((line, index) => (
@@ -507,14 +554,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                   >
                     <div
                       className={cn(
-                        "max-w-[80%] p-3 rounded-lg text-sm",
+                        "max-w-[80%] p-4 rounded-lg text-base leading-relaxed", // Increased text size and padding
                         line.speaker === 'user'
                           ? "bg-medical-600 text-white"
-                          : "bg-white border border-medical-200 text-medical-800"
+                          : "bg-white border border-medical-200 text-medical-800 shadow-sm"
                       )}
                     >
-                      <div className="mb-1">
-                        <span className="text-xs opacity-70">
+                      <div className="mb-2">
+                        <span className="text-sm font-medium opacity-70">
                           {line.speaker === 'user' 
                             ? 'Sie' 
                             : patientProfile.name
@@ -527,7 +574,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 ))}
                 {isLLMLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-white border border-medical-200 text-medical-800 p-3 rounded-lg">
+                    <div className="bg-white border border-medical-200 text-medical-800 p-4 rounded-lg shadow-sm">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-medical-400 rounded-full animate-bounce" />
                         <div className="w-2 h-2 bg-medical-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
@@ -538,8 +585,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 )}
                 {isSpeaking && (
                   <div className="flex justify-start">
-                    <div className="bg-blue-50 border border-blue-200 text-blue-800 p-2 rounded-lg text-xs flex items-center gap-2">
-                      <Volume2 className="h-3 w-3" />
+                    <div className="bg-blue-50 border border-blue-200 text-blue-800 p-2 rounded-lg text-sm flex items-center gap-2">
+                      <Volume2 className="h-4 w-4" />
                       <span>Sprachausgabe aktiv...</span>
                       <Button
                         variant="ghost"
@@ -593,8 +640,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                   value={currentMessage}
                   onChange={(e) => setCurrentMessage(e.target.value)}
                   placeholder="Ihre Antwort eingeben..."
-                  className="flex-1 min-h-[40px] max-h-[120px] resize-none"
-                  disabled={isLLMLoading || isConversationComplete}
+                  className="flex-1 min-h-[40px] max-h-[120px] resize-none text-base" // Increased text size
+                  disabled={isLLMLoading || conversationBlocked}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
@@ -604,7 +651,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 />
                 <Button
                   onClick={handleSendMessage}
-                  disabled={!currentMessage.trim() || isLLMLoading || isConversationComplete}
+                  disabled={!currentMessage.trim() || isLLMLoading || conversationBlocked}
                   className="bg-medical-600 hover:bg-medical-700"
                 >
                   <Send className="h-4 w-4" />
