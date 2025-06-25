@@ -4,6 +4,7 @@ import { Scenario } from "@/data/scenarios";
 import { createPatientProfile } from "@/utils/patientProfiles";
 import ScenarioBriefingScreen from "./ScenarioBriefingScreen";
 import StreamlinedInteractionScreen from "./StreamlinedInteractionScreen";
+import { useNavigate } from "react-router-dom";
 
 interface ScenarioContainerProps {
   scenario: Scenario;
@@ -11,6 +12,7 @@ interface ScenarioContainerProps {
 
 const ScenarioContainer: React.FC<ScenarioContainerProps> = ({ scenario }) => {
   const [showBriefing, setShowBriefing] = useState(true);
+  const navigate = useNavigate();
   
   const patientProfile = createPatientProfile(scenario.category, scenario);
 
@@ -22,12 +24,17 @@ const ScenarioContainer: React.FC<ScenarioContainerProps> = ({ scenario }) => {
     setShowBriefing(true);
   };
 
+  const handleExit = () => {
+    navigate('/practice');
+  };
+
   if (showBriefing) {
     return (
       <ScenarioBriefingScreen
         scenario={scenario}
         patientProfile={patientProfile}
         onBeginInteraction={handleBeginInteraction}
+        onExit={handleExit}
       />
     );
   }
@@ -36,6 +43,7 @@ const ScenarioContainer: React.FC<ScenarioContainerProps> = ({ scenario }) => {
     <StreamlinedInteractionScreen
       scenario={scenario}
       onBack={handleBackToBriefing}
+      onExit={handleExit}
     />
   );
 };

@@ -9,21 +9,33 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, Send, RotateCcw, MessageCircle, Target, CheckCircle } from "lucide-react";
+import { ArrowLeft, Send, RotateCcw, MessageCircle, Target, CheckCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import CheckpointTracker from "./CheckpointTracker";
+import ExitConfirmationDialog from "./ExitConfirmationDialog";
+
+interface Checkpoint {
+  id: string;
+  description: string;
+  completed: boolean;
+}
 
 interface StreamlinedInteractionScreenProps {
   scenario: Scenario;
   onBack: () => void;
+  onExit: () => void;
 }
 
 const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> = ({
   scenario,
-  onBack
+  onBack,
+  onExit
 }) => {
   const [conversation, setConversation] = useState<DialogueLine[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const [feedback, setFeedback] = useState<string>("");
+  const [showExitConfirmation, setShowExitConfirmation] = useState(false);
+  const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
 
   const {
     generateUnifiedResponse,
@@ -44,6 +56,84 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       toast.success("Gespräch erfolgreich abgeschlossen!");
     }
   });
+
+  // Initialize checkpoints based on scenario
+  useEffect(() => {
+    const getCheckpointsForScenario = () => {
+      switch (scenario.id) {
+        case 'handover':
+          return [
+            { id: '1', description: 'Patientenidentifikation bestätigen', completed: false },
+            { id: '2', description: 'Aktuelle Situation beschreiben (SBAR)', completed: false },
+            { id: '3', description: 'Medikation und Änderungen kommunizieren', completed: false },
+            { id: '4', description: 'Besondere Vorkommnisse erwähnen', completed: false },
+            { id: '5', description: 'Rückfragen beantworten', completed: false }
+          ];
+        case 'admission':
+          return [
+            { id: '1', description: 'Freundliche Begrüßung und Vorstellung', completed: false },
+            { id: '2', description: 'Persönliche Daten aufnehmen', completed: false },
+            { id: '3', description: 'Anamnese erheben', completed: false },
+            { id: '4', description: 'Abläufe und Regeln erklären', completed: false },
+            { id: '5', description: 'Fragen beantworten und beruhigen', completed: false }
+          ];
+        case 'medication':
+          return [
+            { id: '1', description: 'Patientenidentifikation prüfen', completed: false },
+            { id: '2', description: 'Medikament und Dosierung erklären', completed: false },
+            { id: '3', description: 'Allergien und Unverträglichkeiten erfragen', completed: false },
+            { id: '4', description: 'Wirkung und Nebenwirkungen erläutern', completed: false },
+            { id: '5', description: 'Einnahme überwachen', completed: false }
+          ];
+        default:
+          return [
+            { id: '1', description: 'Professionellen Kontakt herstellen', completed: false },
+            { id: '2', description: 'Bedürfnisse erfassen', completed: false },
+            { id: '3', description: 'Informationen vermitteln', completed: false },
+            { id: '4', description: 'Empathisch reagieren', completed: false },
+            { id: '5', description: 'Situation erfolgreich abschließen', completed: false }
+          ];
+      }
+    };
+
+    setCheckpoints(getCheckpointsForScenario());
+  }, [scenario.id]);
+
+  // Function to check and update checkpoints based on conversation
+  const updateCheckpoints = (userMessage: string, aiResponse: string) => {
+    setCheckpoints(prev => {
+      const updated = [...prev];
+      
+      // Simple keyword-based checkpoint completion logic
+      // In a real implementation, this would be more sophisticated
+      const message = userMessage.toLowerCase();
+      
+      switch (scenario.id) {
+        case 'handover':
+          if (message.includes('name') || message.includes('frau') || message.includes('herr')) {
+            updated[0].completed = true;
+          }
+          if (message.includes('zustand') || message.includes('situation') || message.includes('patient')) {
+            updated[1].completed = true;
+          }
+          if (message.includes('medikament') || message.includes('therapie') || message.includes('tablette')) {
+            updated[2].completed = true;
+          }
+          break;
+        case 'admission':
+          if (message.includes('hallo') || message.includes('guten') || message.includes('name')) {
+            updated[0].completed = true;
+          }
+          if (message.includes('adresse') || message.includes('geboren') || message.includes('versicherung')) {
+            updated[1].completed = true;
+          }
+          break;
+        // Add more scenario-specific logic as needed
+      }
+      
+      return updated;
+    });
+  };
 
   const handleSendMessage = async () => {
     if (!currentMessage.trim() || isLLMLoading || isConversationComplete) return;
@@ -71,6 +161,9 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         setFeedback(response.briefFeedback);
       }
 
+      // Update checkpoints based on the conversation
+      updateCheckpoints(currentMessage, response.patientReply);
+
     } catch (error) {
       console.error("Error sending message:", error);
       toast.error("Fehler beim Senden der Nachricht");
@@ -82,7 +175,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     setCurrentMessage("");
     setFeedback("");
     resetLLM();
+    // Reset checkpoints
+    setCheckpoints(prev => prev.map(cp => ({ ...cp, completed: false })));
     toast.success("Gespräch wurde zurückgesetzt");
+  };
+
+  const handleExit = () => {
+    setShowExitConfirmation(false);
+    onExit();
   };
 
   const completedTurns = Math.floor(conversation.length / 2);
@@ -127,6 +227,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             >
               <RotateCcw className="h-4 w-4 mr-1" />
               Neustart
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowExitConfirmation(true)}
+              className="text-medical-600 hover:text-medical-800"
+            >
+              <X className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -230,8 +338,12 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           </Card>
         </div>
 
-        {/* Feedback Sidebar */}
-        <div className="w-80 flex flex-col">
+        {/* Right Sidebar */}
+        <div className="w-80 flex flex-col gap-4">
+          {/* Checkpoint Tracker */}
+          <CheckpointTracker checkpoints={checkpoints} />
+          
+          {/* Feedback */}
           <Card className="flex-1">
             <div className="p-4 border-b border-medical-200">
               <h3 className="font-medium text-medical-800">Live-Feedback</h3>
@@ -250,6 +362,12 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           </Card>
         </div>
       </div>
+
+      <ExitConfirmationDialog
+        isOpen={showExitConfirmation}
+        onClose={() => setShowExitConfirmation(false)}
+        onConfirm={handleExit}
+      />
     </div>
   );
 };

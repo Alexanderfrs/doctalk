@@ -1,22 +1,28 @@
-
-import React from "react";
+import React, { useState } from "react";
 import { Scenario } from "@/data/scenarios";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, Users, MapPin, Target, Play } from "lucide-react";
+import { AlertCircle, Users, MapPin, Target, Play, Info, X } from "lucide-react";
 import { PatientProfile } from "@/utils/patientProfiles";
+import BestPracticesDialog from "./BestPracticesDialog";
+import ExitConfirmationDialog from "./ExitConfirmationDialog";
 
 interface ScenarioBriefingScreenProps {
   scenario: Scenario;
   patientProfile: PatientProfile;
   onBeginInteraction: () => void;
+  onExit: () => void;
 }
 
 const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
   scenario,
   patientProfile,
-  onBeginInteraction
+  onBeginInteraction,
+  onExit
 }) => {
+  const [showBestPractices, setShowBestPractices] = useState(false);
+  const [showExitConfirmation, setShowExitConfirmation] = useState(false);
+
   // Get scenario context information
   const getScenarioContext = () => {
     switch (scenario.id) {
@@ -81,9 +87,24 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
 
   const context = getScenarioContext();
 
+  const handleExit = () => {
+    setShowExitConfirmation(false);
+    onExit();
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-medical-50 to-medical-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl p-8 space-y-8">
+      <Card className="w-full max-w-2xl p-8 space-y-8 relative">
+        {/* Exit Button */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowExitConfirmation(true)}
+          className="absolute top-4 right-4 text-medical-600 hover:text-medical-800"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center gap-2 mb-4">
@@ -144,18 +165,52 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
           </Card>
         </div>
 
-        {/* CTA Button */}
-        <div className="text-center pt-4">
+        {/* Best Practices CTA */}
+        <Card className="p-4 bg-blue-50 border-blue-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Info className="h-4 w-4 text-blue-600" />
+              <div>
+                <h4 className="font-medium text-blue-800">Mehr erfahren</h4>
+                <p className="text-sm text-blue-600">Best Practices für dieses Szenario</p>
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowBestPractices(true)}
+              className="border-blue-300 text-blue-700 hover:bg-blue-100"
+            >
+              <Info className="h-4 w-4 mr-1" />
+              Mehr erfahren
+            </Button>
+          </div>
+        </Card>
+
+        {/* CTA Buttons */}
+        <div className="flex gap-3 pt-4">
           <Button
             onClick={onBeginInteraction}
             size="lg"
-            className="bg-medical-600 hover:bg-medical-700 text-white px-8 py-3"
+            className="bg-medical-600 hover:bg-medical-700 text-white px-8 py-3 flex-1"
           >
             <Play className="h-5 w-5 mr-2" />
             Interaktion beginnen
           </Button>
         </div>
       </Card>
+
+      <BestPracticesDialog
+        isOpen={showBestPractices}
+        onClose={() => setShowBestPractices(false)}
+        scenarioId={scenario.id}
+      />
+
+      <ExitConfirmationDialog
+        isOpen={showExitConfirmation}
+        onClose={() => setShowExitConfirmation(false)}
+        onConfirm={handleExit}
+      />
     </div>
   );
 };
