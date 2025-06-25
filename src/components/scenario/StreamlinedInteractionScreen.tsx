@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from "react";
 import { Scenario, DialogueLine } from "@/data/scenarios";
 import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
+import useTextToSpeech from "@/hooks/useTextToSpeech";
 import { toast } from "sonner";
 import { createPatientProfile } from "@/utils/patientProfiles";
 import { Card } from "@/components/ui/card";
@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, Send, RotateCcw, MessageCircle, CheckCircle, X } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { ArrowLeft, Send, RotateCcw, MessageCircle, CheckCircle, X, Volume2, VolumeX, User, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CheckpointTracker from "./CheckpointTracker";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
@@ -19,6 +20,7 @@ interface Checkpoint {
   id: string;
   description: string;
   completed: boolean;
+  attempts: number;
 }
 
 interface StreamlinedInteractionScreenProps {
@@ -39,6 +41,19 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [completionInsights, setCompletionInsights] = useState("");
+  const [currentCheckpointIndex, setCurrentCheckpointIndex] = useState(0);
+  const [suggestionMessage, setSuggestionMessage] = useState("");
+  const [showSuggestion, setShowSuggestion] = useState(false);
+  const [isTTSEnabled, setIsTTSEnabled] = useState(true);
+
+  const patientProfile = createPatientProfile(scenario.category, scenario);
+
+  const { speak, isSpeaking, stop } = useTextToSpeech({
+    voice: 'Sarah',
+    onError: (error) => {
+      console.error("TTS Error:", error);
+    }
+  });
 
   const {
     generateUnifiedResponse,
@@ -66,43 +81,43 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       switch (scenario.id) {
         case 'handover':
           return [
-            { id: '1', description: 'Patientenidentifikation bestätigen', completed: false },
-            { id: '2', description: 'Aktuelle Situation beschreiben (SBAR)', completed: false },
-            { id: '3', description: 'Medikation und Änderungen kommunizieren', completed: false },
-            { id: '4', description: 'Besondere Vorkommnisse erwähnen', completed: false },
-            { id: '5', description: 'Rückfragen beantworten', completed: false }
+            { id: '1', description: 'Patientenidentifikation bestätigen', completed: false, attempts: 0 },
+            { id: '2', description: 'Aktuelle Situation beschreiben (SBAR)', completed: false, attempts: 0 },
+            { id: '3', description: 'Medikation und Änderungen kommunizieren', completed: false, attempts: 0 },
+            { id: '4', description: 'Besondere Vorkommnisse erwähnen', completed: false, attempts: 0 },
+            { id: '5', description: 'Rückfragen beantworten', completed: false, attempts: 0 }
           ];
         case 'admission':
           return [
-            { id: '1', description: 'Freundliche Begrüßung und Vorstellung', completed: false },
-            { id: '2', description: 'Persönliche Daten aufnehmen', completed: false },
-            { id: '3', description: 'Anamnese erheben', completed: false },
-            { id: '4', description: 'Abläufe und Regeln erklären', completed: false },
-            { id: '5', description: 'Fragen beantworten und beruhigen', completed: false }
+            { id: '1', description: 'Freundliche Begrüßung und Vorstellung', completed: false, attempts: 0 },
+            { id: '2', description: 'Persönliche Daten aufnehmen', completed: false, attempts: 0 },
+            { id: '3', description: 'Anamnese erheben', completed: false, attempts: 0 },
+            { id: '4', description: 'Abläufe und Regeln erklären', completed: false, attempts: 0 },
+            { id: '5', description: 'Fragen beantworten und beruhigen', completed: false, attempts: 0 }
           ];
         case 'medication':
           return [
-            { id: '1', description: 'Patientenidentifikation prüfen', completed: false },
-            { id: '2', description: 'Medikament und Dosierung erklären', completed: false },
-            { id: '3', description: 'Allergien und Unverträglichkeiten erfragen', completed: false },
-            { id: '4', description: 'Wirkung und Nebenwirkungen erläutern', completed: false },
-            { id: '5', description: 'Einnahme überwachen', completed: false }
+            { id: '1', description: 'Patientenidentifikation prüfen', completed: false, attempts: 0 },
+            { id: '2', description: 'Medikament und Dosierung erklären', completed: false, attempts: 0 },
+            { id: '3', description: 'Allergien und Unverträglichkeiten erfragen', completed: false, attempts: 0 },
+            { id: '4', description: 'Wirkung und Nebenwirkungen erläutern', completed: false, attempts: 0 },
+            { id: '5', description: 'Einnahme überwachen', completed: false, attempts: 0 }
           ];
         case 'dementia-care':
           return [
-            { id: '1', description: 'Ruhige und respektvolle Begrüßung', completed: false },
-            { id: '2', description: 'Einfache und klare Sprache verwenden', completed: false },
-            { id: '3', description: 'Geduld und Empathie zeigen', completed: false },
-            { id: '4', description: 'Sicherheit und Komfort gewährleisten', completed: false },
-            { id: '5', description: 'Würde des Patienten respektieren', completed: false }
+            { id: '1', description: 'Ruhige und respektvolle Begrüßung', completed: false, attempts: 0 },
+            { id: '2', description: 'Einfache und klare Sprache verwenden', completed: false, attempts: 0 },
+            { id: '3', description: 'Geduld und Empathie zeigen', completed: false, attempts: 0 },
+            { id: '4', description: 'Sicherheit und Komfort gewährleisten', completed: false, attempts: 0 },
+            { id: '5', description: 'Würde des Patienten respektieren', completed: false, attempts: 0 }
           ];
         default:
           return [
-            { id: '1', description: 'Professionellen Kontakt herstellen', completed: false },
-            { id: '2', description: 'Bedürfnisse erfassen', completed: false },
-            { id: '3', description: 'Informationen vermitteln', completed: false },
-            { id: '4', description: 'Empathisch reagieren', completed: false },
-            { id: '5', description: 'Situation erfolgreich abschließen', completed: false }
+            { id: '1', description: 'Professionellen Kontakt herstellen', completed: false, attempts: 0 },
+            { id: '2', description: 'Bedürfnisse erfassen', completed: false, attempts: 0 },
+            { id: '3', description: 'Informationen vermitteln', completed: false, attempts: 0 },
+            { id: '4', description: 'Empathisch reagieren', completed: false, attempts: 0 },
+            { id: '5', description: 'Situation erfolgreich abschließen', completed: false, attempts: 0 }
           ];
       }
     };
@@ -117,10 +132,71 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       const message = userMessage.toLowerCase();
       const messageWords = message.split(' ');
       
+      // Find the current active checkpoint (first incomplete one)
+      const currentIndex = updated.findIndex(cp => !cp.completed);
+      if (currentIndex === -1) return updated; // All completed
+      
+      // Increment attempts for current checkpoint
+      updated[currentIndex].attempts += 1;
+      
+      let checkpointCompleted = false;
+      
       // Enhanced evaluation logic based on scenario type
       switch (scenario.id) {
+        case 'admission':
+          // Check for friendly greeting and introduction
+          if (currentIndex === 0 && (
+            message.includes('hallo') || message.includes('guten') ||
+            message.includes('willkommen') || message.includes('name') ||
+            message.includes('ich bin') || message.includes('mein name')
+          )) {
+            updated[0].completed = true;
+            checkpointCompleted = true;
+          }
+          
+          // Check for personal data collection
+          if (currentIndex === 1 && (
+            message.includes('name') || message.includes('geburtsdatum') ||
+            message.includes('adresse') || message.includes('versicherung') ||
+            message.includes('personalien') || message.includes('daten') ||
+            message.includes('wie heißen sie') || message.includes('geboren')
+          )) {
+            updated[1].completed = true;
+            checkpointCompleted = true;
+          }
+          
+          // Check for medical history
+          if (currentIndex === 2 && (
+            message.includes('anamnese') || message.includes('vorerkrankung') ||
+            message.includes('medikament') || message.includes('allergie') ||
+            message.includes('beschwerden') || message.includes('symptom')
+          )) {
+            updated[2].completed = true;
+            checkpointCompleted = true;
+          }
+          
+          // Check for explaining procedures
+          if (currentIndex === 3 && (
+            message.includes('ablauf') || message.includes('regel') ||
+            message.includes('besuchszeit') || message.includes('station') ||
+            message.includes('erklär') || message.includes('inform')
+          )) {
+            updated[3].completed = true;
+            checkpointCompleted = true;
+          }
+          
+          // Check for answering questions and reassuring
+          if (currentIndex === 4 && (
+            message.includes('frage') || message.includes('sorge') ||
+            message.includes('beruhig') || message.includes('keine angst') ||
+            message.includes('verstehe') || message.includes('hilfe')
+          )) {
+            updated[4].completed = true;
+            checkpointCompleted = true;
+          }
+          break;
+          
         case 'handover':
-          // Check for patient identification
           if (!updated[0].completed && (
             message.includes('name') || message.includes('frau') || message.includes('herr') ||
             message.includes('patient') || /\b(ich bin|mein name|heiße)\b/.test(message)
@@ -160,7 +236,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             updated[4].completed = true;
           }
           break;
-
+          
         case 'dementia-care':
           // Check for calm and respectful greeting
           if (!updated[0].completed && (
@@ -204,22 +280,44 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             updated[4].completed = true;
           }
           break;
-
-        case 'admission':
-          // Similar enhanced logic for admission scenarios...
-          if (!updated[0].completed && (
-            message.includes('hallo') || message.includes('guten') ||
-            message.includes('willkommen') || message.includes('name')
-          )) {
-            updated[0].completed = true;
-          }
-          break;
-
-        // Add more scenario-specific logic as needed
+      }
+      
+      // If checkpoint wasn't completed and we've reached 3 attempts, show suggestion
+      if (!checkpointCompleted && updated[currentIndex].attempts >= 3) {
+        setSuggestionMessage(getSuggestionForCheckpoint(scenario.id, currentIndex));
+        setShowSuggestion(true);
+        // Reset attempts to give user another chance after suggestion
+        updated[currentIndex].attempts = 0;
       }
       
       return updated;
     });
+  };
+
+  const getSuggestionForCheckpoint = (scenarioId: string, checkpointIndex: number): string => {
+    const suggestions = {
+      'admission': [
+        'Versuchen Sie eine freundliche Begrüßung: "Guten Tag, mein Name ist... Ich bin Ihre Pflegekraft heute."',
+        'Fragen Sie nach persönlichen Daten: "Können Sie mir bitte Ihren vollständigen Namen und Ihr Geburtsdatum nennen?"',
+        'Erheben Sie die Anamnese: "Können Sie mir von Ihren aktuellen Beschwerden erzählen? Nehmen Sie regelmäßig Medikamente?"',
+        'Erklären Sie die Abläufe: "Lassen Sie mich Ihnen kurz erklären, wie der Tagesablauf hier auf der Station ist."',
+        'Beruhigen Sie den Patienten: "Haben Sie noch Fragen? Ich verstehe, dass die neue Situation beunruhigend sein kann."'
+      ],
+      'handover': [
+        'Bestätigen Sie die Patientenidentität: "Ich übergebe Ihnen Herrn/Frau [Name], Zimmer [Nummer]."',
+        'Beschreiben Sie die Situation mit SBAR: "Situation: Der Patient ist wegen... Background: Relevante Vorgeschichte..."',
+        'Kommunizieren Sie Medikation: "Aktuelle Medikation: [Medikament], [Dosierung], letzte Gabe um [Zeit]."',
+        'Erwähnen Sie Besonderheiten: "Besondere Vorkommnisse: [Ereignis] um [Zeit]."',
+        'Beantworten Sie Rückfragen: "Gibt es noch Fragen zur Übergabe?"'
+      ]
+    };
+    
+    return suggestions[scenarioId]?.[checkpointIndex] || 'Versuchen Sie es mit einer anderen Formulierung.';
+  };
+
+  const handleUseSuggestion = () => {
+    setCurrentMessage(suggestionMessage.split('"')[1] || suggestionMessage);
+    setShowSuggestion(false);
   };
 
   // Check if all checkpoints are completed
@@ -265,6 +363,11 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
       setConversation(prev => [...prev, aiMessage]);
       
+      // Text-to-speech for patient responses
+      if (isTTSEnabled && response.patientReply) {
+        speak(response.patientReply);
+      }
+      
       if (response.briefFeedback) {
         setFeedback(response.briefFeedback);
       }
@@ -285,7 +388,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     setShowCompletionModal(false);
     resetLLM();
     // Reset checkpoints
-    setCheckpoints(prev => prev.map(cp => ({ ...cp, completed: false })));
+    setCheckpoints(prev => prev.map(cp => ({ ...cp, completed: false, attempts: 0 })));
     toast.success("Gespräch wurde zurückgesetzt");
   };
 
@@ -328,6 +431,16 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             </div>
           </div>
           <div className="flex items-center gap-3">
+            {/* TTS Toggle */}
+            <div className="flex items-center gap-2">
+              <VolumeX className="h-4 w-4 text-medical-600" />
+              <Switch
+                checked={isTTSEnabled}
+                onCheckedChange={setIsTTSEnabled}
+                className="data-[state=checked]:bg-medical-600"
+              />
+              <Volume2 className="h-4 w-4 text-medical-600" />
+            </div>
             <Button
               variant="outline"
               size="sm"
@@ -355,15 +468,24 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         <div className="flex-1 flex flex-col">
           <Card className="flex-1 flex flex-col min-h-0">
             <div className="p-4 border-b border-medical-200 flex-shrink-0">
-              <div className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4 text-medical-600" />
-                <h3 className="font-medium text-medical-800">Gespräch</h3>
-                {isConversationComplete && (
-                  <Badge variant="outline" className="border-green-500 text-green-700">
-                    <CheckCircle className="h-3 w-3 mr-1" />
-                    Abgeschlossen
-                  </Badge>
-                )}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="h-4 w-4 text-medical-600" />
+                  <h3 className="font-medium text-medical-800">Gespräch</h3>
+                  {isConversationComplete && (
+                    <Badge variant="outline" className="border-green-500 text-green-700">
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      Abgeschlossen
+                    </Badge>
+                  )}
+                </div>
+                {/* Patient Info */}
+                <div className="flex items-center gap-2 text-sm text-medical-600">
+                  <User className="h-4 w-4" />
+                  <span className="font-medium">{patientProfile.name}</span>
+                  <span>•</span>
+                  <span>{patientProfile.age} Jahre</span>
+                </div>
               </div>
             </div>
             
@@ -372,7 +494,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 {conversation.length === 0 && (
                   <div className="text-center text-medical-500 py-8">
                     <MessageCircle className="h-8 w-8 mx-auto mb-2" />
-                    <p>Beginnen Sie das Gespräch...</p>
+                    <p>Beginnen Sie das Gespräch mit {patientProfile.name}...</p>
                   </div>
                 )}
                 {conversation.map((line, index) => (
@@ -395,9 +517,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                         <span className="text-xs opacity-70">
                           {line.speaker === 'user' 
                             ? 'Sie' 
-                            : scenario.category === 'teamwork' 
-                              ? 'Kollegin' 
-                              : 'Patient'
+                            : patientProfile.name
                           }
                         </span>
                       </div>
@@ -416,8 +536,55 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     </div>
                   </div>
                 )}
+                {isSpeaking && (
+                  <div className="flex justify-start">
+                    <div className="bg-blue-50 border border-blue-200 text-blue-800 p-2 rounded-lg text-xs flex items-center gap-2">
+                      <Volume2 className="h-3 w-3" />
+                      <span>Sprachausgabe aktiv...</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={stop}
+                        className="h-6 w-6 p-0"
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             </ScrollArea>
+
+            {/* Suggestion Display */}
+            {showSuggestion && (
+              <div className="p-4 bg-amber-50 border-t border-amber-200">
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="h-5 w-5 text-amber-600 mt-0.5" />
+                  <div className="flex-1">
+                    <h4 className="font-medium text-amber-800 mb-1">Hilfestellung</h4>
+                    <p className="text-sm text-amber-700 mb-3">{suggestionMessage}</p>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={handleUseSuggestion}
+                        className="border-amber-300 text-amber-700 hover:bg-amber-100"
+                      >
+                        Vorschlag verwenden
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setShowSuggestion(false)}
+                        className="text-amber-600"
+                      >
+                        Selbst versuchen
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Input Area */}
             <div className="p-4 border-t border-medical-200 flex-shrink-0">
