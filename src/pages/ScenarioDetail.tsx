@@ -63,6 +63,19 @@ const ScenarioDetail = () => {
     navigate(-1);
   };
 
+  // For scenarios, we want full-screen experience
+  if (!loading && scenario) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-medical-50 to-white">
+        <ScenarioContent 
+          scenario={scenario} 
+          loading={loading} 
+        />
+      </div>
+    );
+  }
+
+  // Loading and error states still use the regular layout
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
       {isMobile ? <MobileHeader /> : <AppHeader />}
