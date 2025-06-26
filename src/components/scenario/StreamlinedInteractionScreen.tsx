@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Scenario, DialogueLine } from "@/data/scenarios";
 import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
@@ -11,7 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, Send, RotateCcw, MessageCircle, CheckCircle, X, Volume2, VolumeX, User, Lightbulb, Heart, MapPin, Briefcase } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ArrowLeft, Send, RotateCcw, MessageCircle, CheckCircle, X, Volume2, VolumeX, User, Lightbulb, Heart, Calendar, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CheckpointTracker from "./CheckpointTracker";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
@@ -45,10 +45,12 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [currentCheckpointIndex, setCurrentCheckpointIndex] = useState(0);
   const [suggestionMessage, setSuggestionMessage] = useState("");
   const [showSuggestion, setShowSuggestion] = useState(false);
+  const [suggestionOptions, setSuggestionOptions] = useState<string[]>([]);
   const [isTTSEnabled, setIsTTSEnabled] = useState(true);
   const [conversationBlocked, setConversationBlocked] = useState(false);
 
-  const patientProfile = createPatientProfile(scenario.category, scenario);
+  // Create consistent patient profile that won't change during the interaction
+  const [patientProfile] = useState(() => createPatientProfile(scenario.category, scenario));
 
   const { speak, isSpeaking, stop } = useTextToSpeech({
     voice: 'Sarah',
@@ -66,16 +68,16 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     scenarioType: scenario.category as any || 'patient-care',
     scenarioDescription: scenario.description || '',
     difficultyLevel: 'intermediate',
-    patientContext: createPatientProfile(scenario.category, scenario),
+    patientContext: patientProfile, // Use the consistent patient profile
     userLanguage: 'en',
     onError: (error) => {
       console.error("LLM Error:", error);
       toast.error("Ein Fehler ist beim Generieren der Antwort aufgetreten.");
-      setConversationBlocked(false); // Unblock on error
+      setConversationBlocked(false);
     },
     onConversationComplete: () => {
       toast.success("Gespräch erfolgreich abgeschlossen!");
-      setConversationBlocked(false); // Ensure unblocked on completion
+      setConversationBlocked(false);
     }
   });
 
@@ -302,7 +304,9 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       
       // If checkpoint wasn't completed and we've reached 2 attempts, show suggestion
       if (!checkpointCompleted && updated[currentIndex].attempts >= 2) {
-        setSuggestionMessage(getSuggestionForCheckpoint(scenario.id, currentIndex));
+        const suggestions = getSuggestionsForCheckpoint(scenario.id, currentIndex);
+        setSuggestionMessage(`Hier sind einige Vorschläge, um das Lernziel zu erreichen:`);
+        setSuggestionOptions(suggestions);
         setShowSuggestion(true);
         // Reset attempts to give user another chance after suggestion
         updated[currentIndex].attempts = 0;
@@ -312,29 +316,36 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     });
   };
 
-  const getSuggestionForCheckpoint = (scenarioId: string, checkpointIndex: number): string => {
+  const getSuggestionsForCheckpoint = (scenarioId: string, checkpointIndex: number): string[] => {
     const suggestions = {
       'admission': [
-        'Versuchen Sie eine freundliche Begrüßung: "Guten Tag, mein Name ist... Ich bin Ihre Pflegekraft heute."',
-        'Fragen Sie nach persönlichen Daten: "Können Sie mir bitte Ihren vollständigen Namen und Ihr Geburtsdatum nennen?"',
-        'Erheben Sie die Anamnese: "Können Sie mir von Ihren aktuellen Beschwerden erzählen? Nehmen Sie regelmäßig Medikamente?"',
-        'Erklären Sie die Abläufe: "Lassen Sie mich Ihnen kurz erklären, wie der Tagesablauf hier auf der Station ist."',
-        'Beruhigen Sie den Patienten: "Haben Sie noch Fragen? Ich verstehe, dass die neue Situation beunruhigend sein kann."'
+        ['Guten Tag, mein Name ist [Ihr Name]. Ich bin Ihre Pflegekraft heute.', 'Hallo! Schön, Sie kennenzulernen. Wie kann ich Ihnen helfen?'],
+        ['Können Sie mir bitte Ihren vollständigen Namen und Ihr Geburtsdatum nennen?', 'Für unsere Unterlagen benötige ich Ihre persönlichen Daten.'],
+        ['Erzählen Sie mir von Ihren aktuellen Beschwerden. Nehmen Sie regelmäßig Medikamente?', 'Haben Sie Allergien oder Vorerkrankungen, die ich wissen sollte?'],
+        ['Lassen Sie mich Ihnen kurz erklären, wie der Tagesablauf hier auf der Station ist.', 'Die Besuchszeiten sind von 14-18 Uhr. Haben Sie Familie, die Sie besuchen wird?'],
+        ['Haben Sie noch Fragen? Ich verstehe, dass die neue Situation beunruhigend sein kann.', 'Sie können mich jederzeit rufen, wenn Sie Hilfe brauchen.']
       ],
       'handover': [
-        'Bestätigen Sie die Patientenidentität: "Ich übergebe Ihnen Herrn/Frau [Name], Zimmer [Nummer]."',
-        'Beschreiben Sie die Situation mit SBAR: "Situation: Der Patient ist wegen... Background: Relevante Vorgeschichte..."',
-        'Kommunizieren Sie Medikation: "Aktuelle Medikation: [Medikament], [Dosierung], letzte Gabe um [Zeit]."',
-        'Erwähnen Sie Besonderheiten: "Besondere Vorkommnisse: [Ereignis] um [Zeit]."',
-        'Beantworten Sie Rückfragen: "Gibt es noch Fragen zur Übergabe?"'
+        ['Ich übergebe Ihnen Frau/Herrn [Name], Zimmer [Nummer].', 'Hier ist die Übergabe für unseren Patienten.'],
+        ['Situation: Der Patient ist wegen [Diagnose] hier. Background: Relevante Vorgeschichte...', 'Der aktuelle Zustand ist stabil, aber es gibt folgende Punkte zu beachten...'],
+        ['Aktuelle Medikation: [Medikament], [Dosierung], letzte Gabe um [Zeit].', 'Heute wurden folgende Medikamente verabreicht...'],
+        ['Besondere Vorkommnisse: [Ereignis] um [Zeit].', 'In der letzten Schicht gab es folgende Auffälligkeiten...'],
+        ['Gibt es noch Fragen zur Übergabe?', 'Ist alles klar soweit? Brauchen Sie noch weitere Informationen?']
+      ],
+      'dementia-care': [
+        ['Guten Tag, [Name]. Ich bin hier, um Ihnen zu helfen.', 'Hallo! Wie geht es Ihnen heute?'],
+        ['Verstehen Sie mich gut? Ich spreche langsam und deutlich.', 'Können Sie mir folgen? Wir gehen Schritt für Schritt vor.'],
+        ['Ich verstehe, dass das verwirrend sein kann. Lassen Sie sich Zeit.', 'Sie machen das gut. Keine Eile.'],
+        ['Fühlen Sie sich sicher hier? Ich bleibe bei Ihnen.', 'Brauchen Sie etwas, um sich wohler zu fühlen?'],
+        ['Sie sind eine wertvolle Person. Ihre Gefühle sind wichtig.', 'Ich respektiere Ihre Entscheidungen. Was möchten Sie?']
       ]
     };
     
-    return suggestions[scenarioId]?.[checkpointIndex] || 'Versuchen Sie es mit einer anderen Formulierung.';
+    return suggestions[scenarioId]?.[checkpointIndex] || ['Versuchen Sie es mit einer anderen Formulierung.', 'Seien Sie direkter in Ihrer Kommunikation.'];
   };
 
-  const handleUseSuggestion = () => {
-    setCurrentMessage(suggestionMessage.split('"')[1] || suggestionMessage);
+  const handleUseSuggestion = (suggestion: string) => {
+    setCurrentMessage(suggestion);
     setShowSuggestion(false);
   };
 
@@ -363,7 +374,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     if (!currentMessage.trim() || isLLMLoading || conversationBlocked) return;
 
     try {
-      setConversationBlocked(true); // Block during processing
+      setConversationBlocked(true);
       
       const userMessage: DialogueLine = {
         speaker: 'user',
@@ -395,12 +406,12 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       // Update checkpoints based on the conversation
       updateCheckpoints(currentMessage, response.patientReply);
       
-      setConversationBlocked(false); // Unblock after successful processing
+      setConversationBlocked(false);
 
     } catch (error) {
       console.error("Error sending message:", error);
       toast.error("Fehler beim Senden der Nachricht");
-      setConversationBlocked(false); // Unblock on error
+      setConversationBlocked(false);
     }
   };
 
@@ -503,32 +514,26 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     </Badge>
                   )}
                 </div>
-                {/* Enhanced Patient Info */}
-                <div className="flex items-center gap-3 bg-medical-50 rounded-lg px-3 py-2">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                    {patientProfile.name.split(' ').map(n => n[0]).join('')}
-                  </div>
+                {/* Enhanced Patient Info with Avatar */}
+                <div className="flex items-center gap-3 bg-medical-50 rounded-lg px-4 py-3">
+                  <Avatar className="w-12 h-12">
+                    <AvatarImage src="" alt={patientProfile.name} />
+                    <AvatarFallback className={`bg-gradient-to-br ${patientProfile.avatar_color} text-white font-semibold`}>
+                      {patientProfile.name.split(' ').map(n => n[0]).join('')}
+                    </AvatarFallback>
+                  </Avatar>
                   <div className="text-sm">
                     <div className="font-medium text-medical-800">{patientProfile.name}</div>
-                    <div className="flex items-center gap-2 text-medical-600 text-xs">
-                      <span>{patientProfile.age} Jahre</span>
+                    <div className="flex items-center gap-3 text-medical-600 text-xs mt-1">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {patientProfile.age} Jahre
+                      </span>
                       {patientProfile.condition && (
-                        <>
-                          <span>•</span>
-                          <span className="flex items-center gap-1">
-                            <Heart className="h-3 w-3" />
-                            {patientProfile.condition}
-                          </span>
-                        </>
-                      )}
-                      {patientProfile.room && (
-                        <>
-                          <span>•</span>
-                          <span className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3" />
-                            Zimmer {patientProfile.room}
-                          </span>
-                        </>
+                        <span className="flex items-center gap-1">
+                          <Activity className="h-3 w-3" />
+                          {patientProfile.condition}
+                        </span>
                       )}
                     </div>
                   </div>
@@ -554,7 +559,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                   >
                     <div
                       className={cn(
-                        "max-w-[80%] p-4 rounded-lg text-base leading-relaxed", // Increased text size and padding
+                        "max-w-[80%] p-4 rounded-lg text-base leading-relaxed",
                         line.speaker === 'user'
                           ? "bg-medical-600 text-white"
                           : "bg-white border border-medical-200 text-medical-800 shadow-sm"
@@ -602,7 +607,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
               </div>
             </ScrollArea>
 
-            {/* Suggestion Display */}
+            {/* Enhanced Suggestion Display */}
             {showSuggestion && (
               <div className="p-4 bg-amber-50 border-t border-amber-200">
                 <div className="flex items-start gap-3">
@@ -610,20 +615,23 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                   <div className="flex-1">
                     <h4 className="font-medium text-amber-800 mb-1">Hilfestellung</h4>
                     <p className="text-sm text-amber-700 mb-3">{suggestionMessage}</p>
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={handleUseSuggestion}
-                        className="border-amber-300 text-amber-700 hover:bg-amber-100"
-                      >
-                        Vorschlag verwenden
-                      </Button>
+                    <div className="grid gap-2">
+                      {suggestionOptions.map((option, index) => (
+                        <Button
+                          key={index}
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleUseSuggestion(option)}
+                          className="border-amber-300 text-amber-700 hover:bg-amber-100 text-left justify-start h-auto p-3 whitespace-normal"
+                        >
+                          {option}
+                        </Button>
+                      ))}
                       <Button
                         size="sm"
                         variant="ghost"
                         onClick={() => setShowSuggestion(false)}
-                        className="text-amber-600"
+                        className="text-amber-600 mt-2"
                       >
                         Selbst versuchen
                       </Button>
@@ -640,7 +648,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                   value={currentMessage}
                   onChange={(e) => setCurrentMessage(e.target.value)}
                   placeholder="Ihre Antwort eingeben..."
-                  className="flex-1 min-h-[40px] max-h-[120px] resize-none text-base" // Increased text size
+                  className="flex-1 min-h-[40px] max-h-[120px] resize-none text-base"
                   disabled={isLLMLoading || conversationBlocked}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
