@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { Scenario, DialogueLine } from "@/data/scenarios";
 import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
@@ -17,7 +18,6 @@ import { cn } from "@/lib/utils";
 import CheckpointTracker from "./CheckpointTracker";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
 import { PerformanceInsightsModal } from "./PerformanceInsightsModal";
-import GuidanceModal from "./GuidanceModal";
 
 interface Checkpoint {
   id: string;
@@ -50,10 +50,12 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [suggestionOptions, setSuggestionOptions] = useState<string[]>([]);
   const [isTTSEnabled, setIsTTSEnabled] = useState(true);
   const [conversationBlocked, setConversationBlocked] = useState(false);
-  const [showGuidanceModal, setShowGuidanceModal] = useState(false);
+  const [showGuidanceNotification, setShowGuidanceNotification] = useState(false);
+  const [guidanceText, setGuidanceText] = useState("");
   const [isRecording, setIsRecording] = useState(false);
-  const [fontSize, setFontSize] = useState(18); // Default font size
+  const [fontSize, setFontSize] = useState(18);
   const [waitingForCheckpointCompletion, setWaitingForCheckpointCompletion] = useState(false);
+  const [languageFeedback, setLanguageFeedback] = useState<string>("");
   
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -123,7 +125,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         scrollContainer.scrollTop = scrollContainer.scrollHeight;
       }
     }
-  }, [conversation]);
+  }, [conversation, showGuidanceNotification, showSuggestion]);
 
   // Initialize checkpoints based on scenario
   useEffect(() => {
@@ -175,8 +177,79 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     setCheckpoints(getCheckpointsForScenario());
   }, [scenario.id]);
 
+  // Generate language feedback based on user input
+  const generateLanguageFeedback = (userMessage: string): string => {
+    const feedback: string[] = [];
+    
+    // Check capitalization of nouns (basic check for German)
+    const germanNouns = ['Patient', 'Krankenhaus', 'Medikament', 'Arzt', 'Schwester', 'Behandlung', 'Therapie', 'Diagnose'];
+    germanNouns.forEach(noun => {
+      const lowerNoun = noun.toLowerCase();
+      if (userMessage.includes(lowerNoun) && !userMessage.includes(noun)) {
+        feedback.push(`Substantive werden großgeschrieben: "${lowerNoun}" → "${noun}"`);
+      }
+    });
+    
+    // Check formal address
+    if (userMessage.includes('du') || userMessage.includes('dich') || userMessage.includes('dir')) {
+      feedback.push('Verwenden Sie die höfliche Anrede "Sie" statt "du"');
+    }
+    
+    // Check sentence structure
+    if (userMessage.split('.').length === 1 && userMessage.length > 50) {
+      feedback.push('Verwenden Sie kürzere Sätze für bessere Verständlichkeit');
+    }
+    
+    // Check punctuation
+    if (userMessage && !userMessage.trim().endsWith('.') && !userMessage.trim().endsWith('?') && !userMessage.trim().endsWith('!')) {
+      feedback.push('Vergessen Sie nicht die Interpunktion am Satzende');
+    }
+    
+    // Check for professional language
+    if (userMessage.includes('ähm') || userMessage.includes('äh')) {
+      feedback.push('Vermeiden Sie Füllwörter in der professionellen Kommunikation');
+    }
+    
+    return feedback.length > 0 ? feedback.join('. ') : 'Gute Sprachverwendung!';
+  };
+
+  const getGuidanceText = (scenarioId: string, checkpointIndex: number): string => {
+    const guidanceMap = {
+      'admission': [
+        'Focus on making a professional first impression. Introduce yourself with your name and role. Use a warm, friendly greeting and show that you are there for the patient.',
+        'Now you need to systematically collect patient data. Ask specifically for full name, date of birth, and important contact details. Be structured and friendly.',
+        'The medical history is crucial for further treatment. Ask about current complaints, previous illnesses, medications, and allergies. Listen actively and ask follow-up questions.',
+        'Patients need orientation in the hospital. Explain the most important procedures, visiting hours, and how they can call for help. Be patient and understandable.',
+        'Show empathy and understanding. Address concerns, reassure, and ensure your support. An open ear is often the most important thing.'
+      ],
+      'handover': [
+        'Start with clear patient identification. State the full name, age, and room number. This prevents mix-ups.',
+        'Use the proven SBAR method: Situation (what\'s happening?), Background (history), Assessment (evaluation), Recommendation (recommendation). This structures the handover professionally.',
+        'All medications must be communicated precisely. State name, dosage, and time of last administration. This is essential for patient safety.',
+        'Special events can be important for the next shift. Report on abnormalities, patient reactions, or special incidents.',
+        'Ask actively if everything was understood. A good handover is a dialogue, not a monologue. Clarify uncertainties immediately.'
+      ],
+      'medication': [
+        'Patient identification is the first step of any medication administration. Check name and date of birth - never just the name alone. This prevents dangerous mix-ups.',
+        'Explain to the patient what they are receiving and why. Patients have the right to know which medications they receive. This creates trust and safety.',
+        'Allergies can be life-threatening. Always ask about known intolerances before giving medication. Document the response.',
+        'Inform about effects and possible side effects. The patient should know what to expect and what to watch out for.',
+        'Monitor intake and document it correctly. Documentation is legally important and essential for further treatment.'
+      ],
+      'dementia-care': [
+        'Patients with dementia need special attention. Approach slowly, speak calmly, and use their name. Create a trusting atmosphere.',
+        'Your language must be simple and clear. Avoid complicated sentences, speak slowly and clearly. Repeat important information patiently.',
+        'Patience and empathy are especially important here. Don\'t become impatient with repetitions or confusion. Show understanding for the patient\'s situation.',
+        'Ensure a safe, calming environment. Remove hazards, ensure good lighting, and a quiet atmosphere.',
+        'Respect the patient\'s dignity. People with dementia also have feelings and needs. Treat them with the same appreciation as any other patient.'
+      ]
+    };
+    
+    return guidanceMap[scenarioId]?.[checkpointIndex] || 'Focus on empathetic and professional communication. Think about what is most important for the patient in this situation.';
+  };
+
   // Enhanced function to intelligently check and update checkpoints
-  const updateCheckpoints = (userMessage: string, shouldProceedToAI: boolean = false) => {
+  const updateCheckpoints = (userMessage: string): boolean => {
     setCheckpoints(prev => {
       const updated = [...prev];
       const message = userMessage.toLowerCase();
@@ -347,22 +420,27 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       }
       
       // Handle failed attempts with different responses
-      if (!checkpointCompleted && !shouldProceedToAI) {
+      if (!checkpointCompleted) {
         if (updated[currentIndex].attempts === 1) {
-          // After first failed attempt: Show guidance modal and block AI response
-          setShowGuidanceModal(true);
+          // After first failed attempt: Show guidance notification
+          setGuidanceText(getGuidanceText(scenario.id, currentIndex));
+          setShowGuidanceNotification(true);
           setWaitingForCheckpointCompletion(true);
+          return updated; // Block AI response
         } else if (updated[currentIndex].attempts >= 2) {
-          // After second failed attempt: Show specific suggestions and block AI response  
+          // After second failed attempt: Show specific suggestions and auto-complete after use
           const suggestions = getConcreteCheckpointSuggestions(scenario.id, currentIndex);
-          setSuggestionMessage(`Verwenden Sie eine dieser konkreten Formulierungen:`);
+          setSuggestionMessage(`Use one of these concrete formulations:`);
           setSuggestionOptions(suggestions);
           setShowSuggestion(true);
           setWaitingForCheckpointCompletion(true);
+          return updated; // Block AI response
         }
-      } else if (checkpointCompleted || shouldProceedToAI) {
-        // Allow AI to respond when checkpoint is completed or explicitly requested
+      } else {
+        // Checkpoint completed - allow AI to respond
         setWaitingForCheckpointCompletion(false);
+        setShowGuidanceNotification(false);
+        setShowSuggestion(false);
       }
       
       return updated;
@@ -465,6 +543,17 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const handleUseSuggestion = (suggestion: string) => {
     setCurrentMessage(suggestion);
     setShowSuggestion(false);
+    
+    // Auto-complete the current checkpoint when suggestion is used
+    setCheckpoints(prev => {
+      const updated = [...prev];
+      const currentIndex = updated.findIndex(cp => !cp.completed);
+      if (currentIndex !== -1) {
+        updated[currentIndex].completed = true;
+      }
+      return updated;
+    });
+    
     setWaitingForCheckpointCompletion(false);
   };
 
@@ -520,13 +609,17 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       const updatedConversation = [...conversation, userMessage];
       setConversation(updatedConversation);
       
+      // Generate language feedback
+      const langFeedback = generateLanguageFeedback(currentMessage.trim());
+      setLanguageFeedback(langFeedback);
+      
       // Check if checkpoint is completed and whether to proceed to AI
       const shouldProceedToAI = updateCheckpoints(currentMessage.trim());
       
       setCurrentMessage("");
 
       // Only generate AI response if checkpoint allows it
-      if (shouldProceedToAI && !waitingForCheckpointCompletion) {
+      if (shouldProceedToAI) {
         const response = await generateUnifiedResponse(currentMessage, conversation);
 
         const aiMessage: DialogueLine = {
@@ -585,9 +678,10 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     setConversation([]);
     setCurrentMessage("");
     setFeedback("");
+    setLanguageFeedback("");
     setShowCompletionModal(false);
     setConversationBlocked(false);
-    setShowGuidanceModal(false);
+    setShowGuidanceNotification(false);
     setShowSuggestion(false);
     resetLLM();
     // Reset checkpoints
@@ -775,6 +869,30 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     </div>
                   </div>
                 ))}
+                
+                {/* Unobtrusive Guidance Notification */}
+                {showGuidanceNotification && (
+                  <div className="flex justify-center">
+                    <div className="bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-lg max-w-[80%] shadow-sm">
+                      <div className="flex items-start gap-2">
+                        <Lightbulb className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm font-medium mb-1">Guidance</p>
+                          <p className="text-xs">{guidanceText}</p>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setShowGuidanceNotification(false)}
+                            className="mt-2 h-6 text-xs text-blue-700 hover:text-blue-800"
+                          >
+                            Got it
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
                 {isLLMLoading && (
                   <div className="flex justify-start">
                     <div className="bg-white border border-medical-200 text-medical-800 p-4 rounded-lg shadow-sm">
@@ -811,7 +929,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 <div className="flex items-start gap-3">
                   <Lightbulb className="h-5 w-5 text-amber-600 mt-0.5" />
                   <div className="flex-1">
-                    <h4 className="font-medium text-amber-800 mb-1">Konkrete Lösungsvorschläge</h4>
+                    <h4 className="font-medium text-amber-800 mb-1">Concrete Solution Suggestions</h4>
                     <p className="text-sm text-amber-700 mb-3">{suggestionMessage}</p>
                     <div className="grid gap-2">
                       {suggestionOptions.map((option, index) => (
@@ -825,17 +943,6 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                           {option}
                         </Button>
                       ))}
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => {
-                          setShowSuggestion(false);
-                          setWaitingForCheckpointCompletion(false);
-                        }}
-                        className="text-amber-600 mt-2"
-                      >
-                        Selbst versuchen
-                      </Button>
                     </div>
                   </div>
                 </div>
@@ -903,10 +1010,33 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           {/* Checkpoint Tracker */}
           <CheckpointTracker checkpoints={checkpoints} />
           
-          {/* Feedback */}
+          {/* Enhanced Language Feedback */}
           <Card className="flex-1">
             <div className="p-4 border-b border-medical-200">
-              <h3 className="font-medium text-medical-800">Live-Feedback</h3>
+              <h3 className="font-medium text-medical-800">Language Feedback</h3>
+            </div>
+            <div className="p-4">
+              {languageFeedback ? (
+                <div className={cn(
+                  "border rounded-lg p-3",
+                  languageFeedback.includes('Gute Sprachverwendung') 
+                    ? "bg-green-50 border-green-200 text-green-800"
+                    : "bg-orange-50 border-orange-200 text-orange-800"
+                )}>
+                  <p className="text-sm">{languageFeedback}</p>
+                </div>
+              ) : (
+                <p className="text-sm text-medical-500">
+                  Your language feedback will appear here after your responses.
+                </p>
+              )}
+            </div>
+          </Card>
+          
+          {/* Content Feedback */}
+          <Card>
+            <div className="p-4 border-b border-medical-200">
+              <h3 className="font-medium text-medical-800">Content Feedback</h3>
             </div>
             <div className="p-4">
               {feedback ? (
@@ -915,7 +1045,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 </div>
               ) : (
                 <p className="text-sm text-medical-500">
-                  Ihr Feedback erscheint hier nach Ihren Antworten.
+                  Content feedback will appear here after your responses.
                 </p>
               )}
             </div>
@@ -937,14 +1067,6 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         scenarioType={scenario.category}
         onClose={handleCompletionClose}
         onRestart={handleNextExercise}
-      />
-
-      <GuidanceModal
-        isOpen={showGuidanceModal}
-        onClose={() => setShowGuidanceModal(false)}
-        currentGoal={currentCheckpoint?.description || ''}
-        scenarioId={scenario.id}
-        checkpointIndex={checkpoints.findIndex(cp => !cp.completed)}
       />
     </div>
   );
