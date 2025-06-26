@@ -1,4 +1,3 @@
-
 export interface PatientProfile {
   name?: string;
   age?: number;
@@ -7,6 +6,7 @@ export interface PatientProfile {
   personality?: string;
   medicalHistory?: string;
   communicationStyle?: string;
+  avatar_url?: string;
 }
 
 export interface UnifiedMedicalLLMOptions {

@@ -13,6 +13,7 @@ export interface PatientProfile {
   profession?: string;
   hobbies?: string[];
   avatar_color: string;
+  avatar_url?: string;
   previous_conditions?: string[];
 }
 
