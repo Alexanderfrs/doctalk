@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Scenario, DialogueLine } from "@/data/scenarios";
 import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
 import useTextToSpeech from "@/hooks/useTextToSpeech";
+import useVoiceRecognition from "@/hooks/useVoiceRecognition";
 import { toast } from "sonner";
 import { createPatientProfile } from "@/utils/patientProfiles";
 import { Card } from "@/components/ui/card";
@@ -11,11 +12,12 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Send, RotateCcw, MessageCircle, CheckCircle, X, Volume2, VolumeX, User, Lightbulb, Heart, Calendar, Activity } from "lucide-react";
+import { ArrowLeft, Send, RotateCcw, MessageCircle, CheckCircle, X, Volume2, VolumeX, User, Lightbulb, Heart, Calendar, Activity, Mic, MicOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CheckpointTracker from "./CheckpointTracker";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
 import { PerformanceInsightsModal } from "./PerformanceInsightsModal";
+import GuidanceModal from "./GuidanceModal";
 
 interface Checkpoint {
   id: string;
@@ -48,6 +50,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [suggestionOptions, setSuggestionOptions] = useState<string[]>([]);
   const [isTTSEnabled, setIsTTSEnabled] = useState(true);
   const [conversationBlocked, setConversationBlocked] = useState(false);
+  const [showGuidanceModal, setShowGuidanceModal] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
 
   // Create consistent patient profile that won't change during the interaction
   const [patientProfile] = useState(() => createPatientProfile(scenario.category, scenario));
@@ -56,6 +60,32 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     voice: 'Sarah',
     onError: (error) => {
       console.error("TTS Error:", error);
+      toast.error("Sprachausgabe-Fehler");
+    }
+  });
+
+  const {
+    text: recognizedText,
+    isListening,
+    startListening,
+    stopListening,
+    resetText,
+    hasRecognitionSupport,
+    error: voiceError
+  } = useVoiceRecognition({
+    language: 'de-DE',
+    continuous: false,
+    interimResults: false,
+    onResult: (result, isFinal) => {
+      if (isFinal && result.trim()) {
+        setCurrentMessage(prev => prev + ' ' + result.trim());
+        resetText();
+      }
+    },
+    onError: (error) => {
+      console.error("Voice recognition error:", error);
+      toast.error("Spracherkennung-Fehler: " + error);
+      setIsRecording(false);
     }
   });
 
@@ -302,14 +332,20 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           break;
       }
       
-      // If checkpoint wasn't completed and we've reached 2 attempts, show suggestion
-      if (!checkpointCompleted && updated[currentIndex].attempts >= 2) {
-        const suggestions = getSuggestionsForCheckpoint(scenario.id, currentIndex);
-        setSuggestionMessage(`Hier sind einige Vorschläge, um das Lernziel zu erreichen:`);
-        setSuggestionOptions(suggestions);
-        setShowSuggestion(true);
-        // Reset attempts to give user another chance after suggestion
-        updated[currentIndex].attempts = 0;
+      // Handle failed attempts with different responses
+      if (!checkpointCompleted) {
+        if (updated[currentIndex].attempts === 1) {
+          // After first failed attempt: Show guidance modal
+          setShowGuidanceModal(true);
+        } else if (updated[currentIndex].attempts === 2) {
+          // After second failed attempt: Show specific suggestions
+          const suggestions = getSuggestionsForCheckpoint(scenario.id, currentIndex);
+          setSuggestionMessage(`Hier sind konkrete Vorschläge für das aktuelle Lernziel:`);
+          setSuggestionOptions(suggestions);
+          setShowSuggestion(true);
+          // Reset attempts to give user another chance after suggestion
+          updated[currentIndex].attempts = 0;
+        }
       }
       
       return updated;
@@ -370,6 +406,23 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     return scenarioSpecificInsights[scenario.id] || 'Herzlichen Glückwunsch! Sie haben alle Lernziele erfolgreich erreicht und gezeigt, dass Sie die Situation professionell meistern können.';
   };
 
+  // Handle voice recording
+  const handleVoiceRecording = async () => {
+    if (isListening) {
+      stopListening();
+      setIsRecording(false);
+    } else {
+      try {
+        setIsRecording(true);
+        await startListening();
+      } catch (error) {
+        console.error("Error starting voice recording:", error);
+        setIsRecording(false);
+        toast.error("Spracherkennung konnte nicht gestartet werden");
+      }
+    }
+  };
+
   const handleSendMessage = async () => {
     if (!currentMessage.trim() || isLLMLoading || conversationBlocked) return;
 
@@ -394,9 +447,26 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
       setConversation(prev => [...prev, aiMessage]);
       
-      // Text-to-speech for patient responses
+      // Enhanced TTS with better error handling and retry
       if (isTTSEnabled && response.patientReply) {
-        speak(response.patientReply);
+        try {
+          // Stop any current speech first
+          stop();
+          // Small delay to ensure clean start
+          setTimeout(() => {
+            speak(response.patientReply);
+          }, 100);
+        } catch (ttsError) {
+          console.error("TTS Error:", ttsError);
+          // Retry once after a delay
+          setTimeout(() => {
+            try {
+              speak(response.patientReply);
+            } catch (retryError) {
+              console.error("TTS Retry failed:", retryError);
+            }
+          }, 500);
+        }
       }
       
       if (response.briefFeedback) {
@@ -421,6 +491,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     setFeedback("");
     setShowCompletionModal(false);
     setConversationBlocked(false);
+    setShowGuidanceModal(false);
+    setShowSuggestion(false);
     resetLLM();
     // Reset checkpoints
     setCheckpoints(prev => prev.map(cp => ({ ...cp, completed: false, attempts: 0 })));
@@ -444,6 +516,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   };
 
   const completedCount = checkpoints.filter(cp => cp.completed).length;
+  const currentCheckpoint = checkpoints.find(cp => !cp.completed);
 
   return (
     <div className="h-screen bg-gradient-to-br from-medical-50 to-white flex flex-col">
@@ -536,6 +609,11 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                         </span>
                       )}
                     </div>
+                    {patientProfile.previous_conditions && patientProfile.previous_conditions.length > 0 && (
+                      <div className="text-xs text-medical-500 mt-1">
+                        Vorerkrankungen: {patientProfile.previous_conditions.join(', ')}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -546,7 +624,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 {conversation.length === 0 && (
                   <div className="text-center text-medical-500 py-8">
                     <MessageCircle className="h-8 w-8 mx-auto mb-2" />
-                    <p className="text-base">Beginnen Sie das Gespräch mit {patientProfile.name}...</p>
+                    <p className="text-lg">Beginnen Sie das Gespräch mit {patientProfile.name}...</p>
                   </div>
                 )}
                 {conversation.map((line, index) => (
@@ -559,7 +637,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                   >
                     <div
                       className={cn(
-                        "max-w-[80%] p-4 rounded-lg text-base leading-relaxed",
+                        "max-w-[80%] p-4 rounded-lg text-lg leading-relaxed",
                         line.speaker === 'user'
                           ? "bg-medical-600 text-white"
                           : "bg-white border border-medical-200 text-medical-800 shadow-sm"
@@ -613,7 +691,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 <div className="flex items-start gap-3">
                   <Lightbulb className="h-5 w-5 text-amber-600 mt-0.5" />
                   <div className="flex-1">
-                    <h4 className="font-medium text-amber-800 mb-1">Hilfestellung</h4>
+                    <h4 className="font-medium text-amber-800 mb-1">Konkrete Lösungsvorschläge</h4>
                     <p className="text-sm text-amber-700 mb-3">{suggestionMessage}</p>
                     <div className="grid gap-2">
                       {suggestionOptions.map((option, index) => (
@@ -641,14 +719,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
               </div>
             )}
 
-            {/* Input Area */}
+            {/* Input Area with Voice Recording */}
             <div className="p-4 border-t border-medical-200 flex-shrink-0">
               <div className="flex gap-2">
                 <Textarea
                   value={currentMessage}
                   onChange={(e) => setCurrentMessage(e.target.value)}
-                  placeholder="Ihre Antwort eingeben..."
-                  className="flex-1 min-h-[40px] max-h-[120px] resize-none text-base"
+                  placeholder="Ihre Antwort eingeben oder per Sprache aufnehmen..."
+                  className="flex-1 min-h-[40px] max-h-[120px] resize-none text-lg"
                   disabled={isLLMLoading || conversationBlocked}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -657,14 +735,41 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     }
                   }}
                 />
-                <Button
-                  onClick={handleSendMessage}
-                  disabled={!currentMessage.trim() || isLLMLoading || conversationBlocked}
-                  className="bg-medical-600 hover:bg-medical-700"
-                >
-                  <Send className="h-4 w-4" />
-                </Button>
+                <div className="flex flex-col gap-2">
+                  {hasRecognitionSupport && (
+                    <Button
+                      onClick={handleVoiceRecording}
+                      disabled={isLLMLoading || conversationBlocked}
+                      variant={isListening ? "destructive" : "outline"}
+                      size="sm"
+                      className={cn(
+                        "h-10 w-10 p-0",
+                        isListening && "animate-pulse"
+                      )}
+                    >
+                      {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                    </Button>
+                  )}
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={!currentMessage.trim() || isLLMLoading || conversationBlocked}
+                    className="bg-medical-600 hover:bg-medical-700 h-10 w-10 p-0"
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
+              {isListening && (
+                <div className="mt-2 text-sm text-medical-600 flex items-center gap-2">
+                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                  Höre zu... Sprechen Sie jetzt
+                </div>
+              )}
+              {voiceError && (
+                <div className="mt-2 text-sm text-red-600">
+                  Sprach-Fehler: {voiceError}
+                </div>
+              )}
             </div>
           </Card>
         </div>
@@ -708,6 +813,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         scenarioType={scenario.category}
         onClose={handleCompletionClose}
         onRestart={handleNextExercise}
+      />
+
+      <GuidanceModal
+        isOpen={showGuidanceModal}
+        onClose={() => setShowGuidanceModal(false)}
+        currentGoal={currentCheckpoint?.description || ''}
+        scenarioId={scenario.id}
+        checkpointIndex={checkpoints.findIndex(cp => !cp.completed)}
       />
     </div>
   );
