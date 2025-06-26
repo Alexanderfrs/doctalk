@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Send, RotateCcw, MessageCircle, CheckCircle, X, Volume2, VolumeX, User, Lightbulb, Heart, Calendar, Activity, Mic, MicOff } from "lucide-react";
+import { ArrowLeft, Send, RotateCcw, MessageCircle, CheckCircle, X, Volume2, VolumeX, User, Lightbulb, Heart, Calendar, Activity, Mic, MicOff, Plus, Minus, Type } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CheckpointTracker from "./CheckpointTracker";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
@@ -52,6 +52,10 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [conversationBlocked, setConversationBlocked] = useState(false);
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [fontSize, setFontSize] = useState(18); // Default font size
+  const [waitingForCheckpointCompletion, setWaitingForCheckpointCompletion] = useState(false);
+  
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   // Create consistent patient profile that won't change during the interaction
   const [patientProfile] = useState(() => createPatientProfile(scenario.category, scenario));
@@ -98,7 +102,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     scenarioType: scenario.category as any || 'patient-care',
     scenarioDescription: scenario.description || '',
     difficultyLevel: 'intermediate',
-    patientContext: patientProfile, // Use the consistent patient profile
+    patientContext: patientProfile,
     userLanguage: 'en',
     onError: (error) => {
       console.error("LLM Error:", error);
@@ -110,6 +114,16 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       setConversationBlocked(false);
     }
   });
+
+  // Auto-scroll to bottom when conversation updates
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
+    }
+  }, [conversation]);
 
   // Initialize checkpoints based on scenario
   useEffect(() => {
@@ -162,7 +176,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   }, [scenario.id]);
 
   // Enhanced function to intelligently check and update checkpoints
-  const updateCheckpoints = (userMessage: string, aiResponse: string) => {
+  const updateCheckpoints = (userMessage: string, shouldProceedToAI: boolean = false) => {
     setCheckpoints(prev => {
       const updated = [...prev];
       const message = userMessage.toLowerCase();
@@ -249,7 +263,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           if (!updated[1].completed && (
             message.includes('zustand') || message.includes('situation') || 
             message.includes('background') || message.includes('assessment') ||
-            messageWords.length > 15 && (message.includes('patient') || message.includes('diagnose'))
+            (messageWords.length > 15 && (message.includes('patient') || message.includes('diagnose')))
           )) {
             updated[1].completed = true;
             checkpointCompleted = true;
@@ -333,56 +347,125 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       }
       
       // Handle failed attempts with different responses
-      if (!checkpointCompleted) {
+      if (!checkpointCompleted && !shouldProceedToAI) {
         if (updated[currentIndex].attempts === 1) {
-          // After first failed attempt: Show guidance modal
+          // After first failed attempt: Show guidance modal and block AI response
           setShowGuidanceModal(true);
-        } else if (updated[currentIndex].attempts === 2) {
-          // After second failed attempt: Show specific suggestions
-          const suggestions = getSuggestionsForCheckpoint(scenario.id, currentIndex);
-          setSuggestionMessage(`Hier sind konkrete Vorschläge für das aktuelle Lernziel:`);
+          setWaitingForCheckpointCompletion(true);
+        } else if (updated[currentIndex].attempts >= 2) {
+          // After second failed attempt: Show specific suggestions and block AI response  
+          const suggestions = getConcreteCheckpointSuggestions(scenario.id, currentIndex);
+          setSuggestionMessage(`Verwenden Sie eine dieser konkreten Formulierungen:`);
           setSuggestionOptions(suggestions);
           setShowSuggestion(true);
-          // Reset attempts to give user another chance after suggestion
-          updated[currentIndex].attempts = 0;
+          setWaitingForCheckpointCompletion(true);
         }
+      } else if (checkpointCompleted || shouldProceedToAI) {
+        // Allow AI to respond when checkpoint is completed or explicitly requested
+        setWaitingForCheckpointCompletion(false);
       }
       
       return updated;
     });
+    
+    return !waitingForCheckpointCompletion;
   };
 
-  const getSuggestionsForCheckpoint = (scenarioId: string, checkpointIndex: number): string[] => {
+  const getConcreteCheckpointSuggestions = (scenarioId: string, checkpointIndex: number): string[] => {
     const suggestions = {
       'admission': [
-        ['Guten Tag, mein Name ist [Ihr Name]. Ich bin Ihre Pflegekraft heute.', 'Hallo! Schön, Sie kennenzulernen. Wie kann ich Ihnen helfen?'],
-        ['Können Sie mir bitte Ihren vollständigen Namen und Ihr Geburtsdatum nennen?', 'Für unsere Unterlagen benötige ich Ihre persönlichen Daten.'],
-        ['Erzählen Sie mir von Ihren aktuellen Beschwerden. Nehmen Sie regelmäßig Medikamente?', 'Haben Sie Allergien oder Vorerkrankungen, die ich wissen sollte?'],
-        ['Lassen Sie mich Ihnen kurz erklären, wie der Tagesablauf hier auf der Station ist.', 'Die Besuchszeiten sind von 14-18 Uhr. Haben Sie Familie, die Sie besuchen wird?'],
-        ['Haben Sie noch Fragen? Ich verstehe, dass die neue Situation beunruhigend sein kann.', 'Sie können mich jederzeit rufen, wenn Sie Hilfe brauchen.']
+        [
+          'Guten Tag! Mein Name ist Schwester/Pfleger [Ihr Name]. Ich werde Sie heute betreuen.',
+          'Hallo, schön Sie kennenzulernen. Ich bin [Ihr Name] und arbeite hier als Pflegekraft.',
+          'Willkommen auf unserer Station! Ich bin [Ihr Name] und kümmere mich um Sie.'
+        ],
+        [
+          'Können Sie mir bitte Ihren vollständigen Namen und Ihr Geburtsdatum nennen?',
+          'Für unsere Aufnahme brauche ich noch Ihre persönlichen Daten - wie ist Ihr vollständiger Name?',
+          'Ich muss noch einige Angaben von Ihnen aufnehmen. Wie heißen Sie mit vollem Namen?'
+        ],
+        [
+          'Erzählen Sie mir bitte von Ihren aktuellen Beschwerden. Welche Medikamente nehmen Sie regelmäßig?',
+          'Was für gesundheitliche Probleme haben Sie? Haben Sie bekannte Allergien?',
+          'Können Sie mir Ihre Krankengeschichte kurz erläutern? Welche Vorerkrankungen haben Sie?'
+        ],
+        [
+          'Lassen Sie mich Ihnen erklären, wie der Tagesablauf hier auf der Station ist.',
+          'Ich erkläre Ihnen gerne unsere Stationsregeln und die Besuchszeiten.',
+          'Damit Sie sich orientieren können: Die Besuchszeiten sind von 14 bis 18 Uhr.'
+        ],
+        [
+          'Haben Sie noch Fragen? Ich verstehe, dass eine Krankenhausaufnahme beunruhigend sein kann.',
+          'Falls Sie Sorgen haben, können Sie mich jederzeit ansprechen. Ich bin für Sie da.',
+          'Lassen Sie mich wissen, wenn Sie Hilfe brauchen - klingeln Sie einfach.'
+        ]
       ],
       'handover': [
-        ['Ich übergebe Ihnen Frau/Herrn [Name], Zimmer [Nummer].', 'Hier ist die Übergabe für unseren Patienten.'],
-        ['Situation: Der Patient ist wegen [Diagnose] hier. Background: Relevante Vorgeschichte...', 'Der aktuelle Zustand ist stabil, aber es gibt folgende Punkte zu beachten...'],
-        ['Aktuelle Medikation: [Medikament], [Dosierung], letzte Gabe um [Zeit].', 'Heute wurden folgende Medikamente verabreicht...'],
-        ['Besondere Vorkommnisse: [Ereignis] um [Zeit].', 'In der letzten Schicht gab es folgende Auffälligkeiten...'],
-        ['Gibt es noch Fragen zur Übergabe?', 'Ist alles klar soweit? Brauchen Sie noch weitere Informationen?']
+        [
+          'Ich übergebe Ihnen Frau/Herrn [Patientenname], 58 Jahre, Zimmer 12.',
+          'Hier die Übergabe: Patient [Name], aufgenommen wegen [Diagnose].',
+          'Schichtübergabe für [Patientenname]: 58-jährige Patientin mit [Hauptdiagnose].'
+        ],
+        [
+          'Situation: Patientin ist stabil, aber hat nächtliche Unruhe gezeigt. Background: Bekannte Herzinsuffizienz.',
+          'Assessment: Derzeit schmerzfrei, aber Kreislauf muss überwacht werden. Recommendation: Vitalzeichen alle 4 Stunden.',
+          'SBAR: Situation stabil, Background Diabetes, Assessment zeigt gute Blutzuckerwerte, Recommendation normale Kontrollen.'
+        ],
+        [
+          'Aktuelle Medikation: Ramipril 5mg morgens, Metformin 1000mg zu den Mahlzeiten, letzte Gabe um 8 Uhr.',
+          'Medikamente heute: Blutdrucksenker um 6 Uhr gegeben, Schmerzmittel bei Bedarf verfügbar.',
+          'Therapie: Antibiotikum läuft noch bis morgen, Dosierung wurde nicht geändert.'
+        ],
+        [
+          'Besondere Vorkommnisse: Um 3 Uhr nachts Verwirrtheit, hat sich nach Gespräch beruhigt.',
+          'Auffälligkeiten: Patientin klagt über Übelkeit, Arzt ist informiert.',
+          'Wichtiger Hinweis: Familie kommt heute Nachmittag zu Besuch, Patient freut sich sehr.'
+        ],
+        [
+          'Haben Sie noch Fragen zur Übergabe? Ist alles verständlich?',
+          'Brauchen Sie noch weitere Informationen zu diesem Patienten?',
+          'Gibt es etwas Unklares? Soll ich noch etwas ergänzen?'
+        ]
       ],
       'dementia-care': [
-        ['Guten Tag, [Name]. Ich bin hier, um Ihnen zu helfen.', 'Hallo! Wie geht es Ihnen heute?'],
-        ['Verstehen Sie mich gut? Ich spreche langsam und deutlich.', 'Können Sie mir folgen? Wir gehen Schritt für Schritt vor.'],
-        ['Ich verstehe, dass das verwirrend sein kann. Lassen Sie sich Zeit.', 'Sie machen das gut. Keine Eile.'],
-        ['Fühlen Sie sich sicher hier? Ich bleibe bei Ihnen.', 'Brauchen Sie etwas, um sich wohler zu fühlen?'],
-        ['Sie sind eine wertvolle Person. Ihre Gefühle sind wichtig.', 'Ich respektiere Ihre Entscheidungen. Was möchten Sie?']
+        [
+          'Guten Tag, Frau/Herr [Name]. Ich bin [Ihr Name] und möchte Ihnen helfen.',
+          'Hallo! Schön, Sie zu sehen. Mein Name ist [Name], ich kümmere mich um Sie.',
+          'Guten Morgen! Ich bin hier, um Ihnen zu helfen. Mein Name ist [Name].'
+        ],
+        [
+          'Können Sie mich gut verstehen? Ich spreche extra langsam für Sie.',
+          'Verstehen Sie, was ich sage? Wir machen alles ganz in Ruhe.',
+          'Ich erkläre Ihnen alles Schritt für Schritt. Können Sie mir folgen?'
+        ],
+        [
+          'Das macht nichts, wenn Sie etwas vergessen. Wir haben alle Zeit der Welt.',
+          'Ich verstehe, dass das verwirrend ist. Das ist völlig normal.',
+          'Sie machen das gut. Lassen Sie sich nicht stressen.'
+        ],
+        [
+          'Fühlen Sie sich hier sicher? Ich bleibe bei Ihnen.',
+          'Ist Ihnen warm genug? Brauchen Sie eine Decke?',
+          'Möchten Sie sich hinsetzen? Ich helfe Ihnen dabei.'
+        ],
+        [
+          'Ihre Gefühle sind wichtig. Was beschäftigt Sie gerade?',
+          'Sie sind ein wertvoller Mensch. Was möchten Sie jetzt gerne machen?',
+          'Ihre Meinung zählt. Wie sehen Sie das?'
+        ]
       ]
     };
     
-    return suggestions[scenarioId]?.[checkpointIndex] || ['Versuchen Sie es mit einer anderen Formulierung.', 'Seien Sie direkter in Ihrer Kommunikation.'];
+    return suggestions[scenarioId]?.[checkpointIndex] || [
+      'Versuchen Sie es mit einer direkteren Formulierung.',
+      'Seien Sie konkreter in Ihrer Kommunikation.'
+    ];
   };
 
   const handleUseSuggestion = (suggestion: string) => {
     setCurrentMessage(suggestion);
     setShowSuggestion(false);
+    setWaitingForCheckpointCompletion(false);
   };
 
   // Check if all checkpoints are completed
@@ -436,45 +519,49 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
       const updatedConversation = [...conversation, userMessage];
       setConversation(updatedConversation);
+      
+      // Check if checkpoint is completed and whether to proceed to AI
+      const shouldProceedToAI = updateCheckpoints(currentMessage.trim());
+      
       setCurrentMessage("");
 
-      const response = await generateUnifiedResponse(currentMessage, conversation);
+      // Only generate AI response if checkpoint allows it
+      if (shouldProceedToAI && !waitingForCheckpointCompletion) {
+        const response = await generateUnifiedResponse(currentMessage, conversation);
 
-      const aiMessage: DialogueLine = {
-        speaker: scenario.category === 'teamwork' ? 'colleague' : 'patient',
-        text: response.patientReply
-      };
+        const aiMessage: DialogueLine = {
+          speaker: scenario.category === 'teamwork' ? 'colleague' : 'patient',
+          text: response.patientReply
+        };
 
-      setConversation(prev => [...prev, aiMessage]);
-      
-      // Enhanced TTS with better error handling and retry
-      if (isTTSEnabled && response.patientReply) {
-        try {
-          // Stop any current speech first
-          stop();
-          // Small delay to ensure clean start
-          setTimeout(() => {
-            speak(response.patientReply);
-          }, 100);
-        } catch (ttsError) {
-          console.error("TTS Error:", ttsError);
-          // Retry once after a delay
-          setTimeout(() => {
-            try {
+        setConversation(prev => [...prev, aiMessage]);
+        
+        // Improved TTS with better reliability
+        if (isTTSEnabled && response.patientReply) {
+          try {
+            // Stop any current speech first
+            stop();
+            // Small delay to ensure clean start
+            setTimeout(() => {
               speak(response.patientReply);
-            } catch (retryError) {
-              console.error("TTS Retry failed:", retryError);
-            }
-          }, 500);
+            }, 200);
+          } catch (ttsError) {
+            console.error("TTS Error:", ttsError);
+            // Retry with a longer delay
+            setTimeout(() => {
+              try {
+                speak(response.patientReply);
+              } catch (retryError) {
+                console.error("TTS Retry failed:", retryError);
+              }
+            }, 1000);
+          }
+        }
+        
+        if (response.briefFeedback) {
+          setFeedback(response.briefFeedback);
         }
       }
-      
-      if (response.briefFeedback) {
-        setFeedback(response.briefFeedback);
-      }
-
-      // Update checkpoints based on the conversation
-      updateCheckpoints(currentMessage, response.patientReply);
       
       setConversationBlocked(false);
 
@@ -483,6 +570,15 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       toast.error("Fehler beim Senden der Nachricht");
       setConversationBlocked(false);
     }
+  };
+
+  // Font size controls
+  const increaseFontSize = () => {
+    setFontSize(prev => Math.min(prev + 2, 24));
+  };
+
+  const decreaseFontSize = () => {
+    setFontSize(prev => Math.max(prev - 2, 14));
   };
 
   const handleRestart = () => {
@@ -539,6 +635,29 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             </div>
           </div>
           <div className="flex items-center gap-3">
+            {/* Font Size Controls */}
+            <div className="flex items-center gap-1 bg-medical-50 rounded-lg p-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={decreaseFontSize}
+                className="h-6 w-6 p-0 text-medical-600"
+                disabled={fontSize <= 14}
+              >
+                <Minus className="h-3 w-3" />
+              </Button>
+              <Type className="h-4 w-4 text-medical-600" />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={increaseFontSize}
+                className="h-6 w-6 p-0 text-medical-600"
+                disabled={fontSize >= 24}
+              >
+                <Plus className="h-3 w-3" />
+              </Button>
+            </div>
+            
             {/* TTS Toggle */}
             <div className="flex items-center gap-2">
               <VolumeX className="h-4 w-4 text-medical-600" />
@@ -589,15 +708,15 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 </div>
                 {/* Enhanced Patient Info with Avatar */}
                 <div className="flex items-center gap-3 bg-medical-50 rounded-lg px-4 py-3">
-                  <Avatar className="w-12 h-12">
-                    <AvatarImage src="" alt={patientProfile.name} />
-                    <AvatarFallback className={`bg-gradient-to-br ${patientProfile.avatar_color} text-white font-semibold`}>
+                  <Avatar className="w-16 h-16">
+                    <AvatarImage src={patientProfile.avatar_url} alt={patientProfile.name} />
+                    <AvatarFallback className={`bg-gradient-to-br ${patientProfile.avatar_color} text-white font-semibold text-lg`}>
                       {patientProfile.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
                   <div className="text-sm">
-                    <div className="font-medium text-medical-800">{patientProfile.name}</div>
-                    <div className="flex items-center gap-3 text-medical-600 text-xs mt-1">
+                    <div className="font-medium text-medical-800 text-lg">{patientProfile.name}</div>
+                    <div className="flex items-center gap-3 text-medical-600 text-sm mt-1">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         {patientProfile.age} Jahre
@@ -619,7 +738,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
               </div>
             </div>
             
-            <ScrollArea className="flex-1 p-4">
+            <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
               <div className="space-y-4">
                 {conversation.length === 0 && (
                   <div className="text-center text-medical-500 py-8">
@@ -637,11 +756,12 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                   >
                     <div
                       className={cn(
-                        "max-w-[80%] p-4 rounded-lg text-lg leading-relaxed",
+                        "max-w-[80%] p-4 rounded-lg leading-relaxed",
                         line.speaker === 'user'
                           ? "bg-medical-600 text-white"
                           : "bg-white border border-medical-200 text-medical-800 shadow-sm"
                       )}
+                      style={{ fontSize: `${fontSize}px` }}
                     >
                       <div className="mb-2">
                         <span className="text-sm font-medium opacity-70">
@@ -708,7 +828,10 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                       <Button
                         size="sm"
                         variant="ghost"
-                        onClick={() => setShowSuggestion(false)}
+                        onClick={() => {
+                          setShowSuggestion(false);
+                          setWaitingForCheckpointCompletion(false);
+                        }}
                         className="text-amber-600 mt-2"
                       >
                         Selbst versuchen
@@ -726,7 +849,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                   value={currentMessage}
                   onChange={(e) => setCurrentMessage(e.target.value)}
                   placeholder="Ihre Antwort eingeben oder per Sprache aufnehmen..."
-                  className="flex-1 min-h-[40px] max-h-[120px] resize-none text-lg"
+                  className="flex-1 min-h-[40px] max-h-[120px] resize-none"
+                  style={{ fontSize: `${fontSize}px` }}
                   disabled={isLLMLoading || conversationBlocked}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
