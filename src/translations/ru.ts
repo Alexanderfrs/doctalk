@@ -37,7 +37,7 @@ export const russianTranslations = {
   skipExpensiveCoursesAndGetFluent: 'Избегайте дорогих языковых курсов или частных преподавателей и свободно владейте медицинским немецким с помощью реальных сценариев практики.',
   expertDeveloped: 'Разработано с экспертами',
   joinPioneers: 'Присоединяйтесь к пионерам',
-  getPriorityAccess: 'Получить приоритетный доступ',
+  getPriorityAccess: 'Обеспечьте Ваше Место',
   exploreDemo: 'Скоро: Демо',
   exclusiveAlphaAccess: 'Эксклюзивный альфа доступ',
   limitedSpots: 'Ограниченные места',
@@ -58,7 +58,7 @@ export const russianTranslations = {
   problemHighCostsStat: "€3,000-8,000 за курс",
   
   problemTimeConstraints: "Критические пробелы в общении",
-  problemTimeConstraintsDesc: "Здравоохранение требует мгновенного, точного общения с различными пациентами, коллегами и местными диалектами. Недопонимание в стрессовых ситуациях ставит под угрозу безопасность пациентов и профессиональный успех.",
+  problemTimeConstraintsDesc: "Здравоохранение нуждается в быстром, точном общении с различными пациентами, коллегами и диалектами—недопонимания в стрессовых ситуациях ставят под угрозу безопасность пациентов и результаты.",
   problemTimeConstraintsStat: "Барьеры общения влияют на результаты лечения пациентов",
   
   problemGenericSolutions: "Общие языковые решения",
@@ -74,9 +74,9 @@ export const russianTranslations = {
   theSolution: "Решение",
   revolutionaryApproachToMedicalGerman: "Революционный подход к изучению медицинского немецкого",
   
-  // Updated solutions to match English version
+  // Updated solutions to match new text
   solutionAffordable: "Радикально доступно и гибко",
-  solutionAffordableDesc: "Профессиональное обучение медицинскому немецкому за долю стоимости традиционных языковых школ и частных преподавателей. Учитесь в своем темпе с персонализированными уроками в безопасной среде практики.",
+  solutionAffordableDesc: "Обучение медицинскому немецкому за долю стоимости репетиторов—учитесь в своем темпе с персонализированными уроками в безопасной среде.",
   solutionAffordableHighlight: "Гибко и экономично",
   
   solutionFlexible: "Инновация обучения с акцентом на диалог",
@@ -110,7 +110,7 @@ export const russianTranslations = {
   forCareWorkersDescription: "Основное общение для обеспечения исключительного ухода и быстрой интеграции в вашу немецкую команду.",
   forDoctorsTitle: "Для врачей",
   forDoctorsDescription: "От анамнеза до сложных дискуссий - овладейте общением, которое ускоряет ваше профессиональное признание.",
-  forMedicalStudentsTitle: "Для студентов-медиков",
+  forMedicalStudentsTitle: "For Medical Students",
   forMedicalStudentsDescription: "Постройте прочную языковую основу для решающего преимущества в ваших клинических ротациях и стажировках, а также будущей карьере.",
   comingSoon: "Скоро",
   alphaTester: "Альфа-тестер",
@@ -118,7 +118,7 @@ export const russianTranslations = {
   alphaFeature1: "Полный доступ во время альфа-фазы",
   alphaFeature2: "Прямое влияние на разработку функций",
   alphaFeature3: "Эксклюзивный значок 'Основатель' в вашем профиле",
-  joinAlphaWaitlist: "Присоединиться к альфа-листу ожидания",
+  joinAlphaWaitlist: "Обеспечьте Ваше Место",
   claimAlphaSpot: "Заявить альфа-место",
   alphaAccessLimitedPre: "Альфа доступ ограничен",
   alphaAccessLimitedBold: "50 местами.",

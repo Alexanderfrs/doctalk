@@ -37,7 +37,7 @@ export const spanishTranslations = {
   skipExpensiveCoursesAndGetFluent: 'Evita cursos de idiomas inflexibles, tutores personales costosos y aplicaciones genéricas y comienza a dominar el alemán médico rápidamente con escenarios de práctica del mundo real.',
   expertDeveloped: 'Desarrollado con expertos',
   joinPioneers: 'Únete a los pioneros',
-  getPriorityAccess: 'Obtener acceso prioritario',
+  getPriorityAccess: 'Asegura Tu Lugar',
   exploreDemo: 'Próximamente: Demo',
   exclusiveAlphaAccess: 'Acceso alfa exclusivo',
   limitedSpots: 'Plazas limitadas disponibles',
@@ -58,7 +58,7 @@ export const spanishTranslations = {
   problemHighCostsStat: "€3,000-8,000 por curso",
   
   problemTimeConstraints: "Brechas Críticas de Comunicación",
-  problemTimeConstraintsDesc: "La atención sanitaria exige comunicación instantánea y precisa con diversos pacientes, colegas y dialectos locales. Los malentendidos en situaciones de estrés ponen en peligro la seguridad del paciente y el éxito profesional.",
+  problemTimeConstraintsDesc: "La atención sanitaria necesita comunicación rápida y precisa con diversos pacientes, colegas y dialectos—los malentendidos en situaciones de alto estrés ponen en riesgo la seguridad del paciente y los resultados.",
   problemTimeConstraintsStat: "Las barreras comunicativas afectan los resultados del paciente",
   
   problemGenericSolutions: "Soluciones Genéricas de Idiomas",
@@ -74,9 +74,9 @@ export const spanishTranslations = {
   theSolution: "La Solución",
   revolutionaryApproachToMedicalGerman: "Un Enfoque Revolucionario para Aprender Alemán Médico",
   
-  // Updated solutions to match English version
+  // Updated solutions to match new text
   solutionAffordable: "Radicalmente Asequible y Flexible",
-  solutionAffordableDesc: "Formación profesional en alemán médico a una fracción del costo de las escuelas de idiomas tradicionales y tutores personales. Aprende a tu propio ritmo con lecciones personalizadas y manejables en un entorno de práctica seguro.",
+  solutionAffordableDesc: "Formación en alemán médico a una fracción del costo de los tutores—aprende a tu ritmo con lecciones personalizadas en un entorno seguro.",
   solutionAffordableHighlight: "Flexible y rentable",
   
   solutionFlexible: "Innovación de Aprendizaje Centrado en el Diálogo",
@@ -118,7 +118,7 @@ export const spanishTranslations = {
   alphaFeature1: "Acceso completo durante la fase Alfa",
   alphaFeature2: "Influencia directa en el desarrollo de funciones",
   alphaFeature3: "Insignia exclusiva de 'Fundador' en tu perfil",
-  joinAlphaWaitlist: "Unirse a la lista de espera Alfa",
+  joinAlphaWaitlist: "Asegura Tu Lugar",
   claimAlphaSpot: "Reclamar lugar Alfa",
   alphaAccessLimitedPre: "Acceso Alfa limitado a",
   alphaAccessLimitedBold: "50 plazas.",

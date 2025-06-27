@@ -1,3 +1,4 @@
+
 export const romanianTranslations = {
   // Navigation translations
   whoItsFor: 'Pentru Cine Este',
@@ -12,7 +13,7 @@ export const romanianTranslations = {
   targetAudience: 'Perfect pentru lucrătorii internaționali de îngrijire, medici și studenți la medicină care vor să intre și să exceleze în sistemul de sănătate german și să obțină recunoaștere profesională.',
   expertDeveloped: 'Dezvoltat cu experți',
   joinPioneers: 'Alăturați-vă pionierilor',
-  getPriorityAccess: 'Obține acces prioritar',
+  getPriorityAccess: 'Asigură-ți Locul',
   exploreDemo: 'Explorează Demo',
   exclusiveAlphaAccess: 'Acces alfa exclusiv',
   limitedSpots: 'Locuri limitate',
@@ -60,7 +61,7 @@ export const romanianTranslations = {
   problemHighCostsStat: "€3.000-8.000 per curs",
   
   problemTimeConstraints: "Lacune critice de comunicare",
-  problemTimeConstraintsDesc: "Sistemul de sănătate necesită comunicare instantanee și precisă cu diverși pacienți, colegi și dialecte locale. Neînțelegerile în situații de stres pun în pericol siguranța pacientului și succesul profesional.",
+  problemTimeConstraintsDesc: "Sistemul de sănătate necesită comunicare rapidă și precisă cu pacienți diverși, colegi și dialecte—neînțelegerile în situații de stres ridicat pun în pericol siguranța pacientului și rezultatele.",
   problemTimeConstraintsStat: "Barierele de comunicare afectează rezultatele pacienților",
   
   problemGenericSolutions: "Soluții generice de limbă",
@@ -76,9 +77,9 @@ export const romanianTranslations = {
   theSolution: "Soluția",
   revolutionaryApproachToMedicalGerman: "O Abordare Revoluționară pentru Învățarea Germanei Medicale",
   
-  // Solutions - Updated to match English version
+  // Solutions - Updated to match new text
   solutionAffordable: "Radical accesibil și flexibil",
-  solutionAffordableDesc: "Formare profesională în germana medicală la o fracțiune din costul cursurilor tradiționale și tutorilor privați. Învățați în ritmul vostru cu lecții personalizate într-un mediu de practică sigur.",
+  solutionAffordableDesc: "Formare în germana medicală la o fracțiune din costul tutorilor—învață în ritmul tău cu lecții personalizate într-un mediu sigur.",
   solutionAffordableHighlight: "Flexibil și rentabil",
   
   solutionFlexible: "Inovația învățării cu accent pe dialog",
@@ -128,7 +129,7 @@ export const romanianTranslations = {
   alphaFeature1: "Acces complet în timpul fazei Alfa",
   alphaFeature2: "Influență directă asupra dezvoltării funcționalităților",
   alphaFeature3: "Insignă exclusivă de 'Fondator' pe profilul tău",
-  joinAlphaWaitlist: "Alătură-te listei de așteptare Alfa",
+  joinAlphaWaitlist: "Asigură-ți Locul",
   claimAlphaSpot: "Revendică locul Alfa",
   
   // New text below buttons
