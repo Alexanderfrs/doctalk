@@ -15,11 +15,13 @@ const MobileOnboardingController: React.FC = () => {
   };
 
   const handleSkip = () => {
-    navigate("/onboarding");
+    // Navigate to the same zootools waitlist signup
+    window.open('https://zootoolshq.typeform.com/doctalk?typeform-source=e4c99325-c529-497f-8a5d-2c84f475bf0f.lovableproject.com', '_blank');
   };
 
   const handleStart = () => {
-    navigate("/onboarding");
+    // Navigate to the same zootools waitlist signup
+    window.open('https://zootoolshq.typeform.com/doctalk?typeform-source=e4c99325-c529-497f-8a5d-2c84f475bf0f.lovableproject.com', '_blank');
   };
 
   const handleSwipe = (index: number) => {

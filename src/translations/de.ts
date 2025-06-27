@@ -111,7 +111,9 @@ export const germanTranslations = {
   tellUsAboutBackground: 'Erzählen Sie uns von Ihrem Hintergrund und Zielen',
   selectYourNativeLanguage: 'Wählen Sie Ihre Muttersprache aus',
   customizeYourLearningGoals: 'Passen Sie Ihre Lernziele an',
-  skip: 'Überspringen',
+  skip: "Überspringen",
+  next: "Weiter",
+  start: "Starten",
   
   // Assessment translations
   yourProfile: 'Ihr Profil',
@@ -243,5 +245,27 @@ export const germanTranslations = {
   teamProgressTrackingAnalytics: "Team-Fortschrittsverfolgung und Analysen",
   volumeLicensingFlexibleBilling: "Volumen-Lizenzierung und flexible Abrechnung",
   oralExamSimulations: "Mündliche Prüfungssimulationen",
-  contactUs: "Kontaktieren Sie uns"
+  contactUs: "Kontaktieren Sie uns",
+  
+  // Mobile onboarding translations
+  mobileOnboarding: {
+    screen1: {
+      subtitle: "Meistern Sie medizinisches Deutsch für Ihre Gesundheitskarriere in Deutschland"
+    },
+    screen2: {
+      title: "Den Anerkennungsprozess verstehen",
+      subtitle: "Vollenden Sie Ihren Weg zur Medizinpraxis",
+      description: "Navigieren Sie den komplexen Anerkennungsprozess mit Vertrauen"
+    },
+    screen3: {
+      title: "Medizinisches Lernen leicht gemacht",
+      subtitle: "Meistern Sie medizinische Begriffe & Terminologie",
+      description: "Lernen Sie die Sprache, die auf der Station verwendet wird"
+    },
+    screen4: {
+      title: "Sprache & Rollenspiel",
+      subtitle: "Sprechen und hören Sie echte medizinische Dialoge mit KI",
+      description: "Üben Sie realistische Gespräche"
+    }
+  }
 };

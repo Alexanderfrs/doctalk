@@ -170,5 +170,30 @@ export const spanishTranslations = {
   teamProgressTrackingAnalytics: "Seguimiento del progreso del equipo y análisis",
   volumeLicensingFlexibleBilling: "Licencias por volumen y facturación flexible",
   oralExamSimulations: "Simulaciones de exámenes orales",
-  contactUs: "Contáctanos"
+  contactUs: "Contáctanos",
+  skip: "Saltar",
+  next: "Siguiente",
+  start: "Comenzar",
+
+  // Mobile onboarding translations
+  mobileOnboarding: {
+    screen1: {
+      subtitle: "Domina el Alemán Médico para tu Carrera Sanitaria en Alemania"
+    },
+    screen2: {
+      title: "Entendiendo el Proceso de Reconocimiento",
+      subtitle: "Completa tu Camino para Practicar Medicina",
+      description: "Navega el complejo proceso de reconocimiento con confianza"
+    },
+    screen3: {
+      title: "Aprendizaje Médico Simplificado",
+      subtitle: "Domina el Vocabulario y Terminología Médica",
+      description: "Aprende el lenguaje usado en la sala"
+    },
+    screen4: {
+      title: "Voz y Juego de Roles",
+      subtitle: "Habla y Escucha Diálogos Médicos Reales con IA",
+      description: "Practica Conversaciones del Mundo Real"
+    }
+  }
 };

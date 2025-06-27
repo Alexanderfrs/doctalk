@@ -1,4 +1,3 @@
-
 export const romanianTranslations = {
   // Navigation translations
   whoItsFor: 'Pentru Cine Este',
@@ -174,7 +173,32 @@ export const romanianTranslations = {
   teamProgressTrackingAnalytics: "Urmărirea progresului echipei și analize",
   volumeLicensingFlexibleBilling: "Licențiere în volum și facturare flexibilă",
   oralExamSimulations: "Simulări de examene orale",
-  contactUs: "Contactați-ne"
+  contactUs: "Contactați-ne",
+  skip: "Omite",
+  next: "Următorul",
+  start: "Începe",
+
+  // Mobile onboarding translations
+  mobileOnboarding: {
+    screen1: {
+      subtitle: "Stăpânește germana medicală pentru cariera ta în sănătate în Germania"
+    },
+    screen2: {
+      title: "Înțelegerea procesului de recunoaștere",
+      subtitle: "Completează-ți călătoria pentru a practica medicina",
+      description: "Navighează procesul complex de recunoaștere cu încredere"
+    },
+    screen3: {
+      title: "Învățarea medicală simplificată",
+      subtitle: "Stăpânește vocabularul și terminologia medicală",
+      description: "Învață limbajul folosit în salon"
+    },
+    screen4: {
+      title: "Voce și joc de rol",
+      subtitle: "Vorbește și ascultă dialoguri medicale reale cu IA",
+      description: "Exersează conversații din lumea reală"
+    }
+  }
 };
 
 // Remove Polish translations entirely

@@ -171,5 +171,30 @@ export const englishTranslations = {
   teamProgressTrackingAnalytics: "Team progress tracking and analytics",
   volumeLicensingFlexibleBilling: "Volume licensing and flexible billing",
   oralExamSimulations: "Oral exam simulations",
-  contactUs: "Contact Us"
+  contactUs: "Contact Us",
+  skip: "Skip",
+  next: "Next",
+  start: "Start",
+
+  // Mobile onboarding translations
+  mobileOnboarding: {
+    screen1: {
+      subtitle: "Master Medical German for Your Healthcare Career in Germany"
+    },
+    screen2: {
+      title: "Understanding the Recognition Process",
+      subtitle: "Complete Your Journey to Practice Medicine",
+      description: "Navigate the complex recognition process with confidence"
+    },
+    screen3: {
+      title: "Medical Learning Made Simple",
+      subtitle: "Master Medical Vocabulary & Terminology",
+      description: "Learn the language used on the ward"
+    },
+    screen4: {
+      title: "Voice & Role-playing",
+      subtitle: "Speak and Listen to Real Medical Dialogue with AI",
+      description: "Practice Real-World Conversations"
+    }
+  }
 };

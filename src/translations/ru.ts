@@ -170,5 +170,30 @@ export const russianTranslations = {
   teamProgressTrackingAnalytics: "Отслеживание прогресса команды и аналитика",
   volumeLicensingFlexibleBilling: "Объемное лицензирование и гибкое выставление счетов",
   oralExamSimulations: "Симуляции устных экзаменов",
-  contactUs: "Свяжитесь с нами"
+  contactUs: "Свяжитесь с нами",
+  skip: "Пропустить",
+  next: "Далее",
+  start: "Начать",
+
+  // Mobile onboarding translations
+  mobileOnboarding: {
+    screen1: {
+      subtitle: "Освойте медицинский немецкий для вашей карьеры в здравоохранении в Германии"
+    },
+    screen2: {
+      title: "Понимание процесса признания",
+      subtitle: "Завершите свой путь к медицинской практике",
+      description: "Уверенно пройдите сложный процесс признания"
+    },
+    screen3: {
+      title: "Простое медицинское обучение",
+      subtitle: "Освойте медицинскую лексику и терминологию",
+      description: "Изучите язык, используемый в отделении"
+    },
+    screen4: {
+      title: "Голос и ролевые игры",
+      subtitle: "Говорите и слушайте реальные медицинские диалоги с ИИ",
+      description: "Практикуйте реальные разговоры"
+    }
+  }
 };

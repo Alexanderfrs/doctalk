@@ -40,14 +40,14 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
         return {
           icon: "🏥",
           title: "DocTalk",
-          subtitle: translate("mobileOnboarding.screen1.subtitle") || "The App to Speak, Work, Belong in German.",
+          subtitle: translate("mobileOnboarding.screen1.subtitle") || "Master Medical German for Your Healthcare Career in Germany",
           description: "Swipe to discover more",
           showLogo: true
         };
       case 2:
         return {
           icon: "📋",
-          title: translate("mobileOnboarding.screen2.title") || "Understanding the Recognition Process in Germany",
+          title: translate("mobileOnboarding.screen2.title") || "Understanding the Recognition Process",
           subtitle: translate("mobileOnboarding.screen2.subtitle") || "Complete Your Journey to Practice Medicine",
           description: translate("mobileOnboarding.screen2.description") || "Navigate the complex recognition process with confidence",
           showLogo: false,
@@ -56,9 +56,9 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
       case 3:
         return {
           icon: "📚",
-          title: translate("mobileOnboarding.screen3.title") || "Medical Learning",
+          title: translate("mobileOnboarding.screen3.title") || "Medical Learning Made Simple",
           subtitle: translate("mobileOnboarding.screen3.subtitle") || "Master Medical Vocabulary & Terminology",
-          description: "Learn the language used on the ward",
+          description: translate("mobileOnboarding.screen3.description") || "Learn the language used on the ward",
           showLogo: false,
           showBulletPoints: true
         };
@@ -66,8 +66,8 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
         return {
           icon: "💬",
           title: translate("mobileOnboarding.screen4.title") || "Voice & Role-playing",
-          subtitle: "Speak and Listen to Real Medical Dialogue with AI",
-          description: "Practice Real-World Conversations",
+          subtitle: translate("mobileOnboarding.screen4.subtitle") || "Speak and Listen to Real Medical Dialogue with AI",
+          description: translate("mobileOnboarding.screen4.description") || "Practice Real-World Conversations",
           showLogo: false
         };
       default:
@@ -112,7 +112,7 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
       )}
 
       {/* Main content - centered with proper spacing */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-20 pb-52">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-20">
         <div className="w-full max-w-xs mx-auto text-center space-y-6">
           {/* Icon or Image - only show for non-logo screens */}
           {!content.showLogo && !content.showRecognitionProcess && (
@@ -235,8 +235,8 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
         </div>
       </div>
 
-      {/* Action button - fixed at bottom with proper spacing */}
-      <div className="absolute bottom-20 left-0 right-0 w-full px-6 safe-area-bottom">
+      {/* Action button - fixed at bottom with consistent positioning */}
+      <div className="absolute bottom-8 left-0 right-0 w-full px-6 safe-area-bottom">
         {isLast ? (
           <Button 
             onClick={onStart}
