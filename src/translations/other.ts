@@ -1,23 +1,23 @@
 export const romanianTranslations = {
   // Navigation translations
-  whoItsFor: 'Pentru Cine Este',
+  whoItsFor: 'Pentru Cine',
   whyDocTalk: 'De Ce DocTalk',
-  pricing: 'Prețuri',
+  pricing: 'Preturi',
   
   // Landing page hero section translations
-  limitedAlphaSpots: 'Locuri Alfa Limitate Disponibile',
-  landYourDreamMedicalJob: 'Comunicare încrezătoare',
-  inGermany: 'în sistemul de sănătate german',
-  skipExpensiveCoursesAndGetFluent: 'Evită cursurile de limbă inflexibile, tutorii privați scumpi și aplicațiile generice și începe să stăpânești rapid germana medicală cu scenarii de practică din lumea reală.',
-  targetAudience: 'Perfect pentru lucrătorii internaționali de îngrijire, medici și studenți la medicină care vor să intre și să exceleze în sistemul de sănătate german și să obțină recunoaștere profesională.',
-  expertDeveloped: 'Dezvoltat cu experți',
-  joinPioneers: 'Alăturați-vă pionierilor',
+  limitedAlphaSpots: 'Locuri Alpha Limitate Disponibile',
+  landYourDreamMedicalJob: 'Comunicare Încrezătoare',
+  inGermany: 'în Sistemul de Sănătate German',
+  skipExpensiveCoursesAndGetFluent: 'Sari peste cursurile de limbă inflexibile, tutorii privați scumpi și aplicațiile generice și începe să stăpânești germana medicală rapid cu scenarii de practică din lumea reală.',
+  targetAudience: 'Perfect pentru lucrătorii din domeniul sănătății internaționali, medici și studenții la medicină care doresc să intre și să exceleze în sistemele de sănătate germane și să obțină recunoaștere profesională.',
+  expertDeveloped: 'Dezvoltat de experți',
+  joinPioneers: 'Alătură-te pionierilor',
   getPriorityAccess: 'Asigură-ți Locul',
-  exploreDemo: 'Explorează Demo',
-  exclusiveAlphaAccess: 'Acces alfa exclusiv',
-  limitedSpots: 'Locuri limitate',
-  medicalTeamWorking: 'Echipă medicală lucrând împreună',
-  hospitalScene: 'Scenă spitalicească',
+  exploreDemo: 'În Curând: Demo',
+  exclusiveAlphaAccess: 'Acces alpha exclusiv',
+  limitedSpots: 'locuri limitate disponibile',
+  medicalTeamWorking: 'Echipa medicală lucrând împreună',
+  hospitalScene: 'Scena spitalului',
   medicalEducation: 'Educație medicală',
   
   // Navigation items
@@ -48,28 +48,28 @@ export const romanianTranslations = {
   learnMore: 'Află mai multe',
   
   // Problem-Solution Section
-  realityForInternationalProfessionals: "Realitatea pentru Profesioniștii Internaționali din Sănătate",
-  realityForInternationalProfessionalsDesc: "În ciuda lipsei critice de personal, profesioniștii internaționali din sănătate se confruntă cu bariere semnificative care le limitează succesul în sistemele de sănătate germane.",
+  realityForInternationalProfessionals: "Realitatea pentru Profesioniștii din Sănătate Internaționali",
+  realityForInternationalProfessionalsDesc: "În ciuda deficitului critic de personal, profesioniștii din sănătate internaționali se confruntă cu bariere semnificative care le limitează succesul în sistemele de sănătate germane.",
   
   theProblem: "Problema",
-  challengesFacingHealthcareProfessionals: "Provocările cu care se confruntă profesioniștii din sănătate",
+  challengesFacingHealthcareProfessionals: "Provocări cu Care Se Confruntă Profesioniștii din Sănătate",
   
   // Problems - Updated text
-  problemHighCosts: "Costuri prohibitive pentru formare",
-  problemHighCostsDesc: "Cursurile tradiționale de germană medicală costă €3.000-8.000, făcând formarea de calitate inaccesibilă pentru mulți profesioniști.",
-  problemHighCostsStat: "€3.000-8.000 per curs",
+  problemHighCosts: "Costuri de Formare Prohibitive",
+  problemHighCostsDesc: "Cursurile tradiționale de germană medicală costă €3,000-8,000, punând formarea de calitate în afara accesibilității pentru mulți profesioniști.",
+  problemHighCostsStat: "€3,000-8,000 per curs",
   
-  problemTimeConstraints: "Lacune critice de comunicare",
-  problemTimeConstraintsDesc: "Sistemul de sănătate necesită comunicare rapidă și precisă cu pacienți diverși, colegi și dialecte—neînțelegerile în situații de stres ridicat pun în pericol siguranța pacientului și rezultatele.",
+  problemTimeConstraints: "Lacune de Comunicare Critice",
+  problemTimeConstraintsDesc: "Sistemul de sănătate are nevoie de comunicare rapidă și precisă cu pacienți diverși, colegi și dialecte—neînțelegerile în situații de stres ridicat riscă siguranța pacientului și rezultatele.",
   problemTimeConstraintsStat: "Barierele de comunicare afectează rezultatele pacienților",
   
-  problemGenericSolutions: "Soluții generice de limbă",
-  problemGenericSolutionsDesc: "Aplicațiile generale de limbă nu au context medical, în timp ce tutorii adesea nu înțeleg nevoile specifice de comunicare în sănătate.",
+  problemGenericSolutions: "Soluții de Limbă Generice",
+  problemGenericSolutionsDesc: "Aplicațiile de limbă generale nu au context medical, în timp ce tutorii adesea nu înțeleg nevoile de comunicare specifice asistenței medicale.",
   problemGenericSolutionsStat: "Context medical limitat",
   
-  problemIntegrationChallenges: "Provocări de integrare",
+  problemIntegrationChallenges: "Provocări de Integrare",
   problemIntegrationChallengesDesc: "Normele culturale ale locului de muncă, ierarhiile medicale și procesele birocratice creează bariere suplimentare dincolo de limbă.",
-  problemIntegrationChallengesStat: "Proces complex de integrare",
+  problemIntegrationChallengesStat: "Proces de integrare complex",
   
   introducingDocTalk: "Prezentăm DocTalk",
   
@@ -77,24 +77,24 @@ export const romanianTranslations = {
   revolutionaryApproachToMedicalGerman: "O Abordare Revoluționară pentru Învățarea Germanei Medicale",
   
   // Solutions - Updated to match new text
-  solutionAffordable: "Radical accesibil și flexibil",
-  solutionAffordableDesc: "Formare în germana medicală la o fracțiune din costul tutorilor—învață în ritmul tău cu lecții personalizate într-un mediu sigur.",
+  solutionAffordable: "Radical Accesibil și Flexibil",
+  solutionAffordableDesc: "Formare în germana medicală la o fracțiune din costurile tutorilor—învață în ritmul tău cu lecții personalizate, mici în un mediu sigur.",
   solutionAffordableHighlight: "Flexibil și rentabil",
   
-  solutionFlexible: "Inovația învățării cu accent pe dialog",
-  solutionFlexibleDesc: "Stăpâniți germana prin scenarii de practică realiste proiectate special pentru mediile de sănătate, ducând la stăpânirea limbii mai rapidă decât metodele tradiționale.",
-  solutionFlexibleHighlight: "Pregătire pentru lumea reală",
+  solutionFlexible: "Inovație de Învățare Dialog-First",
+  solutionFlexibleDesc: "Stăpânește germana prin scenarii de practică realiste concepute special pentru mediile de asistență medicală, ducând la stăpânirea limbii mai rapidă decât metodele tradiționale.",
+  solutionFlexibleHighlight: "Antrenament de pregătire pentru lumea reală",
   
-  solutionSpecialized: "Focalizat pe medicină cu pregătire pentru certificare",
-  solutionSpecializedDesc: "Proiectat exclusiv pentru profesioniștii din sănătate de către experți medicali, cu suport pentru pregătirea certificărilor Anerkennung și FSP.",
+  solutionSpecialized: "Focalizat pe Medicină cu Pregătire pentru Certificare",
+  solutionSpecializedDesc: "Conceput exclusiv pentru profesioniștii din sănătate de către experți medicali, cu suport viitor pentru pregătirea certificării Anerkennung și FSP.",
   solutionSpecializedHighlight: "Dezvoltat de experți + pregătire pentru certificare",
   
-  solutionNetworked: "Integrarea rețelei profesionale",
-  solutionNetworkedDesc: "Conexiuni directe cu facilități de sănătate de încredere și informații despre cultura locului de muncă medical german.",
+  solutionNetworked: "Integrarea Rețelei Profesionale",
+  solutionNetworkedDesc: "Conexiuni directe la facilități de asistență medicală de încredere și perspective asupra culturii locului de muncă medical german.",
   solutionNetworkedHighlight: "Rețea de parteneri de încredere",
   
-  readyToTransformYourCareer: "Pregătit să-ți transformi cariera medicală în Germania?",
-  joinThousandsOfProfessionals: "Alătură-te profesioniștilor care se pregătesc deja pentru succesul în sistemul de sănătate german.",
+  readyToTransformYourCareer: "Gata să-ți Transformi Cariera Medicală în Germania?",
+  joinThousandsOfProfessionals: "Alătură-te profesioniștilor care se pregătesc deja pentru succesul în asistența medicală germană.",
   
   // Target Users Section
   tailoredForMedicalCareer: "Adaptat pentru fiecare pas al carierei tale medicale",
@@ -178,27 +178,17 @@ export const romanianTranslations = {
   next: "Următorul",
   start: "Începe",
 
-  // Mobile onboarding translations
-  mobileOnboarding: {
-    screen1: {
-      subtitle: "Stăpânește germana medicală pentru cariera ta în sănătate în Germania"
-    },
-    screen2: {
-      title: "Înțelegerea procesului de recunoaștere",
-      subtitle: "Completează-ți călătoria pentru a practica medicina",
-      description: "Navighează procesul complex de recunoaștere cu încredere"
-    },
-    screen3: {
-      title: "Învățarea medicală simplificată",
-      subtitle: "Stăpânește vocabularul și terminologia medicală",
-      description: "Învață limbajul folosit în salon"
-    },
-    screen4: {
-      title: "Voce și joc de rol",
-      subtitle: "Vorbește și ascultă dialoguri medicale reale cu IA",
-      description: "Exersează conversații din lumea reală"
-    }
-  }
+  // Mobile onboarding translations - flattened
+  'mobileOnboarding.screen1.subtitle': "Stăpânește Germana Medicală pentru Cariera Ta în Sănătate în Germania",
+  'mobileOnboarding.screen2.title': "Înțelegerea Procesului de Recunoaștere",
+  'mobileOnboarding.screen2.subtitle': "Finalizează-ți Călătoria pentru a Practica Medicina",
+  'mobileOnboarding.screen2.description': "Navighează procesul complex de recunoaștere cu încredere",
+  'mobileOnboarding.screen3.title': "Învățarea Medicală Simplificată",
+  'mobileOnboarding.screen3.subtitle': "Stăpânește Vocabularul și Terminologia Medicală",
+  'mobileOnboarding.screen3.description': "Învață limba folosită pe secție",
+  'mobileOnboarding.screen4.title': "Voce și Joc de Roluri",
+  'mobileOnboarding.screen4.subtitle': "Vorbește și Ascultă Dialoguri Medicale Reale cu AI",
+  'mobileOnboarding.screen4.description': "Exersează Conversații din Lumea Reală"
 };
 
 // Remove Polish translations entirely

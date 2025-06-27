@@ -1,3 +1,4 @@
+
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -165,7 +166,6 @@ export const germanTranslations = {
   
   // Navigation and UI
   back: 'Zurück',
-  next: 'Weiter',
   finish: 'Fertigstellen',
   stepOf: 'Schritt {current} von {total}',
   
@@ -247,25 +247,15 @@ export const germanTranslations = {
   oralExamSimulations: "Mündliche Prüfungssimulationen",
   contactUs: "Kontaktieren Sie uns",
   
-  // Mobile onboarding translations
-  mobileOnboarding: {
-    screen1: {
-      subtitle: "Meistern Sie medizinisches Deutsch für Ihre Gesundheitskarriere in Deutschland"
-    },
-    screen2: {
-      title: "Den Anerkennungsprozess verstehen",
-      subtitle: "Vollenden Sie Ihren Weg zur Medizinpraxis",
-      description: "Navigieren Sie den komplexen Anerkennungsprozess mit Vertrauen"
-    },
-    screen3: {
-      title: "Medizinisches Lernen leicht gemacht",
-      subtitle: "Meistern Sie medizinische Begriffe & Terminologie",
-      description: "Lernen Sie die Sprache, die auf der Station verwendet wird"
-    },
-    screen4: {
-      title: "Sprache & Rollenspiel",
-      subtitle: "Sprechen und hören Sie echte medizinische Dialoge mit KI",
-      description: "Üben Sie realistische Gespräche"
-    }
-  }
+  // Mobile onboarding translations - flattened
+  'mobileOnboarding.screen1.subtitle': "Meistern Sie medizinisches Deutsch für Ihre Gesundheitskarriere in Deutschland",
+  'mobileOnboarding.screen2.title': "Den Anerkennungsprozess verstehen",
+  'mobileOnboarding.screen2.subtitle': "Vollenden Sie Ihren Weg zur Medizinpraxis",
+  'mobileOnboarding.screen2.description': "Navigieren Sie den komplexen Anerkennungsprozess mit Vertrauen",
+  'mobileOnboarding.screen3.title': "Medizinisches Lernen leicht gemacht",
+  'mobileOnboarding.screen3.subtitle': "Meistern Sie medizinische Begriffe & Terminologie",
+  'mobileOnboarding.screen3.description': "Lernen Sie die Sprache, die auf der Station verwendet wird",
+  'mobileOnboarding.screen4.title': "Sprache & Rollenspiel",
+  'mobileOnboarding.screen4.subtitle': "Sprechen und hören Sie echte medizinische Dialoge mit KI",
+  'mobileOnboarding.screen4.description': "Üben Sie realistische Gespräche"
 };

@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -176,25 +175,15 @@ export const englishTranslations = {
   next: "Next",
   start: "Start",
 
-  // Mobile onboarding translations
-  mobileOnboarding: {
-    screen1: {
-      subtitle: "Master Medical German for Your Healthcare Career in Germany"
-    },
-    screen2: {
-      title: "Understanding the Recognition Process",
-      subtitle: "Complete Your Journey to Practice Medicine",
-      description: "Navigate the complex recognition process with confidence"
-    },
-    screen3: {
-      title: "Medical Learning Made Simple",
-      subtitle: "Master Medical Vocabulary & Terminology",
-      description: "Learn the language used on the ward"
-    },
-    screen4: {
-      title: "Voice & Role-playing",
-      subtitle: "Speak and Listen to Real Medical Dialogue with AI",
-      description: "Practice Real-World Conversations"
-    }
-  }
+  // Mobile onboarding translations - flattened
+  'mobileOnboarding.screen1.subtitle': "Master Medical German for Your Healthcare Career in Germany",
+  'mobileOnboarding.screen2.title': "Understanding the Recognition Process",
+  'mobileOnboarding.screen2.subtitle': "Complete Your Journey to Practice Medicine",
+  'mobileOnboarding.screen2.description': "Navigate the complex recognition process with confidence",
+  'mobileOnboarding.screen3.title': "Medical Learning Made Simple",
+  'mobileOnboarding.screen3.subtitle': "Master Medical Vocabulary & Terminology",
+  'mobileOnboarding.screen3.description': "Learn the language used on the ward",
+  'mobileOnboarding.screen4.title': "Voice & Role-playing",
+  'mobileOnboarding.screen4.subtitle': "Speak and Listen to Real Medical Dialogue with AI",
+  'mobileOnboarding.screen4.description': "Practice Real-World Conversations"
 };
