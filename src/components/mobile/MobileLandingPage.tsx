@@ -5,6 +5,7 @@ import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import MobileOnboardingScreen from "@/components/mobile/MobileOnboardingScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import waitlist from '@zootools/waitlist-js';
 
 const MobileLandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -34,11 +35,13 @@ const MobileLandingPage: React.FC = () => {
   };
 
   const handleSkip = () => {
-    navigate("/login");
+    // Open ZooTools waitlist popup
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
   };
 
   const handleStart = () => {
-    navigate("/register");
+    // Open ZooTools waitlist popup
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
   };
 
   return (

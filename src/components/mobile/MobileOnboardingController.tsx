@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import MobileOnboardingScreen from "./MobileOnboardingScreen";
 import { useNavigate } from "react-router-dom";
+import waitlist from '@zootools/waitlist-js';
 
 const MobileOnboardingController: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -15,13 +16,13 @@ const MobileOnboardingController: React.FC = () => {
   };
 
   const handleSkip = () => {
-    // Navigate to the same zootools waitlist signup
-    window.open('https://zootoolshq.typeform.com/doctalk?typeform-source=e4c99325-c529-497f-8a5d-2c84f475bf0f.lovableproject.com', '_blank');
+    // Open ZooTools waitlist popup
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
   };
 
   const handleStart = () => {
-    // Navigate to the same zootools waitlist signup
-    window.open('https://zootoolshq.typeform.com/doctalk?typeform-source=e4c99325-c529-497f-8a5d-2c84f475bf0f.lovableproject.com', '_blank');
+    // Open ZooTools waitlist popup
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
   };
 
   const handleSwipe = (index: number) => {
