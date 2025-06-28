@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ArrowRight, ChevronLeft, ChevronRight, Clock, Users, Shield } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Users, Shield } from "lucide-react";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import waitlist from '@zootools/waitlist-js';
 
@@ -51,14 +51,6 @@ const HeroSection = () => {
       <section className="container mx-auto mb-12 landing-mobile-section">
         <div className="glass-panel hero-mobile-fix flex flex-col items-center gap-6">
           <div className="w-full opacity-100 visible">
-            {/* Limited Spots Counter */}
-            <div className="flex items-center justify-center mb-4 bg-yellow-100 border border-yellow-300 rounded-full px-4 py-2">
-              <Clock className="h-4 w-4 text-yellow-600 mr-2" />
-              <span className="text-sm font-medium text-yellow-800">
-                {translate("limitedAlphaSpots")}
-              </span>
-            </div>
-
             <h1 className="text-3xl font-bold mb-4 text-neutral-800">
               {translate("landYourDreamMedicalJob")}
             </h1>
@@ -68,7 +60,7 @@ const HeroSection = () => {
             
             {/* Target audience clarification */}
             <p className="text-sm text-neutral-500 mb-6 bg-medical-50 p-3 rounded-lg border border-medical-100">
-              {translate("targetAudienceClarification")}
+              {translate("forInternationalHealthcareWorkers")}
             </p>
 
             {/* Trust Signals */}
@@ -90,10 +82,6 @@ const HeroSection = () => {
               <Button asChild variant="outline" size="lg" className="w-full">
                 <Link to="/practice">{translate("exploreDemo")}</Link>
               </Button>
-               <p className="text-center text-sm text-neutral-500 mt-2">
-                {translate('exclusiveAlphaAccess')}{' '}
-                <span className="font-bold">{translate('limitedSpots')}</span>
-              </p>
             </div>
           </div>
           
@@ -146,14 +134,6 @@ const HeroSection = () => {
     <section className="container mx-auto mb-12">
       <div className="glass-panel p-8 flex flex-col md:flex-row items-center gap-8">
         <div className="md:w-1/2 opacity-100 visible">
-          {/* Limited Spots Counter */}
-          <div className="flex items-center justify-center md:justify-start mb-4 bg-yellow-100 border border-yellow-300 rounded-full px-4 py-2 w-fit">
-            <Clock className="h-4 w-4 text-yellow-600 mr-2" />
-            <span className="text-sm font-medium text-yellow-800">
-              {translate("limitedAlphaSpots")}
-            </span>
-          </div>
-
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
             {translate("landYourDreamMedicalJob")}
           </h1>
@@ -163,7 +143,7 @@ const HeroSection = () => {
           
           {/* Target audience clarification */}
           <p className="text-md text-neutral-500 mb-6 bg-medical-50 p-4 rounded-lg border border-medical-100">
-            {translate("targetAudienceClarification")}
+            {translate("forInternationalHealthcareWorkers")}
           </p>
 
           {/* Trust Signals */}
@@ -187,10 +167,6 @@ const HeroSection = () => {
                 <Link to="/practice">{translate("exploreDemo")}</Link>
               </Button>
             </div>
-            <p className="text-sm text-neutral-500 mt-2">
-              {translate('exclusiveAlphaAccess')}{' '}
-              <span className="font-bold">{translate('limitedSpots')}</span>
-            </p>
           </div>
         </div>
         

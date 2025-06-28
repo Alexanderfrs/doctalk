@@ -108,16 +108,6 @@ const ProblemSolutionSection = () => {
           </div>
         </div>
 
-        {/* DocTalk Introduction */}
-        <div className="text-center mb-16 py-12 bg-gradient-to-r from-medical-50 to-cyan-50 rounded-2xl">
-          <h3 className="text-3xl md:text-4xl font-bold text-medical-700 mb-6">
-            {translate("introducingDocTalk")}
-          </h3>
-          <div className="flex justify-center mb-8">
-            <div className="w-24 h-1 bg-gradient-to-r from-medical-500 to-cyan-500 rounded-full"></div>
-          </div>
-        </div>
-
         {/* Solution Section */}
         <div>
           <div className="text-center mb-12">

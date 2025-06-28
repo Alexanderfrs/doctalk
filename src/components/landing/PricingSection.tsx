@@ -47,13 +47,7 @@ const PricingSection = () => {
                 <span className="text-4xl font-bold text-medical-600">
                   {translate("free")}
                 </span>
-                <span className="ml-2 text-neutral-500 line-through">
-                  {translate("usuallyPaid")}
-                </span>
               </div>
-              <p className="text-neutral-500 text-sm mt-1">
-                {translate("limitedTime")}
-              </p>
             </div>
 
             <ul className="space-y-3 mb-8">
@@ -83,20 +77,8 @@ const PricingSection = () => {
               className="w-full btn-primary text-lg py-3"
               onClick={handleWaitlistClick}
             >
-              {translate("claimAlphaSpot")}
+              {translate("secureYourSpot")}
             </Button>
-
-            <div className="mt-4 text-center">
-              <p className="text-sm text-neutral-600">
-                {translate("alphaAccessLimitedPre")}{' '}
-                <span className="font-bold text-medical-600">
-                  {translate("alphaAccessLimitedBold")}
-                </span>
-              </p>
-              <p className="text-xs text-medical-600 font-medium mt-1">
-                {translate("alphaAccessCta")}
-              </p>
-            </div>
           </div>
         </div>
 
@@ -107,7 +89,7 @@ const PricingSection = () => {
               <Building className="h-8 w-8 text-neutral-600 mr-3" />
               <div>
                 <h3 className="text-2xl font-bold text-neutral-800">
-                  {translate("enterpriseSolutions")}
+                  {translate("enterprisePlan")}
                 </h3>
                 <p className="text-neutral-600 text-sm">
                   {translate("forClinicsHospitalsEducational")}
@@ -154,18 +136,6 @@ const PricingSection = () => {
               {translate("contactUs")}
             </Button>
           </div>
-        </div>
-      </div>
-
-      {/* Additional CTA Section */}
-      <div className="mt-12 text-center">
-        <div className="bg-gradient-to-r from-medical-50 to-cyan-50 rounded-2xl p-8">
-          <h3 className="text-xl font-bold text-neutral-800 mb-4">
-            {translate("readyToTransformYourCareer")}
-          </h3>
-          <Button size="lg" className="btn-primary" onClick={handleWaitlistClick}>
-            {translate("getPriorityAccess")}
-          </Button>
         </div>
       </div>
     </div>

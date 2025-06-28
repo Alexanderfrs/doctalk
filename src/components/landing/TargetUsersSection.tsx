@@ -68,11 +68,11 @@ const TargetUsersSection = () => {
 
       {/* CTA Section */}
       <div className="text-center">
-        <div className="bg-gradient-to-r from-medical-50 to-cyan-50 rounded-2xl p-8">
-          <h3 className="text-xl font-bold text-neutral-800 mb-4">
+        <div className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-md">
+          <h3 className="text-lg font-semibold text-neutral-800 mb-3">
             Ready to start your journey?
           </h3>
-          <Button size="lg" className="btn-primary" onClick={handleWaitlistClick}>
+          <Button className="btn-primary" onClick={handleWaitlistClick}>
             {translate("getPriorityAccess")}
           </Button>
         </div>

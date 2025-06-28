@@ -4,19 +4,16 @@ export const romanianTranslations = {
   whoItsFor: 'Pentru Cine',
   whyDocTalk: 'De Ce DocTalk',
   pricing: 'Preturi',
+  userJourney: 'Călătoria Ta',
   
   // Landing page hero section translations
-  limitedAlphaSpots: 'Locuri Alpha Limitate Disponibile',
   landYourDreamMedicalJob: 'Calea ta rapidă către lucrul în sistemul de sănătate german.',
-  inGermany: 'în Sistemul de Sănătate German',
   skipExpensiveCoursesAndGetFluent: 'Învață germana medicală profesională și pregătește-te pentru noul tău job – oriunde te-ai afla.',
   targetAudience: 'Perfect pentru lucrătorii din domeniul sănătății internaționali, medici și studenții la medicină care doresc să intre și să exceleze în sistemele de sănătate germane și să obțină recunoaștere profesională.',
   expertDeveloped: 'Dezvoltat de experți',
   joinPioneers: 'Alătură-te pionierilor',
   getPriorityAccess: 'Asigură-ți Locul',
   exploreDemo: 'În Curând: Demo',
-  exclusiveAlphaAccess: 'Obține acces timpuriu exclusiv',
-  limitedSpots: 'locuri limitate disponibile',
   medicalTeamWorking: 'Echipa medicală lucrând împreună',
   hospitalScene: 'Scena spitalului',
   medicalEducation: 'Educație medicală',
@@ -27,16 +24,8 @@ export const romanianTranslations = {
   vocabulary: 'Vocabular',
   profile: 'Profil',
   
-  // Additional missing translations
-  limitedFreeSpotsAvailable: 'Locuri gratuite limitate disponibile',
-  confidentCommunicationInGermanHealthcare: 'Comunicare încrezătoare în sistemul de sănătate german',
-  skipExpensiveLanguageCourses: 'Săriți peste cursurile scumpe de limbă sau tutorii privați și deveniți fluent în germana medicală cu scenarii de practică din lumea reală.',
-  perfectForInternationalWorkers: 'Perfect pentru lucrătorii internaționali de îngrijire, medici și studenți la medicină care vor să intre și să exceleze în sistemul de sănătate german și să obțină recunoaștere profesională.',
-  developedWithExperts: 'Dezvoltat cu experți',
-  joinThePioneers: 'Alăturați-vă pionierilor',
-  comingSoonDemo: 'În curând: Demo',
-  exclusiveAlphaAccessLimitedSpots: 'Obține acces timpuriu exclusiv - Locuri limitate disponibile',
-  getStarted: 'Începeți',
+  // New target audience clarification
+  forInternationalHealthcareWorkers: 'Pentru lucrătorii din sănătate internaționali – fie că te pregătești din străinătate sau ești deja în Germania.',
   
   // Basic translations
   welcome: 'Bun venit',
@@ -68,8 +57,6 @@ export const romanianTranslations = {
   problemGenericSolutionsDesc: "Aplicațiile de limbă generale nu au context medical, în timp ce tutorii adesea nu înțeleg nevoile de comunicare specifice asistenței medicale.",
   problemGenericSolutionsStat: "Context medical limitat",
   
-  introducingDocTalk: "Prezentăm DocTalk",
-  
   theSolution: "Soluția",
   revolutionaryApproachToMedicalGerman: "O Abordare Revoluționară pentru Învățarea Germanei Medicale",
   
@@ -88,6 +75,27 @@ export const romanianTranslations = {
   
   readyToTransformYourCareer: "Gata să-ți Transformi Cariera Medicală în Germania?",
   joinThousandsOfProfessionals: "Alătură-te profesioniștilor care se pregătesc deja pentru succesul în asistența medicală germană.",
+
+  // User Journey Section
+  yourJourneyToGermanHealthcare: "Călătoria Ta către Sistemul de Sănătate German",
+  typicalPathForHealthcareProfessionals: "Calea tipică pe care o urmează profesioniștii din sănătate când se mută în Germania—și unde se încadrează DocTalk.",
+  
+  // Journey Steps
+  journeyStep1Title: "Decizie și Cercetare",
+  journeyStep1Desc: "Decizi să lucrezi în sistemul de sănătate german și începi să cercetezi cerințele, procesele de viză și oportunitățile de muncă.",
+  
+  journeyStep2Title: "Recunoașterea Calificărilor",
+  journeyStep2Desc: "Începi procesul complex Anerkennung pentru a-ți recunoaște calificările de către autoritățile germane.",
+  
+  journeyStep3Title: "Pregătirea Lingvistică",
+  journeyStep3Desc: "Aici ajută DocTalk: Stăpânește germana medicală înainte să ajungi sau în timp ce navighezi sistemul.",
+  journeyStep3Highlight: "DocTalk îți economisește timp și bani aici",
+  
+  journeyStep4Title: "Căutarea Locului de Muncă și Integrarea",
+  journeyStep4Desc: "Cu competențe puternice în germana medicală, poți aplica cu încredere pentru poziții și te poți integra în echipele de sănătate germane.",
+  
+  journeyStep5Title: "Succesul în Carieră",
+  journeyStep5Desc: "Excelezi în rolul tău cu competențele de comunicare necesare pentru îngrijirea pacienților și avansarea profesională.",
   
   // Target Users Section
   tailoredForMedicalCareer: "Adaptat pentru fiecare pas al carierei tale medicale",
@@ -124,15 +132,6 @@ export const romanianTranslations = {
   joinAlphaWaitlist: "Asigură-ți Locul",
   secureYourSpot: "Asigură-ți Locul",
   
-  // New text below buttons
-  alphaAccessLimitedPre: "Accesul Alfa este limitat la",
-  alphaAccessLimitedBold: "50 de locuri.",
-  alphaAccessLimitedPost: "",
-  alphaAccessCta: "Asigură-ți locul!",
-  exclusiveAccess: "Acces Exclusiv",
-  limitedTime: "Timp Limitat",
-  usuallyPaid: "de obicei cu plată",
-  
   // Additional footer and comparison translations
   footerTagline: 'Communicate. Connect. Care',
   madeWithLove: 'Făcut cu dragoste de o fostă asistentă medicală, specialist în sănătate și psiholog cognitiv',
@@ -160,6 +159,7 @@ export const romanianTranslations = {
   priorityAccessAllFutureFeatures: "Acces prioritar la toate funcțiile viitoare",
   exclusiveAlphaTesterCommunity: "Acces exclusiv la comunitatea de testeri alfa",
   enterpriseSolutions: "Soluții pentru Întreprinderi",
+  enterprisePlan: "Plan Întreprindere",
   forClinicsHospitalsEducational: "Pentru clinici, spitale și instituții educaționale.",
   everythingFromProfessional: "Tot din Profesional",
   customOnboardingSupport: "Integrare personalizată și suport",
@@ -182,13 +182,6 @@ export const romanianTranslations = {
   'mobileOnboarding.screen4.title': "Voce și Joc de Roluri",
   'mobileOnboarding.screen4.subtitle': "Vorbește și Ascultă Dialoguri Medicale Reale cu AI",
   'mobileOnboarding.screen4.description': "Exersează Conversații din Lumea Reală",
-  
-  // Updated hero section
-  yourFastTrackToWorkingInGermanHealthcare: 'Calea ta rapidă către lucrul în sistemul de sănătate german.',
-  learnProfessionalMedicalGerman: 'Învață germana medicală profesională și pregătește-te pentru noul tău job – oriunde te-ai afla.',
-  
-  // New target audience clarification
-  forInternationalHealthcareWorkers: 'Pentru lucrătorii din sănătate internaționali – fie că te pregătești din străinătate sau ești deja în Germania.',
 };
 
 // Remove Polish translations entirely

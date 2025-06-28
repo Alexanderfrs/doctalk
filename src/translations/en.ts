@@ -30,24 +30,21 @@ export const englishTranslations = {
   whoItsFor: 'Who It\'s For',
   whyDocTalk: 'Why DocTalk',
   pricing: 'Pricing',
+  userJourney: 'Your Journey',
   
   // Updated Landing page hero section translations
-  limitedAlphaSpots: 'Limited Alpha Spots Available',
   landYourDreamMedicalJob: 'Your fast track to working in German healthcare.',
-  inGermany: '',
   skipExpensiveCoursesAndGetFluent: 'Learn professional medical German and prepare for your new job – wherever you are.',
   expertDeveloped: 'Expert-developed',
   joinPioneers: 'Join the pioneers',
   getPriorityAccess: 'Secure Your Spot',
   exploreDemo: 'Explore Demo',
-  exclusiveAlphaAccess: 'Get early insider access',
-  limitedSpots: 'limited spots',
   medicalTeamWorking: 'Medical team working together',
   hospitalScene: 'Hospital scene',
   medicalEducation: 'Medical education',
 
   // New target audience clarification
-  targetAudienceClarification: 'For international healthcare workers – whether you\'re preparing from abroad or already in Germany.',
+  forInternationalHealthcareWorkers: 'For international healthcare workers – whether you\'re preparing from abroad or already in Germany.',
 
   // Problem-Solution Section
   realityForInternationalProfessionals: "The Reality for International Healthcare Professionals",
@@ -69,8 +66,6 @@ export const englishTranslations = {
   problemGenericSolutionsDesc: "General language apps lack medical context, while tutors often don't understand healthcare-specific communication needs.",
   problemGenericSolutionsStat: "Limited medical context",
   
-  introducingDocTalk: "Introducing DocTalk",
-  
   theSolution: "The Solution",
   revolutionaryApproachToMedicalGerman: "A Revolutionary Approach to Learning Medical German",
   
@@ -89,17 +84,28 @@ export const englishTranslations = {
   
   readyToTransformYourCareer: "Ready to Transform Your Medical Career in Germany?",
   joinThousandsOfProfessionals: "Join the professionals already preparing for success in German healthcare.",
-  limitedFreeSpotsAvailable: 'Limited free spots available',
-  confidentCommunicationInGermanHealthcare: 'Confident communication in German healthcare',
-  skipExpensiveLanguageCourses: 'Skip expensive language courses or private tutors and become fluent in medical German with real-world practice scenarios.',
-  perfectForInternationalWorkers: 'Perfect for international care workers, doctors and medical students who want to enter and excel in German healthcare systems and gain professional recognition.',
-  developedWithExperts: 'Developed with experts',
-  joinThePioneers: 'Join the pioneers',
-  comingSoonDemo: 'Coming Soon: Demo',
-  exclusiveAlphaAccessLimitedSpots: 'Get early insider access - Limited spots available',
-  getStarted: 'Get Started',
-  startFree: 'Start free',
-  learnMore: 'Learn More',
+
+  // User Journey Section
+  yourJourneyToGermanHealthcare: "Your Journey to German Healthcare",
+  typicalPathForHealthcareProfessionals: "The typical path healthcare professionals take when moving to Germany—and where DocTalk fits in.",
+  
+  // Journey Steps
+  journeyStep1Title: "Decision & Research",
+  journeyStep1Desc: "You decide to work in German healthcare and start researching requirements, visa processes, and job opportunities.",
+  
+  journeyStep2Title: "Qualification Recognition",
+  journeyStep2Desc: "You begin the complex Anerkennung process to get your qualifications recognized by German authorities.",
+  
+  journeyStep3Title: "Language Preparation",
+  journeyStep3Desc: "This is where DocTalk helps: Master medical German before you arrive or while navigating the system.",
+  journeyStep3Highlight: "DocTalk saves you time and money here",
+  
+  journeyStep4Title: "Job Search & Integration",
+  journeyStep4Desc: "With strong medical German skills, you can confidently apply for positions and integrate into German healthcare teams.",
+  
+  journeyStep5Title: "Career Success",
+  journeyStep5Desc: "Excel in your role with the communication skills needed for patient care and professional advancement.",
+
   tailoredForMedicalCareer: "Tailored for every step of your medical career",
   doctalkDesignedFor: "DocTalk is designed to meet the specific language needs of different healthcare professionals, helping you communicate with confidence and precision.",
   forCareWorkersTitle: "For Care Workers",
@@ -115,13 +121,7 @@ export const englishTranslations = {
   alphaFeature2: "Direct influence on feature development",
   alphaFeature3: "Exclusive 'Founder' badge on your profile",
   joinAlphaWaitlist: "Secure Your Spot",
-  claimAlphaSpot: "Secure Your Spot",
-  alphaAccessLimitedPre: "Alpha access limited to",
-  alphaAccessLimitedBold: "50 spots.",
-  alphaAccessLimitedPost: "",
-  alphaAccessCta: "Secure your spot!",
-  limitedTime: "Limited Time",
-  usuallyPaid: "usually paid",
+  secureYourSpot: "Secure Your Spot",
   joinBeta: "Get Priority Access",
   signupForBetaRelease: "Priority Alpha Signup",
   betaAccessTitle: "Priority Access to Alpha Version",
@@ -159,6 +159,7 @@ export const englishTranslations = {
   priorityAccessAllFutureFeatures: "Priority access to all future features",
   exclusiveAlphaTesterCommunity: "Exclusive alpha tester community access",
   enterpriseSolutions: "Enterprise Solutions",
+  enterprisePlan: "Enterprise Plan",
   forClinicsHospitalsEducational: "For clinics, hospitals, and educational institutions.",
   everythingFromProfessional: "Everything from Professional",
   customOnboardingSupport: "Custom onboarding and support",
