@@ -30,7 +30,6 @@ export const englishTranslations = {
   whoItsFor: 'Who It\'s For',
   whyDocTalk: 'Why DocTalk',
   pricing: 'Pricing',
-  userJourney: 'Your Journey',
   
   // Updated Landing page hero section translations
   landYourDreamMedicalJob: 'Your fast track to working in German healthcare.',
@@ -84,27 +83,6 @@ export const englishTranslations = {
   
   readyToTransformYourCareer: "Ready to Transform Your Medical Career in Germany?",
   joinThousandsOfProfessionals: "Join the professionals already preparing for success in German healthcare.",
-
-  // User Journey Section
-  yourJourneyToGermanHealthcare: "Your Journey to German Healthcare",
-  typicalPathForHealthcareProfessionals: "The typical path healthcare professionals take when moving to Germany—and where DocTalk fits in.",
-  
-  // Journey Steps
-  journeyStep1Title: "Decision & Research",
-  journeyStep1Desc: "You decide to work in German healthcare and start researching requirements, visa processes, and job opportunities.",
-  
-  journeyStep2Title: "Qualification Recognition",
-  journeyStep2Desc: "You begin the complex Anerkennung process to get your qualifications recognized by German authorities.",
-  
-  journeyStep3Title: "Language Preparation",
-  journeyStep3Desc: "This is where DocTalk helps: Master medical German before you arrive or while navigating the system.",
-  journeyStep3Highlight: "DocTalk saves you time and money here",
-  
-  journeyStep4Title: "Job Search & Integration",
-  journeyStep4Desc: "With strong medical German skills, you can confidently apply for positions and integrate into German healthcare teams.",
-  
-  journeyStep5Title: "Career Success",
-  journeyStep5Desc: "Excel in your role with the communication skills needed for patient care and professional advancement.",
 
   tailoredForMedicalCareer: "Tailored for every step of your medical career",
   doctalkDesignedFor: "DocTalk is designed to meet the specific language needs of different healthcare professionals, helping you communicate with confidence and precision.",

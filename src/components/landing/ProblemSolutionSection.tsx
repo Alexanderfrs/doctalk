@@ -79,7 +79,7 @@ const ProblemSolutionSection = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
             {problems.map((problem, index) => (
               <div key={index} className="bg-white p-6 rounded-xl shadow-lg border border-red-100 hover:shadow-xl transition-shadow">
                 <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4">
@@ -100,9 +100,9 @@ const ProblemSolutionSection = () => {
             ))}
           </div>
 
-          {/* CTA Button after problems */}
-          <div className="text-center">
-            <Button size="lg" className="btn-primary" onClick={handleWaitlistClick}>
+          {/* CTA Button after problems - minimal spacing */}
+          <div className="text-center mt-6">
+            <Button className="btn-primary" onClick={handleWaitlistClick}>
               {translate("getPriorityAccess")}
             </Button>
           </div>
@@ -119,7 +119,7 @@ const ProblemSolutionSection = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
             {solutions.map((solution, index) => (
               <div key={index} className="bg-white p-6 rounded-xl shadow-lg border border-green-100 hover:shadow-xl transition-shadow">
                 <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-4">
@@ -141,9 +141,9 @@ const ProblemSolutionSection = () => {
             ))}
           </div>
 
-          {/* CTA Button after solutions */}
-          <div className="text-center">
-            <Button size="lg" className="btn-primary" onClick={handleWaitlistClick}>
+          {/* CTA Button after solutions - minimal spacing */}
+          <div className="text-center mt-6">
+            <Button className="btn-primary" onClick={handleWaitlistClick}>
               {translate("getPriorityAccess")}
             </Button>
           </div>

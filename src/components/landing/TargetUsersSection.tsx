@@ -45,7 +45,7 @@ const TargetUsersSection = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
         {targetUsers.map((user, index) => (
           <div key={index} className="relative bg-white p-8 rounded-2xl shadow-lg border border-neutral-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             {user.comingSoon && (
@@ -66,16 +66,11 @@ const TargetUsersSection = () => {
         ))}
       </div>
 
-      {/* CTA Section */}
-      <div className="text-center">
-        <div className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-md">
-          <h3 className="text-lg font-semibold text-neutral-800 mb-3">
-            Ready to start your journey?
-          </h3>
-          <Button className="btn-primary" onClick={handleWaitlistClick}>
-            {translate("getPriorityAccess")}
-          </Button>
-        </div>
+      {/* CTA Section - minimal spacing */}
+      <div className="text-center mt-8">
+        <Button className="btn-primary" onClick={handleWaitlistClick}>
+          {translate("getPriorityAccess")}
+        </Button>
       </div>
     </div>
   );

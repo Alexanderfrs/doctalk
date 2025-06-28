@@ -1,3 +1,4 @@
+
 export const russianTranslations = {
   welcome: 'Для Кого',
   whyDocTalk: 'Почему DocTalk',
@@ -66,4 +67,39 @@ export const russianTranslations = {
   targetAudienceClarification: 'Для международных медицинских работников – готовитесь ли вы из-за границы или уже находитесь в Германии.',
   
   claimAlphaSpot: 'Обеспечьте свое место',
+
+  // Target Users Section
+  tailoredForMedicalCareer: "Подходит для каждого этапа вашей медицинской карьеры",
+  doctalkDesignedFor: "DocTalk разработан для удовлетворения специфических языковых потребностей различных медицинских специалистов, помогая вам общаться с уверенностью и точностью.",
+  forCareWorkersTitle: "Для Медработников",
+  forCareWorkersDescription: "Основное общение для исключительного ухода и быстрой интеграции в вашу немецкую команду.",
+  forDoctorsTitle: "Для Врачей",
+  forDoctorsDescription: "От анамнеза до сложных дискуссий—освойте общение, которое ускоряет ваше профессиональное признание.",
+  forMedicalStudentsTitle: "Для Студентов-Медиков",
+  forMedicalStudentsDescription: "Создайте прочную лингвистическую основу для решающего преимущества в клинических ротациях и стажировках, и будущей карьере.",
+
+  // Pricing Section
+  alphaTester: "Альфа-Тестировщик",
+  alphaTesterDesc: "Для пионеров, готовых формировать будущее медицинского обучения.",
+  alphaFeature1: "Полный доступ во время Альфа-фазы",
+  alphaFeature2: "Прямое влияние на разработку функций",
+  alphaFeature3: "Эксклюзивный значок 'Основатель' в вашем профиле",
+  priorityAccessAllFutureFeatures: "Приоритетный доступ ко всем будущим функциям",
+  exclusiveAlphaTesterCommunity: "Доступ к эксклюзивному сообществу альфа-тестировщиков",
+  enterprisePlan: "Корпоративный План",
+  forClinicsHospitalsEducational: "Для клиник, больниц и образовательных учреждений.",
+  everythingFromProfessional: "Все из Профессионального",
+  customOnboardingSupport: "Индивидуальная адаптация и поддержка",
+  teamProgressTrackingAnalytics: "Отслеживание прогресса команды и аналитика",
+  volumeLicensingFlexibleBilling: "Объемное лицензирование и гибкое выставление счетов",
+  oralExamSimulations: "Симуляции устных экзаменов",
+  free: "Бесплатно",
+  contactUs: "Связаться с нами",
+  secureYourSpot: "Обеспечьте Своё Место",
+
+  // Common elements
+  simpleAndTransparentPricing: "Простые и прозрачные цены",
+  choosePlanBestSuits: "Выберите план, который лучше всего подходит для ваших целей обучения.",
+  home: "Главная",
+  whoItsFor: "Для Кого",
 };

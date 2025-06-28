@@ -9,7 +9,6 @@ import HeroSection from "@/components/home/HeroSection";
 import TargetUsersSection from "@/components/landing/TargetUsersSection";
 import PricingSection from "@/components/landing/PricingSection";
 import ProblemSolutionSection from "@/components/landing/ProblemSolutionSection";
-import UserJourneySection from "@/components/landing/UserJourneySection";
 import { LandingPageProps } from "@/types/landing";
 import { useSwipeable } from "react-swipeable";
 import waitlist from '@zootools/waitlist-js';
@@ -30,9 +29,6 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
   }, {
     id: "target-users",
     label: translate("whoItsFor")
-  }, {
-    id: "user-journey",
-    label: translate("userJourney")
   }, {
     id: "problem-solution",
     label: translate("whyDocTalk")
@@ -124,10 +120,6 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
           <div className="container mx-auto">
             <TargetUsersSection />
           </div>
-        </section>
-
-        <section id="user-journey">
-          <UserJourneySection />
         </section>
         
         <section id="problem-solution">
