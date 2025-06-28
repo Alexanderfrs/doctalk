@@ -1,3 +1,4 @@
+
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -32,8 +33,8 @@ export const germanTranslations = {
   
   // Landing page hero section translations
   limitedAlphaSpots: 'Begrenzte kostenlose Plätze verfügbar',
-  landYourDreamMedicalJob: 'Selbstbewusste Kommunikation. Beruflicher Erfolg. Ihre Zukunft im deutschen Gesundheitswesen.',
-  inGermany: '',
+  landYourDreamMedicalJob: 'Selbstbewusste Kommunikation',
+  inGermany: 'im deutschen Gesundheitswesen',
   skipExpensiveCoursesAndGetFluent: 'Überspringen Sie unflexible Sprachkurse, teure Privatlehrer und allgemeine Apps und werden Sie schnell fließend in medizinischem Deutsch mit praxisnahen Übungsszenarien.',
   expertDeveloped: 'Entwickelt mit Experten',
   joinPioneers: 'Schließen Sie sich den Pionieren an',
@@ -193,7 +194,7 @@ export const germanTranslations = {
   alphaFeature2: "Direkter Einfluss auf die Feature-Entwicklung",
   alphaFeature3: "Exklusives 'Gründer'-Abzeichen im Profil",
   joinAlphaWaitlist: "Sichern Sie sich Ihren Platz",
-  claimAlphaSpot: "Sichern Sie sich Ihren Platz",
+  claimAlphaSpot: "Alpha-Platz sichern",
   alphaAccessLimitedPre: "Alpha-Zugang begrenzt auf",
   alphaAccessLimitedBold: "50 Plätze.",
   alphaAccessLimitedPost: "",

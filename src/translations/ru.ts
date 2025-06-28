@@ -1,10 +1,11 @@
+
 export const russianTranslations = {
   welcome: 'Для Кого',
   whyDocTalk: 'Почему DocTalk',
   pricing: 'Цены',
   limitedAlphaSpots: 'Ограниченные Альфа Места Доступны',
-  landYourDreamMedicalJob: 'Уверенное Общение. Профессиональный Успех. Ваше Будущее в Немецкой Системе Здравоохранения.',
-  inGermany: '',
+  landYourDreamMedicalJob: 'Уверенное Общение',
+  inGermany: 'в Немецкой Системе Здравоохранения',
   skipExpensiveCoursesAndGetFluent: 'Пропустите негибкие языковые курсы, дорогих частных преподавателей и общие приложения и начните быстро осваивать медицинский немецкий с реальными практическими сценариями.',
   targetAudience: 'Идеально подходит для международных медицинских работников, врачей и студентов-медиков, которые хотят войти и преуспеть в немецких системах здравоохранения и получить профессиональное признание.',
   expertDeveloped: 'Разработано экспертами',
@@ -61,7 +62,5 @@ export const russianTranslations = {
   'mobileOnboarding.screen3.description': "Изучите язык, используемый в отделении",
   'mobileOnboarding.screen4.title': "Голос и Ролевые Игры",
   'mobileOnboarding.screen4.subtitle': "Говорите и Слушайте Реальные Медицинские Диалоги с ИИ",
-  'mobileOnboarding.screen4.description': "Практикуйте Разговоры из Реального Мира",
-
-  claimAlphaSpot: "Занять Место"
+  'mobileOnboarding.screen4.description': "Практикуйте Разговоры из Реального Мира"
 };
