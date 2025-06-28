@@ -1,75 +1,81 @@
 
 import React from "react";
-import { Stethoscope, HeartHandshake, GraduationCap } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Heart, Stethoscope, GraduationCap, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import waitlist from '@zootools/waitlist-js';
 
 const TargetUsersSection = () => {
   const { translate } = useLanguage();
 
-  const users = [
+  const handleWaitlistClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
+  };
+
+  const targetUsers = [
     {
+      icon: <Heart className="h-12 w-12 text-medical-600" />,
       title: translate("forCareWorkersTitle"),
       description: translate("forCareWorkersDescription"),
-      image: "/lovable-uploads/cea1be79-a723-482d-81f1-17e0c03d04a4.png",
-      icon: <HeartHandshake className="h-8 w-8" />,
+      comingSoon: false
     },
     {
+      icon: <Stethoscope className="h-12 w-12 text-medical-600" />,
       title: translate("forDoctorsTitle"),
       description: translate("forDoctorsDescription"),
-      image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2070&auto=format&fit=crop",
-      icon: <Stethoscope className="h-8 w-8" />,
-      isComingSoon: true,
+      comingSoon: false
     },
     {
+      icon: <GraduationCap className="h-12 w-12 text-medical-600" />,
       title: translate("forMedicalStudentsTitle"),
       description: translate("forMedicalStudentsDescription"),
-      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop",
-      icon: <GraduationCap className="h-8 w-8" />,
-      isComingSoon: true,
-    },
+      comingSoon: false
+    }
   ];
 
   return (
-    <div className="mt-16">
+    <div className="container mx-auto">
       <div className="text-center mb-12">
-        <h3 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
+        <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 mb-4">
           {translate("tailoredForMedicalCareer")}
-        </h3>
-        <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+        </h2>
+        <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
           {translate("doctalkDesignedFor")}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {users.map((user, index) => (
-          <div key={index} className="bg-white rounded-xl shadow-sm border border-neutral-100 hover:shadow-md transition-shadow overflow-hidden flex flex-col">
-            <div className="relative">
-              <img 
-                src={user.image} 
-                alt={user.title} 
-                className={`w-full h-48 object-cover ${user.isComingSoon ? 'filter grayscale' : ''}`}
-              />
-              {user.isComingSoon && (
-                <div className="absolute top-3 right-3 bg-medical-500 text-white text-xs font-bold uppercase px-3 py-1.5 rounded-full shadow-md">
-                  {translate("comingSoon")}
-                </div>
-              )}
-            </div>
-            <div className="p-6 flex flex-col flex-grow">
-              <div className="flex items-center gap-4 mb-4">
-                 <div className="flex-shrink-0 bg-medical-50 text-medical-600 rounded-full p-3">
-                    {user.icon}
-                  </div>
-                <h4 className="font-semibold text-neutral-800 text-xl">
-                  {user.title}
-                </h4>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        {targetUsers.map((user, index) => (
+          <div key={index} className="relative bg-white p-8 rounded-2xl shadow-lg border border-neutral-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            {user.comingSoon && (
+              <div className="absolute top-4 right-4 bg-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                {translate("comingSoon")}
               </div>
-              <p className="text-neutral-600 text-base">
-                {user.description}
-              </p>
+            )}
+            <div className="w-20 h-20 bg-medical-50 rounded-full flex items-center justify-center mb-6 mx-auto">
+              {user.icon}
             </div>
+            <h3 className="text-xl font-bold mb-4 text-neutral-800 text-center">
+              {user.title}
+            </h3>
+            <p className="text-neutral-600 text-center leading-relaxed">
+              {user.description}
+            </p>
           </div>
         ))}
+      </div>
+
+      {/* CTA Section */}
+      <div className="text-center">
+        <div className="bg-gradient-to-r from-medical-50 to-cyan-50 rounded-2xl p-8">
+          <h3 className="text-xl font-bold text-neutral-800 mb-4">
+            Ready to start your journey?
+          </h3>
+          <Button size="lg" className="btn-primary" onClick={handleWaitlistClick}>
+            {translate("getPriorityAccess")}
+          </Button>
+        </div>
       </div>
     </div>
   );

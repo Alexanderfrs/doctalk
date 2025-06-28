@@ -32,9 +32,9 @@ export const spanishTranslations = {
   
   // Landing page hero section translations
   limitedAlphaSpots: 'Puntos Alpha Limitados Disponibles',
-  landYourDreamMedicalJob: 'Consigue el Trabajo Médico de Tus Sueños',
+  landYourDreamMedicalJob: 'Tu vía rápida para trabajar en el sistema de salud alemán.',
   inGermany: 'en Alemania',
-  skipExpensiveCoursesAndGetFluent: 'Omite cursos de idioma inflexibles, tutores privados costosos y aplicaciones genéricas y comienza a dominar el alemán médico rápidamente con escenarios de práctica del mundo real.',
+  skipExpensiveCoursesAndGetFluent: 'Aprende alemán médico profesional y prepárate para tu nuevo trabajo, estés donde estés.',
   expertDeveloped: 'Desarrollado por expertos',
   joinPioneers: 'Únete a los pioneros',
   getPriorityAccess: 'Asegura Tu Lugar',
@@ -119,7 +119,7 @@ export const spanishTranslations = {
   alphaFeature2: "Influencia directa en el desarrollo de funciones",
   alphaFeature3: "Insignia exclusiva de 'Fundador' en tu perfil",
   joinAlphaWaitlist: "Asegura tu lugar",
-  claimAlphaSpot: "Reclama un lugar alfa",
+  claimAlphaSpot: 'Asegura tu lugar',
   alphaAccessLimitedPre: "Acceso alfa limitado a",
   alphaAccessLimitedBold: "50 lugares.",
   alphaAccessLimitedPost: "",

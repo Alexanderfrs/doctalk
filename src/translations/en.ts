@@ -31,11 +31,11 @@ export const englishTranslations = {
   whyDocTalk: 'Why DocTalk',
   pricing: 'Pricing',
   
-  // Landing page hero section translations
+  // Updated Landing page hero section translations
   limitedAlphaSpots: 'Limited Alpha Spots Available',
-  landYourDreamMedicalJob: 'Land Your Dream Medical Job',
-  inGermany: 'in Germany',
-  skipExpensiveCoursesAndGetFluent: 'Skip inflexible language courses, expensive private tutors, and generic apps and start mastering medical German quickly with real-world practice scenarios.',
+  landYourDreamMedicalJob: 'Your fast track to working in German healthcare.',
+  inGermany: '',
+  skipExpensiveCoursesAndGetFluent: 'Learn professional medical German and prepare for your new job – wherever you are.',
   expertDeveloped: 'Expert-developed',
   joinPioneers: 'Join the pioneers',
   getPriorityAccess: 'Secure Your Spot',
@@ -45,6 +45,9 @@ export const englishTranslations = {
   medicalTeamWorking: 'Medical team working together',
   hospitalScene: 'Hospital scene',
   medicalEducation: 'Medical education',
+
+  // New target audience clarification
+  targetAudienceClarification: 'For international healthcare workers – whether you\'re preparing from abroad or already in Germany.',
 
   // Problem-Solution Section
   realityForInternationalProfessionals: "The Reality for International Healthcare Professionals",
@@ -66,16 +69,12 @@ export const englishTranslations = {
   problemGenericSolutionsDesc: "General language apps lack medical context, while tutors often don't understand healthcare-specific communication needs.",
   problemGenericSolutionsStat: "Limited medical context",
   
-  problemIntegrationChallenges: "Integration Challenges",
-  problemIntegrationChallengesDesc: "Workplace cultural norms, medical hierarchies, and bureaucratic processes create additional barriers beyond language.",
-  problemIntegrationChallengesStat: "Complex integration process",
-  
   introducingDocTalk: "Introducing DocTalk",
   
   theSolution: "The Solution",
   revolutionaryApproachToMedicalGerman: "A Revolutionary Approach to Learning Medical German",
   
-  // Updated solutions to match new text
+  // Updated solutions to match new text - removing integration challenges and professional network
   solutionAffordable: "Radically Affordable & Flexible",
   solutionAffordableDesc: "Medical German training at a fraction of tutor costs—learn at your pace with bite-sized, personalized lessons in a safe environment.",
   solutionAffordableHighlight: "Flexible & cost-effective",
@@ -87,10 +86,6 @@ export const englishTranslations = {
   solutionSpecialized: "Medicine-Focused with Certification Prep",
   solutionSpecializedDesc: "Designed exclusively for healthcare professionals by medical experts, with upcoming Anerkennung and FSP certification preparation support.",
   solutionSpecializedHighlight: "Expert-developed + certification prep",
-  
-  solutionNetworked: "Professional Network Integration",
-  solutionNetworkedDesc: "Direct connections to trusted healthcare facilities and insights into German medical workplace culture.",
-  solutionNetworkedHighlight: "Trusted partner network",
   
   readyToTransformYourCareer: "Ready to Transform Your Medical Career in Germany?",
   joinThousandsOfProfessionals: "Join the professionals already preparing for success in German healthcare.",
@@ -120,12 +115,11 @@ export const englishTranslations = {
   alphaFeature2: "Direct influence on feature development",
   alphaFeature3: "Exclusive 'Founder' badge on your profile",
   joinAlphaWaitlist: "Secure Your Spot",
-  claimAlphaSpot: "Claim Alpha Spot",
+  claimAlphaSpot: "Secure Your Spot",
   alphaAccessLimitedPre: "Alpha access limited to",
   alphaAccessLimitedBold: "50 spots.",
   alphaAccessLimitedPost: "",
   alphaAccessCta: "Secure your spot!",
-  exclusiveAccess: "Exclusive Access",
   limitedTime: "Limited Time",
   usuallyPaid: "usually paid",
   joinBeta: "Get Priority Access",

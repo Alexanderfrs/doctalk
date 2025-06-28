@@ -60,13 +60,15 @@ const HeroSection = () => {
             </div>
 
             <h1 className="text-3xl font-bold mb-4 text-neutral-800">
-              {translate("landYourDreamMedicalJob")} <span className="text-gradient">{translate("inGermany")}</span>
+              {translate("landYourDreamMedicalJob")}
             </h1>
             <p className="text-lg text-neutral-600 mb-4">
               {translate("skipExpensiveCoursesAndGetFluent")}
             </p>
-            <p className="text-md text-neutral-500 mb-6">
-              {translate("targetAudience")}
+            
+            {/* Target audience clarification */}
+            <p className="text-sm text-neutral-500 mb-6 bg-medical-50 p-3 rounded-lg border border-medical-100">
+              {translate("targetAudienceClarification")}
             </p>
 
             {/* Trust Signals */}
@@ -153,13 +155,15 @@ const HeroSection = () => {
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
-            {translate("landYourDreamMedicalJob")} <span className="text-gradient">{translate("inGermany")}</span>
+            {translate("landYourDreamMedicalJob")}
           </h1>
           <p className="text-lg text-neutral-600 mb-4">
             {translate("skipExpensiveCoursesAndGetFluent")}
           </p>
-          <p className="text-md text-neutral-500 mb-6">
-            {translate("targetAudience")}
+          
+          {/* Target audience clarification */}
+          <p className="text-md text-neutral-500 mb-6 bg-medical-50 p-4 rounded-lg border border-medical-100">
+            {translate("targetAudienceClarification")}
           </p>
 
           {/* Trust Signals */}

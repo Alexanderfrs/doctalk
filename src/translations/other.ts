@@ -1,4 +1,3 @@
-
 export const romanianTranslations = {
   // Navigation translations
   whoItsFor: 'Pentru Cine',
@@ -7,9 +6,9 @@ export const romanianTranslations = {
   
   // Landing page hero section translations
   limitedAlphaSpots: 'Locuri Alpha Limitate Disponibile',
-  landYourDreamMedicalJob: 'Comunicare Încrezătoare',
+  landYourDreamMedicalJob: 'Calea ta rapidă către lucrul în sistemul de sănătate german.',
   inGermany: 'în Sistemul de Sănătate German',
-  skipExpensiveCoursesAndGetFluent: 'Sari peste cursurile de limbă inflexibile, tutorii privați scumpi și aplicațiile generice și începe să stăpânești germana medicală rapid cu scenarii de practică din lumea reală.',
+  skipExpensiveCoursesAndGetFluent: 'Învață germana medicală profesională și pregătește-te pentru noul tău job – oriunde te-ai afla.',
   targetAudience: 'Perfect pentru lucrătorii din domeniul sănătății internaționali, medici și studenții la medicină care doresc să intre și să exceleze în sistemele de sănătate germane și să obțină recunoaștere profesională.',
   expertDeveloped: 'Dezvoltat de experți',
   joinPioneers: 'Alătură-te pionierilor',
@@ -68,10 +67,6 @@ export const romanianTranslations = {
   problemGenericSolutionsDesc: "Aplicațiile de limbă generale nu au context medical, în timp ce tutorii adesea nu înțeleg nevoile de comunicare specifice asistenței medicale.",
   problemGenericSolutionsStat: "Context medical limitat",
   
-  problemIntegrationChallenges: "Provocări de Integrare",
-  problemIntegrationChallengesDesc: "Normele culturale ale locului de muncă, ierarhiile medicale și procesele birocratice creează bariere suplimentare dincolo de limbă.",
-  problemIntegrationChallengesStat: "Proces de integrare complex",
-  
   introducingDocTalk: "Prezentăm DocTalk",
   
   theSolution: "Soluția",
@@ -89,10 +84,6 @@ export const romanianTranslations = {
   solutionSpecialized: "Focalizat pe Medicină cu Pregătire pentru Certificare",
   solutionSpecializedDesc: "Conceput exclusiv pentru profesioniștii din sănătate de către experți medicali, cu suport viitor pentru pregătirea certificării Anerkennung și FSP.",
   solutionSpecializedHighlight: "Dezvoltat de experți + pregătire pentru certificare",
-  
-  solutionNetworked: "Integrarea Rețelei Profesionale",
-  solutionNetworkedDesc: "Conexiuni directe la facilități de asistență medicală de încredere și perspective asupra culturii locului de muncă medical german.",
-  solutionNetworkedHighlight: "Rețea de parteneri de încredere",
   
   readyToTransformYourCareer: "Gata să-ți Transformi Cariera Medicală în Germania?",
   joinThousandsOfProfessionals: "Alătură-te profesioniștilor care se pregătesc deja pentru succesul în asistența medicală germană.",
@@ -130,7 +121,7 @@ export const romanianTranslations = {
   alphaFeature2: "Influență directă asupra dezvoltării funcționalităților",
   alphaFeature3: "Insignă exclusivă de 'Fondator' pe profilul tău",
   joinAlphaWaitlist: "Asigură-ți Locul",
-  claimAlphaSpot: "Revendică locul Alfa",
+  claimAlphaSpot: "Asigură-ți locul",
   
   // New text below buttons
   alphaAccessLimitedPre: "Accesul Alfa este limitat la",
@@ -189,7 +180,16 @@ export const romanianTranslations = {
   'mobileOnboarding.screen3.description': "Învață limba folosită pe secție",
   'mobileOnboarding.screen4.title': "Voce și Joc de Roluri",
   'mobileOnboarding.screen4.subtitle': "Vorbește și Ascultă Dialoguri Medicale Reale cu AI",
-  'mobileOnboarding.screen4.description': "Exersează Conversații din Lumea Reală"
+  'mobileOnboarding.screen4.description': "Exersează Conversații din Lumea Reală",
+  
+  // Updated hero section
+  landYourDreamMedicalJob: 'Calea ta rapidă către lucrul în sistemul de sănătate german.',
+  skipExpensiveCoursesAndGetFluent: 'Învață germana medicală profesională și pregătește-te pentru noul tău job – oriunde te-ai afla.',
+  
+  // New target audience clarification
+  targetAudienceClarification: 'Pentru lucrătorii din sănătate internaționali – fie că te pregătești din străinătate sau ești deja în Germania.',
+  
+  claimAlphaSpot: 'Asigură-ți locul',
 };
 
 // Remove Polish translations entirely

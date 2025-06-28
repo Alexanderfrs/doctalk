@@ -1,12 +1,11 @@
-
 export const russianTranslations = {
   welcome: 'Для Кого',
   whyDocTalk: 'Почему DocTalk',
   pricing: 'Цены',
   limitedAlphaSpots: 'Ограниченные Альфа Места Доступны',
-  landYourDreamMedicalJob: 'Уверенное Общение',
+  landYourDreamMedicalJob: 'Ваш быстрый путь к работе в немецкой системе здравоохранения.',
   inGermany: 'в Немецкой Системе Здравоохранения',
-  skipExpensiveCoursesAndGetFluent: 'Пропустите негибкие языковые курсы, дорогих частных преподавателей и общие приложения и начните быстро осваивать медицинский немецкий с реальными практическими сценариями.',
+  skipExpensiveCoursesAndGetFluent: 'Изучайте профессиональный медицинский немецкий и готовьтесь к новой работе – где бы вы ни находились.',
   targetAudience: 'Идеально подходит для международных медицинских работников, врачей и студентов-медиков, которые хотят войти и преуспеть в немецких системах здравоохранения и получить профессиональное признание.',
   expertDeveloped: 'Разработано экспертами',
   joinPioneers: 'Присоединяйтесь к пионерам',
@@ -51,7 +50,7 @@ export const russianTranslations = {
   readyToTransformYourCareer: "Готовы Трансформировать Свою Медицинскую Карьеру в Германии?",
   joinThousandsOfProfessionals: "Присоединяйтесь к специалистам, которые уже готовятся к успеху в немецком здравоохранении.",
   exclusiveAlphaAccessLimitedSpots: 'Получить ранний эксклюзивный доступ - ограниченные места доступны',
-
+  
   // Mobile onboarding translations - flattened
   'mobileOnboarding.screen1.subtitle': "Освойте Медицинский Немецкий для Вашей Карьеры в Здравоохранении в Германии",
   'mobileOnboarding.screen2.title': "Понимание Процесса Признания",
@@ -62,5 +61,9 @@ export const russianTranslations = {
   'mobileOnboarding.screen3.description': "Изучите язык, используемый в отделении",
   'mobileOnboarding.screen4.title': "Голос и Ролевые Игры",
   'mobileOnboarding.screen4.subtitle': "Говорите и Слушайте Реальные Медицинские Диалоги с ИИ",
-  'mobileOnboarding.screen4.description': "Практикуйте Разговоры из Реального Мира"
+  'mobileOnboarding.screen4.description': "Практикуйте Разговоры из Реального Мира",
+  
+  targetAudienceClarification: 'Для международных медицинских работников – готовитесь ли вы из-за границы или уже находитесь в Германии.',
+  
+  claimAlphaSpot: 'Обеспечьте свое место',
 };

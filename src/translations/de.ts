@@ -1,4 +1,3 @@
-
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -33,9 +32,9 @@ export const germanTranslations = {
   
   // Landing page hero section translations
   limitedAlphaSpots: 'Begrenzte kostenlose Plätze verfügbar',
-  landYourDreamMedicalJob: 'Selbstbewusste Kommunikation',
+  landYourDreamMedicalJob: 'Ihr schneller Weg zur Arbeit im deutschen Gesundheitswesen.',
   inGermany: 'im deutschen Gesundheitswesen',
-  skipExpensiveCoursesAndGetFluent: 'Überspringen Sie unflexible Sprachkurse, teure Privatlehrer und allgemeine Apps und werden Sie schnell fließend in medizinischem Deutsch mit praxisnahen Übungsszenarien.',
+  skipExpensiveCoursesAndGetFluent: 'Lernen Sie professionelles medizinisches Deutsch und bereiten Sie sich auf Ihren neuen Job vor – wo auch immer Sie sind.',
   expertDeveloped: 'Entwickelt mit Experten',
   joinPioneers: 'Schließen Sie sich den Pionieren an',
   getPriorityAccess: 'Sichern Sie sich Ihren Platz',
@@ -194,7 +193,7 @@ export const germanTranslations = {
   alphaFeature2: "Direkter Einfluss auf die Feature-Entwicklung",
   alphaFeature3: "Exklusives 'Gründer'-Abzeichen im Profil",
   joinAlphaWaitlist: "Sichern Sie sich Ihren Platz",
-  claimAlphaSpot: "Alpha-Platz sichern",
+  claimAlphaSpot: "Sichern Sie sich Ihren Platz",
   alphaAccessLimitedPre: "Alpha-Zugang begrenzt auf",
   alphaAccessLimitedBold: "50 Plätze.",
   alphaAccessLimitedPost: "",
@@ -248,14 +247,14 @@ export const germanTranslations = {
   contactUs: "Kontaktieren Sie uns",
   
   // Mobile onboarding translations - flattened
-  'mobileOnboarding.screen1.subtitle': "Meistern Sie medizinisches Deutsch für Ihre Gesundheitskarriere in Deutschland",
+  'mobileOnboarding.screen1.subtitle': "Meistern Sie medizinisches Deutsch für Ihre Gesundheitslaufbahn in Deutschland",
   'mobileOnboarding.screen2.title': "Den Anerkennungsprozess verstehen",
   'mobileOnboarding.screen2.subtitle': "Vollenden Sie Ihren Weg zur Medizinpraxis",
   'mobileOnboarding.screen2.description': "Navigieren Sie den komplexen Anerkennungsprozess mit Vertrauen",
-  'mobileOnboarding.screen3.title': "Medizinisches Lernen leicht gemacht",
-  'mobileOnboarding.screen3.subtitle': "Meistern Sie medizinische Begriffe & Terminologie",
-  'mobileOnboarding.screen3.description': "Lernen Sie die Sprache, die auf der Station verwendet wird",
-  'mobileOnboarding.screen4.title': "Sprache & Rollenspiel",
+  'mobileOnboarding.screen3.title': "Medizinisches Lernen vereinfacht",
+  'mobileOnboarding.screen3.subtitle': "Meistern Sie medizinisches Vokabular und Terminologie",
+  'mobileOnboarding.screen3.description': "Lernen Sie die auf der Station verwendete Sprache",
+  'mobileOnboarding.screen4.title': "Stimme und Rollenspiel",
   'mobileOnboarding.screen4.subtitle': "Sprechen und hören Sie echte medizinische Dialoge mit KI",
-  'mobileOnboarding.screen4.description': "Üben Sie realistische Gespräche"
+  'mobileOnboarding.screen4.description': "Üben Sie reale Gespräche"
 };

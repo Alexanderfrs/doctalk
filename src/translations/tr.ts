@@ -1,4 +1,3 @@
-
 export const turkishTranslations = {
   welcome: 'Hoş Geldiniz',
   language: 'Dil',
@@ -31,11 +30,14 @@ export const turkishTranslations = {
   whyDocTalk: 'Neden DocTalk',
   pricing: 'Fiyatlandırma',
 
-  // Landing page hero section translations
-  limitedAlphaSpots: 'Sınırlı Alpha Yerleri Mevcut',
-  landYourDreamMedicalJob: 'Hayalinizdeki Tıp İşine Ulaşın',
-  inGermany: 'Almanya\'da',
-  skipExpensiveCoursesAndGetFluent: 'Esnek olmayan dil kurslarını, pahalı özel öğretmenleri ve genel uygulamaları atlayın ve gerçek dünya uygulama senaryolarıyla tıbbi Almancayı hızla öğrenmeye başlayın.',
+  // Updated hero section
+  landYourDreamMedicalJob: 'Alman sağlık sisteminde çalışmaya giden hızlı yolunuz.',
+  skipExpensiveCoursesAndGetFluent: 'Profesyonel tıbbi Almanca öğrenin ve yeni işinize hazırlanın – nerede olursanız olun.',
+  inGermany: '',
+  
+  // New target audience clarification
+  targetAudienceClarification: 'Uluslararası sağlık çalışanları için – ister yurt dışından hazırlanıyor olun ister zaten Almanya\'da bulunun.',
+
   expertDeveloped: 'Uzman geliştirilmiş',
   joinPioneers: 'Öncülere katılın',
   getPriorityAccess: 'Yerinizi Güvence Altına Alın',
@@ -128,7 +130,7 @@ export const turkishTranslations = {
   alphaFeature2: "Özellik geliştirme üzerinde doğrudan etki",
   alphaFeature3: "Profilinizde özel 'Kurucu' rozeti",
   joinAlphaWaitlist: "Yerinizi Güvence Altına Alın",
-  claimAlphaSpot: "Alpha Yerini Talep Et",
+  claimAlphaSpot: 'Yerinizi Güvence Altına Alın',
 
   // New text below buttons
   alphaAccessLimitedPre: "Alpha erişimi",
