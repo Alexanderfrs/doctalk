@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -39,7 +40,7 @@ export const englishTranslations = {
   joinPioneers: 'Join the pioneers',
   getPriorityAccess: 'Secure Your Spot',
   exploreDemo: 'Explore Demo',
-  exclusiveAlphaAccess: 'Exclusive alpha access',
+  exclusiveAlphaAccess: 'Get early insider access',
   limitedSpots: 'limited spots',
   medicalTeamWorking: 'Medical team working together',
   hospitalScene: 'Hospital scene',
@@ -59,7 +60,7 @@ export const englishTranslations = {
   
   problemTimeConstraints: "Critical Communication Gaps",
   problemTimeConstraintsDesc: "Healthcare needs fast, accurate communication across diverse patients, colleagues, and dialects—misunderstandings in high-stress settings risk patient safety and outcomes.",
-  problemTimeConstraintsStat: "Communication barriers affect patient outcomes",
+  problemTimeConstraintsStat: "Miscommunication costs lives",
   
   problemGenericSolutions: "Generic Language Solutions",
   problemGenericSolutionsDesc: "General language apps lack medical context, while tutors often don't understand healthcare-specific communication needs.",
@@ -100,7 +101,7 @@ export const englishTranslations = {
   developedWithExperts: 'Developed with experts',
   joinThePioneers: 'Join the pioneers',
   comingSoonDemo: 'Coming Soon: Demo',
-  exclusiveAlphaAccessLimitedSpots: 'Exclusive alpha access - Limited spots available',
+  exclusiveAlphaAccessLimitedSpots: 'Get early insider access - Limited spots available',
   getStarted: 'Get Started',
   startFree: 'Start free',
   learnMore: 'Learn More',

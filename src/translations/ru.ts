@@ -1,3 +1,4 @@
+
 export const russianTranslations = {
   welcome: 'Для Кого',
   whyDocTalk: 'Почему DocTalk',
@@ -11,7 +12,7 @@ export const russianTranslations = {
   joinPioneers: 'Присоединяйтесь к пионерам',
   getPriorityAccess: 'Обеспечьте Своё Место',
   exploreDemo: 'Скоро: Демо',
-  exclusiveAlphaAccess: 'Эксклюзивный альфа доступ',
+  exclusiveAlphaAccess: 'Получить ранний эксклюзивный доступ',
   limitedSpots: 'ограниченные места доступны',
   medicalTeamWorking: 'Медицинская команда работает вместе',
   hospitalScene: 'Сцена больницы',
@@ -25,7 +26,7 @@ export const russianTranslations = {
   problemHighCostsStat: "€3,000-8,000 за курс",
   problemTimeConstraints: "Критические Пробелы в Общении",
   problemTimeConstraintsDesc: "Здравоохранение нуждается в быстром, точном общении с разными пациентами, коллегами и диалектами—недопонимание в стрессовых ситуациях угрожает безопасности пациентов и результатам.",
-  problemTimeConstraintsStat: "Барьеры общения влияют на результаты пациентов",
+  problemTimeConstraintsStat: "Ошибки в общении стоят жизней",
   problemGenericSolutions: "Общие Языковые Решения",
   problemGenericSolutionsDesc: "Общие языковые приложения не имеют медицинского контекста, в то время как преподаватели часто не понимают специфические потребности общения в здравоохранении.",
   problemGenericSolutionsStat: "Ограниченный медицинский контекст",
@@ -49,6 +50,7 @@ export const russianTranslations = {
   solutionNetworkedHighlight: "Надежная партнерская сеть",
   readyToTransformYourCareer: "Готовы Трансформировать Свою Медицинскую Карьеру в Германии?",
   joinThousandsOfProfessionals: "Присоединяйтесь к специалистам, которые уже готовятся к успеху в немецком здравоохранении.",
+  exclusiveAlphaAccessLimitedSpots: 'Получить ранний эксклюзивный доступ - ограниченные места доступны',
 
   // Mobile onboarding translations - flattened
   'mobileOnboarding.screen1.subtitle': "Освойте Медицинский Немецкий для Вашей Карьеры в Здравоохранении в Германии",

@@ -1,3 +1,4 @@
+
 export const romanianTranslations = {
   // Navigation translations
   whoItsFor: 'Pentru Cine',
@@ -14,7 +15,7 @@ export const romanianTranslations = {
   joinPioneers: 'Alătură-te pionierilor',
   getPriorityAccess: 'Asigură-ți Locul',
   exploreDemo: 'În Curând: Demo',
-  exclusiveAlphaAccess: 'Acces alpha exclusiv',
+  exclusiveAlphaAccess: 'Obține acces timpuriu exclusiv',
   limitedSpots: 'locuri limitate disponibile',
   medicalTeamWorking: 'Echipa medicală lucrând împreună',
   hospitalScene: 'Scena spitalului',
@@ -34,7 +35,7 @@ export const romanianTranslations = {
   developedWithExperts: 'Dezvoltat cu experți',
   joinThePioneers: 'Alăturați-vă pionierilor',
   comingSoonDemo: 'În curând: Demo',
-  exclusiveAlphaAccessLimitedSpots: 'Acces alfa exclusiv - Locuri limitate disponibile',
+  exclusiveAlphaAccessLimitedSpots: 'Obține acces timpuriu exclusiv - Locuri limitate disponibile',
   getStarted: 'Începeți',
   
   // Basic translations
@@ -61,7 +62,7 @@ export const romanianTranslations = {
   
   problemTimeConstraints: "Lacune de Comunicare Critice",
   problemTimeConstraintsDesc: "Sistemul de sănătate are nevoie de comunicare rapidă și precisă cu pacienți diverși, colegi și dialecte—neînțelegerile în situații de stres ridicat riscă siguranța pacientului și rezultatele.",
-  problemTimeConstraintsStat: "Barierele de comunicare afectează rezultatele pacienților",
+  problemTimeConstraintsStat: "Greșelile de comunicare costă vieți",
   
   problemGenericSolutions: "Soluții de Limbă Generice",
   problemGenericSolutionsDesc: "Aplicațiile de limbă generale nu au context medical, în timp ce tutorii adesea nu înțeleg nevoile de comunicare specifice asistenței medicale.",

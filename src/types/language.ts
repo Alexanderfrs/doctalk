@@ -12,18 +12,17 @@ export interface GermanDialect {
   region: string;
 }
 
-// Supported languages (removed Turkish and Polish)
 export const supportedLanguages: Language[] = [
-  { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧' },
   { code: 'de', name: 'German', nativeName: 'Deutsch', flag: '🇩🇪' },
+  { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
   { code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
   { code: 'ro', name: 'Romanian', nativeName: 'Română', flag: '🇷🇴' },
-  { code: 'ru', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺' }
+  { code: 'ru', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺' },
+  { code: 'tr', name: 'Turkish', nativeName: 'Türkçe', flag: '🇹🇷' }
 ];
 
-// German dialects
 export const germanDialects: GermanDialect[] = [
-  { code: 'de-DE', name: 'Standarddeutsch', region: 'Deutschland' },
-  { code: 'de-AT', name: 'Österreichisches Deutsch', region: 'Österreich' },
-  { code: 'de-CH', name: 'Schweizerdeutsch', region: 'Schweiz' }
+  { code: 'de-DE', name: 'Standard German', region: 'Germany' },
+  { code: 'de-AT', name: 'Austrian German', region: 'Austria' },
+  { code: 'de-CH', name: 'Swiss German', region: 'Switzerland' }
 ];

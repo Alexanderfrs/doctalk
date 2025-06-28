@@ -39,7 +39,7 @@ export const spanishTranslations = {
   joinPioneers: 'Únete a los pioneros',
   getPriorityAccess: 'Asegura Tu Lugar',
   exploreDemo: 'Explorar Demo',
-  exclusiveAlphaAccess: 'Acceso alpha exclusivo',
+  exclusiveAlphaAccess: 'Obtener acceso temprano exclusivo',
   limitedSpots: 'puntos limitados',
   medicalTeamWorking: 'Equipo médico trabajando juntos',
   hospitalScene: 'Escena del hospital',
@@ -59,7 +59,7 @@ export const spanishTranslations = {
   
   problemTimeConstraints: "Brechas de Comunicación Críticas",
   problemTimeConstraintsDesc: "La atención médica necesita comunicación rápida y precisa con diversos pacientes, colegas y dialectos—los malentendidos en situaciones de alto estrés arriesgan la seguridad del paciente y los resultados.",
-  problemTimeConstraintsStat: "Las barreras de comunicación afectan los resultados del paciente",
+  problemTimeConstraintsStat: "Los errores de comunicación cuestan vidas",
   
   problemGenericSolutions: "Soluciones de Idioma Genéricas",
   problemGenericSolutionsDesc: "Las aplicaciones de idioma general carecen de contexto médico, mientras que los tutores a menudo no entienden las necesidades de comunicación específicas de la atención médica.",
@@ -100,7 +100,7 @@ export const spanishTranslations = {
   developedWithExperts: 'Desarrollado con expertos',
   joinThePioneers: 'Únete a los pioneros',
   comingSoonDemo: 'Próximamente: Demo',
-  exclusiveAlphaAccessLimitedSpots: 'Acceso alfa exclusivo - Plazas limitadas disponibles',
+  exclusiveAlphaAccessLimitedSpots: 'Obtener acceso temprano exclusivo - Plazas limitadas disponibles',
   getStarted: 'Empezar',
   startFree: 'Comienza gratis',
   learnMore: 'Aprende más',

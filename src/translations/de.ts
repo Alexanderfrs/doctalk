@@ -1,4 +1,3 @@
-
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -40,7 +39,8 @@ export const germanTranslations = {
   joinPioneers: 'Schließen Sie sich den Pionieren an',
   getPriorityAccess: 'Sichern Sie sich Ihren Platz',
   exploreDemo: 'Demnächst: Demo',
-  exclusiveAlphaAccess: 'Exklusiver Alpha-Zugang',
+  exclusiveAlphaAccess: 'Frühen Insider-Zugang erhalten',
+  exclusiveAlphaAccessLimitedSpots: 'Frühen Insider-Zugang erhalten - Begrenzte Plätze verfügbar',
   limitedSpots: 'Begrenzte Plätze verfügbar',
   medicalTeamWorking: 'Medizinisches Team arbeitet zusammen',
   hospitalScene: 'Krankenhaus-Szene',
@@ -60,7 +60,7 @@ export const germanTranslations = {
   
   problemTimeConstraints: "Kritische Kommunikationslücken",
   problemTimeConstraintsDesc: "Das Gesundheitswesen braucht schnelle, präzise Kommunikation mit verschiedenen Patienten, Kollegen und Dialekten—Missverständnisse in stressigen Situationen gefährden Patientensicherheit und Ergebnisse.",
-  problemTimeConstraintsStat: "Kommunikationsbarrieren beeinträchtigen Patientenergebnisse",
+  problemTimeConstraintsStat: "Kommunikationsfehler kosten Leben",
   
   problemGenericSolutions: "Allgemeine Sprachlösungen",
   problemGenericSolutionsDesc: "Allgemeine Sprach-Apps fehlen medizinischer Kontext, während Tutoren oft die spezifischen Kommunikationsbedürfnisse im Gesundheitswesen nicht verstehen.",
@@ -101,7 +101,7 @@ export const germanTranslations = {
   developedWithExperts: 'Entwickelt mit Experten',
   joinThePioneers: 'Schließen Sie sich den Pionieren an',
   comingSoonDemo: 'Demnächst: Demo',
-  exclusiveAlphaAccessLimitedSpots: 'Exklusiver Alpha-Zugang - Begrenzte Plätze verfügbar',
+  exclusiveAlphaAccessLimitedSpots: 'Frühen Insider-Zugang erhalten - Begrenzte Plätze verfügbar',
   getStarted: 'Loslegen',
   
   // Onboarding specific translations
