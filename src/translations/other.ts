@@ -1,3 +1,4 @@
+
 export const romanianTranslations = {
   // Navigation translations
   whoItsFor: 'Pentru Cine',
@@ -121,7 +122,7 @@ export const romanianTranslations = {
   alphaFeature2: "Influență directă asupra dezvoltării funcționalităților",
   alphaFeature3: "Insignă exclusivă de 'Fondator' pe profilul tău",
   joinAlphaWaitlist: "Asigură-ți Locul",
-  claimAlphaSpot: "Asigură-ți locul",
+  secureYourSpot: "Asigură-ți Locul",
   
   // New text below buttons
   alphaAccessLimitedPre: "Accesul Alfa este limitat la",
@@ -183,13 +184,11 @@ export const romanianTranslations = {
   'mobileOnboarding.screen4.description': "Exersează Conversații din Lumea Reală",
   
   // Updated hero section
-  landYourDreamMedicalJob: 'Calea ta rapidă către lucrul în sistemul de sănătate german.',
-  skipExpensiveCoursesAndGetFluent: 'Învață germana medicală profesională și pregătește-te pentru noul tău job – oriunde te-ai afla.',
+  yourFastTrackToWorkingInGermanHealthcare: 'Calea ta rapidă către lucrul în sistemul de sănătate german.',
+  learnProfessionalMedicalGerman: 'Învață germana medicală profesională și pregătește-te pentru noul tău job – oriunde te-ai afla.',
   
   // New target audience clarification
-  targetAudienceClarification: 'Pentru lucrătorii din sănătate internaționali – fie că te pregătești din străinătate sau ești deja în Germania.',
-  
-  claimAlphaSpot: 'Asigură-ți locul',
+  forInternationalHealthcareWorkers: 'Pentru lucrătorii din sănătate internaționali – fie că te pregătești din străinătate sau ești deja în Germania.',
 };
 
 // Remove Polish translations entirely
