@@ -1,4 +1,3 @@
-
 export const turkishTranslations = {
   welcome: 'Hoş Geldiniz',
   language: 'Dil',
@@ -33,8 +32,8 @@ export const turkishTranslations = {
 
   // Landing page hero section translations
   limitedAlphaSpots: 'Sınırlı Alpha Yerleri Mevcut',
-  landYourDreamMedicalJob: 'Hayalinizdeki Tıp İşine Ulaşın',
-  inGermany: 'Almanya\'da',
+  landYourDreamMedicalJob: 'Özgüvenli İletişim. Mesleki Başarı. Alman Sağlık Sistemindeki Geleceğiniz.',
+  inGermany: '',
   skipExpensiveCoursesAndGetFluent: 'Esnek olmayan dil kurslarını, pahalı özel öğretmenleri ve genel uygulamaları atlayın ve gerçek dünya uygulama senaryolarıyla tıbbi Almancayı hızla öğrenmeye başlayın.',
   expertDeveloped: 'Uzman geliştirilmiş',
   joinPioneers: 'Öncülere katılın',
@@ -128,7 +127,7 @@ export const turkishTranslations = {
   alphaFeature2: "Özellik geliştirme üzerinde doğrudan etki",
   alphaFeature3: "Profilinizde özel 'Kurucu' rozeti",
   joinAlphaWaitlist: "Yerinizi Güvence Altına Alın",
-  claimAlphaSpot: "Alpha Yerini Talep Et",
+  claimAlphaSpot: "Yerinizi Alın",
 
   // New text below buttons
   alphaAccessLimitedPre: "Alpha erişimi",

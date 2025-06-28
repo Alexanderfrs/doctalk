@@ -1,4 +1,3 @@
-
 export const romanianTranslations = {
   // Navigation translations
   whoItsFor: 'Pentru Cine',
@@ -7,8 +6,8 @@ export const romanianTranslations = {
   
   // Landing page hero section translations
   limitedAlphaSpots: 'Locuri Alpha Limitate Disponibile',
-  landYourDreamMedicalJob: 'Comunicare Încrezătoare',
-  inGermany: 'în Sistemul de Sănătate German',
+  landYourDreamMedicalJob: 'Comunicare Încrezătoare. Succes Profesional. Viitorul Tău în Sistemul de Sănătate German.',
+  inGermany: '',
   skipExpensiveCoursesAndGetFluent: 'Sari peste cursurile de limbă inflexibile, tutorii privați scumpi și aplicațiile generice și începe să stăpânești germana medicală rapid cu scenarii de practică din lumea reală.',
   targetAudience: 'Perfect pentru lucrătorii din domeniul sănătății internaționali, medici și studenții la medicină care doresc să intre și să exceleze în sistemele de sănătate germane și să obțină recunoaștere profesională.',
   expertDeveloped: 'Dezvoltat de experți',
@@ -130,7 +129,7 @@ export const romanianTranslations = {
   alphaFeature2: "Influență directă asupra dezvoltării funcționalităților",
   alphaFeature3: "Insignă exclusivă de 'Fondator' pe profilul tău",
   joinAlphaWaitlist: "Asigură-ți Locul",
-  claimAlphaSpot: "Revendică locul Alfa",
+  claimAlphaSpot: "Revendică-ți Locul",
   
   // New text below buttons
   alphaAccessLimitedPre: "Accesul Alfa este limitat la",

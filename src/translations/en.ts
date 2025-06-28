@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -33,8 +32,8 @@ export const englishTranslations = {
   
   // Landing page hero section translations
   limitedAlphaSpots: 'Limited Alpha Spots Available',
-  landYourDreamMedicalJob: 'Land Your Dream Medical Job',
-  inGermany: 'in Germany',
+  landYourDreamMedicalJob: 'Confident Communication. Career Success. Your Future in German Healthcare.',
+  inGermany: '',
   skipExpensiveCoursesAndGetFluent: 'Skip inflexible language courses, expensive private tutors, and generic apps and start mastering medical German quickly with real-world practice scenarios.',
   expertDeveloped: 'Expert-developed',
   joinPioneers: 'Join the pioneers',
@@ -120,7 +119,7 @@ export const englishTranslations = {
   alphaFeature2: "Direct influence on feature development",
   alphaFeature3: "Exclusive 'Founder' badge on your profile",
   joinAlphaWaitlist: "Secure Your Spot",
-  claimAlphaSpot: "Claim Alpha Spot",
+  claimAlphaSpot: "Claim Your Spot",
   alphaAccessLimitedPre: "Alpha access limited to",
   alphaAccessLimitedBold: "50 spots.",
   alphaAccessLimitedPost: "",
