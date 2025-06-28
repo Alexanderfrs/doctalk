@@ -1,3 +1,4 @@
+
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -40,7 +41,7 @@ export const germanTranslations = {
   getPriorityAccess: 'Sichern Sie sich Ihren Platz',
   exploreDemo: 'Demnächst: Demo',
   exclusiveAlphaAccess: 'Frühen Insider-Zugang erhalten',
-  exclusiveAlphaAccessLimitedSpots: 'Frühen Insider-Zugang erhalten - Begrenzte Plätze verfügbar',
+  exclusiveAlphaAccessLimitedSpots: 'Frühen Insider-Zugang erhalten',
   limitedSpots: 'Begrenzte Plätze verfügbar',
   medicalTeamWorking: 'Medizinisches Team arbeitet zusammen',
   hospitalScene: 'Krankenhaus-Szene',
@@ -101,7 +102,6 @@ export const germanTranslations = {
   developedWithExperts: 'Entwickelt mit Experten',
   joinThePioneers: 'Schließen Sie sich den Pionieren an',
   comingSoonDemo: 'Demnächst: Demo',
-  exclusiveAlphaAccessLimitedSpots: 'Frühen Insider-Zugang erhalten - Begrenzte Plätze verfügbar',
   getStarted: 'Loslegen',
   
   // Onboarding specific translations
