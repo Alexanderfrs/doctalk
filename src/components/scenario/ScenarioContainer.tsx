@@ -28,12 +28,6 @@ const ScenarioContainer: React.FC<ScenarioContainerProps> = ({ scenario }) => {
     navigate('/practice');
   };
 
-  const handleSendMessage = (message: string) => {
-    console.log("Message sent:", message);
-    // TODO: Implement AI response logic here
-    // This could be connected to your medical dialogue API
-  };
-
   if (showBriefing) {
     return (
       <ScenarioBriefingScreen
@@ -48,7 +42,6 @@ const ScenarioContainer: React.FC<ScenarioContainerProps> = ({ scenario }) => {
   return (
     <StreamlinedInteractionScreen
       scenario={scenario}
-      onSendMessage={handleSendMessage}
       onBack={handleBackToBriefing}
       onExit={handleExit}
     />

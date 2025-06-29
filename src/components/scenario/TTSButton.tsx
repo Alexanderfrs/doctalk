@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Volume2, VolumeX, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useTTS } from '@/contexts/TTSContext';
+import useTextToSpeech from '@/hooks/useTextToSpeech';
 
 interface TTSButtonProps {
   textToRead: string;
@@ -28,9 +28,13 @@ const TTSButton: React.FC<TTSButtonProps> = ({
     isSpeaking, 
     isLoading, 
     isEnabled, 
-    error,
-    currentModel
-  } = useTTS();
+    error 
+  } = useTextToSpeech({
+    speaker,
+    onError: (error) => {
+      console.error('TTS Button Error:', error);
+    }
+  });
 
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -41,7 +45,7 @@ const TTSButton: React.FC<TTSButtonProps> = ({
     if (isSpeaking) {
       stop();
     } else {
-      await speak(textToRead, speaker, currentModel);
+      await speak(textToRead, speaker);
     }
   };
 
@@ -59,7 +63,7 @@ const TTSButton: React.FC<TTSButtonProps> = ({
 
   const getTitle = () => {
     if (!isEnabled) return 'Sprachausgabe deaktiviert';
-    if (error) return `Fehler: ${error}`;
+    if (error) return 'Sprachausgabe-Fehler';
     if (isLoading) return 'Lädt...';
     if (isSpeaking) return 'Stopp';
     return 'Vorlesen';
