@@ -1,5 +1,5 @@
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { supabase } from "@/integrations/supabase/client";
 
@@ -9,11 +9,10 @@ interface TextToSpeechOptions {
   onStart?: () => void;
   onEnd?: () => void;
   onError?: (error: string) => void;
-  maxRetries?: number;
 }
 
 interface UseTextToSpeechReturn {
-  speak: (text: string, speaker?: string, messageId?: string) => Promise<void>;
+  speak: (text: string, speaker?: string) => Promise<void>;
   stop: () => void;
   isPaused: boolean;
   isSpeaking: boolean;
@@ -23,8 +22,6 @@ interface UseTextToSpeechReturn {
   error: string | null;
   isEnabled: boolean;
   setEnabled: (enabled: boolean) => void;
-  isLoadingAudio: boolean;
-  currentMessageId: string | null;
 }
 
 const useTextToSpeech = ({
@@ -33,20 +30,14 @@ const useTextToSpeech = ({
   onStart,
   onEnd,
   onError,
-  maxRetries = 2,
 }: TextToSpeechOptions = {}): UseTextToSpeechReturn => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
-  const [isLoadingAudio, setIsLoadingAudio] = useState<boolean>(false);
-  const [currentMessageId, setCurrentMessageId] = useState<string | null>(null);
   const [isEnabled, setIsEnabled] = useState<boolean>(
     localStorage.getItem('tts-enabled') !== 'false'
   );
-  
-  const audioCache = useRef<Map<string, string>>(new Map());
-  const retryCount = useRef<number>(0);
 
   const stopCurrentAudio = () => {
     if (currentAudio) {
@@ -56,114 +47,56 @@ const useTextToSpeech = ({
     }
     setIsSpeaking(false);
     setIsPaused(false);
-    setIsLoadingAudio(false);
-    setCurrentMessageId(null);
   };
 
-  const generateAudioWithRetry = async (text: string, speakerVoice: string): Promise<string> => {
-    let lastError: Error | null = null;
-    
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        console.log(`TTS attempt ${attempt + 1}/${maxRetries + 1} for speaker: ${speakerVoice}`);
-        
-        const { data, error: apiError } = await supabase.functions.invoke('text-to-speech', {
-          body: { 
-            text, 
-            speaker: speakerVoice,
-            language: 'de'
-          }
-        });
-
-        if (apiError) throw new Error(apiError.message);
-        if (!data?.audioContent) throw new Error('Keine Audiodaten von ElevenLabs erhalten');
-
-        const audioUrl = `data:audio/mp3;base64,${data.audioContent}`;
-        console.log("TTS Audio erfolgreich generiert");
-        return audioUrl;
-        
-      } catch (e) {
-        lastError = e instanceof Error ? e : new Error('Unbekannter TTS-Fehler');
-        console.error(`TTS Versuch ${attempt + 1} fehlgeschlagen:`, lastError.message);
-        
-        if (attempt < maxRetries) {
-          // Exponential backoff: wait 500ms, then 1s, then 2s
-          const delay = Math.min(500 * Math.pow(2, attempt), 2000);
-          await new Promise(resolve => setTimeout(resolve, delay));
-        }
-      }
-    }
-    
-    throw lastError || new Error('TTS nach mehreren Versuchen fehlgeschlagen');
-  };
-
-  const speak = useCallback(async (text: string, speakerOverride?: string, messageId?: string) => {
-    if (!isEnabled || !text.trim()) return;
+  const speak = useCallback(async (text: string, speakerOverride?: string) => {
+    if (!isEnabled) return;
     
     try {
       stopCurrentAudio();
       
       if (onStart) onStart();
       setIsSpeaking(true);
-      setIsLoadingAudio(true);
       setError(null);
-      setCurrentMessageId(messageId || null);
-      retryCount.current = 0;
 
       const currentSpeaker = speakerOverride || speaker;
-      const cacheKey = `${currentSpeaker}-${text.substring(0, 100)}`;
-      
-      let audioUrl: string;
-      
-      // Check cache first
-      if (audioCache.current.has(cacheKey)) {
-        audioUrl = audioCache.current.get(cacheKey)!;
-        console.log("TTS Audio aus Cache geladen");
-      } else {
-        audioUrl = await generateAudioWithRetry(text, currentSpeaker);
-        // Cache the audio URL (limit cache size to 50 entries)
-        if (audioCache.current.size >= 50) {
-          const firstKey = audioCache.current.keys().next().value;
-          audioCache.current.delete(firstKey);
-        }
-        audioCache.current.set(cacheKey, audioUrl);
-      }
+      console.log(`Speaking with ${currentSpeaker} voice:`, text.substring(0, 50));
 
-      setIsLoadingAudio(false);
-      
-      const audio = new Audio(audioUrl);
+      const { data, error: apiError } = await supabase.functions.invoke('text-to-speech', {
+        body: { 
+          text, 
+          speaker: currentSpeaker,
+          language: 'de'
+        }
+      });
+
+      if (apiError) throw new Error(apiError.message);
+      if (!data?.audioContent) throw new Error('No audio content received from ElevenLabs');
+
+      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
       
       audio.onended = () => {
         setIsSpeaking(false);
-        setCurrentMessageId(null);
         if (onEnd) onEnd();
       };
 
       audio.onerror = (e) => {
-        const errorMsg = `Audio-Wiedergabe fehlgeschlagen`;
+        const errorMsg = `German TTS playback error: ${e}`;
         setError(errorMsg);
         setIsSpeaking(false);
-        setIsLoadingAudio(false);
-        setCurrentMessageId(null);
         if (onError) onError(errorMsg);
       };
 
       setCurrentAudio(audio);
       await audio.play();
-      
     } catch (e) {
-      const errorMsg = e instanceof Error ? e.message : 'Sprachausgabe-Fehler';
+      const errorMsg = e instanceof Error ? e.message : 'Failed to generate German speech';
       setError(errorMsg);
       setIsSpeaking(false);
-      setIsLoadingAudio(false);
-      setCurrentMessageId(null);
       if (onError) onError(errorMsg);
-      else {
-        console.error('TTS Error:', errorMsg);
-        // Don't show toast for every error, just log it
-      }
+      else toast.error(errorMsg);
     }
-  }, [speaker, isEnabled, onStart, onEnd, onError, maxRetries]);
+  }, [speaker, isEnabled, onStart, onEnd, onError]);
 
   const stop = useCallback(() => {
     stopCurrentAudio();
@@ -174,16 +107,16 @@ const useTextToSpeech = ({
       currentAudio.pause();
       setIsPaused(true);
     }
-  }, [currentAudio, isPaused]);
+  }, [isPaused]);
 
   const resume = useCallback(() => {
     if (currentAudio && isPaused) {
       currentAudio.play();
       setIsPaused(false);
     }
-  }, [currentAudio, isPaused]);
+  }, [isPaused]);
 
-  const setEnabledWithStorage = useCallback((enabled: boolean) => {
+  const setEnabled = useCallback((enabled: boolean) => {
     setIsEnabled(enabled);
     localStorage.setItem('tts-enabled', enabled.toString());
     if (!enabled) {
@@ -201,9 +134,7 @@ const useTextToSpeech = ({
     hasSpeechSupport: true,
     error,
     isEnabled,
-    setEnabled: setEnabledWithStorage,
-    isLoadingAudio,
-    currentMessageId,
+    setEnabled,
   };
 };
 
