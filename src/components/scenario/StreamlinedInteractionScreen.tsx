@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import CheckpointTracker from "./CheckpointTracker";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
 import { PerformanceInsightsModal } from "./PerformanceInsightsModal";
+import TTSButton from "./TTSButton";
 
 interface Checkpoint {
   id: string;
@@ -28,13 +29,13 @@ interface Checkpoint {
 interface StreamlinedInteractionScreenProps {
   scenario: Scenario;
   onBack: () => void;
-  onExit: () => void;
+  onComplete: () => void;
 }
 
 const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> = ({
   scenario,
   onBack,
-  onExit
+  onComplete
 }) => {
   const [conversation, setConversation] = useState<DialogueLine[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
@@ -682,18 +683,18 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
   const handleExit = () => {
     setShowExitConfirmation(false);
-    onExit();
+    onComplete();
   };
 
   const handleCompletionClose = () => {
     setShowCompletionModal(false);
-    onExit();
+    onComplete();
   };
 
   const handleNextExercise = () => {
     setShowCompletionModal(false);
     // For now, go back to exercises - in future this could navigate to next scenario
-    onExit();
+    onComplete();
   };
 
   const completedCount = checkpoints.filter(cp => cp.completed).length;
@@ -848,13 +849,20 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                       )}
                       style={{ fontSize: `${fontSize}px` }}
                     >
-                      <div className="mb-2">
+                      <div className="mb-2 flex items-center justify-between">
                         <span className="text-sm font-medium opacity-70">
                           {line.speaker === 'user'
                             ? 'Sie'
                             : patientProfile.name
                           }
                         </span>
+                        <TTSButton
+                          textToRead={line.text}
+                          speaker={line.speaker}
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0 ml-2"
+                        />
                       </div>
                       {line.text}
                     </div>
@@ -957,9 +965,19 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     }
                   }}
                 />
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col space-y-2">
+                  {/* TTS Button for current message */}
+                  <TTSButton
+                    textToRead={currentMessage}
+                    speaker="user"
+                    variant="outline"
+                    size="sm"
+                    className="h-10 w-10 p-0"
+                    disabled={isLLMLoading || conversationBlocked || !currentMessage.trim()}
+                  />
+
                   {hasRecognitionSupport && (
-                    <Button
+                    <Button 
                       onClick={handleVoiceRecording}
                       disabled={isLLMLoading || conversationBlocked}
                       variant={isListening ? "destructive" : "outline"}
@@ -972,7 +990,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                       {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
                     </Button>
                   )}
-                  <Button
+                  
+                  <Button 
                     onClick={handleSendMessage}
                     disabled={!currentMessage.trim() || isLLMLoading || conversationBlocked}
                     className="bg-medical-600 hover:bg-medical-700 h-10 w-10 p-0"

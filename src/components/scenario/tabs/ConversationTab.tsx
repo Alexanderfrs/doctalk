@@ -3,10 +3,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Volume2, Play } from "lucide-react";
+import { MessageCircle, Volume2 } from "lucide-react";
 import ConversationInput from "../ConversationInput";
 import useTextToSpeech from "@/hooks/useTextToSpeech";
 import TTSSettings from "../TTSSettings";
+import TTSButton from "../TTSButton";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -86,10 +87,6 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
     onSendMessage(message);
   };
 
-  const handlePlayTTS = (text: string, speaker: string) => {
-    speak(text, speaker);
-  };
-
   const getSpeakerBadgeColor = (speaker: string) => {
     switch (speaker) {
       case 'patient': return 'bg-blue-100 text-blue-800 border-blue-200';
@@ -144,20 +141,13 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
                   </Badge>
                   
                   <div className="flex items-center space-x-2">
-                    <Button
-                      variant="ghost"
+                    <TTSButton
+                      textToRead={message.text}
+                      speaker={message.speaker}
                       size="sm"
-                      onClick={() => handlePlayTTS(message.text, message.speaker)}
-                      disabled={isSpeaking}
+                      variant="ghost"
                       className="h-6 w-6 p-0"
-                      title="Text vorlesen"
-                    >
-                      {isSpeaking ? (
-                        <Volume2 className="h-3 w-3 animate-pulse" />
-                      ) : (
-                        <Play className="h-3 w-3" />
-                      )}
-                    </Button>
+                    />
                     <span className="text-xs text-gray-500">
                       {message.timestamp.toLocaleTimeString('de-DE', { 
                         hour: '2-digit', 

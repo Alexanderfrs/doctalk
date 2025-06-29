@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Send, Mic, MicOff, MicVocal } from "lucide-react";
 import useVoiceRecognition from "@/hooks/useVoiceRecognition";
+import TTSButton from "./TTSButton";
 import { toast } from "sonner";
 
 interface ConversationInputProps {
@@ -139,15 +140,25 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
         </div>
         
         <div className="flex flex-col space-y-2">
+          {/* TTS Button for current message */}
+          <TTSButton
+            textToRead={message}
+            speaker="user"
+            variant="outline"
+            size="sm"
+            className="h-10 w-10 p-0"
+            disabled={disabled || !message.trim()}
+          />
+
           {hasRecognitionSupport && (
             <>
               {/* Transcription to text area button */}
               <Button 
                 variant={isTranscribing ? "destructive" : "outline"}
-                size="icon" 
+                size="sm" 
                 onClick={toggleTranscription}
                 disabled={disabled || isDirectListening}
-                className="touch-action-manipulation"
+                className="touch-action-manipulation h-10 w-10 p-0"
                 aria-label={isTranscribing ? "Transkription stoppen" : "Transkription starten"}
                 title="Transkription in Textfeld"
               >
@@ -161,14 +172,14 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
               {/* Direct speech input button */}
               <Button 
                 variant={isDirectListening ? "default" : "secondary"}
-                size="icon" 
+                size="sm" 
                 onMouseDown={handleDirectSpeechMouseDown}
                 onMouseUp={handleDirectSpeechMouseUp}
                 onMouseLeave={handleDirectSpeechMouseUp}
                 onTouchStart={handleDirectSpeechMouseDown}
                 onTouchEnd={handleDirectSpeechMouseUp}
                 disabled={disabled || isTranscribing}
-                className="touch-action-manipulation"
+                className="touch-action-manipulation h-10 w-10 p-0"
                 aria-label="Direkt sprechen (halten)"
                 title="Halten und sprechen - direkt senden"
               >
@@ -178,10 +189,10 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
           )}
           
           <Button 
-            size="icon" 
+            size="sm" 
             onClick={handleSendMessage}
             disabled={disabled || !message.trim()}
-            className="touch-action-manipulation"
+            className="touch-action-manipulation bg-medical-600 hover:bg-medical-700 h-10 w-10 p-0"
             aria-label={t("common.send")}
           >
             <Send className="h-4 w-4" />
