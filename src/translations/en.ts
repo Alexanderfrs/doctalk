@@ -1,5 +1,4 @@
 
-
 export const englishTranslations: Record<string, string> = {
   // Navigation
   'home': 'Home',
@@ -212,7 +211,10 @@ export const englishTranslations: Record<string, string> = {
   'change': 'Change',
   'improvement': 'Improvement',
   'enhancement': 'Enhancement',
+  'upgrade': 'Upgrade',
+  'update': 'Update',
   'revision': 'Revision',
+  'version': 'Version',
   'release': 'Release',
   'launch': 'Launch',
   'deploy': 'Deploy',
@@ -240,6 +242,7 @@ export const englishTranslations: Record<string, string> = {
   'check': 'Check',
   'verify': 'Verify',
   'validate': 'Validate',
+  'confirm': 'Confirm',
   'approve': 'Approve',
   'accept': 'Accept',
   'reject': 'Reject',
@@ -256,6 +259,7 @@ export const englishTranslations: Record<string, string> = {
   'switch_on': 'Switch On',
   'switch_off': 'Switch Off',
   'open': 'Open',
+  'close': 'Close',
   'show': 'Show',
   'hide': 'Hide',
   'display': 'Display',
@@ -263,6 +267,7 @@ export const englishTranslations: Record<string, string> = {
   'see': 'See',
   'look': 'Look',
   'find': 'Find',
+  'search': 'Search',
   'discover': 'Discover',
   'explore': 'Explore',
   'browse': 'Browse',
@@ -281,8 +286,12 @@ export const englishTranslations: Record<string, string> = {
   'stay': 'Stay',
   'remain': 'Remain',
   'wait': 'Wait',
+  'pause': 'Pause',
+  'continue': 'Continue',
   'proceed': 'Proceed',
   'advance': 'Advance',
+  'progress': 'Progress',
+  'develop': 'Develop',
   'grow': 'Grow',
   'increase': 'Increase',
   'decrease': 'Decrease',
@@ -303,7 +312,9 @@ export const englishTranslations: Record<string, string> = {
   'instant': 'Instant',
   'immediate': 'Immediate',
   'delayed': 'Delayed',
+  'pending': 'Pending',
   'processing': 'Processing',
+  'loading': 'Loading',
   'saving': 'Saving',
   'deleting': 'Deleting',
   'updating': 'Updating',
@@ -313,6 +324,7 @@ export const englishTranslations: Record<string, string> = {
   'calculating': 'Calculating',
   'computing': 'Computing',
   'analyzing': 'Analyzing',
+  'processing': 'Processing',
   'working': 'Working',
   'running': 'Running',
   'executing': 'Executing',
@@ -339,6 +351,7 @@ export const englishTranslations: Record<string, string> = {
   'downloading': 'Downloading',
   'installing': 'Installing',
   'uninstalling': 'Uninstalling',
+  'updating': 'Updating',
   'upgrading': 'Upgrading',
   'downgrading': 'Downgrading',
   'migrating': 'Migrating',
@@ -367,6 +380,7 @@ export const englishTranslations: Record<string, string> = {
   'patientProfile': 'Patient Profile',
   'age': 'Age',
   'years': 'years',
+  'condition': 'Condition',
   'mood': 'Mood',
   'previousConditions': 'Previous Conditions',
   'enterYourResponse': 'Enter your response or record by voice...',
@@ -377,24 +391,12 @@ export const englishTranslations: Record<string, string> = {
   'gotIt': 'Got it',
   'concreteSolutionSuggestions': 'Concrete Solution Suggestions',
   'language': 'Language',
+  'content': 'Content',
   'languageFeedbackWillAppear': 'Language feedback will appear here.',
   'contentFeedbackWillAppear': 'Content feedback will appear here.',
   'speechOutputActive': 'Speech output active...',
   'learningGoals': 'Learning Goals',
   'checkpoints': 'Checkpoints',
   'completed': 'Completed',
-  
-  // Scenario briefing translations
-  'scenarioBriefing': 'Scenario Briefing',
-  'environment': 'Environment',
-  'culturalNotes': 'Cultural Notes',
-  'moreAbout': 'More about',
-  'bestPracticesForScenario': 'Best practices for this scenario',
-  'beginInteraction': 'Begin Interaction',
-  
-  // Exercise trainer interface
-  'exerciseTitle': 'Exercise Title',
-  'patientInformation': 'Patient Information',
-  'defaultChatInput': 'Enter your response or record by voice...'
+  'feedback': 'Feedback'
 };
-
