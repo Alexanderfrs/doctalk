@@ -707,7 +707,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     <div className="h-screen bg-gradient-to-br from-medical-50 to-white flex flex-col">
       {/* Header */}
       <div className="bg-white border-b border-medical-200 p-4 flex-shrink-0">
-        <div className="flex items-center justify-between">
+        <div className="max-w-[1200px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -778,291 +778,286 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex gap-4 p-4 min-h-0">
-        {/* Conversation Area */}
-        <div className="flex-1 flex flex-col">
-          <Card className="flex-1 flex flex-col min-h-0">
-            <div className="p-4 border-b border-medical-200 flex-shrink-0">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <MessageCircle className="h-4 w-4 text-medical-600" />
-                  <h3 className="font-medium text-medical-800">Gespräch</h3>
-                  {isConversationComplete && (
-                    <Badge variant="outline" className="border-green-500 text-green-700">
-                      <CheckCircle className="h-3 w-3 mr-1" />
-                      Abgeschlossen
-                    </Badge>
-                  )}
-                </div>
-                {/* Enhanced Patient Info with Avatar */}
-                <div className="flex items-center gap-3 bg-medical-50 rounded-lg px-4 py-3">
-                  <Avatar className="w-16 h-16">
-                    <AvatarImage src={patientProfile.avatar_url} alt={patientProfile.name} />
-                    <AvatarFallback className={`bg-gradient-to-br ${patientProfile.avatar_color} text-white font-semibold text-lg`}>
-                      {patientProfile.name.split(' ').map(n => n[0]).join('')}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="text-sm">
-                    <div className="font-medium text-medical-800 text-lg">{patientProfile.name}</div>
-                    <div className="flex items-center gap-3 text-medical-600 text-sm mt-1">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {patientProfile.age} Jahre
-                      </span>
-                      {patientProfile.condition && (
+      {/* Main Content with Layout Container */}
+      <div className="flex-1 p-4 min-h-0">
+        <div className="max-w-[1200px] mx-auto h-full flex gap-4">
+          {/* Conversation Area */}
+          <div className="flex-1 flex flex-col min-h-0">
+            <Card className="flex-1 flex flex-col min-h-0">
+              <div className="p-4 border-b border-medical-200 flex-shrink-0">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <MessageCircle className="h-4 w-4 text-medical-600" />
+                    <h3 className="font-medium text-medical-800">Gespräch</h3>
+                    {isConversationComplete && (
+                      <Badge variant="outline" className="border-green-500 text-green-700">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Abgeschlossen
+                      </Badge>
+                    )}
+                  </div>
+                  {/* Enhanced Patient Info with Avatar */}
+                  <div className="flex items-center gap-3 bg-medical-50 rounded-lg px-4 py-3">
+                    <Avatar className="w-16 h-16">
+                      <AvatarImage src={patientProfile.avatar_url} alt={patientProfile.name} />
+                      <AvatarFallback className={`bg-gradient-to-br ${patientProfile.avatar_color} text-white font-semibold text-lg`}>
+                        {patientProfile.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="text-sm">
+                      <div className="font-medium text-medical-800 text-lg">{patientProfile.name}</div>
+                      <div className="flex items-center gap-3 text-medical-600 text-sm mt-1">
                         <span className="flex items-center gap-1">
-                          <Activity className="h-3 w-3" />
-                          {patientProfile.condition}
+                          <Calendar className="h-3 w-3" />
+                          {patientProfile.age} Jahre
                         </span>
+                        {patientProfile.condition && (
+                          <span className="flex items-center gap-1">
+                            <Activity className="h-3 w-3" />
+                            {patientProfile.condition}
+                          </span>
+                        )}
+                      </div>
+                      {patientProfile.previous_conditions && patientProfile.previous_conditions.length > 0 && (
+                        <div className="text-xs text-medical-500 mt-1">
+                          Vorerkrankungen: {patientProfile.previous_conditions.join(', ')}
+                        </div>
                       )}
                     </div>
-                    {patientProfile.previous_conditions && patientProfile.previous_conditions.length > 0 && (
-                      <div className="text-xs text-medical-500 mt-1">
-                        Vorerkrankungen: {patientProfile.previous_conditions.join(', ')}
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
-            </div>
 
-            <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-              <div className="space-y-4">
-                {conversation.length === 0 && (
-                  <div className="text-center text-medical-500 py-8">
-                    <MessageCircle className="h-8 w-8 mx-auto mb-2" />
-                    <p className="text-lg">Beginnen Sie das Gespräch mit {patientProfile.name}...</p>
-                  </div>
-                )}
-                {conversation.map((line, index) => (
-                  <div
-                    key={index}
-                    className={cn(
-                      "flex",
-                      line.speaker === 'user' ? "justify-end" : "justify-start"
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "max-w-[80%] p-4 rounded-lg leading-relaxed",
-                        line.speaker === 'user'
-                          ? "bg-medical-600 text-white"
-                          : "bg-white border border-medical-200 text-medical-800 shadow-sm"
-                      )}
-                      style={{ fontSize: `${fontSize}px` }}
-                    >
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="text-sm font-medium opacity-70">
-                          {line.speaker === 'user'
-                            ? 'Sie'
-                            : patientProfile.name
-                          }
-                        </span>
-                        <TTSButton
-                          textToRead={line.text}
-                          speaker={line.speaker}
-                          variant="ghost"
-                          size="sm"
-                          className="h-6 w-6 p-0 ml-2"
-                        />
-                      </div>
-                      {line.text}
+              <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+                <div className="space-y-4">
+                  {conversation.length === 0 && (
+                    <div className="text-center text-medical-500 py-8">
+                      <MessageCircle className="h-8 w-8 mx-auto mb-2" />
+                      <p className="text-lg">Beginnen Sie das Gespräch mit {patientProfile.name}...</p>
                     </div>
-                  </div>
-                ))}
+                  )}
+                  {conversation.map((line, index) => (
+                    <div
+                      key={index}
+                      className={cn(
+                        "flex",
+                        line.speaker === 'user' ? "justify-end" : "justify-start"
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          "max-w-[80%] p-4 rounded-lg leading-relaxed",
+                          line.speaker === 'user'
+                            ? "bg-medical-600 text-white"
+                            : "bg-white border border-medical-200 text-medical-800 shadow-sm"
+                        )}
+                        style={{ fontSize: `${fontSize}px` }}
+                      >
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="text-sm font-medium opacity-70">
+                            {line.speaker === 'user'
+                              ? 'Sie'
+                              : patientProfile.name
+                            }
+                          </span>
+                          {/* Only show TTS button for AI messages, not user messages */}
+                          {line.speaker !== 'user' && (
+                            <TTSButton
+                              textToRead={line.text}
+                              speaker={line.speaker}
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 w-6 p-0 ml-2"
+                            />
+                          )}
+                        </div>
+                        {line.text}
+                      </div>
+                    </div>
+                  ))}
 
-                {/* Unobtrusive Guidance Notification */}
-                {showGuidanceNotification && (
-                  <div className="flex justify-center">
-                    <div className="bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-lg max-w-[80%] shadow-sm">
-                      <div className="flex items-start gap-2">
-                        <Lightbulb className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="text-sm font-medium mb-1">Guidance</p>
-                          <p className="text-xs">{guidanceText}</p>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setShowGuidanceNotification(false)}
-                            className="mt-2 h-6 text-xs text-blue-700 hover:text-blue-800"
-                          >
-                            Got it
-                          </Button>
+                  {/* Unobtrusive Guidance Notification */}
+                  {showGuidanceNotification && (
+                    <div className="flex justify-center">
+                      <div className="bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-lg max-w-[80%] shadow-sm">
+                        <div className="flex items-start gap-2">
+                          <Lightbulb className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="text-sm font-medium mb-1">Guidance</p>
+                            <p className="text-xs">{guidanceText}</p>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setShowGuidanceNotification(false)}
+                              className="mt-2 h-6 text-xs text-blue-700 hover:text-blue-800"
+                            >
+                              Got it
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {isLLMLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-white border border-medical-200 text-medical-800 p-4 rounded-lg shadow-sm">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-medical-400 rounded-full animate-bounce" />
-                        <div className="w-2 h-2 bg-medical-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                        <div className="w-2 h-2 bg-medical-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                  {isLLMLoading && (
+                    <div className="flex justify-start">
+                      <div className="bg-white border border-medical-200 text-medical-800 p-4 rounded-lg shadow-sm">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-medical-400 rounded-full animate-bounce" />
+                          <div className="w-2 h-2 bg-medical-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                          <div className="w-2 h-2 bg-medical-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {isSpeaking && (
+                    <div className="flex justify-start">
+                      <div className="bg-blue-50 border border-blue-200 text-blue-800 p-2 rounded-lg text-sm flex items-center gap-2">
+                        <Volume2 className="h-4 w-4" />
+                        <span>Sprachausgabe aktiv...</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={stop}
+                          className="h-6 w-6 p-0"
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </ScrollArea>
+
+              {/* Enhanced Suggestion Display */}
+              {showSuggestion && (
+                <div className="p-4 bg-amber-50 border-t border-amber-200">
+                  <div className="flex items-start gap-3">
+                    <Lightbulb className="h-5 w-5 text-amber-600 mt-0.5" />
+                    <div className="flex-1">
+                      <h4 className="font-medium text-amber-800 mb-1">Concrete Solution Suggestions</h4>
+                      <p className="text-sm text-amber-700 mb-3">{suggestionMessage}</p>
+                      <div className="grid gap-2">
+                        {suggestionOptions.map((option, index) => (
+                          <Button
+                            key={index}
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleUseSuggestion(option)}
+                            className="border-amber-300 text-amber-700 hover:bg-amber-100 text-left justify-start h-auto p-3 whitespace-normal"
+                          >
+                            {option}
+                          </Button>
+                        ))}
                       </div>
                     </div>
                   </div>
-                )}
-                {isSpeaking && (
-                  <div className="flex justify-start">
-                    <div className="bg-blue-50 border border-blue-200 text-blue-800 p-2 rounded-lg text-sm flex items-center gap-2">
-                      <Volume2 className="h-4 w-4" />
-                      <span>Sprachausgabe aktiv...</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={stop}
-                        className="h-6 w-6 p-0"
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </ScrollArea>
-
-            {/* Enhanced Suggestion Display */}
-            {showSuggestion && (
-              <div className="p-4 bg-amber-50 border-t border-amber-200">
-                <div className="flex items-start gap-3">
-                  <Lightbulb className="h-5 w-5 text-amber-600 mt-0.5" />
-                  <div className="flex-1">
-                    <h4 className="font-medium text-amber-800 mb-1">Concrete Solution Suggestions</h4>
-                    <p className="text-sm text-amber-700 mb-3">{suggestionMessage}</p>
-                    <div className="grid gap-2">
-                      {suggestionOptions.map((option, index) => (
-                        <Button
-                          key={index}
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleUseSuggestion(option)}
-                          className="border-amber-300 text-amber-700 hover:bg-amber-100 text-left justify-start h-auto p-3 whitespace-normal"
-                        >
-                          {option}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Input Area with Voice Recording */}
-            <div className="p-4 border-t border-medical-200 flex-shrink-0">
-              <div className="flex gap-2">
-                <Textarea
-                  value={currentMessage}
-                  onChange={(e) => setCurrentMessage(e.target.value)}
-                  placeholder="Ihre Antwort eingeben oder per Sprache aufnehmen..."
-                  className="flex-1 min-h-[40px] max-h-[120px] resize-none"
-                  style={{ fontSize: `${fontSize}px` }}
-                  disabled={isLLMLoading || conversationBlocked}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSendMessage();
-                    }
-                  }}
-                />
-                <div className="flex flex-col space-y-2">
-                  {/* TTS Button for current message */}
-                  <TTSButton
-                    textToRead={currentMessage}
-                    speaker="user"
-                    variant="outline"
-                    size="sm"
-                    className="h-10 w-10 p-0"
-                    disabled={isLLMLoading || conversationBlocked || !currentMessage.trim()}
+              {/* Input Area with Voice Recording */}
+              <div className="p-4 border-t border-medical-200 flex-shrink-0">
+                <div className="flex gap-2">
+                  <Textarea
+                    value={currentMessage}
+                    onChange={(e) => setCurrentMessage(e.target.value)}
+                    placeholder="Ihre Antwort eingeben oder per Sprache aufnehmen..."
+                    className="flex-1 min-h-[40px] max-h-[120px] resize-none"
+                    style={{ fontSize: `${fontSize}px` }}
+                    disabled={isLLMLoading || conversationBlocked}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSendMessage();
+                      }
+                    }}
                   />
-
-                  {hasRecognitionSupport && (
+                  <div className="flex flex-col space-y-2">
+                    {hasRecognitionSupport && (
+                      <Button 
+                        onClick={handleVoiceRecording}
+                        disabled={isLLMLoading || conversationBlocked}
+                        variant={isListening ? "destructive" : "outline"}
+                        size="sm"
+                        className={cn(
+                          "h-10 w-10 p-0",
+                          isListening && "animate-pulse"
+                        )}
+                      >
+                        {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                      </Button>
+                    )}
+                    
                     <Button 
-                      onClick={handleVoiceRecording}
-                      disabled={isLLMLoading || conversationBlocked}
-                      variant={isListening ? "destructive" : "outline"}
-                      size="sm"
-                      className={cn(
-                        "h-10 w-10 p-0",
-                        isListening && "animate-pulse"
-                      )}
+                      onClick={handleSendMessage}
+                      disabled={!currentMessage.trim() || isLLMLoading || conversationBlocked}
+                      className="bg-medical-600 hover:bg-medical-700 h-10 w-10 p-0"
                     >
-                      {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                      <Send className="h-4 w-4" />
                     </Button>
+                  </div>
+                </div>
+                {isListening && (
+                  <div className="mt-2 text-sm text-medical-600 flex items-center gap-2">
+                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                    Höre zu... Sprechen Sie jetzt
+                  </div>
+                )}
+                {voiceError && (
+                  <div className="mt-2 text-sm text-red-600">
+                    Sprach-Fehler: {voiceError}
+                  </div>
+                )}
+              </div>
+            </Card>
+          </div>
+
+          {/* Compact Right Sidebar */}
+          <div className="w-80 flex flex-col gap-3">
+            {/* Checkpoint Tracker */}
+            <CheckpointTracker checkpoints={checkpoints} />
+
+            {/* Combined Feedback Card */}
+            <Card className="flex-1">
+              <div className="p-3 border-b border-medical-200">
+                <h3 className="font-medium text-medical-800 text-sm">Feedback</h3>
+              </div>
+              <div className="p-3 space-y-3 max-h-[300px] overflow-y-auto">
+                {/* Language Feedback */}
+                <div>
+                  <h4 className="text-xs font-medium text-medical-700 mb-2">Language</h4>
+                  {languageFeedback ? (
+                    <div className={cn(
+                      "border rounded-lg p-2 text-xs",
+                      languageFeedback.includes('Gute Sprachverwendung')
+                        ? "bg-green-50 border-green-200 text-green-800"
+                        : "bg-orange-50 border-orange-200 text-orange-800"
+                    )}>
+                      {languageFeedback}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-medical-500">
+                      Language feedback will appear here.
+                    </p>
                   )}
-                  
-                  <Button 
-                    onClick={handleSendMessage}
-                    disabled={!currentMessage.trim() || isLLMLoading || conversationBlocked}
-                    className="bg-medical-600 hover:bg-medical-700 h-10 w-10 p-0"
-                  >
-                    <Send className="h-4 w-4" />
-                  </Button>
+                </div>
+
+                {/* Content Feedback */}
+                <div>
+                  <h4 className="text-xs font-medium text-medical-700 mb-2">Content</h4>
+                  {feedback ? (
+                    <div className="bg-medical-50 border border-medical-200 rounded-lg p-2">
+                      <p className="text-xs text-medical-700">{feedback}</p>
+                    </div>
+                  ) : (
+                    <p className="text-xs text-medical-500">
+                      Content feedback will appear here.
+                    </p>
+                  )}
                 </div>
               </div>
-              {isListening && (
-                <div className="mt-2 text-sm text-medical-600 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                  Höre zu... Sprechen Sie jetzt
-                </div>
-              )}
-              {voiceError && (
-                <div className="mt-2 text-sm text-red-600">
-                  Sprach-Fehler: {voiceError}
-                </div>
-              )}
-            </div>
-          </Card>
-        </div>
-
-        {/* Right Sidebar */}
-        <div className="w-80 flex flex-col gap-4">
-          {/* Checkpoint Tracker */}
-          <CheckpointTracker checkpoints={checkpoints} />
-
-          {/* Enhanced Language Feedback */}
-          <Card className="flex-1">
-            <div className="p-4 border-b border-medical-200">
-              <h3 className="font-medium text-medical-800">Language Feedback</h3>
-            </div>
-            <div className="p-4">
-              {languageFeedback ? (
-                <div className={cn(
-                  "border rounded-lg p-3",
-                  languageFeedback.includes('Gute Sprachverwendung')
-                    ? "bg-green-50 border-green-200 text-green-800"
-                    : "bg-orange-50 border-orange-200 text-orange-800"
-                )}>
-                  <p className="text-sm">{languageFeedback}</p>
-                </div>
-              ) : (
-                <p className="text-sm text-medical-500">
-                  Your language feedback will appear here after your responses.
-                </p>
-              )}
-            </div>
-          </Card>
-
-          {/* Content Feedback */}
-          <Card>
-            <div className="p-4 border-b border-medical-200">
-              <h3 className="font-medium text-medical-800">Content Feedback</h3>
-            </div>
-            <div className="p-4">
-              {feedback ? (
-                <div className="bg-medical-50 border border-medical-200 rounded-lg p-3">
-                  <p className="text-sm text-medical-700">{feedback}</p>
-                </div>
-              ) : (
-                <p className="text-sm text-medical-500">
-                  Content feedback will appear here after your responses.
-                </p>
-              )}
-            </div>
-          </Card>
+            </Card>
+          </div>
         </div>
       </div>
 
