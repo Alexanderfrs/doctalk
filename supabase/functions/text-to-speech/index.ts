@@ -17,25 +17,78 @@ const GERMAN_VOICES = {
   'user': 'EXAVITQu4vr4xnSDxMaL' // Default to Sarah
 };
 
+// Model configurations with cost optimization
+const TTS_MODELS = {
+  'turbo': {
+    id: 'eleven_turbo_v2_5',
+    name: 'Turbo (Fast & Economical)',
+    cost: 'low'
+  },
+  'multilingual': {
+    id: 'eleven_multilingual_v2',
+    name: 'Multilingual (High Quality)',
+    cost: 'high'
+  },
+  'monolingual': {
+    id: 'eleven_monolingual_v1',
+    name: 'English Only (Basic)',
+    cost: 'low'
+  }
+};
+
+// Optimize text for TTS to reduce costs
+function optimizeTextForTTS(text: string): string {
+  return text
+    .trim()
+    .replace(/\s+/g, ' ') // Remove extra whitespace
+    .replace(/\.{2,}/g, '.') // Replace multiple dots with single
+    .substring(0, 1000); // Limit length to control costs
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const { text, speaker = 'user', language = 'de' } = await req.json();
+    const { text, speaker = 'user', language = 'de', model = 'turbo' } = await req.json();
 
     if (!text) {
-      throw new Error('Text is required');
+      return new Response(
+        JSON.stringify({ 
+          error: 'TEXT_REQUIRED',
+          message: 'Text ist erforderlich' 
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     if (!ELEVENLABS_API_KEY) {
-      throw new Error('ElevenLabs API key is not configured');
+      return new Response(
+        JSON.stringify({ 
+          error: 'API_KEY_MISSING',
+          message: 'ElevenLabs API-Schlüssel ist nicht konfiguriert' 
+        }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    console.log(`Processing TTS for speaker: ${speaker}, text: ${text.substring(0, 50)}...`);
+    // Optimize text and validate length
+    const optimizedText = optimizeTextForTTS(text);
+    if (optimizedText.length === 0) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'TEXT_TOO_SHORT',
+          message: 'Text ist zu kurz oder leer' 
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    // Select appropriate German voice based on speaker
+    console.log(`Processing TTS - Model: ${model}, Speaker: ${speaker}, Text length: ${optimizedText.length}`);
+
+    // Select model and voice
+    const selectedModel = TTS_MODELS[model] || TTS_MODELS['turbo'];
     const voiceId = GERMAN_VOICES[speaker] || GERMAN_VOICES['user'];
 
     const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
@@ -45,21 +98,47 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        text,
-        model_id: 'eleven_multilingual_v2',
+        text: optimizedText,
+        model_id: selectedModel.id,
         voice_settings: {
-          stability: 0.6,
-          similarity_boost: 0.8,
+          stability: model === 'turbo' ? 0.5 : 0.6, // Less processing for turbo
+          similarity_boost: model === 'turbo' ? 0.7 : 0.8,
           style: 0.2,
-          use_speaker_boost: true
+          use_speaker_boost: model !== 'monolingual'
         }
       }),
     });
 
     if (!response.ok) {
-      const errorBody = await response.text();
-      console.error("ElevenLabs API Error:", errorBody);
-      throw new Error(`ElevenLabs API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error("ElevenLabs API Error:", response.status, errorText);
+      
+      // Handle specific error types
+      if (response.status === 401) {
+        return new Response(
+          JSON.stringify({ 
+            error: 'QUOTA_EXCEEDED',
+            message: 'ElevenLabs-Kontingent aufgebraucht. Bitte API-Schlüssel überprüfen oder Credits aufladen.' 
+          }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      } else if (response.status === 429) {
+        return new Response(
+          JSON.stringify({ 
+            error: 'RATE_LIMITED',
+            message: 'Zu viele Anfragen. Bitte einen Moment warten.' 
+          }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      } else {
+        return new Response(
+          JSON.stringify({ 
+            error: 'API_ERROR',
+            message: `ElevenLabs API-Fehler: ${response.status}` 
+          }),
+          { status: response.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
     }
 
     const audioBuffer = await response.arrayBuffer();
@@ -67,10 +146,15 @@ serve(async (req) => {
       String.fromCharCode(...new Uint8Array(audioBuffer))
     );
 
-    console.log("German TTS audio generated successfully");
+    console.log(`German TTS audio generated successfully with ${selectedModel.name}`);
 
     return new Response(
-      JSON.stringify({ audioContent: base64Audio }),
+      JSON.stringify({ 
+        audioContent: base64Audio,
+        model: selectedModel.name,
+        cost: selectedModel.cost,
+        textLength: optimizedText.length
+      }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
@@ -80,8 +164,8 @@ serve(async (req) => {
     
     return new Response(
       JSON.stringify({ 
-        error: error.message,
-        message: "Failed to generate German audio. Please check your ElevenLabs API key." 
+        error: 'INTERNAL_ERROR',
+        message: "Interner Server-Fehler bei der Sprachgenerierung" 
       }),
       {
         status: 500,

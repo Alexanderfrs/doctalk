@@ -2,8 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { MessageCircle, Volume2 } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import ConversationInput from "../ConversationInput";
 import useTextToSpeech from "@/hooks/useTextToSpeech";
 import TTSSettings from "../TTSSettings";
@@ -40,7 +39,10 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
     speak, 
     isSpeaking, 
     isEnabled: ttsEnabled, 
-    setEnabled: setTTSEnabled 
+    setEnabled: setTTSEnabled,
+    currentModel,
+    setModel,
+    quotaExceeded
   } = useTextToSpeech({
     autoPlay: true,
     onError: (error) => console.error('TTS Error:', error)
@@ -69,8 +71,8 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
       
       setMessages(prev => [...prev, aiMessage]);
       
-      // Auto-play TTS for AI response with a small delay
-      if (ttsEnabled) {
+      // Auto-play TTS for AI response with a small delay (only if enabled and quota not exceeded)
+      if (ttsEnabled && !quotaExceeded) {
         // Clear any existing timeout
         if (autoPlayTimeoutRef.current) {
           clearTimeout(autoPlayTimeoutRef.current);
@@ -78,13 +80,13 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
         
         // Set a timeout to auto-play after message is rendered
         autoPlayTimeoutRef.current = setTimeout(() => {
-          speak(aiResponse, 'patient');
+          speak(aiResponse, 'patient', currentModel);
         }, 500);
       }
       
       lastAIMessageRef.current = aiResponse;
     }
-  }, [aiResponse, speak, ttsEnabled]);
+  }, [aiResponse, speak, ttsEnabled, currentModel, quotaExceeded]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -137,6 +139,9 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
           <TTSSettings 
             isEnabled={ttsEnabled}
             onToggle={setTTSEnabled}
+            currentModel={currentModel}
+            onModelChange={setModel}
+            quotaExceeded={quotaExceeded}
           />
         </CardHeader>
         
@@ -168,6 +173,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
                       size="sm"
                       variant="ghost"
                       className="h-6 w-6 p-0"
+                      disabled={quotaExceeded}
                     />
                     <span className="text-xs text-gray-500">
                       {message.timestamp.toLocaleTimeString('de-DE', { 
