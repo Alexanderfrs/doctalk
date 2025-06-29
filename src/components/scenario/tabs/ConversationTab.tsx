@@ -34,6 +34,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const lastAIMessageRef = useRef<string>('');
+  const autoPlayTimeoutRef = useRef<NodeJS.Timeout>();
 
   const { 
     speak, 
@@ -56,7 +57,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
 
   // Handle new AI responses with automatic TTS
   useEffect(() => {
-    if (aiResponse && aiResponse !== lastAIMessageRef.current && ttsEnabled) {
+    if (aiResponse && aiResponse !== lastAIMessageRef.current) {
       // Add AI message to conversation
       const aiMessage: Message = {
         id: `ai-${Date.now()}`,
@@ -68,11 +69,31 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
       
       setMessages(prev => [...prev, aiMessage]);
       
-      // Auto-play TTS for AI response
-      speak(aiResponse, 'patient');
+      // Auto-play TTS for AI response with a small delay
+      if (ttsEnabled) {
+        // Clear any existing timeout
+        if (autoPlayTimeoutRef.current) {
+          clearTimeout(autoPlayTimeoutRef.current);
+        }
+        
+        // Set a timeout to auto-play after message is rendered
+        autoPlayTimeoutRef.current = setTimeout(() => {
+          speak(aiResponse, 'patient');
+        }, 500);
+      }
+      
       lastAIMessageRef.current = aiResponse;
     }
   }, [aiResponse, speak, ttsEnabled]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (autoPlayTimeoutRef.current) {
+        clearTimeout(autoPlayTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleSendMessage = (message: string) => {
     // Add user message

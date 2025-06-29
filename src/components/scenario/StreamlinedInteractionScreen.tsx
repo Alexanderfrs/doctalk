@@ -117,7 +117,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     }
   });
 
-  // Fixed handleSendMessage function
+  // Fixed handleSendMessage function with automatic TTS
   const handleSendMessage = async () => {
     if (!currentMessage.trim() || isLLMLoading || conversationBlocked) return;
 
@@ -163,7 +163,10 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
         // Auto-play TTS for AI response if enabled
         if (isTTSEnabled) {
-          speak(response.patientReply, 'patient');
+          // Small delay to ensure the UI is updated before starting TTS
+          setTimeout(() => {
+            speak(response.patientReply, 'patient');
+          }, 300);
         }
 
         // Set feedback if provided

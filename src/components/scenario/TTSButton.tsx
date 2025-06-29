@@ -36,7 +36,10 @@ const TTSButton: React.FC<TTSButtonProps> = ({
     }
   });
 
-  const handleClick = async () => {
+  const handleClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (!textToRead.trim()) return;
     
     if (isSpeaking) {
@@ -68,13 +71,15 @@ const TTSButton: React.FC<TTSButtonProps> = ({
 
   return (
     <Button
+      type="button"
       variant={variant}
       size={size}
       onClick={handleClick}
-      disabled={disabled || !textToRead.trim() || (!isEnabled && !isSpeaking)}
+      disabled={disabled || !textToRead.trim()}
       className={cn(
-        "touch-action-manipulation flex-shrink-0",
+        "touch-action-manipulation flex-shrink-0 cursor-pointer",
         error && "text-red-500 hover:text-red-600",
+        !isEnabled && "opacity-50",
         className
       )}
       title={getTitle()}
