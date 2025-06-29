@@ -42,7 +42,7 @@ const ScenarioContainer: React.FC<ScenarioContainerProps> = ({ scenario }) => {
   return (
     <StreamlinedInteractionScreen
       scenario={scenario}
-      patientProfile={patientProfile}
+      onBack={handleBackToBriefing}
       onExit={handleExit}
     />
   );
