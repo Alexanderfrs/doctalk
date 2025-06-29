@@ -1,12 +1,13 @@
+
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { MessageSquare, Send, Play, Volume2, Loader2, Settings, ArrowLeft, VolumeX } from "lucide-react";
+import { MessageSquare, Send, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { useUnifiedMedicalLLM } from "@/hooks/useUnifiedMedicalLLM";
+import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
 import { DialogueLine } from "@/data/scenarios";
 import useTextToSpeech from "@/hooks/useTextToSpeech";
 import AudioPlayButton from "./AudioPlayButton";
@@ -18,9 +19,8 @@ interface StreamlinedInteractionScreenProps {
   onComplete: () => void;
 }
 
-interface FeedbackProps {
-  title: string;
-  items: string[];
+interface ExtendedDialogueLine extends DialogueLine {
+  id: string;
 }
 
 const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> = ({
@@ -28,18 +28,19 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   onBack,
   onComplete
 }) => {
-  const [conversation, setConversation] = useState<DialogueLine[]>([]);
+  const [conversation, setConversation] = useState<ExtendedDialogueLine[]>([]);
   const [currentInput, setCurrentInput] = useState<string>('');
   const [charCount, setCharCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>('');
-  const [showSettings, setShowSettings] = useState<boolean>(false);
 
   const { 
     generateUnifiedResponse
   } = useUnifiedMedicalLLM({
-    scenarioCategory: scenario.category,
-    patientProfile: { age: 50, gender: 'male' },
+    scenarioType: scenario.category,
+    scenarioDescription: scenario.description,
+    difficultyLevel: 'intermediate',
+    userLanguage: 'de'
   });
 
   const { 
@@ -59,10 +60,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   useEffect(() => {
     // Initialize conversation with the initial dialogue
     if (scenario.initialDialogue && conversation.length === 0) {
-      setConversation(scenario.initialDialogue);
+      const extendedDialogue = scenario.initialDialogue.map((line: DialogueLine, index: number) => ({
+        ...line,
+        id: `initial-${index}`
+      }));
+      setConversation(extendedDialogue);
       
       // Optionally, trigger TTS for the initial AI message
-      const initialAiMessage = scenario.initialDialogue.find(line => line.speaker === 'patient');
+      const initialAiMessage = extendedDialogue.find(line => line.speaker === 'patient');
       if (initialAiMessage && ttsEnabled) {
         speak(initialAiMessage.text, 'patient', initialAiMessage.id);
       }
@@ -83,10 +88,10 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const handleSendMessage = useCallback(async (message: string) => {
     if (!message.trim() || isLoading) return;
 
-    const userMessage: DialogueLine = {
-      id: `user-${Date.now()}`,
+    const userMessage: ExtendedDialogueLine = {
       speaker: 'user',
-      text: message
+      text: message,
+      id: `user-${Date.now()}`
     };
     
     setConversation(prev => [...prev, userMessage]);
@@ -97,14 +102,15 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     try {
       console.log('Sending user message to LLM:', message);
       const response = await generateUnifiedResponse(
-        `Previous conversation: ${conversation.map(line => `${line.speaker}: ${line.text}`).join('\n')}\nUser: ${message}`
+        message,
+        conversation
       );
       
       if (response?.patientReply) {
-        const aiMessage: DialogueLine = {
-          id: `ai-${Date.now()}`,
+        const aiMessage: ExtendedDialogueLine = {
           speaker: 'patient',
-          text: response.patientReply
+          text: response.patientReply,
+          id: `ai-${Date.now()}`
         };
         
         setConversation(prev => [...prev, aiMessage]);
