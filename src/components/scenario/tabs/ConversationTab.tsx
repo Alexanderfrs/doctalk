@@ -58,6 +58,8 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
   // Handle new AI responses with automatic TTS
   useEffect(() => {
     if (aiResponse && aiResponse !== lastAIMessageRef.current) {
+      console.log('New AI response received:', aiResponse.substring(0, 50));
+      
       // Add AI message to conversation
       const aiMessage: Message = {
         id: `ai-${Date.now()}`,
@@ -71,15 +73,21 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
       
       // Auto-play TTS for AI response with a small delay
       if (ttsEnabled) {
+        console.log('Auto-playing TTS for AI response');
         // Clear any existing timeout
         if (autoPlayTimeoutRef.current) {
           clearTimeout(autoPlayTimeoutRef.current);
         }
         
         // Set a timeout to auto-play after message is rendered
-        autoPlayTimeoutRef.current = setTimeout(() => {
-          speak(aiResponse, 'patient');
-        }, 500);
+        autoPlayTimeoutRef.current = setTimeout(async () => {
+          try {
+            console.log('Speaking AI response with patient voice');
+            await speak(aiResponse, 'patient');
+          } catch (error) {
+            console.error('Failed to auto-play AI response:', error);
+          }
+        }, 800);
       }
       
       lastAIMessageRef.current = aiResponse;
@@ -96,6 +104,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
   }, []);
 
   const handleSendMessage = (message: string) => {
+    console.log('User message sent:', message);
     // Add user message
     const userMessage: Message = {
       id: `user-${Date.now()}`,
