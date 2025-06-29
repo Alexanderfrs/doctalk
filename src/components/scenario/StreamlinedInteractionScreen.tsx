@@ -43,12 +43,19 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
   const patientProfile = createPatientProfile(scenario.category, scenario);
 
-  const { generateUnifiedResponse, isLoading, error } = useUnifiedMedicalLLM({
-    scenarioType: scenario.category as 'patient-care' | 'emergency' | 'handover' | 'elderly-care' | 'disability-care',
-    scenarioDescription: scenario.description,
-    difficultyLevel: 'intermediate',
-    patientContext: patientProfile,
-    userLanguage: 'de',
+  const { sendMessage, isLoading, error } = useUnifiedMedicalLLM({
+    scenario: scenario,
+    patientProfile: patientProfile,
+    onResponse: (response) => {
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(),
+        content: response,
+        role: "assistant",
+        timestamp: new Date(),
+        speaker: "patient"
+      }]);
+      setIsTyping(false);
+    },
     onError: (error) => {
       console.error("LLM Error:", error);
       toast.error("Fehler beim Verarbeiten der Nachricht: " + error);
@@ -84,19 +91,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     setIsTyping(true);
 
     try {
-      const response = await generateUnifiedResponse(message, []);
-      
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: response.patientReply,
-        role: "assistant",
-        timestamp: new Date(),
-        speaker: "patient"
-      };
-      
-      setMessages(prev => [...prev, aiMessage]);
-      setIsTyping(false);
-      
+      await sendMessage(message, messages);
       if (onSendMessage) {
         onSendMessage(message);
       }
