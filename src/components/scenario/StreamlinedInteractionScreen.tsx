@@ -55,7 +55,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [fontSize, setFontSize] = useState(18);
   const [waitingForCheckpointCompletion, setWaitingForCheckpointCompletion] = useState(false);
   const [languageFeedback, setLanguageFeedback] = useState<string>("");
-  
+
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   // Create consistent patient profile that won't change during the interaction
@@ -116,7 +116,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     }
   });
 
-  // Add the missing handleSendMessage function
+  // Fixed handleSendMessage function
   const handleSendMessage = async () => {
     if (!currentMessage.trim() || isLLMLoading || conversationBlocked) return;
 
@@ -126,8 +126,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     // Add user message to conversation
     const newUserMessage: DialogueLine = {
       speaker: 'user',
-      text: userMessage,
-      timestamp: new Date().toISOString()
+      text: userMessage
     };
 
     setConversation(prev => [...prev, newUserMessage]);
@@ -138,7 +137,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
     // Check and update checkpoints
     const shouldContinue = updateCheckpoints(userMessage);
-    
+
     if (!shouldContinue) {
       // If checkpoint logic is blocking, don't generate AI response yet
       return;
@@ -146,33 +145,29 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
     try {
       setConversationBlocked(true);
-      
-      // Generate AI response
+
+      // Generate AI response - pass userMessage as string and conversation history
       const response = await generateUnifiedResponse(
-        [...conversation, newUserMessage],
-        {
-          includeGuidance: false,
-          maxLength: 150
-        }
+        userMessage,
+        [...conversation, newUserMessage]
       );
 
-      if (response?.response) {
+      if (response?.patientReply) {
         const aiMessage: DialogueLine = {
           speaker: 'patient',
-          text: response.response,
-          timestamp: new Date().toISOString()
+          text: response.patientReply
         };
 
         setConversation(prev => [...prev, aiMessage]);
 
         // Auto-play TTS for AI response if enabled
         if (isTTSEnabled) {
-          speak(response.response, 'patient');
+          speak(response.patientReply, 'patient');
         }
 
         // Set feedback if provided
-        if (response.feedback) {
-          setFeedback(response.feedback);
+        if (response.briefFeedback) {
+          setFeedback(response.briefFeedback);
         }
       }
     } catch (error) {
@@ -246,7 +241,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   // Generate language feedback based on user input
   const generateLanguageFeedback = (userMessage: string): string => {
     const feedback: string[] = [];
-    
+
     // Check capitalization of nouns (basic check for German)
     const germanNouns = ['Patient', 'Krankenhaus', 'Medikament', 'Arzt', 'Schwester', 'Behandlung', 'Therapie', 'Diagnose'];
     germanNouns.forEach(noun => {
@@ -255,27 +250,27 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         feedback.push(`Substantive werden großgeschrieben: "${lowerNoun}" → "${noun}"`);
       }
     });
-    
+
     // Check formal address
     if (userMessage.includes('du') || userMessage.includes('dich') || userMessage.includes('dir')) {
       feedback.push('Verwenden Sie die höfliche Anrede "Sie" statt "du"');
     }
-    
+
     // Check sentence structure
     if (userMessage.split('.').length === 1 && userMessage.length > 50) {
       feedback.push('Verwenden Sie kürzere Sätze für bessere Verständlichkeit');
     }
-    
+
     // Check punctuation
     if (userMessage && !userMessage.trim().endsWith('.') && !userMessage.trim().endsWith('?') && !userMessage.trim().endsWith('!')) {
       feedback.push('Vergessen Sie nicht die Interpunktion am Satzende');
     }
-    
+
     // Check for professional language
     if (userMessage.includes('ähm') || userMessage.includes('äh')) {
       feedback.push('Vermeiden Sie Füllwörter in der professionellen Kommunikation');
     }
-    
+
     return feedback.length > 0 ? feedback.join('. ') : 'Gute Sprachverwendung!';
   };
 
@@ -310,7 +305,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         'Respect the patient\'s dignity. People with dementia also have feelings and needs. Treat them with the same appreciation as any other patient.'
       ]
     };
-    
+
     return guidanceMap[scenarioId]?.[checkpointIndex] || 'Focus on empathetic and professional communication. Think about what is most important for the patient in this situation.';
   };
 
@@ -320,16 +315,16 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       const updated = [...prev];
       const message = userMessage.toLowerCase();
       const messageWords = message.split(' ');
-      
+
       // Find the current active checkpoint (first incomplete one)
       const currentIndex = updated.findIndex(cp => !cp.completed);
       if (currentIndex === -1) return updated; // All completed
-      
+
       // Increment attempts for current checkpoint
       updated[currentIndex].attempts += 1;
-      
+
       let checkpointCompleted = false;
-      
+
       // Enhanced evaluation logic based on scenario type
       switch (scenario.id) {
         case 'admission':
@@ -342,7 +337,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             updated[0].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for personal data collection
           if (currentIndex === 1 && (
             message.includes('name') || message.includes('geburtsdatum') ||
@@ -354,7 +349,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             updated[1].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for medical history
           if (currentIndex === 2 && (
             message.includes('anamnese') || message.includes('vorerkrankung') ||
@@ -365,7 +360,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             updated[2].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for explaining procedures
           if (currentIndex === 3 && (
             message.includes('ablauf') || message.includes('regel') ||
@@ -376,7 +371,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             updated[3].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for answering questions and reassuring
           if (currentIndex === 4 && (
             message.includes('frage') || message.includes('sorge') ||
@@ -388,7 +383,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             checkpointCompleted = true;
           }
           break;
-          
+
         case 'handover':
           if (!updated[0].completed && (
             message.includes('name') || message.includes('frau') || message.includes('herr') ||
@@ -397,27 +392,27 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             updated[0].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for SBAR methodology
           if (!updated[1].completed && (
-            message.includes('zustand') || message.includes('situation') || 
+            message.includes('zustand') || message.includes('situation') ||
             message.includes('background') || message.includes('assessment') ||
             (messageWords.length > 15 && (message.includes('patient') || message.includes('diagnose')))
           )) {
             updated[1].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for medication communication
           if (!updated[2].completed && (
-            message.includes('medikament') || message.includes('therapie') || 
+            message.includes('medikament') || message.includes('therapie') ||
             message.includes('tablette') || message.includes('dosierung') ||
             message.includes('mg') || message.includes('behandlung')
           )) {
             updated[2].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for special incidents
           if (!updated[3].completed && (
             message.includes('vorkommnis') || message.includes('besonder') ||
@@ -427,14 +422,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             updated[3].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for answering questions (if AI asked questions)
           if (!updated[4].completed && conversation.length > 6) {
             updated[4].completed = true;
             checkpointCompleted = true;
           }
           break;
-          
+
         case 'dementia-care':
           // Check for calm and respectful greeting
           if (!updated[0].completed && (
@@ -445,14 +440,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             updated[0].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for simple and clear language (short sentences, common words)
-          if (!updated[1].completed && messageWords.length < 15 && 
+          if (!updated[1].completed && messageWords.length < 15 &&
               !message.includes('kompliziert') && !message.includes('schwierig')) {
             updated[1].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for patience and empathy
           if (!updated[2].completed && (
             message.includes('verstehe') || message.includes('geduld') ||
@@ -462,7 +457,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             updated[2].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for safety and comfort
           if (!updated[3].completed && (
             message.includes('sicher') || message.includes('komfort') ||
@@ -472,7 +467,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             updated[3].completed = true;
             checkpointCompleted = true;
           }
-          
+
           // Check for respecting dignity
           if (!updated[4].completed && (
             message.includes('respekt') || message.includes('würde') ||
@@ -484,7 +479,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           }
           break;
       }
-      
+
       // Handle failed attempts with different responses
       if (!checkpointCompleted) {
         if (updated[currentIndex].attempts === 1) {
@@ -508,10 +503,10 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         setShowGuidanceNotification(false);
         setShowSuggestion(false);
       }
-      
+
       return updated;
     });
-    
+
     return !waitingForCheckpointCompletion;
   };
 
@@ -599,7 +594,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         ]
       ]
     };
-    
+
     return suggestions[scenarioId]?.[checkpointIndex] || [
       'Versuchen Sie es mit einer direkteren Formulierung.',
       'Seien Sie konkreter in Ihrer Kommunikation.'
@@ -609,7 +604,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const handleUseSuggestion = (suggestion: string) => {
     setCurrentMessage(suggestion);
     setShowSuggestion(false);
-    
+
     // Auto-complete the current checkpoint when suggestion is used
     setCheckpoints(prev => {
       const updated = [...prev];
@@ -619,7 +614,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       }
       return updated;
     });
-    
+
     setWaitingForCheckpointCompletion(false);
   };
 
@@ -640,7 +635,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       'admission': 'Sehr gut! Sie haben den Patienten herzlich empfangen und alle notwendigen Informationen gesammelt. Ihre freundliche Art hilft dabei, Ängste abzubauen.',
       'medication': 'Perfekt! Sie haben alle Sicherheitsaspekte der Medikamentengabe beachtet. Ihre sorgfältige Vorgehensweise schützt den Patienten vor Fehlern.'
     };
-    
+
     return scenarioSpecificInsights[scenario.id] || 'Herzlichen Glückwunsch! Sie haben alle Lernziele erfolgreich erreicht und gezeigt, dass Sie die Situation professionell meistern können.';
   };
 
@@ -747,7 +742,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 <Plus className="h-3 w-3" />
               </Button>
             </div>
-            
+
             {/* TTS Toggle */}
             <div className="flex items-center gap-2">
               <VolumeX className="h-4 w-4 text-medical-600" />
@@ -827,7 +822,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 </div>
               </div>
             </div>
-            
+
             <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
               <div className="space-y-4">
                 {conversation.length === 0 && (
@@ -855,8 +850,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     >
                       <div className="mb-2">
                         <span className="text-sm font-medium opacity-70">
-                          {line.speaker === 'user' 
-                            ? 'Sie' 
+                          {line.speaker === 'user'
+                            ? 'Sie'
                             : patientProfile.name
                           }
                         </span>
@@ -865,7 +860,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     </div>
                   </div>
                 ))}
-                
+
                 {/* Unobtrusive Guidance Notification */}
                 {showGuidanceNotification && (
                   <div className="flex justify-center">
@@ -888,7 +883,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     </div>
                   </div>
                 )}
-                
+
                 {isLLMLoading && (
                   <div className="flex justify-start">
                     <div className="bg-white border border-medical-200 text-medical-800 p-4 rounded-lg shadow-sm">
@@ -1005,7 +1000,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         <div className="w-80 flex flex-col gap-4">
           {/* Checkpoint Tracker */}
           <CheckpointTracker checkpoints={checkpoints} />
-          
+
           {/* Enhanced Language Feedback */}
           <Card className="flex-1">
             <div className="p-4 border-b border-medical-200">
@@ -1015,7 +1010,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
               {languageFeedback ? (
                 <div className={cn(
                   "border rounded-lg p-3",
-                  languageFeedback.includes('Gute Sprachverwendung') 
+                  languageFeedback.includes('Gute Sprachverwendung')
                     ? "bg-green-50 border-green-200 text-green-800"
                     : "bg-orange-50 border-orange-200 text-orange-800"
                 )}>
@@ -1028,7 +1023,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
               )}
             </div>
           </Card>
-          
+
           {/* Content Feedback */}
           <Card>
             <div className="p-4 border-b border-medical-200">
