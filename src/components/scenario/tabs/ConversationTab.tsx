@@ -2,9 +2,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { MessageCircle, Volume2, Play } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import ConversationInput from "../ConversationInput";
+import AudioPlayButton from "../AudioPlayButton";
 import useTextToSpeech from "@/hooks/useTextToSpeech";
 import TTSSettings from "../TTSSettings";
 import { cn } from "@/lib/utils";
@@ -37,6 +37,8 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
   const { 
     speak, 
     isSpeaking, 
+    isLoadingAudio,
+    currentMessageId,
     isEnabled: ttsEnabled, 
     setEnabled: setTTSEnabled 
   } = useTextToSpeech({
@@ -68,7 +70,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
       setMessages(prev => [...prev, aiMessage]);
       
       // Auto-play TTS for AI response
-      speak(aiResponse, 'patient');
+      speak(aiResponse, 'patient', aiMessage.id);
       lastAIMessageRef.current = aiResponse;
     }
   }, [aiResponse, speak, ttsEnabled]);
@@ -86,8 +88,8 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
     onSendMessage(message);
   };
 
-  const handlePlayTTS = (text: string, speaker: string) => {
-    speak(text, speaker);
+  const handlePlayAudio = (text: string, speaker: string, messageId?: string) => {
+    speak(text, speaker, messageId);
   };
 
   const getSpeakerBadgeColor = (speaker: string) => {
@@ -144,20 +146,14 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
                   </Badge>
                   
                   <div className="flex items-center space-x-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handlePlayTTS(message.text, message.speaker)}
-                      disabled={isSpeaking}
-                      className="h-6 w-6 p-0"
-                      title="Text vorlesen"
-                    >
-                      {isSpeaking ? (
-                        <Volume2 className="h-3 w-3 animate-pulse" />
-                      ) : (
-                        <Play className="h-3 w-3" />
-                      )}
-                    </Button>
+                    <AudioPlayButton
+                      text={message.text}
+                      speaker={message.speaker}
+                      messageId={message.id}
+                      onPlay={handlePlayAudio}
+                      isPlaying={isSpeaking && currentMessageId === message.id}
+                      isLoading={isLoadingAudio && currentMessageId === message.id}
+                    />
                     <span className="text-xs text-gray-500">
                       {message.timestamp.toLocaleTimeString('de-DE', { 
                         hour: '2-digit', 
