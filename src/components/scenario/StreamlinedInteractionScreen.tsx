@@ -116,6 +116,73 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     }
   });
 
+  // Add the missing handleSendMessage function
+  const handleSendMessage = async () => {
+    if (!currentMessage.trim() || isLLMLoading || conversationBlocked) return;
+
+    const userMessage = currentMessage.trim();
+    setCurrentMessage("");
+
+    // Add user message to conversation
+    const newUserMessage: DialogueLine = {
+      speaker: 'user',
+      text: userMessage,
+      timestamp: new Date().toISOString()
+    };
+
+    setConversation(prev => [...prev, newUserMessage]);
+
+    // Generate language feedback
+    const langFeedback = generateLanguageFeedback(userMessage);
+    setLanguageFeedback(langFeedback);
+
+    // Check and update checkpoints
+    const shouldContinue = updateCheckpoints(userMessage);
+    
+    if (!shouldContinue) {
+      // If checkpoint logic is blocking, don't generate AI response yet
+      return;
+    }
+
+    try {
+      setConversationBlocked(true);
+      
+      // Generate AI response
+      const response = await generateUnifiedResponse(
+        [...conversation, newUserMessage],
+        {
+          includeGuidance: false,
+          maxLength: 150
+        }
+      );
+
+      if (response?.response) {
+        const aiMessage: DialogueLine = {
+          speaker: 'patient',
+          text: response.response,
+          timestamp: new Date().toISOString()
+        };
+
+        setConversation(prev => [...prev, aiMessage]);
+
+        // Auto-play TTS for AI response if enabled
+        if (isTTSEnabled) {
+          speak(response.response, 'patient');
+        }
+
+        // Set feedback if provided
+        if (response.feedback) {
+          setFeedback(response.feedback);
+        }
+      }
+    } catch (error) {
+      console.error("Error generating AI response:", error);
+      toast.error("Fehler beim Generieren der Antwort");
+    } finally {
+      setConversationBlocked(false);
+    }
+  };
+
   // Auto-scroll to bottom when conversation updates
   useEffect(() => {
     if (scrollAreaRef.current) {
