@@ -1,11 +1,10 @@
+
 export const germanTranslations: Record<string, string> = {
   // Navigation
   'home': 'Startseite',
   'practice': 'Übungen',
   'vocabulary': 'Vokabular',
   'profile': 'Profil',
-  
-  // Common translations (keeping existing ones and adding new ones)
   'loading': 'Lädt...',
   'error': 'Fehler',
   'success': 'Erfolg',
@@ -382,5 +381,29 @@ export const germanTranslations: Record<string, string> = {
   'checkpoints': 'Kontrollpunkte',
   'completed': 'Abgeschlossen',
   'safeFlexibleTraining': 'Sicheres & Flexibles Training',
-  'safeFlexibleTrainingDesc': 'Üben Sie in einer sicheren Umgebung, erhalten Sie sofortiges Feedback - einschließlich Aussprache - und verfolgen Sie den Fortschritt auf Ihrem maßgeschneiderten Lernpfad.'
+  'safeFlexibleTrainingDesc': 'Üben Sie in einer sicheren Umgebung, erhalten Sie sofortiges Feedback - einschließlich Aussprache - und verfolgen Sie den Fortschritt auf Ihrem maßgeschneiderten Lernpfad.',
+
+  // Scenario-specific translations
+  'scenario_admission_title': 'Patientenaufnahme',
+  'scenario_admission_description': 'Professionelle Patientenaufnahme auf einer Krankenstation',
+  'scenario_medication_title': 'Medikamentenverabreichung',
+  'scenario_medication_description': 'Sichere Medikamentenverabreichung und Patientenaufklärung',
+  'scenario_emergency_title': 'Notfallsituation',
+  'scenario_emergency_description': 'Akute Brustschmerzen - Notfallversorgung',
+  'scenario_handover_title': 'Schichtübergabe',
+  'scenario_handover_description': 'Vollständige und sichere Patientenübergabe',
+  'scenario_dementia_care_title': 'Demenzbetreuung',
+  'scenario_dementia_care_description': 'Einfühlsame Betreuung von Bewohnern mit Demenz',
+  'scenario_mobility_assistance_title': 'Mobilitätshilfe',
+  'scenario_mobility_assistance_description': 'Unterstützung eines älteren Patienten bei der Mobilisierung',
+  'scenario_communication_disability_title': 'Kommunikation bei Behinderungen',
+  'scenario_communication_disability_description': 'Kommunikation und Unterstützung für Bewohner mit Behinderungen',
+
+  // Learning objectives
+  'objective_establish_professional_contact': 'Professionellen Kontakt herstellen',
+  'objective_assess_needs': 'Bedürfnisse erfassen',
+  'objective_provide_information': 'Informationen vermitteln',
+  'objective_respond_empathetically': 'Empathisch reagieren',
+  'objective_successfully_conclude': 'Situation erfolgreich abschließen',
+  'objective_current': 'Aktuelles Ziel'
 };

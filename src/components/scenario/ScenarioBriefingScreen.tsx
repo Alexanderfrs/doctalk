@@ -8,6 +8,7 @@ import { PatientProfile } from "@/utils/patientProfiles";
 import BestPracticesDialog from "./BestPracticesDialog";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useScenarioTranslations } from "@/utils/scenarioTranslations";
 
 interface ScenarioBriefingScreenProps {
   scenario: Scenario;
@@ -23,6 +24,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
   onExit
 }) => {
   const { t } = useTranslation();
+  const { getScenarioTitle, getScenarioDescription } = useScenarioTranslations();
   const [showBestPractices, setShowBestPractices] = useState(false);
   const [showExitConfirmation, setShowExitConfirmation] = useState(false);
 
@@ -114,8 +116,8 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
             <AlertCircle className="h-6 w-6 text-medical-600" />
             <h1 className="text-2xl font-bold text-medical-800">Szenario-Briefing</h1>
           </div>
-          <h2 className="text-xl font-semibold text-medical-700">{scenario.title}</h2>
-          <p className="text-medical-600">{scenario.description}</p>
+          <h2 className="text-xl font-semibold text-medical-700">{getScenarioTitle(scenario.id)}</h2>
+          <p className="text-medical-600">{getScenarioDescription(scenario.id)}</p>
         </div>
 
         {/* Patient Profile */}
