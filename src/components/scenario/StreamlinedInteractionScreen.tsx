@@ -26,6 +26,7 @@ interface StreamlinedInteractionScreenProps {
   aiResponse?: string;
   isAIResponding?: boolean;
   onBack?: () => void;
+  onExit?: () => void;
 }
 
 const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> = ({
@@ -33,7 +34,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   onSendMessage,
   aiResponse,
   isAIResponding = false,
-  onBack
+  onBack,
+  onExit
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState("");
