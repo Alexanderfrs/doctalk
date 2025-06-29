@@ -1,4 +1,3 @@
-
 import { useState, useCallback, useRef } from 'react';
 import { toast } from 'sonner';
 import { supabase } from "@/integrations/supabase/client";
@@ -48,14 +47,15 @@ const useTextToSpeech = ({
     localStorage.getItem('tts-enabled') !== 'false'
   );
 
-  // Enhanced cache with size limits and model-aware keys
+  // Enhanced cache with better error handling
   const audioCache = useRef<Map<string, { audio: string; timestamp: number; size: number }>>(new Map());
-  const maxCacheSize = 50 * 1024 * 1024; // 50MB cache limit
-  const maxCacheAge = 30 * 60 * 1000; // 30 minutes
+  const maxCacheSize = 25 * 1024 * 1024; // Reduced to 25MB for better performance
+  const maxCacheAge = 15 * 60 * 1000; // Reduced to 15 minutes
 
-  // Rate limiting
+  // Rate limiting with better controls
   const lastRequestTime = useRef<number>(0);
-  const minRequestInterval = 500; // 500ms between requests
+  const minRequestInterval = 1000; // Increased to 1 second between requests
+  const maxRetries = 2;
 
   const cleanCache = useCallback(() => {
     const now = Date.now();
@@ -77,7 +77,7 @@ const useTextToSpeech = ({
         .filter(([key]) => audioCache.current.has(key))
         .sort(([,a], [,b]) => a.timestamp - b.timestamp);
 
-      while (totalSize > maxCacheSize * 0.8 && sortedEntries.length > 0) {
+      while (totalSize > maxCacheSize * 0.7 && sortedEntries.length > 0) {
         const [key, value] = sortedEntries.shift()!;
         audioCache.current.delete(key);
         totalSize -= value.size;
@@ -87,9 +87,13 @@ const useTextToSpeech = ({
 
   const stopCurrentAudio = useCallback(() => {
     if (currentAudio) {
-      currentAudio.pause();
-      currentAudio.remove();
-      setCurrentAudio(null);
+      try {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        setCurrentAudio(null);
+      } catch (err) {
+        console.warn('Error stopping audio:', err);
+      }
     }
     setIsSpeaking(false);
     setIsPaused(false);
@@ -97,116 +101,196 @@ const useTextToSpeech = ({
   }, [currentAudio]);
 
   const speak = useCallback(async (text: string, speakerOverride?: string, modelOverride?: string) => {
-    if (!isEnabled || quotaExceeded) return;
+    if (!isEnabled || quotaExceeded || !text?.trim()) {
+      console.log('TTS disabled or no text:', { isEnabled, quotaExceeded, hasText: !!text?.trim() });
+      return;
+    }
     
     // Rate limiting
     const now = Date.now();
     if (now - lastRequestTime.current < minRequestInterval) {
+      console.log('Rate limited, skipping TTS request');
       return;
     }
     lastRequestTime.current = now;
     
     const effectiveModel = modelOverride || currentModel;
     const effectiveSpeaker = speakerOverride || speaker;
-    const cacheKey = `${text.trim()}-${effectiveSpeaker}-${effectiveModel}`;
+    const cleanText = text.trim().substring(0, 500); // Limit text length
+    const cacheKey = `${cleanText}-${effectiveSpeaker}-${effectiveModel}`;
     
-    try {
-      stopCurrentAudio();
-      setIsLoading(true);
-      setError(null);
-      
-      if (onStart) onStart();
+    let retryCount = 0;
+    
+    const attemptSpeak = async (): Promise<void> => {
+      try {
+        stopCurrentAudio();
+        setIsLoading(true);
+        setError(null);
+        
+        if (onStart) onStart();
 
-      console.log(`Speaking with ${effectiveModel} model, ${effectiveSpeaker} voice:`, text.substring(0, 50));
+        console.log(`TTS attempt ${retryCount + 1} with ${effectiveModel} model, ${effectiveSpeaker} voice:`, cleanText.substring(0, 50));
 
-      // Clean and check cache
-      cleanCache();
-      const cached = audioCache.current.get(cacheKey);
-      let audioContent: string;
+        // Clean and check cache
+        cleanCache();
+        const cached = audioCache.current.get(cacheKey);
+        let audioContent: string;
 
-      if (cached) {
-        console.log('Using cached audio');
-        audioContent = cached.audio;
-      } else {
-        const { data, error: apiError } = await supabase.functions.invoke('text-to-speech', {
-          body: { 
-            text: text.trim(), 
-            speaker: effectiveSpeaker,
-            model: effectiveModel,
-            language: 'de'
+        if (cached && retryCount === 0) {
+          console.log('Using cached audio');
+          audioContent = cached.audio;
+        } else {
+          console.log('Fetching new audio from API');
+          
+          const { data, error: apiError } = await supabase.functions.invoke('text-to-speech', {
+            body: { 
+              text: cleanText, 
+              speaker: effectiveSpeaker,
+              model: effectiveModel,
+              language: 'de'
+            }
+          });
+
+          if (apiError) {
+            throw new Error(`API Error: ${apiError.message || 'Unknown API error'}`);
           }
-        });
-
-        if (apiError) {
-          throw new Error(apiError.message || 'TTS API Fehler');
-        }
-        
-        if (data?.error) {
-          if (data.error === 'QUOTA_EXCEEDED') {
-            setQuotaExceeded(true);
-            throw new Error('ElevenLabs-Kontingent aufgebraucht');
-          } else if (data.error === 'RATE_LIMITED') {
-            throw new Error('Zu viele Anfragen - bitte warten');
-          } else {
-            throw new Error(data.message || 'TTS Fehler');
+          
+          if (data?.error) {
+            if (data.error === 'QUOTA_EXCEEDED') {
+              setQuotaExceeded(true);
+              throw new Error('ElevenLabs quota exceeded - please check your API key or credits');
+            } else if (data.error === 'RATE_LIMITED') {
+              throw new Error('Too many requests - please wait a moment');
+            } else {
+              throw new Error(data.message || `TTS API Error: ${data.error}`);
+            }
           }
-        }
-        
-        if (!data?.audioContent) {
-          throw new Error('Keine Audiodaten erhalten');
+          
+          if (!data?.audioContent) {
+            throw new Error('No audio data received from API');
+          }
+
+          audioContent = data.audioContent;
+          
+          // Cache with size tracking
+          const audioSize = audioContent.length * 0.75;
+          audioCache.current.set(cacheKey, {
+            audio: audioContent,
+            timestamp: now,
+            size: audioSize
+          });
         }
 
-        audioContent = data.audioContent;
+        // Create and play audio with better error handling
+        const audio = new Audio();
+        let audioLoaded = false;
         
-        // Cache with size tracking
-        const audioSize = audioContent.length * 0.75; // Approximate byte size from base64
-        audioCache.current.set(cacheKey, {
-          audio: audioContent,
-          timestamp: now,
-          size: audioSize
-        });
-      }
+        // Set up event listeners before setting src
+        audio.onloadstart = () => {
+          console.log('Audio loading started');
+          setIsLoading(true);
+        };
+        
+        audio.oncanplaythrough = () => {
+          console.log('Audio can play through');
+          audioLoaded = true;
+          setIsLoading(false);
+          setIsSpeaking(true);
+        };
+        
+        audio.onended = () => {
+          console.log('Audio playback ended');
+          setIsSpeaking(false);
+          setIsLoading(false);
+          setCurrentAudio(null);
+          if (onEnd) onEnd();
+        };
+        
+        audio.onerror = (e) => {
+          console.error('Audio playback error:', e);
+          const errorMsg = 'Audio playback failed - please try again';
+          setError(errorMsg);
+          setIsSpeaking(false);
+          setIsLoading(false);
+          setCurrentAudio(null);
+          
+          // Retry logic
+          if (retryCount < maxRetries) {
+            console.log(`Retrying TTS (attempt ${retryCount + 2})`);
+            retryCount++;
+            setTimeout(() => attemptSpeak(), 1000);
+            return;
+          }
+          
+          if (onError) onError(errorMsg);
+          else toast.error('Speech Error', { description: errorMsg });
+        };
 
-      const audio = new Audio(`data:audio/mp3;base64,${audioContent}`);
-      
-      audio.onloadstart = () => setIsLoading(true);
-      audio.oncanplaythrough = () => {
-        setIsLoading(false);
-        setIsSpeaking(true);
-      };
-      audio.onended = () => {
-        setIsSpeaking(false);
-        setIsLoading(false);
-        if (onEnd) onEnd();
-      };
-      audio.onerror = () => {
-        const errorMsg = 'Audio-Wiedergabe fehlgeschlagen';
+        // Set audio source and attempt playback
+        setCurrentAudio(audio);
+        audio.src = `data:audio/mp3;base64,${audioContent}`;
+        
+        // Wait a bit for loading then play
+        setTimeout(async () => {
+          try {
+            if (audio && !audio.ended) {
+              await audio.play();
+              console.log('Audio playback started successfully');
+            }
+          } catch (playError) {
+            console.error('Audio play error:', playError);
+            
+            // Handle autoplay restrictions
+            if (playError.name === 'NotAllowedError') {
+              const errorMsg = 'Audio blocked - please interact with the page first';
+              setError(errorMsg);
+              if (onError) onError(errorMsg);
+              else toast.error('Audio Blocked', { description: errorMsg });
+            } else if (retryCount < maxRetries) {
+              retryCount++;
+              setTimeout(() => attemptSpeak(), 1000);
+              return;
+            } else {
+              const errorMsg = 'Audio playback failed';
+              setError(errorMsg);
+              if (onError) onError(errorMsg);
+              else toast.error('Speech Error', { description: errorMsg });
+            }
+            
+            setIsSpeaking(false);
+            setIsLoading(false);
+            setCurrentAudio(null);
+          }
+        }, 100);
+        
+      } catch (e) {
+        const errorMsg = e instanceof Error ? e.message : 'Unknown TTS error occurred';
+        console.error('TTS Error:', e);
+        
         setError(errorMsg);
         setIsSpeaking(false);
         setIsLoading(false);
-        if (onError) onError(errorMsg);
-        else toast.error(errorMsg);
-      };
-
-      setCurrentAudio(audio);
-      await audio.play();
-      
-    } catch (e) {
-      const errorMsg = e instanceof Error ? e.message : 'Sprachausgabe-Fehler';
-      console.error('TTS Error:', e);
-      
-      setError(errorMsg);
-      setIsSpeaking(false);
-      setIsLoading(false);
-      
-      if (onError) {
-        onError(errorMsg);
-      } else {
-        toast.error('Sprachausgabe-Fehler', {
-          description: errorMsg
-        });
+        setCurrentAudio(null);
+        
+        // Retry logic for network errors
+        if (retryCount < maxRetries && !errorMsg.includes('quota') && !errorMsg.includes('Quota')) {
+          retryCount++;
+          console.log(`Retrying TTS due to error (attempt ${retryCount + 1})`);
+          setTimeout(() => attemptSpeak(), 2000);
+          return;
+        }
+        
+        if (onError) {
+          onError(errorMsg);
+        } else {
+          toast.error('Speech Output Error', {
+            description: errorMsg.length > 50 ? errorMsg.substring(0, 50) + '...' : errorMsg
+          });
+        }
       }
-    }
+    };
+
+    await attemptSpeak();
   }, [speaker, currentModel, isEnabled, quotaExceeded, onStart, onEnd, onError, cleanCache, stopCurrentAudio]);
 
   const stop = useCallback(() => {
@@ -234,7 +318,7 @@ const useTextToSpeech = ({
       stopCurrentAudio();
     }
     if (enabled && quotaExceeded) {
-      setQuotaExceeded(false); // Reset quota flag when re-enabling
+      setQuotaExceeded(false);
     }
   }, [stopCurrentAudio, quotaExceeded]);
 
@@ -245,18 +329,40 @@ const useTextToSpeech = ({
 
   return {
     speak,
-    stop,
+    stop: stopCurrentAudio,
     isPaused,
     isSpeaking,
-    pause,
-    resume,
+    pause: useCallback(() => {
+      if (currentAudio && !isPaused) {
+        currentAudio.pause();
+        setIsPaused(true);
+      }
+    }, [currentAudio, isPaused]),
+    resume: useCallback(() => {
+      if (currentAudio && isPaused) {
+        currentAudio.play();
+        setIsPaused(false);
+      }
+    }, [currentAudio, isPaused]),
     hasSpeechSupport: true,
     error,
     isEnabled,
-    setEnabled,
+    setEnabled: useCallback((enabled: boolean) => {
+      setIsEnabled(enabled);
+      localStorage.setItem('tts-enabled', enabled.toString());
+      if (!enabled) {
+        stopCurrentAudio();
+      }
+      if (enabled && quotaExceeded) {
+        setQuotaExceeded(false);
+      }
+    }, [stopCurrentAudio, quotaExceeded]),
     isLoading,
     currentModel,
-    setModel,
+    setModel: useCallback((newModel: string) => {
+      setCurrentModel(newModel);
+      localStorage.setItem('tts-model', newModel);
+    }, []),
     quotaExceeded,
   };
 };
