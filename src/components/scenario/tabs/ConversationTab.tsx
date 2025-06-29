@@ -4,10 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MessageCircle } from "lucide-react";
 import ConversationInput from "../ConversationInput";
-import useTextToSpeech from "@/hooks/useTextToSpeech";
 import TTSSettings from "../TTSSettings";
 import TTSButton from "../TTSButton";
 import { cn } from "@/lib/utils";
+import { useTTS } from "@/contexts/TTSContext";
 
 interface Message {
   id: string;
@@ -35,18 +35,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
   const lastAIMessageRef = useRef<string>('');
   const autoPlayTimeoutRef = useRef<NodeJS.Timeout>();
 
-  const { 
-    speak, 
-    isSpeaking, 
-    isEnabled: ttsEnabled, 
-    setEnabled: setTTSEnabled,
-    currentModel,
-    setModel,
-    quotaExceeded
-  } = useTextToSpeech({
-    autoPlay: true,
-    onError: (error) => console.error('TTS Error:', error)
-  });
+  const { speak, isEnabled: ttsEnabled, quotaExceeded, currentModel } = useTTS();
 
   // Auto-scroll to bottom
   const scrollToBottom = () => {
@@ -63,7 +52,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
       // Add AI message to conversation
       const aiMessage: Message = {
         id: `ai-${Date.now()}`,
-        speaker: 'patient', // Default AI speaker
+        speaker: 'patient',
         text: aiResponse,
         timestamp: new Date(),
         isAI: true
@@ -73,12 +62,10 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
       
       // Auto-play TTS for AI response with a small delay (only if enabled and quota not exceeded)
       if (ttsEnabled && !quotaExceeded) {
-        // Clear any existing timeout
         if (autoPlayTimeoutRef.current) {
           clearTimeout(autoPlayTimeoutRef.current);
         }
         
-        // Set a timeout to auto-play after message is rendered
         autoPlayTimeoutRef.current = setTimeout(() => {
           speak(aiResponse, 'patient', currentModel);
         }, 500);
@@ -136,13 +123,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
             <MessageCircle className="h-5 w-5 text-medical-600" />
             <CardTitle className="text-lg">Gespräch</CardTitle>
           </div>
-          <TTSSettings 
-            isEnabled={ttsEnabled}
-            onToggle={setTTSEnabled}
-            currentModel={currentModel}
-            onModelChange={setModel}
-            quotaExceeded={quotaExceeded}
-          />
+          <TTSSettings />
         </CardHeader>
         
         <CardContent className="flex-1 flex flex-col space-y-4 overflow-hidden">
@@ -173,7 +154,6 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
                       size="sm"
                       variant="ghost"
                       className="h-6 w-6 p-0"
-                      disabled={quotaExceeded}
                     />
                     <span className="text-xs text-gray-500">
                       {message.timestamp.toLocaleTimeString('de-DE', { 
