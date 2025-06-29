@@ -11,13 +11,13 @@ interface TTSSettingsProps {
 }
 
 const TTSSettings: React.FC<TTSSettingsProps> = ({ className }) => {
-  const {
-    isEnabled,
-    setEnabled,
-    currentModel,
-    setModel,
+  const { 
+    isEnabled, 
+    setEnabled, 
+    currentModel, 
+    setModel, 
     quotaExceeded,
-    error
+    error 
   } = useTTS();
 
   return (
@@ -34,7 +34,7 @@ const TTSSettings: React.FC<TTSSettingsProps> = ({ className }) => {
         <Volume2 className={cn(
           "h-4 w-4",
           isEnabled ? "text-medical-600" : "text-gray-400",
-          quotaExceeded && "text-red-500"
+          (quotaExceeded || error) && "text-red-500"
         )} />
       </div>
 
@@ -49,13 +49,12 @@ const TTSSettings: React.FC<TTSSettingsProps> = ({ className }) => {
       {/* Status Messages */}
       {quotaExceeded && (
         <div className="text-xs text-red-600 bg-red-50 px-2 py-1 rounded">
-          💳 Kontingent aufgebraucht
+          Kontingent aufgebraucht
         </div>
       )}
-      
       {error && !quotaExceeded && (
-        <div className="text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded max-w-48 truncate" title={error}>
-          ⚠️ {error}
+        <div className="text-xs text-red-600 bg-red-50 px-2 py-1 rounded">
+          TTS-Fehler
         </div>
       )}
     </div>

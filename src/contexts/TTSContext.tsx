@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { supabase } from "@/integrations/supabase/client";
 
 interface TTSContextType {
-  speak: (text: string, speaker?: string, model?: string) => Promise<void>;
+  speak: (text: string, speaker?: string) => Promise<void>;
   stop: () => void;
   isPaused: boolean;
   isSpeaking: boolean;
@@ -30,22 +30,30 @@ export const useTTS = () => {
 };
 
 export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
-  const [currentModel, setCurrentModel] = useState(
-    localStorage.getItem('tts-model') || 'turbo'
-  );
-  const [quotaExceeded, setQuotaExceeded] = useState(false);
-  const [isEnabled, setIsEnabled] = useState(
+  const [currentModel, setCurrentModel] = useState<string>('turbo');
+  const [quotaExceeded, setQuotaExceeded] = useState<boolean>(false);
+  const [isEnabled, setIsEnabled] = useState<boolean>(
     localStorage.getItem('tts-enabled') !== 'false'
   );
 
   const audioCache = useRef<Map<string, { audio: string; timestamp: number }>>(new Map());
+  const maxCacheAge = 30 * 60 * 1000; // 30 minutes
   const lastRequestTime = useRef<number>(0);
-  const minRequestInterval = 500;
+  const minRequestInterval = 500; // 500ms between requests
+
+  const cleanCache = useCallback(() => {
+    const now = Date.now();
+    audioCache.current.forEach((value, key) => {
+      if (now - value.timestamp > maxCacheAge) {
+        audioCache.current.delete(key);
+      }
+    });
+  }, []);
 
   const stopCurrentAudio = useCallback(() => {
     if (currentAudio) {
@@ -59,9 +67,10 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsLoading(false);
   }, [currentAudio]);
 
-  const speak = useCallback(async (text: string, speaker = 'user', model?: string) => {
+  const speak = useCallback(async (text: string, speaker: string = 'user') => {
     if (!isEnabled || quotaExceeded || !text?.trim()) return;
     
+    // Rate limiting
     const now = Date.now();
     if (now - lastRequestTime.current < minRequestInterval) {
       console.log('Rate limited - skipping TTS request');
@@ -69,20 +78,21 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
     lastRequestTime.current = now;
     
-    const effectiveModel = model || currentModel;
-    const cacheKey = `${text.trim()}-${speaker}-${effectiveModel}`;
+    const cacheKey = `${text.trim()}-${speaker}-${currentModel}`;
     
     try {
       stopCurrentAudio();
       setIsLoading(true);
       setError(null);
 
-      console.log(`TTS: Speaking with ${effectiveModel} model, ${speaker} voice`);
+      console.log(`Speaking with ${currentModel} model, ${speaker} voice:`, text.substring(0, 50));
 
+      // Clean and check cache
+      cleanCache();
       const cached = audioCache.current.get(cacheKey);
       let audioContent: string;
 
-      if (cached && (now - cached.timestamp < 30 * 60 * 1000)) {
+      if (cached) {
         console.log('Using cached audio');
         audioContent = cached.audio;
       } else {
@@ -90,8 +100,8 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         const { data, error: apiError } = await supabase.functions.invoke('text-to-speech', {
           body: { 
             text: text.trim(), 
-            speaker,
-            model: effectiveModel,
+            speaker: speaker,
+            model: currentModel,
             language: 'de'
           }
         });
@@ -105,13 +115,13 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           console.error('TTS Service Error:', data.error, data.message);
           if (data.error === 'QUOTA_EXCEEDED') {
             setQuotaExceeded(true);
-            throw new Error('💳 ElevenLabs-Kontingent aufgebraucht! Bitte Credits aufladen.');
+            throw new Error('ElevenLabs-Kontingent aufgebraucht. Bitte API-Schlüssel überprüfen oder Credits aufladen.');
           } else if (data.error === 'RATE_LIMITED') {
-            throw new Error('⏳ Zu viele Anfragen - bitte kurz warten');
+            throw new Error('Zu viele Anfragen - bitte einen Moment warten');
           } else if (data.error === 'API_KEY_MISSING') {
-            throw new Error('🔑 ElevenLabs API-Schlüssel fehlt');
+            throw new Error('ElevenLabs API-Schlüssel ist nicht konfiguriert');
           } else {
-            throw new Error(`❌ ${data.message || 'TTS Fehler'}`);
+            throw new Error(data.message || 'TTS Fehler');
           }
         }
         
@@ -124,24 +134,39 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           audio: audioContent,
           timestamp: now
         });
+        
+        console.log('TTS request successful, audio cached');
       }
 
+      // Create and configure audio element
       const audio = new Audio();
       
-      audio.onloadstart = () => setIsLoading(true);
+      audio.onloadstart = () => {
+        console.log('Audio loading started');
+        setIsLoading(true);
+      };
+      
       audio.oncanplaythrough = () => {
+        console.log('Audio can play through');
         setIsLoading(false);
         setIsSpeaking(true);
       };
+      
       audio.onplay = () => {
+        console.log('Audio started playing');
         setIsSpeaking(true);
         setIsLoading(false);
       };
+      
       audio.onended = () => {
+        console.log('Audio ended');
         setIsSpeaking(false);
+        setIsLoading(false);
         setCurrentAudio(null);
       };
-      audio.onerror = () => {
+      
+      audio.onerror = (e) => {
+        console.error('Audio playback error:', e);
         const errorMsg = 'Audio-Wiedergabe fehlgeschlagen';
         setError(errorMsg);
         setIsSpeaking(false);
@@ -151,14 +176,21 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
 
       audio.src = `data:audio/mp3;base64,${audioContent}`;
+      audio.load();
+      
       setCurrentAudio(audio);
       
       try {
-        await audio.play();
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+          console.log('Audio playback started successfully');
+        }
       } catch (playError) {
+        console.error('Play failed:', playError);
         if (playError.name === 'NotAllowedError') {
-          toast.error('🔊 Bitte einmal auf die Seite klicken, um Audio zu aktivieren');
-          setError('Autoplay blockiert - bitte Seite anklicken');
+          toast.error('Autoplay blockiert - bitte manuell auf Play klicken');
+          setError('Autoplay blockiert');
         } else {
           throw playError;
         }
@@ -173,13 +205,14 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setIsLoading(false);
       setCurrentAudio(null);
       
-      toast.error('TTS Fehler', {
+      toast.error('Sprachausgabe-Fehler', {
         description: errorMsg
       });
     }
-  }, [isEnabled, quotaExceeded, currentModel, stopCurrentAudio]);
+  }, [isEnabled, quotaExceeded, currentModel, cleanCache, stopCurrentAudio]);
 
   const stop = useCallback(() => {
+    console.log('Stopping TTS');
     stopCurrentAudio();
   }, [stopCurrentAudio]);
 
@@ -187,6 +220,7 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (currentAudio && !isPaused) {
       currentAudio.pause();
       setIsPaused(true);
+      console.log('TTS paused');
     }
   }, [currentAudio, isPaused]);
 
@@ -194,10 +228,12 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (currentAudio && isPaused) {
       currentAudio.play();
       setIsPaused(false);
+      console.log('TTS resumed');
     }
   }, [currentAudio, isPaused]);
 
   const setEnabled = useCallback((enabled: boolean) => {
+    console.log('TTS enabled:', enabled);
     setIsEnabled(enabled);
     localStorage.setItem('tts-enabled', enabled.toString());
     if (!enabled) {
@@ -209,6 +245,7 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [stopCurrentAudio, quotaExceeded]);
 
   const setModel = useCallback((newModel: string) => {
+    console.log('TTS model changed to:', newModel);
     setCurrentModel(newModel);
     localStorage.setItem('tts-model', newModel);
   }, []);

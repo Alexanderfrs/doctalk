@@ -4,7 +4,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Mic, MicOff } from "lucide-react";
+import { Send, MicVocal } from "lucide-react";
 import useVoiceRecognition from "@/hooks/useVoiceRecognition";
 import { toast } from "sonner";
 
@@ -20,31 +20,29 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
   const { t } = useTranslation();
   const [message, setMessage] = useState("");
 
-  // Voice recognition for transcription to text area
-  const { 
-    text: recognizedText, 
-    isListening: isTranscribing,
-    startListening: startTranscribing,
-    stopListening: stopTranscribing,
-    resetText: resetTranscriptionText,
+  // Direct speech input for hold-and-speak functionality
+  const {
+    isListening: isDirectListening,
+    startListening: startDirectListening,
+    stopListening: stopDirectListening,
+    resetText: resetDirectText,
     hasRecognitionSupport,
-    error: transcriptionError
+    error: directSpeechError
   } = useVoiceRecognition({
     language: 'de-DE',
-    continuous: false,
+    continuous: true,
     interimResults: true,
     onResult: (result, isFinal) => {
-      if (isFinal) {
-        setMessage(prev => {
-          const newText = prev ? `${prev} ${result}` : result;
-          return newText;
-        });
-        resetTranscriptionText();
+      if (isFinal && result.trim()) {
+        setTimeout(() => {
+          onSendMessage(result.trim());
+          resetDirectText();
+        }, 500);
       }
     },
     onError: (error) => {
-      console.error("Voice transcription error:", error);
-      toast.error("Spracherkennung fehlgeschlagen: " + error);
+      console.error("Direct speech error:", error);
+      toast.error("Direkte Spracheingabe fehlgeschlagen: " + error);
     }
   });
 
@@ -54,17 +52,22 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
     setMessage("");
   };
 
-  const toggleTranscription = async () => {
-    if (isTranscribing) {
-      stopTranscribing();
-    } else {
+  const handleDirectSpeechMouseDown = async () => {
+    if (!isDirectListening) {
       try {
-        await startTranscribing();
-        toast.info("Sprechen Sie jetzt...");
+        await startDirectListening();
+        toast.info("Halten Sie gedrückt und sprechen Sie...");
       } catch (error) {
-        console.error("Failed to start voice transcription:", error);
-        toast.error("Spracherkennung konnte nicht gestartet werden");
+        console.error("Failed to start direct speech:", error);
+        toast.error("Direkte Spracheingabe konnte nicht gestartet werden");
       }
+    }
+  };
+
+  const handleDirectSpeechMouseUp = () => {
+    if (isDirectListening) {
+      stopDirectListening();
+      toast.info("Verarbeitung...");
     }
   };
 
@@ -85,34 +88,32 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
               }
             }}
           />
-          {transcriptionError && (
+          {directSpeechError && (
             <p className="text-xs text-red-500 mt-1">
-              {transcriptionError}
+              {directSpeechError}
             </p>
           )}
         </div>
         
         <div className="flex flex-col space-y-2">
-          {/* Voice transcription button */}
           {hasRecognitionSupport && (
             <Button 
-              variant={isTranscribing ? "destructive" : "outline"}
+              variant={isDirectListening ? "default" : "secondary"}
               size="sm" 
-              onClick={toggleTranscription}
+              onMouseDown={handleDirectSpeechMouseDown}
+              onMouseUp={handleDirectSpeechMouseUp}
+              onMouseLeave={handleDirectSpeechMouseUp}
+              onTouchStart={handleDirectSpeechMouseDown}
+              onTouchEnd={handleDirectSpeechMouseUp}
               disabled={disabled}
               className="touch-action-manipulation h-10 w-10 p-0"
-              aria-label={isTranscribing ? "Transkription stoppen" : "Transkription starten"}
-              title="Sprache zu Text"
+              aria-label="Direkt sprechen (halten)"
+              title="Halten und sprechen - direkt senden"
             >
-              {isTranscribing ? (
-                <MicOff className="h-4 w-4" />
-              ) : (
-                <Mic className="h-4 w-4" />
-              )}
+              <MicVocal className="h-4 w-4" />
             </Button>
           )}
           
-          {/* Send button */}
           <Button 
             size="sm" 
             onClick={handleSendMessage}

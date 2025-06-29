@@ -35,7 +35,15 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
   const lastAIMessageRef = useRef<string>('');
   const autoPlayTimeoutRef = useRef<NodeJS.Timeout>();
 
-  const { speak, isEnabled: ttsEnabled, quotaExceeded, currentModel } = useTTS();
+  const { 
+    speak, 
+    isSpeaking, 
+    isEnabled, 
+    setEnabled,
+    currentModel,
+    setModel,
+    quotaExceeded
+  } = useTTS();
 
   // Auto-scroll to bottom
   const scrollToBottom = () => {
@@ -52,7 +60,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
       // Add AI message to conversation
       const aiMessage: Message = {
         id: `ai-${Date.now()}`,
-        speaker: 'patient',
+        speaker: 'patient', // Default AI speaker
         text: aiResponse,
         timestamp: new Date(),
         isAI: true
@@ -61,19 +69,21 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
       setMessages(prev => [...prev, aiMessage]);
       
       // Auto-play TTS for AI response with a small delay (only if enabled and quota not exceeded)
-      if (ttsEnabled && !quotaExceeded) {
+      if (isEnabled && !quotaExceeded) {
+        // Clear any existing timeout
         if (autoPlayTimeoutRef.current) {
           clearTimeout(autoPlayTimeoutRef.current);
         }
         
+        // Set a timeout to auto-play after message is rendered
         autoPlayTimeoutRef.current = setTimeout(() => {
-          speak(aiResponse, 'patient', currentModel);
+          speak(aiResponse, 'patient');
         }, 500);
       }
       
       lastAIMessageRef.current = aiResponse;
     }
-  }, [aiResponse, speak, ttsEnabled, currentModel, quotaExceeded]);
+  }, [aiResponse, speak, isEnabled, quotaExceeded]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -154,6 +164,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
                       size="sm"
                       variant="ghost"
                       className="h-6 w-6 p-0"
+                      disabled={quotaExceeded}
                     />
                     <span className="text-xs text-gray-500">
                       {message.timestamp.toLocaleTimeString('de-DE', { 

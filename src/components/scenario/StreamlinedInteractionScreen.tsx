@@ -1,338 +1,232 @@
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Send, Mic, MicOff, MessageCircle, ArrowLeft } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ArrowLeft, X, Settings } from "lucide-react";
+import { Scenario } from "@/data/scenarios";
+import ConversationInput from "./ConversationInput";
+import { default as useUnifiedMedicalLLM } from "@/hooks/useUnifiedMedicalLLM";
 import { toast } from "sonner";
-import useVoiceRecognition from "@/hooks/useVoiceRecognition";
-import TTSSettings from "./TTSSettings";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
+import { createPatientProfile } from "@/utils/patientProfiles";
 import TTSButton from "./TTSButton";
-import { useTTS } from "@/contexts/TTSContext";
+import TTSSettings from "./TTSSettings";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface Message {
   id: string;
-  speaker: 'user' | 'patient' | 'doctor' | 'colleague';
-  text: string;
+  content: string;
+  role: "user" | "assistant";
   timestamp: Date;
-  isAI?: boolean;
+  speaker?: string;
 }
 
 interface StreamlinedInteractionScreenProps {
-  scenario: any;
-  onSendMessage: (message: string) => void;
-  aiResponse?: string;
-  isAIResponding?: boolean;
-  onBack?: () => void;
+  scenario: Scenario;
+  onBack: () => void;
+  onExit: () => void;
+  onSendMessage?: (message: string) => void;
 }
 
 const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> = ({
   scenario,
-  onSendMessage,
-  aiResponse,
-  isAIResponding = false,
-  onBack
+  onBack,
+  onExit,
+  onSendMessage
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [message, setMessage] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const lastAIMessageRef = useRef<string>('');
-  const autoPlayTimeoutRef = useRef<NodeJS.Timeout>();
+  const [isTyping, setIsTyping] = useState(false);
+  const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
-  const { speak, isEnabled: ttsEnabled, quotaExceeded, currentModel } = useTTS();
+  const patientProfile = createPatientProfile(scenario.category, scenario);
 
-  // Voice recognition for transcription
-  const { 
-    isListening: isTranscribing,
-    startListening: startTranscribing,
-    stopListening: stopTranscribing,
-    resetText: resetTranscriptionText,
-    hasRecognitionSupport,
-    error: transcriptionError
-  } = useVoiceRecognition({
-    language: 'de-DE',
-    continuous: false,
-    interimResults: true,
-    onResult: (result, isFinal) => {
-      if (isFinal) {
-        setMessage(prev => {
-          const newText = prev ? `${prev} ${result}` : result;
-          return newText;
-        });
-        resetTranscriptionText();
-      }
+  const { sendMessage, isLoading, error } = useUnifiedMedicalLLM({
+    scenario: scenario,
+    patientProfile: patientProfile,
+    onResponse: (response) => {
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(),
+        content: response,
+        role: "assistant",
+        timestamp: new Date(),
+        speaker: "patient"
+      }]);
+      setIsTyping(false);
     },
     onError: (error) => {
-      console.error("Voice transcription error:", error);
-      toast.error("Spracherkennung fehlgeschlagen: " + error);
+      console.error("LLM Error:", error);
+      toast.error("Fehler beim Verarbeiten der Nachricht: " + error);
+      setIsTyping(false);
     }
   });
 
-  // Auto-scroll to bottom
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  // Handle new AI responses with automatic TTS
-  useEffect(() => {
-    if (aiResponse && aiResponse !== lastAIMessageRef.current) {
-      const aiMessage: Message = {
-        id: `ai-${Date.now()}`,
-        speaker: 'patient',
-        text: aiResponse,
+    if (scenario) {
+      const initialMessage = {
+        id: "initial",
+        content: `Hallo, ich bin ${patientProfile.name}. Wie kann ich Ihnen helfen?`,
+        role: "assistant" as const,
         timestamp: new Date(),
-        isAI: true
+        speaker: "patient"
       };
-      
-      setMessages(prev => [...prev, aiMessage]);
-      
-      // Auto-play TTS for AI response
-      if (ttsEnabled && !quotaExceeded) {
-        if (autoPlayTimeoutRef.current) {
-          clearTimeout(autoPlayTimeoutRef.current);
-        }
-        
-        autoPlayTimeoutRef.current = setTimeout(() => {
-          speak(aiResponse, 'patient', currentModel);
-        }, 500);
-      }
-      
-      lastAIMessageRef.current = aiResponse;
+      setMessages([initialMessage]);
     }
-  }, [aiResponse, speak, ttsEnabled, currentModel, quotaExceeded]);
+  }, [scenario, patientProfile]);
 
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (autoPlayTimeoutRef.current) {
-        clearTimeout(autoPlayTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const handleSendMessage = () => {
+  const handleSendMessage = async (message: string) => {
     if (!message.trim()) return;
-    
+
     const userMessage: Message = {
-      id: `user-${Date.now()}`,
-      speaker: 'user',
-      text: message,
-      timestamp: new Date()
+      id: Date.now().toString(),
+      content: message,
+      role: "user",
+      timestamp: new Date(),
+      speaker: "user"
     };
-    
+
     setMessages(prev => [...prev, userMessage]);
-    onSendMessage(message);
-    setMessage("");
-  };
+    setIsTyping(true);
 
-  const toggleTranscription = async () => {
-    if (isTranscribing) {
-      stopTranscribing();
-    } else {
-      try {
-        await startTranscribing();
-        toast.info("Sprechen Sie jetzt...");
-      } catch (error) {
-        console.error("Failed to start voice transcription:", error);
-        toast.error("Spracherkennung konnte nicht gestartet werden");
+    try {
+      await sendMessage(message, messages);
+      if (onSendMessage) {
+        onSendMessage(message);
       }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setIsTyping(false);
     }
   };
 
-  const getSpeakerBadgeColor = (speaker: string) => {
-    switch (speaker) {
-      case 'patient': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'doctor': return 'bg-green-100 text-green-800 border-green-200';
-      case 'colleague': return 'bg-purple-100 text-purple-800 border-purple-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
-
-  const getSpeakerName = (speaker: string) => {
-    switch (speaker) {
-      case 'patient': return 'Patient';
-      case 'doctor': return 'Arzt';
-      case 'colleague': return 'Kollege';
-      default: return 'Sie';
-    }
+  const handleExit = () => {
+    onExit();
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-medical-50 to-white">
-      <div className="container mx-auto p-4 max-w-4xl">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-4">
-            {onBack && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onBack}
-                className="flex items-center gap-2"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Zurück
-              </Button>
-            )}
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-medical-50 to-white">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 px-4 py-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onBack}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Zurück
+            </Button>
             <div>
-              <h1 className="text-2xl font-bold text-medical-800">{scenario?.title}</h1>
-              <p className="text-medical-600">{scenario?.description}</p>
+              <h1 className="text-lg font-semibold text-gray-900">
+                {scenario.title}
+              </h1>
+              <p className="text-sm text-gray-600">
+                Patient: {patientProfile.name}
+              </p>
             </div>
           </div>
-          <TTSSettings />
+          
+          <div className="flex items-center gap-2">
+            {/* TTS Settings */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                  <Settings className="h-4 w-4" />
+                  TTS
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 p-4" align="end">
+                <div className="space-y-3">
+                  <h4 className="font-medium text-sm">Sprachausgabe-Einstellungen</h4>
+                  <TTSSettings />
+                </div>
+              </PopoverContent>
+            </Popover>
+            
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleExit}
+              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
+      </div>
 
-        {/* Main Chat Interface */}
-        <Card className="h-[calc(100vh-200px)] flex flex-col">
-          <CardHeader className="flex flex-row items-center justify-between py-3 border-b">
-            <div className="flex items-center space-x-2">
-              <MessageCircle className="h-5 w-5 text-medical-600" />
-              <CardTitle className="text-lg">Medizinisches Gespräch</CardTitle>
-            </div>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        <Card className="flex-1 mx-4 my-4 flex flex-col">
+          <CardHeader className="border-b border-gray-200">
+            <CardTitle className="text-lg">Gesprächssimulation</CardTitle>
           </CardHeader>
           
           <CardContent className="flex-1 flex flex-col p-0">
-            {/* Messages Container */}
+            {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {/* Initial scenario message */}
-              {messages.length === 0 && (
-                <div className="bg-blue-50 mr-8 p-3 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-200">
-                      Szenario
-                    </Badge>
-                  </div>
-                  <p className="text-sm leading-relaxed">
-                    {scenario?.initialMessage || "Beginnen Sie das Gespräch..."}
-                  </p>
-                </div>
-              )}
-
-              {/* Chat messages */}
-              {messages.map((msg) => (
+              {messages.map((message) => (
                 <div
-                  key={msg.id}
+                  key={message.id}
                   className={cn(
-                    "flex flex-col space-y-2 p-3 rounded-lg",
-                    msg.speaker === 'user' 
-                      ? "bg-medical-50 ml-8" 
-                      : "bg-gray-50 mr-8"
+                    "flex",
+                    message.role === "user" ? "justify-end" : "justify-start"
                   )}
                 >
-                  <div className="flex items-center justify-between">
-                    <Badge 
-                      variant="outline" 
-                      className={getSpeakerBadgeColor(msg.speaker)}
-                    >
-                      {getSpeakerName(msg.speaker)}
-                    </Badge>
-                    
-                    <div className="flex items-center space-x-2">
-                      <TTSButton
-                        textToRead={msg.text}
-                        speaker={msg.speaker}
-                        size="sm"
-                        variant="ghost"
-                        className="h-6 w-6 p-0"
-                      />
-                      <span className="text-xs text-gray-500">
-                        {msg.timestamp.toLocaleTimeString('de-DE', { 
-                          hour: '2-digit', 
-                          minute: '2-digit' 
-                        })}
-                      </span>
+                  <div
+                    className={cn(
+                      "max-w-[80%] p-3 rounded-lg",
+                      message.role === "user"
+                        ? "bg-medical-600 text-white"
+                        : "bg-gray-100 text-gray-900"
+                    )}
+                  >
+                    <div className="flex items-start gap-2">
+                      <div className="flex-1">
+                        <p className="text-sm">{message.content}</p>
+                        <span className="text-xs opacity-70 mt-1 block">
+                          {message.timestamp.toLocaleTimeString()}
+                        </span>
+                      </div>
+                      {message.role === "assistant" && (
+                        <TTSButton
+                          textToRead={message.content}
+                          speaker={message.speaker as "user" | "patient" | "doctor" | "colleague"}
+                          size="sm"
+                          variant="ghost"
+                          className="ml-2"
+                        />
+                      )}
                     </div>
                   </div>
-                  
-                  <p className="text-sm leading-relaxed">{msg.text}</p>
                 </div>
               ))}
               
-              {/* AI Response Loading */}
-              {isAIResponding && (
-                <div className="bg-gray-50 mr-8 p-3 rounded-lg">
-                  <div className="flex items-center space-y-2">
-                    <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-200">
-                      Patient
-                    </Badge>
-                  </div>
-                  <div className="flex items-center space-x-2 mt-2">
-                    <div className="animate-pulse flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="bg-gray-100 text-gray-900 p-3 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      </div>
+                      <span className="text-xs text-gray-500">Patient tippt...</span>
                     </div>
-                    <span className="text-xs text-gray-500">antwortet...</span>
                   </div>
                 </div>
               )}
-              
-              <div ref={messagesEndRef} />
             </div>
             
-            {/* Input Section */}
-            <div className="border-t p-4">
-              <div className="flex w-full items-end space-x-2">
-                <div className="flex-1">
-                  <Textarea
-                    placeholder="Ihre Nachricht eingeben..."
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    className="min-h-[80px] resize-none"
-                    disabled={isAIResponding}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSendMessage();
-                      }
-                    }}
-                  />
-                  {transcriptionError && (
-                    <p className="text-xs text-red-500 mt-1">
-                      {transcriptionError}
-                    </p>
-                  )}
-                </div>
-                
-                <div className="flex flex-col space-y-2">
-                  {/* Voice transcription button */}
-                  {hasRecognitionSupport && (
-                    <Button 
-                      variant={isTranscribing ? "destructive" : "outline"}
-                      size="sm" 
-                      onClick={toggleTranscription}
-                      disabled={isAIResponding}
-                      className="touch-action-manipulation h-10 w-10 p-0"
-                      aria-label={isTranscribing ? "Transkription stoppen" : "Transkription starten"}
-                      title="Sprache zu Text"
-                    >
-                      {isTranscribing ? (
-                        <MicOff className="h-4 w-4" />
-                      ) : (
-                        <Mic className="h-4 w-4" />
-                      )}
-                    </Button>
-                  )}
-                  
-                  {/* Send button */}
-                  <Button 
-                    size="sm" 
-                    onClick={handleSendMessage}
-                    disabled={isAIResponding || !message.trim()}
-                    className="touch-action-manipulation bg-medical-600 hover:bg-medical-700 h-10 w-10 p-0"
-                    aria-label="Senden"
-                  >
-                    <Send className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
+            {/* Input */}
+            <ConversationInput
+              onSendMessage={handleSendMessage}
+              disabled={isLoading}
+            />
           </CardContent>
         </Card>
       </div>
