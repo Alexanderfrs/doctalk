@@ -40,25 +40,12 @@ const TTSButton: React.FC<TTSButtonProps> = ({
     e.preventDefault();
     e.stopPropagation();
     
-    if (!textToRead.trim()) {
-      console.log('No text to read');
-      return;
-    }
-    
-    console.log('TTS Button clicked - Text:', textToRead.substring(0, 50));
-    console.log('TTS enabled:', isEnabled);
-    console.log('Current speaker:', speaker);
+    if (!textToRead.trim()) return;
     
     if (isSpeaking) {
-      console.log('Stopping current speech');
       stop();
     } else {
-      console.log('Starting speech with speaker:', speaker);
-      try {
-        await speak(textToRead, speaker);
-      } catch (error) {
-        console.error('Failed to speak:', error);
-      }
+      await speak(textToRead, speaker);
     }
   };
 
