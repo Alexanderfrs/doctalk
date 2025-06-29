@@ -1,195 +1,206 @@
 
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
-import { VocabularyWord } from "@/data/vocabulary";
-import { Check, Volume2, BookOpen, Plus } from "lucide-react";
-import { toast } from "sonner";
-import useTextToSpeech from "@/hooks/useTextToSpeech";
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Volume2, Play, Star } from 'lucide-react';
+import useTextToSpeech from '@/hooks/useTextToSpeech';
+
+interface VocabularyItem {
+  id: string;
+  german: string;
+  english: string;
+  category: string;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  pronunciation?: string;
+  example_sentence?: string;
+  translation_example?: string;
+  tags?: string[];
+}
 
 interface VocabularyCardProps {
-  word: VocabularyWord;
-  onPractice?: () => void;
-  className?: string;
-  isSuggested?: boolean;
-  onUse?: () => void;
+  item: VocabularyItem;
+  showTranslation?: boolean;
+  onToggleTranslation?: () => void;
+  onMarkImportant?: () => void;
+  isImportant?: boolean;
+  compact?: boolean;
 }
 
 const VocabularyCard: React.FC<VocabularyCardProps> = ({
-  word,
-  onPractice,
-  className,
-  isSuggested = false,
-  onUse,
+  item,
+  showTranslation = false,
+  onToggleTranslation,
+  onMarkImportant,
+  isImportant = false,
+  compact = false
 }) => {
-  const [flipped, setFlipped] = useState(false);
-  const [mastered, setMastered] = useState(word.mastered || false);
-  
   const { speak, isSpeaking } = useTextToSpeech({
-    language: 'de-DE',
-    onStart: () => console.log('Started speaking:', word.german),
-    onEnd: () => console.log('Finished speaking'),
-    onError: (error) => toast.error(`Fehler bei der Aussprache: ${error}`)
+    autoPlay: true
   });
 
-  const handleFlip = () => {
-    setFlipped(!flipped);
+  const handlePlayAudio = () => {
+    speak(item.german, 'user');
   };
 
-  const handleMastered = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setMastered(!mastered);
-    if (!mastered) {
-      toast.success(`"${word.german}" als gemeistert markiert`);
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case 'beginner': return 'bg-green-100 text-green-800 border-green-200';
+      case 'intermediate': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'advanced': return 'bg-red-100 text-red-800 border-red-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
-  const playPronunciation = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    
-    // Play the pronunciation of the German word
-    if (word.german) {
-      console.log('Playing pronunciation for:', word.german);
-      speak(word.german);
-      
-      // Notify the parent component if needed
-      if (onPractice) {
-        onPractice();
-      }
-    }
-  };
-
-  const handleUseWord = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (onUse) {
-      onUse();
-      toast.success(`Vokabel "${word.german}" zum Text hinzugefügt`);
-    }
-  };
+  if (compact) {
+    return (
+      <Card className="hover:shadow-md transition-shadow">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="font-semibold text-lg">{item.german}</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handlePlayAudio}
+                  disabled={isSpeaking}
+                  className="h-6 w-6 p-0"
+                >
+                  {isSpeaking ? (
+                    <Volume2 className="h-3 w-3 animate-pulse" />
+                  ) : (
+                    <Play className="h-3 w-3" />
+                  )}
+                </Button>
+              </div>
+              {showTranslation && (
+                <p className="text-gray-600 mb-2">{item.english}</p>
+              )}
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className={getDifficultyColor(item.difficulty)}>
+                  {item.difficulty}
+                </Badge>
+                <Badge variant="outline" className="text-xs">
+                  {item.category}
+                </Badge>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {onMarkImportant && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onMarkImportant}
+                  className={isImportant ? 'text-yellow-500' : 'text-gray-400'}
+                >
+                  <Star className={`h-4 w-4 ${isImportant ? 'fill-current' : ''}`} />
+                </Button>
+              )}
+              {onToggleTranslation && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={onToggleTranslation}
+                >
+                  {showTranslation ? 'Hide' : 'Show'} Translation
+                </Button>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
-    <div 
-      className={cn(
-        "relative h-[180px] w-full cursor-pointer perspective",
-        mastered && "ring-1 ring-green-500 ring-offset-1",
-        isSuggested && "border border-medical-300 shadow-sm",
-        className
-      )}
-      onClick={handleFlip}
-    >
-      <div 
-        className={cn(
-          "absolute inset-0 w-full h-full preserve-3d transition-transform duration-500 ease-in-out rounded-lg shadow-sm",
-          flipped ? "rotate-y-180" : ""
-        )}
-        style={{
-          transformStyle: "preserve-3d"
-        }}
-      >
-        {/* Front of card */}
-        <div 
-          className="absolute inset-0 w-full h-full backface-hidden bg-white border border-neutral-200 rounded-lg p-3 flex flex-col"
-          style={{
-            backfaceVisibility: "hidden"
-          }}
-        >
-          <div className="flex justify-between items-start">
-            <span className="px-1.5 py-0.5 text-xs bg-medical-100 text-medical-700 rounded-full mb-2">
-              {word.category}
-            </span>
-            
-            <button 
-              className={cn(
-                "w-5 h-5 rounded-full flex items-center justify-center transition-colors",
-                mastered ? "bg-green-100" : "bg-neutral-100 hover:bg-neutral-200"
-              )}
-              onClick={handleMastered}
-              aria-label={mastered ? "Mark as not mastered" : "Mark as mastered"}
+    <Card className="hover:shadow-lg transition-shadow">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-xl flex items-center gap-2">
+            {item.german}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handlePlayAudio}
+              disabled={isSpeaking}
+              className="h-6 w-6 p-0"
             >
-              <Check className={cn("h-3 w-3", mastered ? "text-green-600" : "text-neutral-400")} />
-            </button>
-          </div>
-          
-          <h3 className="text-lg font-semibold text-center my-auto">
-            {word.german}
-          </h3>
-          
-          {/* Display abbreviation if available */}
-          {word.abbreviation && (
-            <div className="mt-1 flex justify-center">
-              <span className="px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded-full">
-                {word.abbreviation}
-              </span>
-            </div>
+              {isSpeaking ? (
+                <Volume2 className="h-4 w-4 animate-pulse" />
+              ) : (
+                <Play className="h-4 w-4" />
+              )}
+            </Button>
+          </CardTitle>
+          {onMarkImportant && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onMarkImportant}
+              className={isImportant ? 'text-yellow-500' : 'text-gray-400'}
+            >
+              <Star className={`h-5 w-5 ${isImportant ? 'fill-current' : ''}`} />
+            </Button>
           )}
-          
-          <div className="mt-auto flex justify-center gap-2">
-            <button 
-              className={cn(
-                "text-neutral-500 hover:text-medical-600 transition-colors p-2 rounded-full hover:bg-medical-50",
-                isSpeaking && "text-medical-600 bg-medical-50"
-              )}
-              onClick={playPronunciation}
-              aria-label="Play pronunciation"
-            >
-              <Volume2 className="h-4 w-4" />
-            </button>
-            
-            {isSuggested && onUse && (
-              <button 
-                className="text-medical-500 hover:text-medical-600 transition-colors p-2 rounded-full hover:bg-medical-50"
-                onClick={handleUseWord}
-                aria-label="Use word in response"
-              >
-                <Plus className="h-4 w-4" />
-              </button>
+        </div>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className={getDifficultyColor(item.difficulty)}>
+            {item.difficulty}
+          </Badge>
+          <Badge variant="outline" className="text-xs">
+            {item.category}
+          </Badge>
+        </div>
+      </CardHeader>
+      
+      <CardContent className="space-y-4">
+        {showTranslation && (
+          <div>
+            <h4 className="font-medium text-gray-700 mb-1">English</h4>
+            <p className="text-gray-600">{item.english}</p>
+          </div>
+        )}
+        
+        {item.pronunciation && (
+          <div>
+            <h4 className="font-medium text-gray-700 mb-1">Pronunciation</h4>
+            <p className="text-gray-600 font-mono">{item.pronunciation}</p>
+          </div>
+        )}
+        
+        {item.example_sentence && showTranslation && (
+          <div>
+            <h4 className="font-medium text-gray-700 mb-1">Example</h4>
+            <p className="text-gray-600 italic mb-1">{item.example_sentence}</p>
+            {item.translation_example && (
+              <p className="text-gray-500 text-sm">{item.translation_example}</p>
             )}
           </div>
-        </div>
+        )}
         
-        {/* Back of card */}
-        <div 
-          className="absolute inset-0 w-full h-full backface-hidden bg-white border border-neutral-200 rounded-lg p-3 flex flex-col"
-          style={{
-            backfaceVisibility: "hidden",
-            transform: "rotateY(180deg)"
-          }}
-        >
-          <span className="px-1.5 py-0.5 text-xs self-start bg-neutral-100 text-neutral-600 rounded-full mb-2">
-            English
-          </span>
-          
-          <h3 className="text-base font-medium text-center mb-1">
-            {word.english}
-          </h3>
-          
-          {word.pronunciation && (
-            <p className="text-xs text-neutral-500 text-center italic mb-1">
-              /{word.pronunciation}/
-            </p>
-          )}
-          
-          {word.example && (
-            <div className="mt-1 mb-auto">
-              <p className="text-xs text-neutral-600 italic border-l-2 border-medical-300 pl-2">
-                "{word.example}"
-              </p>
-            </div>
-          )}
-          
-          {word.notes && (
-            <p className="text-xs text-neutral-500 mt-1">
-              {word.notes}
-            </p>
-          )}
-          
-          {mastered && (
-            <div className="absolute top-2 right-2 bg-green-100 p-0.5 rounded-full">
-              <Check className="h-3 w-3 text-green-600" />
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+        {item.tags && item.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {item.tags.map((tag, index) => (
+              <Badge key={index} variant="secondary" className="text-xs">
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        )}
+        
+        {onToggleTranslation && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onToggleTranslation}
+            className="w-full"
+          >
+            {showTranslation ? 'Hide' : 'Show'} Translation
+          </Button>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 

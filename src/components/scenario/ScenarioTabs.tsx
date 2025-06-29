@@ -23,16 +23,17 @@ interface ScenarioTabsProps {
 }
 
 const ScenarioTabs: React.FC<ScenarioTabsProps> = ({
-  conversation,
   onSendMessage,
   isLLMLoading,
-  suggestion,
-  onQuickReply,
-  feedback,
-  onDismissFeedback,
-  scenarioCategory,
   isConversationComplete
 }) => {
+  // Create a mock scenario object for ConversationTab
+  const mockScenario = {
+    category: 'patient-care',
+    title: 'Medical Scenario',
+    description: 'Practice scenario'
+  };
+
   return (
     <Card className="w-full">
       <div className="flex items-center gap-2 p-4 border-b">
@@ -42,15 +43,9 @@ const ScenarioTabs: React.FC<ScenarioTabsProps> = ({
       
       <div className="p-6">
         <ConversationTab 
-          conversation={conversation}
-          onUserResponse={onSendMessage}
-          isProcessingResponse={isLLMLoading}
-          suggestion={suggestion}
-          onQuickReply={onQuickReply}
-          feedback={feedback}
-          onDismissFeedback={onDismissFeedback}
-          conversationHistory={conversation}
-          scenarioType={scenarioCategory}
+          scenario={mockScenario}
+          onSendMessage={onSendMessage}
+          isAIResponding={isLLMLoading}
         />
       </div>
       

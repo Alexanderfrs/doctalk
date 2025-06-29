@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Scenario, DialogueLine } from "@/data/scenarios";
 import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
@@ -63,7 +62,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [patientProfile] = useState(() => createPatientProfile(scenario.category, scenario));
 
   const { speak, isSpeaking, stop } = useTextToSpeech({
-    voice: 'Sarah',
+    autoPlay: true,
     onError: (error) => {
       console.error("TTS Error:", error);
       toast.error("Sprachausgabe-Fehler");
@@ -592,76 +591,6 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         setIsRecording(false);
         toast.error("Spracherkennung konnte nicht gestartet werden");
       }
-    }
-  };
-
-  const handleSendMessage = async () => {
-    if (!currentMessage.trim() || isLLMLoading || conversationBlocked) return;
-
-    try {
-      setConversationBlocked(true);
-      
-      const userMessage: DialogueLine = {
-        speaker: 'user',
-        text: currentMessage.trim()
-      };
-
-      const updatedConversation = [...conversation, userMessage];
-      setConversation(updatedConversation);
-      
-      // Generate language feedback
-      const langFeedback = generateLanguageFeedback(currentMessage.trim());
-      setLanguageFeedback(langFeedback);
-      
-      // Check if checkpoint is completed and whether to proceed to AI
-      const shouldProceedToAI = updateCheckpoints(currentMessage.trim());
-      
-      setCurrentMessage("");
-
-      // Only generate AI response if checkpoint allows it
-      if (shouldProceedToAI) {
-        const response = await generateUnifiedResponse(currentMessage, conversation);
-
-        const aiMessage: DialogueLine = {
-          speaker: scenario.category === 'teamwork' ? 'colleague' : 'patient',
-          text: response.patientReply
-        };
-
-        setConversation(prev => [...prev, aiMessage]);
-        
-        // Improved TTS with better reliability
-        if (isTTSEnabled && response.patientReply) {
-          try {
-            // Stop any current speech first
-            stop();
-            // Small delay to ensure clean start
-            setTimeout(() => {
-              speak(response.patientReply);
-            }, 200);
-          } catch (ttsError) {
-            console.error("TTS Error:", ttsError);
-            // Retry with a longer delay
-            setTimeout(() => {
-              try {
-                speak(response.patientReply);
-              } catch (retryError) {
-                console.error("TTS Retry failed:", retryError);
-              }
-            }, 1000);
-          }
-        }
-        
-        if (response.briefFeedback) {
-          setFeedback(response.briefFeedback);
-        }
-      }
-      
-      setConversationBlocked(false);
-
-    } catch (error) {
-      console.error("Error sending message:", error);
-      toast.error("Fehler beim Senden der Nachricht");
-      setConversationBlocked(false);
     }
   };
 
