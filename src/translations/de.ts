@@ -1,4 +1,3 @@
-
 export const germanTranslations = {
   welcome: 'Willkommen',
   language: 'Sprache',
@@ -267,7 +266,7 @@ export const germanTranslations = {
   medicalTeamWorking: 'Medizinisches Team arbeitet zusammen',
   hospitalScene: 'Krankenhaus-Szene',
   medicalEducation: 'Medizinische Ausbildung',
-
+  
   'mobileOnboarding.screen1.subtitle': "Meistern Sie medizinisches Deutsch für Ihre Gesundheitslaufbahn in Deutschland",
   'mobileOnboarding.screen2.title': "Den Anerkennungsprozess verstehen",
   'mobileOnboarding.screen2.subtitle': "Vollenden Sie Ihren Weg zur Medizinpraxis",
@@ -277,5 +276,22 @@ export const germanTranslations = {
   'mobileOnboarding.screen3.description': "Lernen Sie die auf der Station verwendete Sprache",
   'mobileOnboarding.screen4.title': "Stimme und Rollenspiel",
   'mobileOnboarding.screen4.subtitle': "Sprechen und hören Sie echte medizinische Dialoge mit KI",
-  'mobileOnboarding.screen4.description': "Üben Sie reale Gespräche"
+  'mobileOnboarding.screen4.description': "Üben Sie reale Gespräche",
+  
+  // TTS Settings
+  'tts.autoSpeech': 'Auto-Sprache',
+  'tts.muted': 'Stumm',
+  'tts.enable': 'Auto-Sprache einschalten',
+  'tts.disable': 'Auto-Sprache ausschalten',
+  'tts.playText': 'Text vorlesen',
+  'tts.error': 'Sprachausgabe fehlgeschlagen',
+  
+  // Scenario translations
+  'scenario.type_message': 'Nachricht eingeben...',
+  'scenario.conversation': 'Gespräch',
+  'scenario.responding': 'antwortet...',
+  'scenario.patient': 'Patient',
+  'scenario.doctor': 'Arzt',
+  'scenario.colleague': 'Kollege',
+  'scenario.you': 'Sie',
 };

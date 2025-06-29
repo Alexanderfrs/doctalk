@@ -9,13 +9,21 @@ const corsHeaders = {
 
 const ELEVENLABS_API_KEY = Deno.env.get('ELEVENLABS_API_KEY');
 
+// German voices optimized for medical dialogue
+const GERMAN_VOICES = {
+  'patient': 'EXAVITQu4vr4xnSDxMaL', // Sarah - warm, patient-like
+  'doctor': 'onwK4e9ZLuTAKqWW03F9', // Daniel - professional, authoritative
+  'colleague': 'XB0fDUnXU5powFXDhCwa', // Charlotte - friendly, collaborative
+  'user': 'EXAVITQu4vr4xnSDxMaL' // Default to Sarah
+};
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const { text, voice, model } = await req.json();
+    const { text, speaker = 'user', language = 'de' } = await req.json();
 
     if (!text) {
       throw new Error('Text is required');
@@ -25,9 +33,12 @@ serve(async (req) => {
       throw new Error('ElevenLabs API key is not configured');
     }
 
-    console.log("Processing text-to-speech request");
+    console.log(`Processing TTS for speaker: ${speaker}, text: ${text.substring(0, 50)}...`);
 
-    const response = await fetch('https://api.elevenlabs.io/v1/text-to-speech/' + (voice || 'EXAVITQu4vr4xnSDxMaL'), {
+    // Select appropriate German voice based on speaker
+    const voiceId = GERMAN_VOICES[speaker] || GERMAN_VOICES['user'];
+
+    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
       method: 'POST',
       headers: {
         'xi-api-key': ELEVENLABS_API_KEY,
@@ -35,10 +46,12 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         text,
-        model_id: model || 'eleven_multilingual_v2',
+        model_id: 'eleven_multilingual_v2',
         voice_settings: {
-          stability: 0.5,
-          similarity_boost: 0.75
+          stability: 0.6,
+          similarity_boost: 0.8,
+          style: 0.2,
+          use_speaker_boost: true
         }
       }),
     });
@@ -46,7 +59,7 @@ serve(async (req) => {
     if (!response.ok) {
       const errorBody = await response.text();
       console.error("ElevenLabs API Error:", errorBody);
-      throw new Error(errorBody);
+      throw new Error(`ElevenLabs API error: ${response.status}`);
     }
 
     const audioBuffer = await response.arrayBuffer();
@@ -54,7 +67,7 @@ serve(async (req) => {
       String.fromCharCode(...new Uint8Array(audioBuffer))
     );
 
-    console.log("Audio generated successfully");
+    console.log("German TTS audio generated successfully");
 
     return new Response(
       JSON.stringify({ audioContent: base64Audio }),
@@ -68,7 +81,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         error: error.message,
-        message: "Failed to generate audio. Please try again." 
+        message: "Failed to generate German audio. Please check your ElevenLabs API key." 
       }),
       {
         status: 500,
