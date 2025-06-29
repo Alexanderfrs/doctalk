@@ -1,38 +1,57 @@
 
 import { useTranslation } from "@/hooks/useTranslation";
 
-export const getScenarioTranslations = () => {
-  const { t } = useTranslation();
-  
-  return {
-    // Scenario titles
-    'admission': t('admissionScenario') || 'Patient Admission',
-    'medication': t('medicationScenario') || 'Medication Administration',
-    'emergency': t('emergencyScenario') || 'Emergency Situation',
-    'handover': t('handoverScenario') || 'Shift Handover',
-    'dementia-care': t('dementiaCareScenario') || 'Dementia Care',
-    'mobility-assistance': t('mobilityAssistanceScenario') || 'Mobility Assistance',
-    'communication-disability': t('communicationDisabilityScenario') || 'Communication with Disability',
-    
-    // Scenario descriptions
-    'admission-desc': t('admissionScenarioDesc') || 'Admission of a new patient to the ward',
-    'medication-desc': t('medicationScenarioDesc') || 'Safe medication administration and patient education',
-    'emergency-desc': t('emergencyScenarioDesc') || 'Emergency response to acute chest pain',
-    'handover-desc': t('handoverScenarioDesc') || 'Professional shift handover communication',
-    'dementia-care-desc': t('dementiaCareDesc') || 'Compassionate care for dementia patients',
-    'mobility-assistance-desc': t('mobilityAssistanceDesc') || 'Safe mobility support and fall prevention',
-    'communication-disability-desc': t('communicationDisabilityDesc') || 'Effective communication with disabled residents',
-    
-    // Learning objectives
-    'friendly-greeting': t('friendlyGreeting') || 'Friendly greeting and introduction',
-    'personal-data': t('personalDataCollection') || 'Collect personal information',
-    'medical-history': t('medicalHistoryTaking') || 'Take medical history',
-    'procedures-explanation': t('proceduresExplanation') || 'Explain procedures and rules',
-    'questions-concerns': t('questionsAndConcerns') || 'Answer questions and address concerns'
+// Learning objectives mapping for each scenario
+export const getScenarioLearningObjectives = (scenarioId: string, t: (key: string) => string) => {
+  const objectives: Record<string, string[]> = {
+    'admission': [
+      t('friendlyGreetingIntroduction'),
+      t('personalDataCollection'), 
+      t('medicalHistoryTaking'),
+      t('proceduresRulesExplanation'),
+      t('questionsAnsweringReassuring')
+    ],
+    'medication': [
+      t('medicationExplanation'),
+      t('dosageInstructions'),
+      t('sideEffectsDiscussion'),
+      t('patientEducation')
+    ],
+    'emergency': [
+      t('rapidAssessment'),
+      t('emergencyProtocol'),
+      t('vitalSignsMonitoring'),
+      t('teamCommunication')
+    ],
+    'handover': [
+      'Structured information transfer',
+      'Complete patient status update',
+      'Clear communication protocols',
+      'Documentation accuracy'
+    ],
+    'dementia-care': [
+      'Empathetic communication',
+      'Orientation support',
+      'Behavioral management',
+      'Family involvement'
+    ],
+    'mobility-assistance': [
+      'Safe transfer techniques',
+      'Fall prevention',
+      'Patient encouragement',
+      'Equipment usage'
+    ],
+    'communication-disability': [
+      'Alternative communication methods',
+      'Patient autonomy respect',
+      'Adaptive techniques',
+      'Inclusive interaction'
+    ]
   };
+
+  return objectives[scenarioId] || [];
 };
 
-export const translateScenarioContent = (key: string, fallback: string): string => {
-  const translations = getScenarioTranslations();
-  return translations[key as keyof typeof translations] || fallback;
+export const getScenarioTitle = (scenarioId: string, t: (key: string) => string) => {
+  return t(scenarioId);
 };

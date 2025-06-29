@@ -360,6 +360,34 @@ export const germanTranslations: Record<string, string> = {
   'signing_up': 'Registrieren',
   'signing_in': 'Anmelden',
 
+  // Scenario titles
+  'admission': 'Patientenaufnahme',
+  'medication': 'Medikamentenverabreichung', 
+  'emergency': 'Notfallsituation',
+  'handover': 'Schichtübergabe',
+  'dementia-care': 'Demenzpflege',
+  'mobility-assistance': 'Mobilitätshilfe',
+  'communication-disability': 'Kommunikation bei geistiger Behinderung',
+  
+  // Learning objectives for admission scenario
+  'friendlyGreetingIntroduction': 'Freundliche Begrüßung und Vorstellung',
+  'personalDataCollection': 'Persönliche Daten aufnehmen',
+  'medicalHistoryTaking': 'Anamnese erheben',
+  'proceduresRulesExplanation': 'Abläufe und Regeln erklären',
+  'questionsAnsweringReassuring': 'Fragen beantworten und beruhigen',
+  
+  // Learning objectives for medication scenario
+  'medicationExplanation': 'Medikamentenerklärung',
+  'dosageInstructions': 'Dosierungsanweisungen',
+  'sideEffectsDiscussion': 'Nebenwirkungen besprechen',
+  'patientEducation': 'Patientenaufklärung',
+  
+  // Learning objectives for emergency scenario
+  'rapidAssessment': 'Schnelle Einschätzung',
+  'emergencyProtocol': 'Notfallprotokoll',
+  'vitalSignsMonitoring': 'Vitalzeichen überwachen',
+  'teamCommunication': 'Teamkommunikation',
+
   // Exercise trainer specific translations
   'conversation': 'Gespräch',
   'patientProfile': 'Patientenprofil',
@@ -381,31 +409,23 @@ export const germanTranslations: Record<string, string> = {
   'learningGoals': 'Lernziele',
   'checkpoints': 'Kontrollpunkte',
   'completed': 'Abgeschlossen',
-  'safeFlexibleTraining': 'Sicheres & Flexibles Training',
-  'safeFlexibleTrainingDesc': 'Üben Sie in einer sicheren Umgebung, erhalten Sie sofortiges Feedback - einschließlich Aussprache - und verfolgen Sie den Fortschritt auf Ihrem maßgeschneiderten Lernpfad.',
   
-  // Scenario specific translations
-  'admissionScenario': 'Patientenaufnahme',
-  'medicationScenario': 'Medikamentenverabreichung',
-  'emergencyScenario': 'Notfallsituation',
-  'handoverScenario': 'Schichtübergabe',
-  'dementiaCareScenario': 'Demenzbetreuung',
-  'mobilityAssistanceScenario': 'Mobilitätshilfe',
-  'communicationDisabilityScenario': 'Kommunikation mit Behinderung',
+  // Scenario briefing translations
+  'scenarioBriefing': 'Szenario-Briefing',
+  'environment': 'Umgebung',
+  'culturalNotes': 'Kulturelle Hinweise',
+  'moreAbout': 'Mehr erfahren',
+  'bestPracticesForScenario': 'Best Practices für dieses Szenario',
+  'beginInteraction': 'Interaktion beginnen',
   
-  // Scenario descriptions
-  'admissionScenarioDesc': 'Aufnahme eines neuen Patienten auf der Station',
-  'medicationScenarioDesc': 'Sichere Medikamentenverabreichung und Patientenaufklärung',
-  'emergencyScenarioDesc': 'Notfallreaktion bei akuten Brustschmerzen',
-  'handoverScenarioDesc': 'Professionelle Schichtübergabe-Kommunikation',
-  'dementiaCareDesc': 'Einfühlsame Betreuung von Demenzpatienten',
-  'mobilityAssistanceDesc': 'Sichere Mobilitätsunterstützung und Sturzprävention',
-  'communicationDisabilityDesc': 'Effektive Kommunikation mit behinderten Bewohnern',
+  // Exercise trainer interface
+  'exerciseTitle': 'Übungstitel',
+  'patientInformation': 'Patienteninformationen',
+  'defaultChatInput': 'Ihre Antwort eingeben oder per Sprache aufnehmen...',
   
-  // Learning objectives
-  'friendlyGreeting': 'Freundliche Begrüßung und Vorstellung',
-  'personalDataCollection': 'Persönliche Daten aufnehmen',
-  'medicalHistoryTaking': 'Anamnese erheben',
-  'proceduresExplanation': 'Abläufe und Regeln erklären',
-  'questionsAndConcerns': 'Fragen beantworten und beruhigen'
+  // TTS Error messages
+  'ttsError': 'Sprachausgabe-Fehler',
+  'ttsQuotaExceeded': 'Sprachkontingent aufgebraucht',
+  'ttsNotAvailable': 'Sprachausgabe nicht verfügbar',
+  'ttsInitializing': 'Sprachausgabe wird initialisiert...'
 };
