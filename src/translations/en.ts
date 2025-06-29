@@ -1,3 +1,5 @@
+
+
 export const englishTranslations: Record<string, string> = {
   // Navigation
   'home': 'Home',
@@ -359,35 +361,7 @@ export const englishTranslations: Record<string, string> = {
   'registering': 'Registering',
   'signing_up': 'Signing Up',
   'signing_in': 'Signing In',
-  
-  // Scenario titles
-  'admission': 'Patient Admission',
-  'medication': 'Medication Administration', 
-  'emergency': 'Emergency Situation',
-  'handover': 'Shift Handover',
-  'dementia-care': 'Dementia Care',
-  'mobility-assistance': 'Mobility Assistance',
-  'communication-disability': 'Communication with Disability',
-  
-  // Learning objectives for admission scenario
-  'friendlyGreetingIntroduction': 'Friendly greeting and introduction',
-  'personalDataCollection': 'Personal data collection',
-  'medicalHistoryTaking': 'Medical history taking',
-  'proceduresRulesExplanation': 'Procedures and rules explanation',
-  'questionsAnsweringReassuring': 'Questions answering and reassuring',
-  
-  // Learning objectives for medication scenario
-  'medicationExplanation': 'Medication explanation',
-  'dosageInstructions': 'Dosage instructions',
-  'sideEffectsDiscussion': 'Side effects discussion',
-  'patientEducation': 'Patient education',
-  
-  // Learning objectives for emergency scenario
-  'rapidAssessment': 'Rapid assessment',
-  'emergencyProtocol': 'Emergency protocol',
-  'vitalSignsMonitoring': 'Vital signs monitoring',
-  'teamCommunication': 'Team communication',
-  
+
   // Exercise trainer specific translations
   'conversation': 'Conversation',
   'patientProfile': 'Patient Profile',
@@ -421,11 +395,6 @@ export const englishTranslations: Record<string, string> = {
   // Exercise trainer interface
   'exerciseTitle': 'Exercise Title',
   'patientInformation': 'Patient Information',
-  'defaultChatInput': 'Enter your response or record by voice...',
-  
-  // TTS Error messages
-  'ttsError': 'Speech output error',
-  'ttsQuotaExceeded': 'Speech quota exceeded',
-  'ttsNotAvailable': 'Speech output not available',
-  'ttsInitializing': 'Initializing speech...'
+  'defaultChatInput': 'Enter your response or record by voice...'
 };
+

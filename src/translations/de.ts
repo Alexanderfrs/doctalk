@@ -360,34 +360,6 @@ export const germanTranslations: Record<string, string> = {
   'signing_up': 'Registrieren',
   'signing_in': 'Anmelden',
 
-  // Scenario titles
-  'admission': 'Patientenaufnahme',
-  'medication': 'Medikamentenverabreichung', 
-  'emergency': 'Notfallsituation',
-  'handover': 'Schichtübergabe',
-  'dementia-care': 'Demenzpflege',
-  'mobility-assistance': 'Mobilitätshilfe',
-  'communication-disability': 'Kommunikation bei geistiger Behinderung',
-  
-  // Learning objectives for admission scenario
-  'friendlyGreetingIntroduction': 'Freundliche Begrüßung und Vorstellung',
-  'personalDataCollection': 'Persönliche Daten aufnehmen',
-  'medicalHistoryTaking': 'Anamnese erheben',
-  'proceduresRulesExplanation': 'Abläufe und Regeln erklären',
-  'questionsAnsweringReassuring': 'Fragen beantworten und beruhigen',
-  
-  // Learning objectives for medication scenario
-  'medicationExplanation': 'Medikamentenerklärung',
-  'dosageInstructions': 'Dosierungsanweisungen',
-  'sideEffectsDiscussion': 'Nebenwirkungen besprechen',
-  'patientEducation': 'Patientenaufklärung',
-  
-  // Learning objectives for emergency scenario
-  'rapidAssessment': 'Schnelle Einschätzung',
-  'emergencyProtocol': 'Notfallprotokoll',
-  'vitalSignsMonitoring': 'Vitalzeichen überwachen',
-  'teamCommunication': 'Teamkommunikation',
-
   // Exercise trainer specific translations
   'conversation': 'Gespräch',
   'patientProfile': 'Patientenprofil',
@@ -409,23 +381,6 @@ export const germanTranslations: Record<string, string> = {
   'learningGoals': 'Lernziele',
   'checkpoints': 'Kontrollpunkte',
   'completed': 'Abgeschlossen',
-  
-  // Scenario briefing translations
-  'scenarioBriefing': 'Szenario-Briefing',
-  'environment': 'Umgebung',
-  'culturalNotes': 'Kulturelle Hinweise',
-  'moreAbout': 'Mehr erfahren',
-  'bestPracticesForScenario': 'Best Practices für dieses Szenario',
-  'beginInteraction': 'Interaktion beginnen',
-  
-  // Exercise trainer interface
-  'exerciseTitle': 'Übungstitel',
-  'patientInformation': 'Patienteninformationen',
-  'defaultChatInput': 'Ihre Antwort eingeben oder per Sprache aufnehmen...',
-  
-  // TTS Error messages
-  'ttsError': 'Sprachausgabe-Fehler',
-  'ttsQuotaExceeded': 'Sprachkontingent aufgebraucht',
-  'ttsNotAvailable': 'Sprachausgabe nicht verfügbar',
-  'ttsInitializing': 'Sprachausgabe wird initialisiert...'
+  'safeFlexibleTraining': 'Sicheres & Flexibles Training',
+  'safeFlexibleTrainingDesc': 'Üben Sie in einer sicheren Umgebung, erhalten Sie sofortiges Feedback - einschließlich Aussprache - und verfolgen Sie den Fortschritt auf Ihrem maßgeschneiderten Lernpfad.'
 };
