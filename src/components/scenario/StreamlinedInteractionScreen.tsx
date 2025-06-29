@@ -18,6 +18,7 @@ import CheckpointTracker from "./CheckpointTracker";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
 import { PerformanceInsightsModal } from "./PerformanceInsightsModal";
 import TTSButton from "./TTSButton";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Checkpoint {
   id: string;
@@ -37,6 +38,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   onBack,
   onExit
 }) => {
+  const { t } = useTranslation();
+  
   const [conversation, setConversation] = useState<DialogueLine[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const [feedback, setFeedback] = useState<string>("");
@@ -716,7 +719,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
               className="text-medical-600"
             >
               <ArrowLeft className="h-4 w-4 mr-1" />
-              Zurück
+              {t('back')}
             </Button>
             <div>
               <h1 className="font-semibold text-medical-800">{scenario.title}</h1>
@@ -764,7 +767,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
               className="border-medical-200"
             >
               <RotateCcw className="h-4 w-4 mr-1" />
-              Neustart
+              {t('restart')}
             </Button>
             <Button
               variant="ghost"
@@ -784,45 +787,34 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           {/* Conversation Area */}
           <div className="flex-1 flex flex-col min-h-0">
             <Card className="flex-1 flex flex-col min-h-0">
-              <div className="p-4 border-b border-medical-200 flex-shrink-0">
+              <div className="p-3 border-b border-medical-200 flex-shrink-0">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <MessageCircle className="h-4 w-4 text-medical-600" />
-                    <h3 className="font-medium text-medical-800">Gespräch</h3>
+                    <h3 className="font-medium text-medical-800">{t('conversation')}</h3>
                     {isConversationComplete && (
                       <Badge variant="outline" className="border-green-500 text-green-700">
                         <CheckCircle className="h-3 w-3 mr-1" />
-                        Abgeschlossen
+                        {t('completed')}
                       </Badge>
                     )}
                   </div>
-                  {/* Enhanced Patient Info with Avatar */}
-                  <div className="flex items-center gap-3 bg-medical-50 rounded-lg px-4 py-3">
-                    <Avatar className="w-16 h-16">
+                  {/* Compact Patient Info */}
+                  <div className="flex items-center gap-2 bg-medical-50 rounded-lg px-3 py-2">
+                    <Avatar className="w-10 h-10">
                       <AvatarImage src={patientProfile.avatar_url} alt={patientProfile.name} />
-                      <AvatarFallback className={`bg-gradient-to-br ${patientProfile.avatar_color} text-white font-semibold text-lg`}>
+                      <AvatarFallback className={`bg-gradient-to-br ${patientProfile.avatar_color} text-white font-semibold text-sm`}>
                         {patientProfile.name.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>
                     </Avatar>
-                    <div className="text-sm">
-                      <div className="font-medium text-medical-800 text-lg">{patientProfile.name}</div>
-                      <div className="flex items-center gap-3 text-medical-600 text-sm mt-1">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {patientProfile.age} Jahre
-                        </span>
+                    <div className="text-xs">
+                      <div className="font-medium text-medical-800">{patientProfile.name}</div>
+                      <div className="flex items-center gap-2 text-medical-600 mt-0.5">
+                        <span>{patientProfile.age} {t('years')}</span>
                         {patientProfile.condition && (
-                          <span className="flex items-center gap-1">
-                            <Activity className="h-3 w-3" />
-                            {patientProfile.condition}
-                          </span>
+                          <span>• {patientProfile.condition}</span>
                         )}
                       </div>
-                      {patientProfile.previous_conditions && patientProfile.previous_conditions.length > 0 && (
-                        <div className="text-xs text-medical-500 mt-1">
-                          Vorerkrankungen: {patientProfile.previous_conditions.join(', ')}
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -833,7 +825,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                   {conversation.length === 0 && (
                     <div className="text-center text-medical-500 py-8">
                       <MessageCircle className="h-8 w-8 mx-auto mb-2" />
-                      <p className="text-lg">Beginnen Sie das Gespräch mit {patientProfile.name}...</p>
+                      <p className="text-lg">{t('startConversationWith')} {patientProfile.name}...</p>
                     </div>
                   )}
                   {conversation.map((line, index) => (
@@ -860,16 +852,6 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                               : patientProfile.name
                             }
                           </span>
-                          {/* Only show TTS button for AI messages, not user messages */}
-                          {line.speaker !== 'user' && (
-                            <TTSButton
-                              textToRead={line.text}
-                              speaker={line.speaker}
-                              variant="ghost"
-                              size="sm"
-                              className="h-6 w-6 p-0 ml-2"
-                            />
-                          )}
                         </div>
                         {line.text}
                       </div>
@@ -883,7 +865,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                         <div className="flex items-start gap-2">
                           <Lightbulb className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
                           <div>
-                            <p className="text-sm font-medium mb-1">Guidance</p>
+                            <p className="text-sm font-medium mb-1">{t('guidance')}</p>
                             <p className="text-xs">{guidanceText}</p>
                             <Button
                               size="sm"
@@ -891,7 +873,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                               onClick={() => setShowGuidanceNotification(false)}
                               className="mt-2 h-6 text-xs text-blue-700 hover:text-blue-800"
                             >
-                              Got it
+                              {t('gotIt')}
                             </Button>
                           </div>
                         </div>
@@ -914,7 +896,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     <div className="flex justify-start">
                       <div className="bg-blue-50 border border-blue-200 text-blue-800 p-2 rounded-lg text-sm flex items-center gap-2">
                         <Volume2 className="h-4 w-4" />
-                        <span>Sprachausgabe aktiv...</span>
+                        <span>{t('speechOutputActive')}</span>
                         <Button
                           variant="ghost"
                           size="sm"
@@ -935,7 +917,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                   <div className="flex items-start gap-3">
                     <Lightbulb className="h-5 w-5 text-amber-600 mt-0.5" />
                     <div className="flex-1">
-                      <h4 className="font-medium text-amber-800 mb-1">Concrete Solution Suggestions</h4>
+                      <h4 className="font-medium text-amber-800 mb-1">{t('concreteSolutionSuggestions')}</h4>
                       <p className="text-sm text-amber-700 mb-3">{suggestionMessage}</p>
                       <div className="grid gap-2">
                         {suggestionOptions.map((option, index) => (
@@ -961,7 +943,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                   <Textarea
                     value={currentMessage}
                     onChange={(e) => setCurrentMessage(e.target.value)}
-                    placeholder="Ihre Antwort eingeben oder per Sprache aufnehmen..."
+                    placeholder={t('enterYourResponse')}
                     className="flex-1 min-h-[40px] max-h-[120px] resize-none"
                     style={{ fontSize: `${fontSize}px` }}
                     disabled={isLLMLoading || conversationBlocked}
@@ -1000,12 +982,12 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 {isListening && (
                   <div className="mt-2 text-sm text-medical-600 flex items-center gap-2">
                     <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                    Höre zu... Sprechen Sie jetzt
+                    {t('listeningNowSpeak')}
                   </div>
                 )}
                 {voiceError && (
                   <div className="mt-2 text-sm text-red-600">
-                    Sprach-Fehler: {voiceError}
+                    {t('voiceError')}: {voiceError}
                   </div>
                 )}
               </div>
@@ -1017,18 +999,18 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             {/* Checkpoint Tracker */}
             <CheckpointTracker checkpoints={checkpoints} />
 
-            {/* Combined Feedback Card */}
+            {/* Compact Combined Feedback Card */}
             <Card className="flex-1">
-              <div className="p-3 border-b border-medical-200">
-                <h3 className="font-medium text-medical-800 text-sm">Feedback</h3>
+              <div className="p-2 border-b border-medical-200">
+                <h3 className="font-medium text-medical-800 text-sm">{t('feedback')}</h3>
               </div>
-              <div className="p-3 space-y-3 max-h-[300px] overflow-y-auto">
+              <div className="p-2 space-y-2 max-h-[200px] overflow-y-auto">
                 {/* Language Feedback */}
                 <div>
-                  <h4 className="text-xs font-medium text-medical-700 mb-2">Language</h4>
+                  <h4 className="text-xs font-medium text-medical-700 mb-1">{t('language')}</h4>
                   {languageFeedback ? (
                     <div className={cn(
-                      "border rounded-lg p-2 text-xs",
+                      "border rounded p-1.5 text-xs",
                       languageFeedback.includes('Gute Sprachverwendung')
                         ? "bg-green-50 border-green-200 text-green-800"
                         : "bg-orange-50 border-orange-200 text-orange-800"
@@ -1037,21 +1019,21 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     </div>
                   ) : (
                     <p className="text-xs text-medical-500">
-                      Language feedback will appear here.
+                      {t('languageFeedbackWillAppear')}
                     </p>
                   )}
                 </div>
 
                 {/* Content Feedback */}
                 <div>
-                  <h4 className="text-xs font-medium text-medical-700 mb-2">Content</h4>
+                  <h4 className="text-xs font-medium text-medical-700 mb-1">{t('content')}</h4>
                   {feedback ? (
-                    <div className="bg-medical-50 border border-medical-200 rounded-lg p-2">
+                    <div className="bg-medical-50 border border-medical-200 rounded p-1.5">
                       <p className="text-xs text-medical-700">{feedback}</p>
                     </div>
                   ) : (
                     <p className="text-xs text-medical-500">
-                      Content feedback will appear here.
+                      {t('contentFeedbackWillAppear')}
                     </p>
                   )}
                 </div>

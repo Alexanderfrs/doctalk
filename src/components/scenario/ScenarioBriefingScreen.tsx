@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Scenario } from "@/data/scenarios";
 import { Card } from "@/components/ui/card";
@@ -6,6 +7,7 @@ import { AlertCircle, Users, MapPin, Target, Play, Info, X } from "lucide-react"
 import { PatientProfile } from "@/utils/patientProfiles";
 import BestPracticesDialog from "./BestPracticesDialog";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ScenarioBriefingScreenProps {
   scenario: Scenario;
@@ -20,6 +22,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
   onBeginInteraction,
   onExit
 }) => {
+  const { t } = useTranslation();
   const [showBestPractices, setShowBestPractices] = useState(false);
   const [showExitConfirmation, setShowExitConfirmation] = useState(false);
 
@@ -119,7 +122,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
         <Card className="p-6 bg-white border-medical-200">
           <div className="flex items-center gap-2 mb-4">
             <Users className="h-5 w-5 text-medical-600" />
-            <h3 className="font-semibold text-medical-800">Patientenprofil</h3>
+            <h3 className="font-semibold text-medical-800">{t('patientProfile')}</h3>
           </div>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div>
@@ -127,15 +130,15 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
               <p className="text-medical-600">{patientProfile.name}</p>
             </div>
             <div>
-              <p className="font-medium text-medical-700">Alter:</p>
-              <p className="text-medical-600">{patientProfile.age} Jahre</p>
+              <p className="font-medium text-medical-700">{t('age')}:</p>
+              <p className="text-medical-600">{patientProfile.age} {t('years')}</p>
             </div>
             <div>
-              <p className="font-medium text-medical-700">Zustand:</p>
+              <p className="font-medium text-medical-700">{t('condition')}:</p>
               <p className="text-medical-600">{patientProfile.condition}</p>
             </div>
             <div>
-              <p className="font-medium text-medical-700">Stimmung:</p>
+              <p className="font-medium text-medical-700">{t('mood')}:</p>
               <p className="text-medical-600">{patientProfile.mood}</p>
             </div>
           </div>
@@ -159,7 +162,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
           <Card className="p-4 bg-white border-medical-200">
             <div className="flex items-center gap-2 mb-3">
               <Target className="h-4 w-4 text-medical-600" />
-              <h4 className="font-medium text-medical-800">Ihr Ziel</h4>
+              <h4 className="font-medium text-medical-800">{t('learningGoals')}</h4>
             </div>
             <p className="text-sm text-medical-600">{context.objective}</p>
           </Card>
