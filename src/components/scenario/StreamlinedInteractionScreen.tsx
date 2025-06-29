@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, X, Settings } from "lucide-react";
 import { Scenario } from "@/data/scenarios";
 import ConversationInput from "./ConversationInput";
-import { useUnifiedMedicalLLM } from "@/hooks/useUnifiedMedicalLLM";
+import { default as useUnifiedMedicalLLM } from "@/hooks/useUnifiedMedicalLLM";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -67,7 +67,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     if (scenario) {
       const initialMessage = {
         id: "initial",
-        content: `Hallo, ich bin ${patientProfile.name}. ${scenario.initialMessage || "Wie kann ich Ihnen helfen?"}`,
+        content: `Hallo, ich bin ${patientProfile.name}. Wie kann ich Ihnen helfen?`,
         role: "assistant" as const,
         timestamp: new Date(),
         speaker: "patient"
@@ -195,7 +195,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                       {message.role === "assistant" && (
                         <TTSButton
                           textToRead={message.content}
-                          speaker={message.speaker || "patient"}
+                          speaker={message.speaker as "user" | "patient" | "doctor" | "colleague"}
                           size="sm"
                           variant="ghost"
                           className="ml-2"

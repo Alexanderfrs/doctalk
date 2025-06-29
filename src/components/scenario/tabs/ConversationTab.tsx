@@ -4,10 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MessageCircle } from "lucide-react";
 import ConversationInput from "../ConversationInput";
-import useTextToSpeech from "@/hooks/useTextToSpeech";
 import TTSSettings from "../TTSSettings";
 import TTSButton from "../TTSButton";
 import { cn } from "@/lib/utils";
+import { useTTS } from "@/contexts/TTSContext";
 
 interface Message {
   id: string;
@@ -38,15 +38,12 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
   const { 
     speak, 
     isSpeaking, 
-    isEnabled: ttsEnabled, 
-    setEnabled: setTTSEnabled,
+    isEnabled, 
+    setEnabled,
     currentModel,
     setModel,
     quotaExceeded
-  } = useTextToSpeech({
-    autoPlay: true,
-    onError: (error) => console.error('TTS Error:', error)
-  });
+  } = useTTS();
 
   // Auto-scroll to bottom
   const scrollToBottom = () => {
@@ -72,7 +69,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
       setMessages(prev => [...prev, aiMessage]);
       
       // Auto-play TTS for AI response with a small delay (only if enabled and quota not exceeded)
-      if (ttsEnabled && !quotaExceeded) {
+      if (isEnabled && !quotaExceeded) {
         // Clear any existing timeout
         if (autoPlayTimeoutRef.current) {
           clearTimeout(autoPlayTimeoutRef.current);
@@ -80,13 +77,13 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
         
         // Set a timeout to auto-play after message is rendered
         autoPlayTimeoutRef.current = setTimeout(() => {
-          speak(aiResponse, 'patient', currentModel);
+          speak(aiResponse, 'patient');
         }, 500);
       }
       
       lastAIMessageRef.current = aiResponse;
     }
-  }, [aiResponse, speak, ttsEnabled, currentModel, quotaExceeded]);
+  }, [aiResponse, speak, isEnabled, quotaExceeded]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -136,13 +133,7 @@ const ConversationTab: React.FC<ConversationTabProps> = ({
             <MessageCircle className="h-5 w-5 text-medical-600" />
             <CardTitle className="text-lg">Gespräch</CardTitle>
           </div>
-          <TTSSettings 
-            isEnabled={ttsEnabled}
-            onToggle={setTTSEnabled}
-            currentModel={currentModel}
-            onModelChange={setModel}
-            quotaExceeded={quotaExceeded}
-          />
+          <TTSSettings />
         </CardHeader>
         
         <CardContent className="flex-1 flex flex-col space-y-4 overflow-hidden">
