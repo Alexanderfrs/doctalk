@@ -382,5 +382,30 @@ export const germanTranslations: Record<string, string> = {
   'checkpoints': 'Kontrollpunkte',
   'completed': 'Abgeschlossen',
   'safeFlexibleTraining': 'Sicheres & Flexibles Training',
-  'safeFlexibleTrainingDesc': 'Üben Sie in einer sicheren Umgebung, erhalten Sie sofortiges Feedback - einschließlich Aussprache - und verfolgen Sie den Fortschritt auf Ihrem maßgeschneiderten Lernpfad.'
+  'safeFlexibleTrainingDesc': 'Üben Sie in einer sicheren Umgebung, erhalten Sie sofortiges Feedback - einschließlich Aussprache - und verfolgen Sie den Fortschritt auf Ihrem maßgeschneiderten Lernpfad.',
+  
+  // Scenario specific translations
+  'admissionScenario': 'Patientenaufnahme',
+  'medicationScenario': 'Medikamentenverabreichung',
+  'emergencyScenario': 'Notfallsituation',
+  'handoverScenario': 'Schichtübergabe',
+  'dementiaCareScenario': 'Demenzbetreuung',
+  'mobilityAssistanceScenario': 'Mobilitätshilfe',
+  'communicationDisabilityScenario': 'Kommunikation mit Behinderung',
+  
+  // Scenario descriptions
+  'admissionScenarioDesc': 'Aufnahme eines neuen Patienten auf der Station',
+  'medicationScenarioDesc': 'Sichere Medikamentenverabreichung und Patientenaufklärung',
+  'emergencyScenarioDesc': 'Notfallreaktion bei akuten Brustschmerzen',
+  'handoverScenarioDesc': 'Professionelle Schichtübergabe-Kommunikation',
+  'dementiaCareDesc': 'Einfühlsame Betreuung von Demenzpatienten',
+  'mobilityAssistanceDesc': 'Sichere Mobilitätsunterstützung und Sturzprävention',
+  'communicationDisabilityDesc': 'Effektive Kommunikation mit behinderten Bewohnern',
+  
+  // Learning objectives
+  'friendlyGreeting': 'Freundliche Begrüßung und Vorstellung',
+  'personalDataCollection': 'Persönliche Daten aufnehmen',
+  'medicalHistoryTaking': 'Anamnese erheben',
+  'proceduresExplanation': 'Abläufe und Regeln erklären',
+  'questionsAndConcerns': 'Fragen beantworten und beruhigen'
 };

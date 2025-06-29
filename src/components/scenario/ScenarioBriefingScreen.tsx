@@ -8,6 +8,7 @@ import { PatientProfile } from "@/utils/patientProfiles";
 import BestPracticesDialog from "./BestPracticesDialog";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
 import { useTranslation } from "@/hooks/useTranslation";
+import { translateScenarioContent } from "@/utils/scenarioTranslations";
 
 interface ScenarioBriefingScreenProps {
   scenario: Scenario;
@@ -25,6 +26,10 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
   const { t } = useTranslation();
   const [showBestPractices, setShowBestPractices] = useState(false);
   const [showExitConfirmation, setShowExitConfirmation] = useState(false);
+
+  // Get translated scenario title and description
+  const scenarioTitle = translateScenarioContent(scenario.id, scenario.title);
+  const scenarioDescription = translateScenarioContent(`${scenario.id}-desc`, scenario.description);
 
   // Get scenario context information
   const getScenarioContext = () => {
@@ -112,10 +117,10 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center gap-2 mb-4">
             <AlertCircle className="h-6 w-6 text-medical-600" />
-            <h1 className="text-2xl font-bold text-medical-800">Szenario-Briefing</h1>
+            <h1 className="text-2xl font-bold text-medical-800">{t('scenarioBriefing')}</h1>
           </div>
-          <h2 className="text-xl font-semibold text-medical-700">{scenario.title}</h2>
-          <p className="text-medical-600">{scenario.description}</p>
+          <h2 className="text-xl font-semibold text-medical-700">{scenarioTitle}</h2>
+          <p className="text-medical-600">{scenarioDescription}</p>
         </div>
 
         {/* Patient Profile */}
@@ -143,7 +148,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
             </div>
           </div>
           <div className="mt-4">
-            <p className="font-medium text-medical-700 mb-1">Kulturelle Hinweise:</p>
+            <p className="font-medium text-medical-700 mb-1">{t('culturalNotes')}:</p>
             <p className="text-medical-600 text-sm">{context.culturalNotes}</p>
           </div>
         </Card>
@@ -153,7 +158,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
           <Card className="p-4 bg-white border-medical-200">
             <div className="flex items-center gap-2 mb-3">
               <MapPin className="h-4 w-4 text-medical-600" />
-              <h4 className="font-medium text-medical-800">Umgebung</h4>
+              <h4 className="font-medium text-medical-800">{t('environment')}</h4>
             </div>
             <p className="text-sm text-medical-600 mb-2">{context.setting}</p>
             <p className="text-xs text-medical-500">{context.environment}</p>
@@ -174,8 +179,8 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
             <div className="flex items-center gap-2">
               <Info className="h-4 w-4 text-blue-600" />
               <div>
-                <h4 className="font-medium text-blue-800">Mehr erfahren</h4>
-                <p className="text-sm text-blue-600">Best Practices für dieses Szenario</p>
+                <h4 className="font-medium text-blue-800">{t('moreAbout')}</h4>
+                <p className="text-sm text-blue-600">{t('bestPracticesForScenario')}</p>
               </div>
             </div>
             <Button
@@ -185,7 +190,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
               className="border-blue-300 text-blue-700 hover:bg-blue-100"
             >
               <Info className="h-4 w-4 mr-1" />
-              Mehr erfahren
+              {t('moreAbout')}
             </Button>
           </div>
         </Card>
@@ -198,7 +203,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
             className="bg-medical-600 hover:bg-medical-700 text-white px-8 py-3 flex-1"
           >
             <Play className="h-5 w-5 mr-2" />
-            Interaktion beginnen
+            {t('beginInteraction')}
           </Button>
         </div>
       </Card>

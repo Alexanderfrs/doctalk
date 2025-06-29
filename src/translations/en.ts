@@ -1,5 +1,3 @@
-
-
 export const englishTranslations: Record<string, string> = {
   // Navigation
   'home': 'Home',
@@ -395,6 +393,30 @@ export const englishTranslations: Record<string, string> = {
   // Exercise trainer interface
   'exerciseTitle': 'Exercise Title',
   'patientInformation': 'Patient Information',
-  'defaultChatInput': 'Enter your response or record by voice...'
+  'defaultChatInput': 'Enter your response or record by voice...',
+  
+  // Scenario specific translations
+  'admissionScenario': 'Patient Admission',
+  'medicationScenario': 'Medication Administration',
+  'emergencyScenario': 'Emergency Situation',
+  'handoverScenario': 'Shift Handover',
+  'dementiaCareScenario': 'Dementia Care',
+  'mobilityAssistanceScenario': 'Mobility Assistance',
+  'communicationDisabilityScenario': 'Communication with Disability',
+  
+  // Scenario descriptions
+  'admissionScenarioDesc': 'Admission of a new patient to the ward',
+  'medicationScenarioDesc': 'Safe medication administration and patient education',
+  'emergencyScenarioDesc': 'Emergency response to acute chest pain',
+  'handoverScenarioDesc': 'Professional shift handover communication',
+  'dementiaCareDesc': 'Compassionate care for dementia patients',
+  'mobilityAssistanceDesc': 'Safe mobility support and fall prevention',
+  'communicationDisabilityDesc': 'Effective communication with disabled residents',
+  
+  // Learning objectives
+  'friendlyGreeting': 'Friendly greeting and introduction',
+  'personalDataCollection': 'Collect personal information',
+  'medicalHistoryTaking': 'Take medical history',
+  'proceduresExplanation': 'Explain procedures and rules',
+  'questionsAndConcerns': 'Answer questions and address concerns'
 };
-
