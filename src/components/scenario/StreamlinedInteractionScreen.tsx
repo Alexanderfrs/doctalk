@@ -34,15 +34,21 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [messages, setMessages] = useState<Message[]>([]);
   const [conversationBlocked, setConversationBlocked] = useState(false);
   const [feedback, setFeedback] = useState<string>('');
+  const [conversationHistory, setConversationHistory] = useState<any[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const lastAIResponseRef = useRef<string>('');
 
   const { 
-    sendMessage, 
+    generateUnifiedResponse, 
     isLoading: isLLMLoading, 
-    error: llmError, 
-    conversationHistory 
-  } = useUnifiedMedicalLLM();
+    error: llmError 
+  } = useUnifiedMedicalLLM({
+    scenarioType: scenario.category || 'patient-care',
+    scenarioDescription: scenario.description || scenario.context || '',
+    difficultyLevel: 'intermediate',
+    patientContext: scenario.patientProfile || {},
+    userLanguage: 'de'
+  });
 
   const { 
     speak, 
@@ -65,7 +71,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       toast.error('Fehler bei der KI-Antwort: ' + llmError);
       setConversationBlocked(false);
     }
-  });
+  }, [llmError]);
 
   // Fixed handleSendMessage function with automatic TTS
   const handleSendMessage = async () => {
@@ -86,14 +92,18 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     setCurrentMessage('');
     setConversationBlocked(true);
 
+    // Add to conversation history
+    const newHistoryEntry = {
+      speaker: 'user',
+      text: messageToSend,
+      timestamp: new Date().toISOString()
+    };
+    const updatedHistory = [...conversationHistory, newHistoryEntry];
+    setConversationHistory(updatedHistory);
+
     try {
       console.log('Calling LLM with scenario:', scenario.id);
-      const response = await sendMessage(
-        messageToSend,
-        scenario.id,
-        scenario.context || scenario.description || '',
-        scenario.patientProfile || {}
-      );
+      const response = await generateUnifiedResponse(messageToSend, updatedHistory);
 
       console.log('LLM Response received:', response);
 
@@ -107,6 +117,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         };
 
         setMessages(prev => [...prev, aiMessage]);
+
+        // Add AI response to conversation history
+        const aiHistoryEntry = {
+          speaker: 'patient',
+          text: response.patientReply,
+          timestamp: new Date().toISOString()
+        };
+        setConversationHistory(prev => [...prev, aiHistoryEntry]);
 
         // Auto-play TTS for AI response if enabled
         if (isTTSEnabled) {
@@ -122,8 +140,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         }
 
         // Set feedback if provided
-        if (response.feedback) {
-          setFeedback(response.feedback);
+        if (response.briefFeedback) {
+          setFeedback(response.briefFeedback);
           setTimeout(() => setFeedback(''), 8000);
         }
 
