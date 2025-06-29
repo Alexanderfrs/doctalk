@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   welcome: 'Welcome',
   language: 'Language',
@@ -31,9 +30,20 @@ export const englishTranslations = {
   whyDocTalk: 'Why DocTalk',
   pricing: 'Pricing',
   
-  // Updated Landing page hero section translations
+  // Toggle Labels
+  forHealthcareProfessionals: 'For Healthcare Professionals',
+  forHealthcareOrganizations: 'For Healthcare Organizations',
+  
+  // B2C Content (Individual)
   landYourDreamMedicalJob: 'Your fast track to working in German healthcare.',
   skipExpensiveCoursesAndGetFluent: 'Learn professional medical German and prepare for your new job – wherever you are.',
+  forInternationalHealthcareWorkers: 'For international healthcare workers – whether you\'re preparing from abroad or already in Germany.',
+  
+  // B2B Content (Enterprise)
+  empowerYourInternationalTeam: 'Empower your international healthcare team',
+  reduceOnboardingCosts: 'Reduce onboarding costs and improve patient safety with specialized medical German training for your international staff.',
+  forHealthcareOrganizationsDesc: 'For hospitals, clinics, and healthcare facilities looking to integrate international professionals effectively.',
+  
   expertDeveloped: 'Expert-developed',
   joinPioneers: 'Join the pioneers',
   getPriorityAccess: 'Secure Your Spot',
@@ -42,17 +52,19 @@ export const englishTranslations = {
   hospitalScene: 'Hospital scene',
   medicalEducation: 'Medical education',
 
-  // New target audience clarification
-  forInternationalHealthcareWorkers: 'For international healthcare workers – whether you\'re preparing from abroad or already in Germany.',
-
-  // Problem-Solution Section
+  // Problem-Solution Section - B2C
   realityForInternationalProfessionals: "The Reality for International Healthcare Professionals",
   realityForInternationalProfessionalsDesc: "Despite critical staff shortages, international healthcare professionals face significant barriers that limit their success in German healthcare systems.",
   
+  // Problem-Solution Section - B2B
+  realityForHealthcareOrganizations: "The Challenge for Healthcare Organizations",
+  realityForHealthcareOrganizationsDesc: "Healthcare organizations struggle with high turnover, communication barriers, and extended onboarding periods when integrating international staff.",
+  
   theProblem: "The Problem",
   challengesFacingHealthcareProfessionals: "Challenges Facing Healthcare Professionals",
+  challengesFacingHealthcareOrganizations: "Challenges Facing Healthcare Organizations",
   
-  // Problems - Updated text
+  // B2C Problems
   problemHighCosts: "Prohibitive Training Costs",
   problemHighCostsDesc: "Traditional medical German courses cost €3,000-8,000, putting quality training out of reach for many professionals.",
   problemHighCostsStat: "€3,000-8,000 per course",
@@ -65,10 +77,24 @@ export const englishTranslations = {
   problemGenericSolutionsDesc: "General language apps lack medical context, while tutors often don't understand healthcare-specific communication needs.",
   problemGenericSolutionsStat: "Limited medical context",
   
+  // B2B Problems
+  problemStaffTurnover: "High Staff Turnover Costs",
+  problemStaffTurnoverDesc: "Replacing international healthcare staff costs €50,000+ per person due to recruitment, training, and productivity losses.",
+  problemStaffTurnoverStat: "€50,000+ replacement cost",
+  
+  problemExtendedOnboarding: "Extended Integration Periods",
+  problemExtendedOnboardingDesc: "International staff require 6-12 months to become fully productive, creating resource strain and reduced efficiency.",
+  problemExtendedOnboardingStat: "6-12 months integration time",
+  
+  problemPatientSafety: "Patient Safety Risks",
+  problemPatientSafetyDesc: "Communication barriers between international staff and patients/colleagues create safety risks and liability concerns.",
+  problemPatientSafetyStat: "Communication errors affect patient outcomes",
+  
   theSolution: "The Solution",
   revolutionaryApproachToMedicalGerman: "A Revolutionary Approach to Learning Medical German",
+  revolutionaryApproachForOrganizations: "A Revolutionary Approach to Team Medical German Training",
   
-  // Updated solutions to match new text - removing integration challenges and professional network
+  // B2C Solutions
   solutionAffordable: "Radically Affordable & Flexible",
   solutionAffordableDesc: "Medical German training at a fraction of tutor costs—learn at your pace with bite-sized, personalized lessons in a safe environment.",
   solutionAffordableHighlight: "Flexible & cost-effective",
@@ -81,17 +107,47 @@ export const englishTranslations = {
   solutionSpecializedDesc: "Designed exclusively for healthcare professionals by medical experts, with upcoming Anerkennung and FSP certification preparation support.",
   solutionSpecializedHighlight: "Expert-developed + certification prep",
   
+  // B2B Solutions
+  solutionScalable: "Scalable Team Training",
+  solutionScalableDesc: "Deploy medical German training across your entire international team with centralized management, progress tracking, and reporting.",
+  solutionScalableHighlight: "Team-wide deployment & tracking",
+  
+  solutionReducedTurnover: "Reduced Turnover & Faster Integration",
+  solutionReducedTurnoverDesc: "Accelerate staff integration from 6-12 months to 3-6 months while improving job satisfaction and reducing turnover rates.",
+  solutionReducedTurnoverHighlight: "50% faster integration",
+  
+  solutionComplianceReporting: "Compliance & Reporting",
+  solutionComplianceReportingDesc: "Meet regulatory requirements with detailed progress reports, certification tracking, and compliance documentation for healthcare authorities.",
+  solutionComplianceReportingHighlight: "Full compliance support",
+  
   readyToTransformYourCareer: "Ready to Transform Your Medical Career in Germany?",
+  readyToTransformYourOrganization: "Ready to Transform Your Healthcare Organization?",
   joinThousandsOfProfessionals: "Join the professionals already preparing for success in German healthcare.",
+  joinLeadingOrganizations: "Join the healthcare organizations already investing in their international teams.",
 
+  // Target Users Section - B2C
   tailoredForMedicalCareer: "Tailored for every step of your medical career",
   doctalkDesignedFor: "DocTalk is designed to meet the specific language needs of different healthcare professionals, helping you communicate with confidence and precision.",
+  
+  // Target Users Section - B2B
+  tailoredForHealthcareOrganizations: "Tailored for every type of healthcare organization",
+  doctalkDesignedForOrganizations: "DocTalk is designed to meet the specific training needs of different healthcare organizations, helping your international team communicate with confidence and precision.",
+  
   forCareWorkersTitle: "For Care Workers",
   forCareWorkersDescription: "Essential communication for exceptional care and rapid integration into your German team.",
   forDoctorsTitle: "For Doctors",
   forDoctorsDescription: "From anamnesis to complex discussions—master the communication that accelerates your professional recognition.",
   forMedicalStudentsTitle: "For Medical Students",
   forMedicalStudentsDescription: "Build a solid linguistic foundation for a decisive advantage in your clinical rotations and internships, and future career.",
+  
+  // B2B Target Users
+  forHospitalsTitle: "For Hospitals",
+  forHospitalsDescription: "Comprehensive training programs that reduce onboarding time and improve patient safety across all departments.",
+  forClinicsTitle: "For Clinics",
+  forClinicsDescription: "Specialized training for smaller teams with flexible scheduling and personalized progress tracking.",
+  forMedicalSchoolsTitle: "For Medical Schools",
+  forMedicalSchoolsDescription: "Curriculum integration for international medical students preparing for German healthcare systems.",
+  
   comingSoon: "Coming Soon",
   alphaTester: "Alpha Tester",
   alphaTesterDesc: "For pioneers ready to shape the future of medical learning.",
@@ -100,6 +156,16 @@ export const englishTranslations = {
   alphaFeature3: "Exclusive 'Founder' badge on your profile",
   joinAlphaWaitlist: "Secure Your Spot",
   secureYourSpot: "Secure Your Spot",
+  
+  // B2B Pricing
+  teamTraining: "Team Training",
+  teamTrainingDesc: "For healthcare organizations ready to invest in their international staff.",
+  teamFeature1: "Team progress tracking and analytics",
+  teamFeature2: "Custom onboarding and support",
+  teamFeature3: "Volume licensing and flexible billing",
+  teamFeature4: "Compliance reporting and documentation",
+  contactForPricing: "Contact for Pricing",
+  
   joinBeta: "Get Priority Access",
   signupForBetaRelease: "Priority Alpha Signup",
   betaAccessTitle: "Priority Access to Alpha Version",

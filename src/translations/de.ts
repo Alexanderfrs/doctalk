@@ -30,7 +30,105 @@ export const germanTranslations = {
   whyDocTalk: 'Warum DocTalk',
   pricing: 'Preise',
   
-  // Landing page hero section translations
+  // Toggle Labels
+  forHealthcareProfessionals: 'Für Gesundheitsfachkräfte',
+  forHealthcareOrganizations: 'Für Gesundheitsorganisationen',
+  
+  // B2C Content
+  landYourDreamMedicalJob: 'Ihr schneller Weg zur Arbeit im deutschen Gesundheitswesen.',
+  skipExpensiveCoursesAndGetFluent: 'Lernen Sie professionelles medizinisches Deutsch und bereiten Sie sich auf Ihren neuen Job vor – wo auch immer Sie sind.',
+  forInternationalHealthcareWorkers: 'Für internationale Gesundheitsfachkräfte – ob Sie sich aus dem Ausland vorbereiten oder bereits in Deutschland sind.',
+  
+  // B2B Content
+  empowerYourInternationalTeam: 'Stärken Sie Ihr internationales Gesundheitsteam',
+  reduceOnboardingCosts: 'Reduzieren Sie Einarbeitungskosten und verbessern Sie die Patientensicherheit mit spezialisiertem medizinischen Deutschtraining für Ihr internationales Personal.',
+  forHealthcareOrganizationsDesc: 'Für Krankenhäuser, Kliniken und Gesundheitseinrichtungen, die internationale Fachkräfte effektiv integrieren möchten.',
+  
+  expertDeveloped: 'Expertenentwickelt',
+  joinPioneers: 'Schließen Sie sich den Pionieren an',
+  getPriorityAccess: 'Sichern Sie sich Ihren Platz',
+  exploreDemo: 'Demo erkunden',
+  
+  // B2B Problems
+  realityForHealthcareOrganizations: "Die Herausforderung für Gesundheitsorganisationen",
+  realityForHealthcareOrganizationsDesc: "Gesundheitsorganisationen kämpfen mit hoher Fluktuation, Kommunikationsbarrieren und verlängerten Einarbeitungszeiten bei der Integration internationaler Mitarbeiter.",
+  challengesFacingHealthcareOrganizations: "Herausforderungen für Gesundheitsorganisationen",
+  
+  problemStaffTurnover: "Hohe Personalfluktuationskosten",
+  problemStaffTurnoverDesc: "Der Ersatz internationaler Gesundheitsfachkräfte kostet über €50.000 pro Person aufgrund von Rekrutierung, Schulung und Produktivitätsverlusten.",
+  problemStaffTurnoverStat: "€50.000+ Ersatzkosten",
+  
+  problemExtendedOnboarding: "Verlängerte Integrationszeiten",
+  problemExtendedOnboardingDesc: "Internationale Mitarbeiter benötigen 6-12 Monate, um vollständig produktiv zu werden, was zu Ressourcenbelastung und reduzierter Effizienz führt.",
+  problemExtendedOnboardingStat: "6-12 Monate Integrationszeit",
+  
+  problemPatientSafety: "Patientensicherheitsrisiken",
+  problemPatientSafetyDesc: "Kommunikationsbarrieren zwischen internationalen Mitarbeitern und Patienten/Kollegen schaffen Sicherheitsrisiken und Haftungsprobleme.",
+  problemPatientSafetyStat: "Kommunikationsfehler beeinträchtigen Patientenergebnisse",
+  
+  // B2B Solutions
+  revolutionaryApproachForOrganizations: "Ein Revolutionärer Ansatz für Team-Medizinisches Deutschtraining",
+  
+  solutionScalable: "Skalierbares Teamtraining",
+  solutionScalableDesc: "Setzen Sie medizinisches Deutschtraining in Ihrem gesamten internationalen Team mit zentraler Verwaltung, Fortschrittsverfolgung und Berichterstattung ein.",
+  solutionScalableHighlight: "Teamweite Bereitstellung & Verfolgung",
+  
+  solutionReducedTurnover: "Reduzierte Fluktuation & Schnellere Integration",
+  solutionReducedTurnoverDesc: "Beschleunigen Sie die Mitarbeiterintegration von 6-12 Monaten auf 3-6 Monate und verbessern Sie gleichzeitig die Arbeitszufriedenheit und reduzieren Sie die Fluktuationsraten.",
+  solutionReducedTurnoverHighlight: "50% schnellere Integration",
+  
+  solutionComplianceReporting: "Compliance & Berichterstattung",
+  solutionComplianceReportingDesc: "Erfüllen Sie regulatorische Anforderungen mit detaillierten Fortschrittsberichten, Zertifizierungsverfolgung und Compliance-Dokumentation für Gesundheitsbehörden.",
+  solutionComplianceReportingHighlight: "Vollständige Compliance-Unterstützung",
+  
+  // B2B Target Users
+  tailoredForHealthcareOrganizations: "Maßgeschneidert für jeden Typ von Gesundheitsorganisation",
+  doctalkDesignedForOrganizations: "DocTalk ist darauf ausgelegt, die spezifischen Schulungsbedürfnisse verschiedener Gesundheitsorganisationen zu erfüllen und Ihrem internationalen Team zu helfen, selbstbewusst und präzise zu kommunizieren.",
+  
+  forHospitalsTitle: "Für Krankenhäuser",
+  forHospitalsDescription: "Umfassende Schulungsprogramme, die die Einarbeitungszeit reduzieren und die Patientensicherheit in allen Abteilungen verbessern.",
+  forClinicsTitle: "Für Kliniken",
+  forClinicsDescription: "Spezialisierte Schulungen für kleinere Teams mit flexibler Terminplanung und personalisierter Fortschrittsverfolgung.",
+  forMedicalSchoolsTitle: "Für Medizinische Hochschulen",
+  forMedicalSchoolsDescription: "Curriculum-Integration für internationale Medizinstudenten, die sich auf deutsche Gesundheitssysteme vorbereiten.",
+  
+  // B2B Pricing
+  teamTraining: "Teamschulung",
+  teamTrainingDesc: "Für Gesundheitsorganisationen, die in ihr internationales Personal investieren möchten.",
+  teamFeature1: "Team-Fortschrittsverfolgung und Analytik",
+  teamFeature2: "Individuelle Einarbeitung und Unterstützung",
+  teamFeature3: "Volumenlizenzierung und flexible Abrechnung",
+  teamFeature4: "Compliance-Berichterstattung und Dokumentation",
+  contactForPricing: "Kontakt für Preise",
+  
+  readyToTransformYourOrganization: "Bereit, Ihre Gesundheitsorganisation zu transformieren?",
+  joinLeadingOrganizations: "Schließen Sie sich den Gesundheitsorganisationen an, die bereits in ihre internationalen Teams investieren.",
+  
+  welcome: 'Willkommen',
+  language: 'Sprache',
+  settings: 'Einstellungen',
+  home: 'Startseite',
+  practice: 'Übungen',
+  vocabulary: 'Vokabular',
+  dialog: 'Dialog',
+  profile: 'Profil',
+  startExercise: 'Übung starten',
+  learnVocabulary: 'Vokabular lernen',
+  progress: 'Dein Fortschritt',
+  weeklyGoal: 'Wöchentliches Ziel',
+  streak: 'Tägliche Serie',
+  completedScenarios: 'Abgeschlossene Szenarien',
+  masteredVocabulary: 'Beherrschtes Vokabular',
+  exercises: 'übungen',
+  of: 'von',
+  days: 'Tage',
+  recommendedExercises: 'Empfohlene Übungen',
+  showAll: 'Alle anzeigen',
+  medicalGerman: 'Medizinisches Deutsch für Lernende mit mittleren bis fortgeschrittenen Kenntnissen',
+  improveYour: 'Selbstbewusste Kommunikation',
+  medicalCommunication: 'im deutschen Gesundheitswesen',
+  trainScenarios: 'Üben Sie praxisnahe Arbeitsszenarien und Terminologie für Ihren Berufsalltag im Gesundheitswesen, beginnend ab mittlerer deutscher Sprachkompetenz.',
+  targetAudience: 'Perfekt für internationale Pflegekräfte, Ärzte und Medizinstudenten, die im deutschen Gesundheitswesen einsteigen, sich dort hervortun und eine berufliche Anerkennung erlangen möchten.',
   limitedAlphaSpots: 'Begrenzte kostenlose Plätze verfügbar',
   landYourDreamMedicalJob: 'Ihr schneller Weg zur Arbeit im deutschen Gesundheitswesen.',
   inGermany: 'im deutschen Gesundheitswesen',
@@ -45,53 +143,37 @@ export const germanTranslations = {
   medicalTeamWorking: 'Medizinisches Team arbeitet zusammen',
   hospitalScene: 'Krankenhaus-Szene',
   medicalEducation: 'Medizinische Ausbildung',
-
-  // Problem-Solution Section
   realityForInternationalProfessionals: "Die Realität Internationaler Gesundheitsfachkräfte",
   realityForInternationalProfessionalsDesc: "Trotz kritischem Personalmangel stehen internationale Gesundheitsfachkräfte vor erheblichen Hürden, die ihren Erfolg in deutschen Gesundheitssystemen begrenzen.",
-  
   theProblem: "Das Problem",
   challengesFacingHealthcareProfessionals: "Herausforderungen für Gesundheitsfachkräfte",
-  
-  // Problems - Updated text
   problemHighCosts: "Prohibitive Ausbildungskosten",
   problemHighCostsDesc: "Traditionelle medizinische Deutschkurse kosten €3.000-8.000 und machen qualitativ hochwertige Ausbildung für viele Fachkräfte unerschwinglich.",
   problemHighCostsStat: "€3.000-8.000 pro Kurs",
-  
   problemTimeConstraints: "Kritische Kommunikationslücken",
   problemTimeConstraintsDesc: "Das Gesundheitswesen braucht schnelle, präzise Kommunikation mit verschiedenen Patienten, Kollegen und Dialekten—Missverständnisse in stressigen Situationen gefährden Patientensicherheit und Ergebnisse.",
   problemTimeConstraintsStat: "Kommunikationsfehler kosten Leben",
-  
   problemGenericSolutions: "Allgemeine Sprachlösungen",
   problemGenericSolutionsDesc: "Allgemeine Sprach-Apps fehlen medizinischer Kontext, während Tutoren oft die spezifischen Kommunikationsbedürfnisse im Gesundheitswesen nicht verstehen.",
   problemGenericSolutionsStat: "Begrenzter medizinischer Kontext",
-  
   problemIntegrationChallenges: "Integrations-Herausforderungen",
   problemIntegrationChallengesDesc: "Kulturelle Arbeitsplatznormen, medizinische Hierarchien und bürokratische Prozesse schaffen zusätzliche Barrieren über die Sprache hinaus.",
   problemIntegrationChallengesStat: "Komplexer Integrationsprozess",
-  
   introducingDocTalk: "Wir stellen DocTalk vor",
-  
   theSolution: "Die Lösung",
   revolutionaryApproachToMedicalGerman: "Ein Revolutionärer Ansatz zum Medizinischen Deutsch Lernen",
-  
-  // Updated solutions to match new text
   solutionAffordable: "Radikal Erschwinglich & Flexibel",
   solutionAffordableDesc: "Medizinisches Deutschtraining zu einem Bruchteil der Tutorkosten—lernen Sie in Ihrem Tempo mit mundgerechten, personalisierten Lektionen in einer sicheren Umgebung.",
   solutionAffordableHighlight: "Flexibel & kostengünstig",
-  
   solutionFlexible: "Dialog-First Learning Innovation",
   solutionFlexibleDesc: "Meistern Sie Deutsch durch realistische Übungsszenarien, die speziell für Gesundheitsumgebungen entwickelt wurden und zu schnellerer Sprachbeherrschung führen als traditionelle Methoden.",
   solutionFlexibleHighlight: "Praxisnahe Einsatzbereitschaft",
-  
   solutionSpecialized: "Medizin-Fokussiert mit Zertifizierungsvorbereitung",
   solutionSpecializedDesc: "Ausschließlich für Gesundheitsfachkräfte von medizinischen Experten entwickelt, mit kommender Anerkennung und FSP-Zertifizierungsvorbereitungsunterstützung.",
   solutionSpecializedHighlight: "Expertenentwickelt + Zertifizierungsvorbereitung",
-  
   solutionNetworked: "Berufsnetzwerk-Integration",
   solutionNetworkedDesc: "Direkte Verbindungen zu vertrauenswürdigen Gesundheitseinrichtungen und Einblicke in die deutsche medizinische Arbeitsplatzkultur.",
   solutionNetworkedHighlight: "Vertrauenswürdiges Partnernetzwerk",
-  
   readyToTransformYourCareer: "Bereit, Ihre Medizinische Laufbahn in Deutschland zu Transformieren?",
   joinThousandsOfProfessionals: "Schließen Sie sich den Fachkräften an, die sich bereits auf den Erfolg im deutschen Gesundheitswesen vorbereiten.",
   limitedFreeSpotsAvailable: 'Begrenzte kostenlose Plätze verfügbar',
@@ -102,8 +184,6 @@ export const germanTranslations = {
   joinThePioneers: 'Schließen Sie sich den Pionieren an',
   comingSoonDemo: 'Demnächst: Demo',
   getStarted: 'Loslegen',
-  
-  // Onboarding specific translations
   onboardingSetup: 'Einrichtung',
   profileAndGoals: 'Profil & Ziele',
   nativeLanguage: 'Muttersprache',
@@ -114,36 +194,26 @@ export const germanTranslations = {
   skip: "Überspringen",
   next: "Weiter",
   start: "Starten",
-  
-  // Assessment translations
   yourProfile: 'Ihr Profil',
   supportAreas: 'Unterstützungsbereiche',
   yourGoals: 'Ihre Ziele',
   tellUsSomethingAboutYou: 'Erzählen Sie uns etwas über sich',
   howCanWeHelpYou: 'Wobei sollen wir Ihnen helfen?',
   whatDoYouWantToAchieve: 'Was möchten Sie erreichen?',
-  
-  // Profession options (limited as requested)
   professionNurse: 'Krankenpfleger/in',
   professionDoctor: 'Arzt/Ärztin',
   professionStudent: 'Student/in',
   professionOtherMedical: 'Andere medizinische Fachkraft',
-  
-  // Assessment questions
   whatIsYourMedicalProfession: 'Was ist Ihr Beruf im medizinischen Bereich?',
   howDoYouAssessGermanLevel: 'Wie schätzen Sie Ihr aktuelles Deutschniveau ein?',
   whichAreasNeedSupport: 'Bei welchen Bereichen möchten Sie Unterstützung? (Mehrfachauswahl möglich)',
   whatAreYourMainGoals: 'Was sind Ihre Hauptziele mit DocTalk? (Mehrfachauswahl möglich)',
-  
-  // German levels
   germanLevelA1: 'A1 - Anfänger',
   germanLevelA2: 'A2 - Grundkenntnisse',
   germanLevelB1: 'B1 - Mittelstufe',
   germanLevelB2: 'B2 - Gute Mittelstufe',
   germanLevelC1: 'C1 - Fortgeschritten',
   germanLevelC2: 'C2 - Sehr fortgeschritten',
-  
-  // Support areas
   supportPatientConversations: 'Patientengespräche führen',
   supportMedicalDocumentation: 'Medizinische Dokumentation',
   supportColleagueCommunication: 'Kollegenkommunikation',
@@ -154,28 +224,19 @@ export const germanTranslations = {
   supportShiftHandovers: 'Übergaben zwischen Schichten',
   supportDepartmentCalls: 'Telefonate mit anderen Abteilungen',
   supportRelativesCommunication: 'Umgang mit Angehörigen',
-  
-  // Goals
   goalProfessionalRecognition: 'Berufliche Anerkennung in Deutschland',
   goalImproveGermanSkills: 'Verbesserung der Deutschkenntnisse',
   goalPrepareLanguageExam: 'Vorbereitung auf Fachsprachprüfung',
   goalBetterTeamIntegration: 'Bessere Integration ins medizinische Team',
   goalIncreasePatientSafety: 'Patientensicherheit erhöhen',
   goalCommunicationConfidence: 'Selbstvertrauen in der Kommunikation',
-  
-  // Navigation and UI
   back: 'Zurück',
   finish: 'Fertigstellen',
   stepOf: 'Schritt {current} von {total}',
-  
-  // Important notice
   importantNotice: 'Wichtiger Hinweis',
   b1RequirementNotice: 'DocTalk ist für Lernende mit mindestens B1-Deutschniveau konzipiert. Bei niedrigerem Niveau können Sie die App trotzdem nutzen, aber die Inhalte werden sehr herausfordernd sein.',
-  
-  // Recommendations
   recommendation: 'Empfehlung:',
   lowerLevelRecommendation: 'Da Ihr Deutschniveau unter B1 liegt, empfehlen wir zunächst die Verbesserung Ihrer allgemeinen Deutschkenntnisse parallel zur Nutzung von DocTalk.',
-  
   startFree: 'Kostenlos starten',
   learnMore: 'Mehr erfahren',
   tailoredForMedicalCareer: "Maßgeschneidert für jeden Schritt Ihrer medizinischen Laufbahn",
@@ -245,8 +306,10 @@ export const germanTranslations = {
   volumeLicensingFlexibleBilling: "Volumen-Lizenzierung und flexible Abrechnung",
   oralExamSimulations: "Mündliche Prüfungssimulationen",
   contactUs: "Kontaktieren Sie uns",
-  
-  // Mobile onboarding translations - flattened
+  skip: "Überspringen",
+  next: "Weiter",
+  start: "Starten",
+
   'mobileOnboarding.screen1.subtitle': "Meistern Sie medizinisches Deutsch für Ihre Gesundheitslaufbahn in Deutschland",
   'mobileOnboarding.screen2.title': "Den Anerkennungsprozess verstehen",
   'mobileOnboarding.screen2.subtitle': "Vollenden Sie Ihren Weg zur Medizinpraxis",

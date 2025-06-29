@@ -1,19 +1,22 @@
 
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Euro, MessageCircle, GraduationCap, Clock, BookOpen, Users, Shield, CheckCircle } from "lucide-react";
+import { useViewMode } from "@/contexts/ViewModeContext";
+import { Euro, MessageCircle, GraduationCap, Clock, BookOpen, Users, Shield, CheckCircle, TrendingUp, AlertTriangle, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import waitlist from '@zootools/waitlist-js';
 
 const ProblemSolutionSection = () => {
   const { translate } = useLanguage();
+  const { viewMode } = useViewMode();
 
   const handleWaitlistClick = (event: React.MouseEvent) => {
     event.preventDefault();
     waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
   };
 
-  const problems = [
+  // B2C Problems (Individual Healthcare Workers)
+  const b2cProblems = [
     {
       icon: <Euro className="h-8 w-8 text-red-500" />,
       title: translate("problemHighCosts"),
@@ -34,7 +37,30 @@ const ProblemSolutionSection = () => {
     }
   ];
 
-  const solutions = [
+  // B2B Problems (Healthcare Organizations)
+  const b2bProblems = [
+    {
+      icon: <TrendingUp className="h-8 w-8 text-red-500" />,
+      title: translate("problemStaffTurnover"),
+      description: translate("problemStaffTurnoverDesc"),
+      stat: translate("problemStaffTurnoverStat")
+    },
+    {
+      icon: <Clock className="h-8 w-8 text-red-500" />,
+      title: translate("problemExtendedOnboarding"),
+      description: translate("problemExtendedOnboardingDesc"),
+      stat: translate("problemExtendedOnboardingStat")
+    },
+    {
+      icon: <AlertTriangle className="h-8 w-8 text-red-500" />,
+      title: translate("problemPatientSafety"),
+      description: translate("problemPatientSafetyDesc"),
+      stat: translate("problemPatientSafetyStat")
+    }
+  ];
+
+  // B2C Solutions (Individual)
+  const b2cSolutions = [
     {
       icon: <Euro className="h-8 w-8 text-green-600" />,
       title: translate("solutionAffordable"),
@@ -55,16 +81,47 @@ const ProblemSolutionSection = () => {
     }
   ];
 
+  // B2B Solutions (Enterprise)
+  const b2bSolutions = [
+    {
+      icon: <Users className="h-8 w-8 text-green-600" />,
+      title: translate("solutionScalable"),
+      description: translate("solutionScalableDesc"),
+      highlight: translate("solutionScalableHighlight")
+    },
+    {
+      icon: <TrendingUp className="h-8 w-8 text-green-600" />,
+      title: translate("solutionReducedTurnover"),
+      description: translate("solutionReducedTurnoverDesc"),
+      highlight: translate("solutionReducedTurnoverHighlight")
+    },
+    {
+      icon: <BarChart3 className="h-8 w-8 text-green-600" />,
+      title: translate("solutionComplianceReporting"),
+      description: translate("solutionComplianceReportingDesc"),
+      highlight: translate("solutionComplianceReportingHighlight")
+    }
+  ];
+
+  const problems = viewMode === 'enterprise' ? b2bProblems : b2cProblems;
+  const solutions = viewMode === 'enterprise' ? b2bSolutions : b2cSolutions;
+
   return (
     <section className="py-16 bg-gradient-to-b from-white to-neutral-50">
       <div className="container mx-auto px-4">
         {/* Reality Section */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 transition-all duration-500">
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 mb-4">
-            {translate("realityForInternationalProfessionals")}
+            {viewMode === 'enterprise' 
+              ? translate("realityForHealthcareOrganizations")
+              : translate("realityForInternationalProfessionals")
+            }
           </h2>
           <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
-            {translate("realityForInternationalProfessionalsDesc")}
+            {viewMode === 'enterprise' 
+              ? translate("realityForHealthcareOrganizationsDesc")
+              : translate("realityForInternationalProfessionalsDesc")
+            }
           </p>
         </div>
 
@@ -75,7 +132,10 @@ const ProblemSolutionSection = () => {
               {translate("theProblem")}
             </h3>
             <p className="text-lg text-neutral-600">
-              {translate("challengesFacingHealthcareProfessionals")}
+              {viewMode === 'enterprise' 
+                ? translate("challengesFacingHealthcareOrganizations")
+                : translate("challengesFacingHealthcareProfessionals")
+              }
             </p>
           </div>
 
@@ -100,9 +160,9 @@ const ProblemSolutionSection = () => {
             ))}
           </div>
 
-          {/* CTA Button after problems - minimal spacing */}
-          <div className="text-center mt-6">
-            <Button className="btn-primary" onClick={handleWaitlistClick}>
+          {/* CTA Button after problems */}
+          <div className="text-center">
+            <Button className="btn-primary px-8 py-3" onClick={handleWaitlistClick}>
               {translate("getPriorityAccess")}
             </Button>
           </div>
@@ -115,7 +175,10 @@ const ProblemSolutionSection = () => {
               {translate("theSolution")}
             </h3>
             <p className="text-lg text-neutral-600">
-              {translate("revolutionaryApproachToMedicalGerman")}
+              {viewMode === 'enterprise' 
+                ? translate("revolutionaryApproachForOrganizations")
+                : translate("revolutionaryApproachToMedicalGerman")
+              }
             </p>
           </div>
 
@@ -141,9 +204,9 @@ const ProblemSolutionSection = () => {
             ))}
           </div>
 
-          {/* CTA Button after solutions - minimal spacing */}
-          <div className="text-center mt-6">
-            <Button className="btn-primary" onClick={handleWaitlistClick}>
+          {/* CTA Button after solutions */}
+          <div className="text-center">
+            <Button className="btn-primary px-8 py-3" onClick={handleWaitlistClick}>
               {translate("getPriorityAccess")}
             </Button>
           </div>

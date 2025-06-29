@@ -1,19 +1,22 @@
 
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Heart, Stethoscope, GraduationCap, ArrowRight } from "lucide-react";
+import { useViewMode } from "@/contexts/ViewModeContext";
+import { Heart, Stethoscope, GraduationCap, Building2, Users2, School, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import waitlist from '@zootools/waitlist-js';
 
 const TargetUsersSection = () => {
   const { translate } = useLanguage();
+  const { viewMode } = useViewMode();
 
   const handleWaitlistClick = (event: React.MouseEvent) => {
     event.preventDefault();
     waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
   };
 
-  const targetUsers = [
+  // B2C Target Users (Individual Professionals)
+  const b2cTargetUsers = [
     {
       icon: <Heart className="h-12 w-12 text-medical-600" />,
       title: translate("forCareWorkersTitle"),
@@ -34,14 +37,44 @@ const TargetUsersSection = () => {
     }
   ];
 
+  // B2B Target Users (Organizations)
+  const b2bTargetUsers = [
+    {
+      icon: <Building2 className="h-12 w-12 text-medical-600" />,
+      title: translate("forHospitalsTitle"),
+      description: translate("forHospitalsDescription"),
+      comingSoon: false
+    },
+    {
+      icon: <Users2 className="h-12 w-12 text-medical-600" />,
+      title: translate("forClinicsTitle"),
+      description: translate("forClinicsDescription"),
+      comingSoon: false
+    },
+    {
+      icon: <School className="h-12 w-12 text-medical-600" />,
+      title: translate("forMedicalSchoolsTitle"),
+      description: translate("forMedicalSchoolsDescription"),
+      comingSoon: false
+    }
+  ];
+
+  const targetUsers = viewMode === 'enterprise' ? b2bTargetUsers : b2cTargetUsers;
+
   return (
     <div className="container mx-auto">
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 transition-all duration-500">
         <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 mb-4">
-          {translate("tailoredForMedicalCareer")}
+          {viewMode === 'enterprise' 
+            ? translate("tailoredForHealthcareOrganizations")
+            : translate("tailoredForMedicalCareer")
+          }
         </h2>
         <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
-          {translate("doctalkDesignedFor")}
+          {viewMode === 'enterprise' 
+            ? translate("doctalkDesignedForOrganizations")
+            : translate("doctalkDesignedFor")
+          }
         </p>
       </div>
 
@@ -66,9 +99,9 @@ const TargetUsersSection = () => {
         ))}
       </div>
 
-      {/* CTA Section - minimal spacing */}
-      <div className="text-center mt-8">
-        <Button className="btn-primary" onClick={handleWaitlistClick}>
+      {/* CTA Section */}
+      <div className="text-center">
+        <Button className="btn-primary px-8 py-3" onClick={handleWaitlistClick}>
           {translate("getPriorityAccess")}
         </Button>
       </div>

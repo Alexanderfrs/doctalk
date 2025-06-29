@@ -1,15 +1,17 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ArrowRight, ChevronLeft, ChevronRight, Users, Shield } from "lucide-react";
+import { useViewMode } from "@/contexts/ViewModeContext";
+import { ArrowRight, ChevronLeft, ChevronRight, Users, Shield, Building2, TrendingUp } from "lucide-react";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
+import ViewModeToggle from "@/components/landing/ViewModeToggle";
 import waitlist from '@zootools/waitlist-js';
 
 const HeroSection = () => {
   const { translate } = useLanguage();
+  const { viewMode } = useViewMode();
   const isMobile = useIsMobile();
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -46,36 +48,75 @@ const HeroSection = () => {
     setActiveIndex((prev) => Math.min(prev + 1, heroContents.length - 1));
   };
 
+  // Dynamic content based on view mode
+  const getHeroContent = () => {
+    if (viewMode === 'enterprise') {
+      return {
+        title: translate("empowerYourInternationalTeam"),
+        description: translate("reduceOnboardingCosts"),
+        targetAudience: translate("forHealthcareOrganizationsDesc"),
+        trustSignals: [
+          {
+            icon: <Shield className="h-4 w-4 mr-1" />,
+            text: translate("expertDeveloped")
+          },
+          {
+            icon: <TrendingUp className="h-4 w-4 mr-1" />,
+            text: "Proven ROI"
+          }
+        ]
+      };
+    } else {
+      return {
+        title: translate("landYourDreamMedicalJob"),
+        description: translate("skipExpensiveCoursesAndGetFluent"),
+        targetAudience: translate("forInternationalHealthcareWorkers"),
+        trustSignals: [
+          {
+            icon: <Shield className="h-4 w-4 mr-1" />,
+            text: translate("expertDeveloped")
+          },
+          {
+            icon: <Users className="h-4 w-4 mr-1" />,
+            text: translate("joinPioneers")
+          }
+        ]
+      };
+    }
+  };
+
+  const heroContent = getHeroContent();
+
   if (isMobile) {
     return (
       <section className="container mx-auto mb-12 landing-mobile-section">
         <div className="glass-panel hero-mobile-fix flex flex-col items-center gap-6">
-          <div className="w-full opacity-100 visible">
+          <ViewModeToggle />
+          
+          <div className="w-full opacity-100 visible transition-all duration-500">
             <h1 className="text-3xl font-bold mb-4 text-neutral-800">
-              {translate("landYourDreamMedicalJob")}
+              {heroContent.title}
             </h1>
             <p className="text-lg text-neutral-600 mb-4">
-              {translate("skipExpensiveCoursesAndGetFluent")}
+              {heroContent.description}
             </p>
             
             {/* Target audience clarification */}
             <p className="text-sm text-neutral-500 mb-6 bg-medical-50 p-3 rounded-lg border border-medical-100">
-              {translate("forInternationalHealthcareWorkers")}
+              {heroContent.targetAudience}
             </p>
 
             {/* Trust Signals */}
             <div className="flex items-center justify-center gap-4 mb-6 text-sm text-neutral-500">
-              <div className="flex items-center">
-                <Shield className="h-4 w-4 mr-1" />
-                <span>{translate("expertDeveloped")}</span>
-              </div>
-              <div className="flex items-center">
-                <Users className="h-4 w-4 mr-1" />
-                <span>{translate("joinPioneers")}</span>
-              </div>
+              {heroContent.trustSignals.map((signal, index) => (
+                <div key={index} className="flex items-center">
+                  {signal.icon}
+                  <span>{signal.text}</span>
+                </div>
+              ))}
             </div>
 
-            <div className="flex flex-col gap-4 w-full">
+            <div className="flex flex-col gap-3 w-full">
               <Button size="lg" className="btn-primary w-full" onClick={handleWaitlistClick}>
                 {translate("getPriorityAccess")}
               </Button>
@@ -134,38 +175,40 @@ const HeroSection = () => {
     <section className="container mx-auto mb-12">
       <div className="glass-panel p-8 flex flex-col md:flex-row items-center gap-8">
         <div className="md:w-1/2 opacity-100 visible">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
-            {translate("landYourDreamMedicalJob")}
-          </h1>
-          <p className="text-lg text-neutral-600 mb-4">
-            {translate("skipExpensiveCoursesAndGetFluent")}
-          </p>
+          <ViewModeToggle />
           
-          {/* Target audience clarification */}
-          <p className="text-md text-neutral-500 mb-6 bg-medical-50 p-4 rounded-lg border border-medical-100">
-            {translate("forInternationalHealthcareWorkers")}
-          </p>
+          <div className="transition-all duration-500">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
+              {heroContent.title}
+            </h1>
+            <p className="text-lg text-neutral-600 mb-4">
+              {heroContent.description}
+            </p>
+            
+            {/* Target audience clarification */}
+            <p className="text-md text-neutral-500 mb-6 bg-medical-50 p-4 rounded-lg border border-medical-100">
+              {heroContent.targetAudience}
+            </p>
 
-          {/* Trust Signals */}
-          <div className="flex items-center gap-6 mb-6 text-sm text-neutral-500">
-            <div className="flex items-center">
-              <Shield className="h-4 w-4 mr-2" />
-              <span>{translate("expertDeveloped")}</span>
+            {/* Trust Signals */}
+            <div className="flex items-center gap-6 mb-6 text-sm text-neutral-500">
+              {heroContent.trustSignals.map((signal, index) => (
+                <div key={index} className="flex items-center">
+                  {signal.icon}
+                  <span>{signal.text}</span>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center">
-              <Users className="h-4 w-4 mr-2" />
-              <span>{translate("joinPioneers")}</span>
-            </div>
-          </div>
 
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="btn-primary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95" onClick={handleWaitlistClick}>
-                {translate("getPriorityAccess")}
-              </Button>
-              <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                <Link to="/practice">{translate("exploreDemo")}</Link>
-              </Button>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-wrap gap-4">
+                <Button size="lg" className="btn-primary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95" onClick={handleWaitlistClick}>
+                  {translate("getPriorityAccess")}
+                </Button>
+                <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
+                  <Link to="/practice">{translate("exploreDemo")}</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
