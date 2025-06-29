@@ -28,10 +28,6 @@ const ScenarioContainer: React.FC<ScenarioContainerProps> = ({ scenario }) => {
     navigate('/practice');
   };
 
-  const handleComplete = () => {
-    navigate('/practice');
-  };
-
   if (showBriefing) {
     return (
       <ScenarioBriefingScreen
@@ -47,7 +43,7 @@ const ScenarioContainer: React.FC<ScenarioContainerProps> = ({ scenario }) => {
     <StreamlinedInteractionScreen
       scenario={scenario}
       onBack={handleBackToBriefing}
-      onComplete={handleComplete}
+      onExit={handleExit}
     />
   );
 };
