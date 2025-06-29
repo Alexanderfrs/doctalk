@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Send, Mic, MicOff, MicVocal } from "lucide-react";
 import useVoiceRecognition from "@/hooks/useVoiceRecognition";
+import TTSButton from "./TTSButton";
 import { toast } from "sonner";
 
 interface ConversationInputProps {
@@ -139,6 +140,16 @@ const ConversationInput: React.FC<ConversationInputProps> = ({
         </div>
         
         <div className="flex flex-col space-y-2">
+          {/* TTS Button for current message */}
+          <TTSButton
+            textToRead={message}
+            speaker="user"
+            variant="outline"
+            size="sm"
+            className="h-10 w-10 p-0"
+            disabled={disabled || !message.trim()}
+          />
+
           {hasRecognitionSupport && (
             <>
               {/* Transcription to text area button */}
