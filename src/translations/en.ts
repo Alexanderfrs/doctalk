@@ -1,4 +1,3 @@
-
 export const englishTranslations: Record<string, string> = {
   // Navigation
   'home': 'Home',
@@ -405,5 +404,61 @@ export const englishTranslations: Record<string, string> = {
   'objective_provide_information': 'Provide information',
   'objective_respond_empathetically': 'Respond empathetically',
   'objective_successfully_conclude': 'Successfully conclude situation',
-  'objective_current': 'Current goal'
+  'objective_current': 'Current goal',
+
+  // Scenario briefing specific
+  'scenarioBriefing': 'Scenario Briefing',
+  'environment': 'Environment',
+  'culturalNotes': 'Cultural Notes',
+  'learnMore': 'Learn More',
+  'bestPracticesForScenario': 'Best practices for this scenario',
+  'beginInteraction': 'Begin Interaction',
+
+  // Context translations for admission scenario
+  'context_admission_setting': 'Hospital Ward - Patient Admission',
+  'context_admission_environment': 'Quiet afternoon on the ward',
+  'context_admission_objective': 'Complete patient admission process',
+  'context_admission_cultural_notes': 'Patient is polite but nervous about hospital stay',
+
+  // Context translations for medication scenario
+  'context_medication_setting': 'Patient Room - Medication Administration',
+  'context_medication_environment': 'Morning shift, patient is awake',
+  'context_medication_objective': 'Safe medication administration and patient education',
+  'context_medication_cultural_notes': 'Patient is curious and asks many questions',
+
+  // Context translations for emergency scenario
+  'context_emergency_setting': 'Emergency Situation - Acute Chest Pain',
+  'context_emergency_environment': 'High-stress situation, time is critical',
+  'context_emergency_objective': 'Rapid initial care and stabilization',
+  'context_emergency_cultural_notes': 'Patient is panicked and needs reassurance',
+
+  // Context translations for handover scenario
+  'context_handover_setting': 'Shift Handover - Patient Transfer',
+  'context_handover_environment': 'End of shift, colleague is waiting',
+  'context_handover_objective': 'Complete and safe patient handover',
+  'context_handover_cultural_notes': 'Professional colleague, structured communication expected',
+
+  // Context translations for dementia care scenario
+  'context_dementia_care_setting': 'Nursing Home - Dementia Care',
+  'context_dementia_care_environment': 'Quiet morning in the living area',
+  'context_dementia_care_objective': 'Compassionate care and orientation assistance',
+  'context_dementia_care_cultural_notes': 'Resident is confused but generally friendly',
+
+  // Context translations for mobility assistance scenario
+  'context_mobility_assistance_setting': 'Patient Room - Mobility Assistance',
+  'context_mobility_assistance_environment': 'Afternoon, patient wants to move',
+  'context_mobility_assistance_objective': 'Safe mobilization and fall prevention',
+  'context_mobility_assistance_cultural_notes': 'Elderly patient, proud but in need of help',
+
+  // Context translations for communication disability scenario
+  'context_communication_disability_setting': 'Group Home - Disability Care',
+  'context_communication_disability_environment': 'Relaxed atmosphere in the group home',
+  'context_communication_disability_objective': 'Promote communication and self-determination',
+  'context_communication_disability_cultural_notes': 'Resident needs time and patience during communication',
+
+  // Default context translations
+  'context_default_setting': 'Medical Facility',
+  'context_default_environment': 'Everyday work environment',
+  'context_default_objective': 'Professional medical communication',
+  'context_default_cultural_notes': 'Standard professional interaction'
 };

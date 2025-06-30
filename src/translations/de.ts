@@ -1,4 +1,3 @@
-
 export const germanTranslations: Record<string, string> = {
   // Navigation
   'home': 'Startseite',
@@ -399,11 +398,59 @@ export const germanTranslations: Record<string, string> = {
   'scenario_communication_disability_title': 'Kommunikation bei Behinderungen',
   'scenario_communication_disability_description': 'Kommunikation und Unterstützung für Bewohner mit Behinderungen',
 
-  // Learning objectives
-  'objective_establish_professional_contact': 'Professionellen Kontakt herstellen',
-  'objective_assess_needs': 'Bedürfnisse erfassen',
-  'objective_provide_information': 'Informationen vermitteln',
-  'objective_respond_empathetically': 'Empathisch reagieren',
-  'objective_successfully_conclude': 'Situation erfolgreich abschließen',
-  'objective_current': 'Aktuelles Ziel'
+  // Scenario briefing specific
+  'scenarioBriefing': 'Szenario-Briefing',
+  'environment': 'Umgebung',
+  'culturalNotes': 'Kulturelle Hinweise',
+  'learnMore': 'Mehr erfahren',
+  'bestPracticesForScenario': 'Best Practices für dieses Szenario',
+  'beginInteraction': 'Interaktion beginnen',
+
+  // Context translations for admission scenario
+  'context_admission_setting': 'Krankenstation - Patientenaufnahme',
+  'context_admission_environment': 'Ruhiger Nachmittag auf der Station',
+  'context_admission_objective': 'Vollständige Aufnahme des Patienten durchführen',
+  'context_admission_cultural_notes': 'Patient ist höflich aber nervös wegen des Krankenhausaufenthalts',
+
+  // Context translations for medication scenario
+  'context_medication_setting': 'Patientenzimmer - Medikamentenverabreichung',
+  'context_medication_environment': 'Morgenschicht, Patient ist wach',
+  'context_medication_objective': 'Sichere Medikamentenverabreichung und Patientenaufklärung',
+  'context_medication_cultural_notes': 'Patient ist wissbegierig und stellt viele Fragen',
+
+  // Context translations for emergency scenario
+  'context_emergency_setting': 'Notfallsituation - Akute Brustschmerzen',
+  'context_emergency_environment': 'Hochstress-Situation, Zeit ist kritisch',
+  'context_emergency_objective': 'Schnelle Erstversorgung und Stabilisierung',
+  'context_emergency_cultural_notes': 'Patient ist panisch und braucht Beruhigung',
+
+  // Context translations for handover scenario
+  'context_handover_setting': 'Schichtübergabe - Patientenübergabe',
+  'context_handover_environment': 'Ende der Schicht, Kollegin wartet',
+  'context_handover_objective': 'Vollständige und sichere Patientenübergabe',
+  'context_handover_cultural_notes': 'Professionelle Kollegin, strukturierte Kommunikation erwartet',
+
+  // Context translations for dementia care scenario
+  'context_dementia_care_setting': 'Pflegeheim - Demenzbetreuung',
+  'context_dementia_care_environment': 'Ruhiger Vormittag im Wohnbereich',
+  'context_dementia_care_objective': 'Einfühlsame Betreuung und Orientierungshilfe',
+  'context_dementia_care_cultural_notes': 'Bewohnerin ist verwirrt aber grundsätzlich freundlich',
+
+  // Context translations for mobility assistance scenario
+  'context_mobility_assistance_setting': 'Patientenzimmer - Mobilitätshilfe',
+  'context_mobility_assistance_environment': 'Nachmittag, Patient möchte sich bewegen',
+  'context_mobility_assistance_objective': 'Sichere Mobilisierung und Sturzprävention',
+  'context_mobility_assistance_cultural_notes': 'Älterer Patient, stolz aber hilfsbedürftig',
+
+  // Context translations for communication disability scenario
+  'context_communication_disability_setting': 'Wohngruppe - Behindertenbetreuung',
+  'context_communication_disability_environment': 'Entspannte Atmosphäre in der Wohngruppe',
+  'context_communication_disability_objective': 'Kommunikation und Selbstbestimmung fördern',
+  'context_communication_disability_cultural_notes': 'Bewohner braucht Zeit und Geduld bei der Kommunikation',
+
+  // Default context translations
+  'context_default_setting': 'Medizinische Einrichtung',
+  'context_default_environment': 'Alltägliche Arbeitsumgebung',
+  'context_default_objective': 'Professionelle medizinische Kommunikation',
+  'context_default_cultural_notes': 'Standard professionelle Interaktion'
 };
