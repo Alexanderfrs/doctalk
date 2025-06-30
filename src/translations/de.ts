@@ -1,3 +1,4 @@
+
 export const germanTranslations: Record<string, string> = {
   // Navigation
   'home': 'Startseite',
@@ -397,6 +398,14 @@ export const germanTranslations: Record<string, string> = {
   'scenario_mobility_assistance_description': 'Unterstützung eines älteren Patienten bei der Mobilisierung',
   'scenario_communication_disability_title': 'Kommunikation bei Behinderungen',
   'scenario_communication_disability_description': 'Kommunikation und Unterstützung für Bewohner mit Behinderungen',
+
+  // Learning objectives
+  'objective_establish_professional_contact': 'Professionellen Kontakt herstellen',
+  'objective_assess_needs': 'Bedürfnisse erfassen',
+  'objective_provide_information': 'Informationen vermitteln',
+  'objective_respond_empathetically': 'Empathisch reagieren',
+  'objective_successfully_conclude': 'Situation erfolgreich abschließen',
+  'objective_current': 'Aktuelles Ziel',
 
   // Scenario briefing specific
   'scenarioBriefing': 'Szenario-Briefing',

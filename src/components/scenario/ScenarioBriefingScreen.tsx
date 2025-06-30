@@ -8,7 +8,6 @@ import { PatientProfile } from "@/utils/patientProfiles";
 import BestPracticesDialog from "./BestPracticesDialog";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useScenarioTranslations } from "@/utils/scenarioTranslations";
 
 interface ScenarioBriefingScreenProps {
   scenario: Scenario;
@@ -24,11 +23,91 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
   onExit
 }) => {
   const { t } = useTranslation();
-  const { getScenarioTitle, getScenarioDescription, getScenarioContext } = useScenarioTranslations();
   const [showBestPractices, setShowBestPractices] = useState(false);
   const [showExitConfirmation, setShowExitConfirmation] = useState(false);
 
+  // Get scenario title and description in English
+  const getScenarioTitle = (scenarioId: string): string => {
+    return t(`scenario_${scenarioId}_title`);
+  };
+
+  const getScenarioDescription = (scenarioId: string): string => {
+    return t(`scenario_${scenarioId}_description`);
+  };
+
+  const getLearningObjectives = (): string[] => {
+    return [
+      t('objective_establish_professional_contact'),
+      t('objective_assess_needs'),
+      t('objective_provide_information'),
+      t('objective_respond_empathetically'),
+      t('objective_successfully_conclude')
+    ];
+  };
+
+  const getScenarioContext = (scenarioId: string) => {
+    switch (scenarioId) {
+      case 'admission':
+        return {
+          setting: t('context_admission_setting'),
+          environment: t('context_admission_environment'),
+          objective: t('context_admission_objective'),
+          culturalNotes: t('context_admission_cultural_notes')
+        };
+      case 'medication':
+        return {
+          setting: t('context_medication_setting'),
+          environment: t('context_medication_environment'),
+          objective: t('context_medication_objective'),
+          culturalNotes: t('context_medication_cultural_notes')
+        };
+      case 'emergency':
+        return {
+          setting: t('context_emergency_setting'),
+          environment: t('context_emergency_environment'),
+          objective: t('context_emergency_objective'),
+          culturalNotes: t('context_emergency_cultural_notes')
+        };
+      case 'handover':
+        return {
+          setting: t('context_handover_setting'),
+          environment: t('context_handover_environment'),
+          objective: t('context_handover_objective'),
+          culturalNotes: t('context_handover_cultural_notes')
+        };
+      case 'dementia-care':
+        return {
+          setting: t('context_dementia_care_setting'),
+          environment: t('context_dementia_care_environment'),
+          objective: t('context_dementia_care_objective'),
+          culturalNotes: t('context_dementia_care_cultural_notes')
+        };
+      case 'mobility-assistance':
+        return {
+          setting: t('context_mobility_assistance_setting'),
+          environment: t('context_mobility_assistance_environment'),
+          objective: t('context_mobility_assistance_objective'),
+          culturalNotes: t('context_mobility_assistance_cultural_notes')
+        };
+      case 'communication-disability':
+        return {
+          setting: t('context_communication_disability_setting'),
+          environment: t('context_communication_disability_environment'),
+          objective: t('context_communication_disability_objective'),
+          culturalNotes: t('context_communication_disability_cultural_notes')
+        };
+      default:
+        return {
+          setting: t('context_default_setting'),
+          environment: t('context_default_environment'),
+          objective: t('context_default_objective'),
+          culturalNotes: t('context_default_cultural_notes')
+        };
+    }
+  };
+
   const context = getScenarioContext(scenario.id);
+  const learningObjectives = getLearningObjectives();
 
   const handleExit = () => {
     setShowExitConfirmation(false);
@@ -85,6 +164,28 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
           <div className="mt-4">
             <p className="font-medium text-medical-700 mb-1">{t('culturalNotes')}:</p>
             <p className="text-medical-600 text-sm">{context.culturalNotes}</p>
+          </div>
+        </Card>
+
+        {/* Learning Objectives */}
+        <Card className="p-6 bg-white border-medical-200">
+          <div className="flex items-center gap-2 mb-4">
+            <Target className="h-5 w-5 text-medical-600" />
+            <h3 className="font-semibold text-medical-800">{t('learningGoals')}</h3>
+            <span className="text-sm text-medical-500">0/5</span>
+          </div>
+          <div className="space-y-3">
+            {learningObjectives.map((objective, index) => (
+              <div key={index} className="flex items-center gap-3">
+                <div className="w-6 h-6 rounded-full border-2 border-medical-300 flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-medical-300"></div>
+                </div>
+                <p className="text-medical-700">{objective}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+            <p className="text-sm text-blue-800 font-medium">{t('objective_current')}: {learningObjectives[0]}</p>
           </div>
         </Card>
 
