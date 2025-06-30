@@ -26,16 +26,16 @@ const ExitConfirmationDialog: React.FC<ExitConfirmationDialogProps> = ({
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>End exercise??</AlertDialogTitle>
+          <AlertDialogTitle>Übung beenden?</AlertDialogTitle>
           <AlertDialogDescription>
-            If you end the exercise now, your progress so far will be lost.
-            Are you sure you want to continue?
+            Wenn Sie die Übung jetzt beenden, geht Ihr bisheriger Fortschritt verloren. 
+            Sind Sie sicher, dass Sie fortfahren möchten?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>Abbrechen</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm} className="bg-red-600 hover:bg-red-700">
-            Yes, end exercise
+            Ja, Übung beenden
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

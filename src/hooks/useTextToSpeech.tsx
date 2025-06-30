@@ -88,6 +88,7 @@ const useTextToSpeech = ({
   const stopCurrentAudio = useCallback(() => {
     if (currentAudio) {
       currentAudio.pause();
+      currentAudio.currentTime = 0;
       currentAudio.remove();
       setCurrentAudio(null);
     }
@@ -97,11 +98,12 @@ const useTextToSpeech = ({
   }, [currentAudio]);
 
   const speak = useCallback(async (text: string, speakerOverride?: string, modelOverride?: string) => {
-    if (!isEnabled || quotaExceeded) return;
+    if (!isEnabled || quotaExceeded || !text?.trim()) return;
     
     // Rate limiting
     const now = Date.now();
     if (now - lastRequestTime.current < minRequestInterval) {
+      console.log('Rate limited - skipping TTS request');
       return;
     }
     lastRequestTime.current = now;
@@ -128,6 +130,7 @@ const useTextToSpeech = ({
         console.log('Using cached audio');
         audioContent = cached.audio;
       } else {
+        console.log('Making TTS API request...');
         const { data, error: apiError } = await supabase.functions.invoke('text-to-speech', {
           body: { 
             text: text.trim(), 
@@ -138,10 +141,12 @@ const useTextToSpeech = ({
         });
 
         if (apiError) {
+          console.error('TTS API Error:', apiError);
           throw new Error(apiError.message || 'TTS API Fehler');
         }
         
         if (data?.error) {
+          console.error('TTS Service Error:', data.error, data.message);
           if (data.error === 'QUOTA_EXCEEDED') {
             setQuotaExceeded(true);
             throw new Error('ElevenLabs-Kontingent aufgebraucht');
@@ -165,31 +170,73 @@ const useTextToSpeech = ({
           timestamp: now,
           size: audioSize
         });
+        
+        console.log('TTS request successful, audio cached');
       }
 
-      const audio = new Audio(`data:audio/mp3;base64,${audioContent}`);
+      // Create and configure audio element
+      const audio = new Audio();
       
-      audio.onloadstart = () => setIsLoading(true);
+      // Set up event handlers before setting src
+      audio.onloadstart = () => {
+        console.log('Audio loading started');
+        setIsLoading(true);
+      };
+      
       audio.oncanplaythrough = () => {
+        console.log('Audio can play through');
         setIsLoading(false);
         setIsSpeaking(true);
       };
+      
+      audio.onplay = () => {
+        console.log('Audio started playing');
+        setIsSpeaking(true);
+        setIsLoading(false);
+      };
+      
       audio.onended = () => {
+        console.log('Audio ended');
         setIsSpeaking(false);
         setIsLoading(false);
+        setCurrentAudio(null);
         if (onEnd) onEnd();
       };
-      audio.onerror = () => {
+      
+      audio.onerror = (e) => {
+        console.error('Audio playback error:', e);
         const errorMsg = 'Audio-Wiedergabe fehlgeschlagen';
         setError(errorMsg);
         setIsSpeaking(false);
         setIsLoading(false);
+        setCurrentAudio(null);
         if (onError) onError(errorMsg);
         else toast.error(errorMsg);
       };
 
+      // Set audio source and play
+      audio.src = `data:audio/mp3;base64,${audioContent}`;
+      audio.load(); // Explicitly load the audio
+      
       setCurrentAudio(audio);
-      await audio.play();
+      
+      // Try to play - handle autoplay restrictions
+      try {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+          console.log('Audio playback started successfully');
+        }
+      } catch (playError) {
+        console.error('Play failed:', playError);
+        // Handle autoplay restrictions
+        if (playError.name === 'NotAllowedError') {
+          toast.error('Autoplay blockiert - bitte manuell auf Play klicken');
+          setError('Autoplay blockiert');
+        } else {
+          throw playError;
+        }
+      }
       
     } catch (e) {
       const errorMsg = e instanceof Error ? e.message : 'Sprachausgabe-Fehler';
@@ -198,6 +245,7 @@ const useTextToSpeech = ({
       setError(errorMsg);
       setIsSpeaking(false);
       setIsLoading(false);
+      setCurrentAudio(null);
       
       if (onError) {
         onError(errorMsg);
@@ -210,6 +258,7 @@ const useTextToSpeech = ({
   }, [speaker, currentModel, isEnabled, quotaExceeded, onStart, onEnd, onError, cleanCache, stopCurrentAudio]);
 
   const stop = useCallback(() => {
+    console.log('Stopping TTS');
     stopCurrentAudio();
   }, [stopCurrentAudio]);
 
@@ -217,6 +266,7 @@ const useTextToSpeech = ({
     if (currentAudio && !isPaused) {
       currentAudio.pause();
       setIsPaused(true);
+      console.log('TTS paused');
     }
   }, [currentAudio, isPaused]);
 
@@ -224,10 +274,12 @@ const useTextToSpeech = ({
     if (currentAudio && isPaused) {
       currentAudio.play();
       setIsPaused(false);
+      console.log('TTS resumed');
     }
   }, [currentAudio, isPaused]);
 
   const setEnabled = useCallback((enabled: boolean) => {
+    console.log('TTS enabled:', enabled);
     setIsEnabled(enabled);
     localStorage.setItem('tts-enabled', enabled.toString());
     if (!enabled) {
@@ -239,6 +291,7 @@ const useTextToSpeech = ({
   }, [stopCurrentAudio, quotaExceeded]);
 
   const setModel = useCallback((newModel: string) => {
+    console.log('TTS model changed to:', newModel);
     setCurrentModel(newModel);
     localStorage.setItem('tts-model', newModel);
   }, []);

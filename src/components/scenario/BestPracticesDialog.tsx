@@ -23,52 +23,52 @@ const BestPracticesDialog: React.FC<BestPracticesDialogProps> = ({
 }) => {
   const getBestPracticesContent = () => {
     switch (scenarioId) {
-       case 'handover':
-              return {
-                title: "Best Practices for Shift Handover",
-                description: "Key principles for safe and effective patient handover",
-                practices: [
-                  "Use the SBAR method (Situation, Background, Assessment, Recommendation)",
-                  "Communicate all critical information in a structured way",
-                  "Ask clarifying questions and ensure understanding",
-                  "Highlight medication changes and special considerations",
-                  "Complete documentation promptly"
-                ]
-              };
-          case 'admission':
-              return {
-                title: "Best Practices for Patient Admission",
-                description: "Foundations for a professional patient intake",
-                practices: [
-                  "Warm and professional greeting",
-                  "Conduct a complete medical history",
-                  "Respect data privacy and obtain informed consent",
-                  "Provide orientation on procedures and contacts",
-                  "Ask about individual needs and fears"
-                ]
-              };
-          case 'medication':
-              return {
-                title: "Best Practices for Medication Administration",
-                description: "Safety standards for administering medication",
-                practices: [
-                  "Follow the 5 Rights (Right patient, Right drug, etc.)",
-                  "Double-check patient identification",
-                  "Explain effects and possible side effects",
-                  "Monitor intake and document properly",
-                  "Ask about allergies and intolerances"
-                ]
-              };
-          default:
-              return {
-                title: "General Best Practices",
-                description: "Core principles of professional patient communication",
-                practices: [
-                  "Communicate respectfully and empathetically",
-                  "Practice active listening",
-                  "Use clear and simple language",
-                  "Show cultural sensitivity",
-                  "Respect patient autonomy"
+      case 'handover':
+        return {
+          title: "Best Practices für Schichtübergaben",
+          description: "Wichtige Prinzipien für eine sichere und effektive Patientenübergabe",
+          practices: [
+            "SBAR-Methode verwenden (Situation, Background, Assessment, Recommendation)",
+            "Alle kritischen Informationen strukturiert übermitteln",
+            "Rückfragen stellen und Verständnis sicherstellen",
+            "Medikationsänderungen und Besonderheiten hervorheben",
+            "Dokumentation zeitnah vervollständigen"
+          ]
+        };
+      case 'admission':
+        return {
+          title: "Best Practices für Patientenaufnahme",
+          description: "Grundlagen für eine professionelle Patientenaufnahme",
+          practices: [
+            "Warme und professionelle Begrüßung",
+            "Vollständige Anamnese erheben",
+            "Datenschutz und Einverständniserklärungen beachten",
+            "Orientierung über Abläufe und Ansprechpartner geben",
+            "Individuelle Bedürfnisse und Ängste erfragen"
+          ]
+        };
+      case 'medication':
+        return {
+          title: "Best Practices für Medikamentenverabreichung",
+          description: "Sicherheitsstandards bei der Arzneimittelgabe",
+          practices: [
+            "5-R-Regel beachten (Richtiger Patient, Richtiges Medikament, etc.)",
+            "Patientenidentifikation zweifach prüfen",
+            "Über Wirkung und Nebenwirkungen aufklären",
+            "Einnahme überwachen und dokumentieren",
+            "Allergien und Unverträglichkeiten erfragen"
+          ]
+        };
+      default:
+        return {
+          title: "Allgemeine Best Practices",
+          description: "Grundprinzipien der professionellen Patientenkommunikation",
+          practices: [
+            "Respektvolle und empathische Kommunikation",
+            "Aktives Zuhören praktizieren",
+            "Verständliche Sprache verwenden",
+            "Kulturelle Sensibilität zeigen",
+            "Patientenautonomie respektieren"
           ]
         };
     }

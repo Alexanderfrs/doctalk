@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Scenario } from "@/data/scenarios";
 import { Card } from "@/components/ui/card";
@@ -7,7 +6,6 @@ import { AlertCircle, Users, MapPin, Target, Play, Info, X } from "lucide-react"
 import { PatientProfile } from "@/utils/patientProfiles";
 import BestPracticesDialog from "./BestPracticesDialog";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
-import { useTranslation } from "@/hooks/useTranslation";
 
 interface ScenarioBriefingScreenProps {
   scenario: Scenario;
@@ -22,92 +20,72 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
   onBeginInteraction,
   onExit
 }) => {
-  const { t } = useTranslation();
   const [showBestPractices, setShowBestPractices] = useState(false);
   const [showExitConfirmation, setShowExitConfirmation] = useState(false);
 
-  // Get scenario title and description in English
-  const getScenarioTitle = (scenarioId: string): string => {
-    return t(`scenario_${scenarioId}_title`);
-  };
-
-  const getScenarioDescription = (scenarioId: string): string => {
-    return t(`scenario_${scenarioId}_description`);
-  };
-
-  const getLearningObjectives = (): string[] => {
-    return [
-      t('objective_establish_professional_contact'),
-      t('objective_assess_needs'),
-      t('objective_provide_information'),
-      t('objective_respond_empathetically'),
-      t('objective_successfully_conclude')
-    ];
-  };
-
-  const getScenarioContext = (scenarioId: string) => {
-    switch (scenarioId) {
+  // Get scenario context information
+  const getScenarioContext = () => {
+    switch (scenario.id) {
       case 'admission':
         return {
-          setting: t('context_admission_setting'),
-          environment: t('context_admission_environment'),
-          objective: t('context_admission_objective'),
-          culturalNotes: t('context_admission_cultural_notes')
+          setting: "Krankenstation - Patientenaufnahme",
+          environment: "Ruhiger Nachmittag auf der Station",
+          objective: "Vollständige Aufnahme des Patienten durchführen",
+          culturalNotes: "Patient ist höflich aber nervös wegen des Krankenhausaufenthalts"
         };
       case 'medication':
         return {
-          setting: t('context_medication_setting'),
-          environment: t('context_medication_environment'),
-          objective: t('context_medication_objective'),
-          culturalNotes: t('context_medication_cultural_notes')
+          setting: "Patientenzimmer - Medikamentenverabreichung",
+          environment: "Morgenschicht, Patient ist wach",
+          objective: "Sichere Medikamentenverabreichung und Patientenaufklärung",
+          culturalNotes: "Patient ist wissbegierig und stellt viele Fragen"
         };
       case 'emergency':
         return {
-          setting: t('context_emergency_setting'),
-          environment: t('context_emergency_environment'),
-          objective: t('context_emergency_objective'),
-          culturalNotes: t('context_emergency_cultural_notes')
+          setting: "Notfallsituation - Akute Brustschmerzen",
+          environment: "Hochstress-Situation, Zeit ist kritisch",
+          objective: "Schnelle Erstversorgung und Stabilisierung",
+          culturalNotes: "Patient ist panisch und braucht Beruhigung"
         };
       case 'handover':
         return {
-          setting: t('context_handover_setting'),
-          environment: t('context_handover_environment'),
-          objective: t('context_handover_objective'),
-          culturalNotes: t('context_handover_cultural_notes')
+          setting: "Schichtübergabe - Patientenübergabe",
+          environment: "Ende der Schicht, Kollegin wartet",
+          objective: "Vollständige und sichere Patientenübergabe",
+          culturalNotes: "Professionelle Kollegin, strukturierte Kommunikation erwartet"
         };
       case 'dementia-care':
         return {
-          setting: t('context_dementia_care_setting'),
-          environment: t('context_dementia_care_environment'),
-          objective: t('context_dementia_care_objective'),
-          culturalNotes: t('context_dementia_care_cultural_notes')
+          setting: "Pflegeheim - Demenzbetreuung",
+          environment: "Ruhiger Vormittag im Wohnbereich",
+          objective: "Einfühlsame Betreuung und Orientierungshilfe",
+          culturalNotes: "Bewohnerin ist verwirrt aber grundsätzlich freundlich"
         };
       case 'mobility-assistance':
         return {
-          setting: t('context_mobility_assistance_setting'),
-          environment: t('context_mobility_assistance_environment'),
-          objective: t('context_mobility_assistance_objective'),
-          culturalNotes: t('context_mobility_assistance_cultural_notes')
+          setting: "Patientenzimmer - Mobilitätshilfe",
+          environment: "Nachmittag, Patient möchte sich bewegen",
+          objective: "Sichere Mobilisierung und Sturzprävention",
+          culturalNotes: "Älterer Patient, stolz aber hilfsbedürftig"
         };
       case 'communication-disability':
         return {
-          setting: t('context_communication_disability_setting'),
-          environment: t('context_communication_disability_environment'),
-          objective: t('context_communication_disability_objective'),
-          culturalNotes: t('context_communication_disability_cultural_notes')
+          setting: "Wohngruppe - Behindertenbetreuung",
+          environment: "Entspannte Atmosphäre in der Wohngruppe",
+          objective: "Kommunikation und Selbstbestimmung fördern",
+          culturalNotes: "Bewohner braucht Zeit und Geduld bei der Kommunikation"
         };
       default:
         return {
-          setting: t('context_default_setting'),
-          environment: t('context_default_environment'),
-          objective: t('context_default_objective'),
-          culturalNotes: t('context_default_cultural_notes')
+          setting: "Medizinische Einrichtung",
+          environment: "Alltägliche Arbeitsumgebung",
+          objective: "Professionelle medizinische Kommunikation",
+          culturalNotes: "Standard professionelle Interaktion"
         };
     }
   };
 
-  const context = getScenarioContext(scenario.id);
-  const learningObjectives = getLearningObjectives();
+  const context = getScenarioContext();
 
   const handleExit = () => {
     setShowExitConfirmation(false);
@@ -131,61 +109,39 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center gap-2 mb-4">
             <AlertCircle className="h-6 w-6 text-medical-600" />
-            <h1 className="text-2xl font-bold text-medical-800">{t('scenarioBriefing')}</h1>
+            <h1 className="text-2xl font-bold text-medical-800">Szenario-Briefing</h1>
           </div>
-          <h2 className="text-xl font-semibold text-medical-700">{getScenarioTitle(scenario.id)}</h2>
-          <p className="text-medical-600">{getScenarioDescription(scenario.id)}</p>
+          <h2 className="text-xl font-semibold text-medical-700">{scenario.title}</h2>
+          <p className="text-medical-600">{scenario.description}</p>
         </div>
 
         {/* Patient Profile */}
         <Card className="p-6 bg-white border-medical-200">
           <div className="flex items-center gap-2 mb-4">
             <Users className="h-5 w-5 text-medical-600" />
-            <h3 className="font-semibold text-medical-800">{t('patientProfile')}</h3>
+            <h3 className="font-semibold text-medical-800">Patientenprofil</h3>
           </div>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="font-medium text-medical-700">{t('name')}:</p>
+              <p className="font-medium text-medical-700">Name:</p>
               <p className="text-medical-600">{patientProfile.name}</p>
             </div>
             <div>
-              <p className="font-medium text-medical-700">{t('age')}:</p>
-              <p className="text-medical-600">{patientProfile.age} {t('years')}</p>
+              <p className="font-medium text-medical-700">Alter:</p>
+              <p className="text-medical-600">{patientProfile.age} Jahre</p>
             </div>
             <div>
-              <p className="font-medium text-medical-700">{t('condition')}:</p>
+              <p className="font-medium text-medical-700">Zustand:</p>
               <p className="text-medical-600">{patientProfile.condition}</p>
             </div>
             <div>
-              <p className="font-medium text-medical-700">{t('mood')}:</p>
+              <p className="font-medium text-medical-700">Stimmung:</p>
               <p className="text-medical-600">{patientProfile.mood}</p>
             </div>
           </div>
           <div className="mt-4">
-            <p className="font-medium text-medical-700 mb-1">{t('culturalNotes')}:</p>
+            <p className="font-medium text-medical-700 mb-1">Kulturelle Hinweise:</p>
             <p className="text-medical-600 text-sm">{context.culturalNotes}</p>
-          </div>
-        </Card>
-
-        {/* Learning Objectives */}
-        <Card className="p-6 bg-white border-medical-200">
-          <div className="flex items-center gap-2 mb-4">
-            <Target className="h-5 w-5 text-medical-600" />
-            <h3 className="font-semibold text-medical-800">{t('learningGoals')}</h3>
-            <span className="text-sm text-medical-500">0/5</span>
-          </div>
-          <div className="space-y-3">
-            {learningObjectives.map((objective, index) => (
-              <div key={index} className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full border-2 border-medical-300 flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-medical-300"></div>
-                </div>
-                <p className="text-medical-700">{objective}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-            <p className="text-sm text-blue-800 font-medium">{t('objective_current')}: {learningObjectives[0]}</p>
           </div>
         </Card>
 
@@ -194,7 +150,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
           <Card className="p-4 bg-white border-medical-200">
             <div className="flex items-center gap-2 mb-3">
               <MapPin className="h-4 w-4 text-medical-600" />
-              <h4 className="font-medium text-medical-800">{t('environment')}</h4>
+              <h4 className="font-medium text-medical-800">Umgebung</h4>
             </div>
             <p className="text-sm text-medical-600 mb-2">{context.setting}</p>
             <p className="text-xs text-medical-500">{context.environment}</p>
@@ -203,7 +159,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
           <Card className="p-4 bg-white border-medical-200">
             <div className="flex items-center gap-2 mb-3">
               <Target className="h-4 w-4 text-medical-600" />
-              <h4 className="font-medium text-medical-800">{t('learningGoals')}</h4>
+              <h4 className="font-medium text-medical-800">Ihr Ziel</h4>
             </div>
             <p className="text-sm text-medical-600">{context.objective}</p>
           </Card>
@@ -215,8 +171,8 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
             <div className="flex items-center gap-2">
               <Info className="h-4 w-4 text-blue-600" />
               <div>
-                <h4 className="font-medium text-blue-800">{t('learnMore')}</h4>
-                <p className="text-sm text-blue-600">{t('bestPracticesForScenario')}</p>
+                <h4 className="font-medium text-blue-800">Mehr erfahren</h4>
+                <p className="text-sm text-blue-600">Best Practices für dieses Szenario</p>
               </div>
             </div>
             <Button
@@ -226,7 +182,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
               className="border-blue-300 text-blue-700 hover:bg-blue-100"
             >
               <Info className="h-4 w-4 mr-1" />
-              {t('learnMore')}
+              Mehr erfahren
             </Button>
           </div>
         </Card>
@@ -239,7 +195,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
             className="bg-medical-600 hover:bg-medical-700 text-white px-8 py-3 flex-1"
           >
             <Play className="h-5 w-5 mr-2" />
-            {t('beginInteraction')}
+            Interaktion beginnen
           </Button>
         </div>
       </Card>
