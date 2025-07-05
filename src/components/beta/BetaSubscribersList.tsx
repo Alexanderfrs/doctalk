@@ -26,7 +26,7 @@ const BetaSubscribersList = () => {
       setError(null);
 
       const { data, error } = await supabase
-        .from("beta_subscribers")
+        .from("alpha_subscribers")
         .select("*")
         .order("created_at", { ascending: false });
 
@@ -66,7 +66,7 @@ const BetaSubscribersList = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `beta_subscribers_${new Date().toISOString().split("T")[0]}.csv`;
+    link.download = `alpha_subscribers_${new Date().toISOString().split("T")[0]}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   };

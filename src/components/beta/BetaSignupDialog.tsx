@@ -50,7 +50,7 @@ export default function BetaSignupDialog({ className, triggerElement }: BetaSign
     try {
       // Check if email already exists
       const { data: existingEmails, error: checkError } = await supabase
-        .from('beta_subscribers')
+        .from('alpha_subscribers')
         .select('email')
         .eq('email', data.email);
 
@@ -66,7 +66,7 @@ export default function BetaSignupDialog({ className, triggerElement }: BetaSign
 
       // Insert new signup
       const { error: insertError } = await supabase
-        .from('beta_subscribers')
+        .from('alpha_subscribers')
         .insert([{ email: data.email }]);
 
       if (insertError) {

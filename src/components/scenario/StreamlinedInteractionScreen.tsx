@@ -30,12 +30,14 @@ interface StreamlinedInteractionScreenProps {
   scenario: Scenario;
   onBack: () => void;
   onExit: () => void;
+  onComplete?: () => void;
 }
 
 const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> = ({
   scenario,
   onBack,
-  onExit
+  onExit,
+  onComplete
 }) => {
   const [conversation, setConversation] = useState<DialogueLine[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
@@ -691,13 +693,21 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
   const handleCompletionClose = () => {
     setShowCompletionModal(false);
-    onExit();
+    if (onComplete) {
+      onComplete();
+    } else {
+      onExit();
+    }
   };
 
   const handleNextExercise = () => {
     setShowCompletionModal(false);
-    // For now, go back to exercises - in future this could navigate to next scenario
-    onExit();
+    if (onComplete) {
+      onComplete();
+    } else {
+      // For now, go back to exercises - in future this could navigate to next scenario
+      onExit();
+    }
   };
 
   const completedCount = checkpoints.filter(cp => cp.completed).length;

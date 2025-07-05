@@ -21,6 +21,7 @@ import LanguageCertification from "./pages/LanguageCertification";
 import BrandBanner from "./components/brand/BrandBanner";
 import Onboarding from "./pages/Onboarding";
 import Index from "./pages/Index";
+import TrialPage from "./pages/TrialPage";
 import TutorialOverlay from "./components/tutorial/TutorialOverlay";
 import "./styles/mobile.css";
 
@@ -136,6 +137,9 @@ const App = () => {
                         </ProtectedRoute>
                       } 
                     />
+                    
+                    {/* Trial route - accessible without authentication */}
+                    <Route path="/trial" element={<TrialPage />} />
                     
                     {/* Protected routes that require onboarding */}
                     <Route 
