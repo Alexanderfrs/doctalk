@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TrialFeedbackWidget, { TrialFeedback } from "./TrialFeedbackWidget";
-import AlphaWaitlistModal from "./AlphaWaitlistModal";
+import waitlist from '@zootools/waitlist-js';
 
 interface TrialCompletionScreenProps {
   onExit: () => void;
@@ -9,7 +9,6 @@ interface TrialCompletionScreenProps {
 const TrialCompletionScreen: React.FC<TrialCompletionScreenProps> = ({
   onExit
 }) => {
-  const [showWaitlistModal, setShowWaitlistModal] = useState(false);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
 
@@ -25,9 +24,13 @@ const TrialCompletionScreen: React.FC<TrialCompletionScreenProps> = ({
       
       setFeedbackSubmitted(true);
       
-      // Show waitlist modal after a brief delay
+      // Show waitlist popup after a brief delay
       setTimeout(() => {
-        setShowWaitlistModal(true);
+        waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
+        // Exit after showing waitlist
+        setTimeout(() => {
+          onExit();
+        }, 1000);
       }, 1500);
       
     } catch (error) {
@@ -37,15 +40,7 @@ const TrialCompletionScreen: React.FC<TrialCompletionScreenProps> = ({
     }
   };
 
-  const handleWaitlistClose = () => {
-    setShowWaitlistModal(false);
-    // Small delay before exiting to avoid jarring transition
-    setTimeout(() => {
-      onExit();
-    }, 500);
-  };
-
-  if (feedbackSubmitted && !showWaitlistModal) {
+  if (feedbackSubmitted) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-medical-50 to-medical-100 flex items-center justify-center p-4">
         <div className="text-center space-y-4">
@@ -62,19 +57,12 @@ const TrialCompletionScreen: React.FC<TrialCompletionScreenProps> = ({
   }
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-medical-50 to-medical-100 flex items-center justify-center p-4">
-        <TrialFeedbackWidget
-          onSubmit={handleFeedbackSubmit}
-          isSubmitting={isSubmittingFeedback}
-        />
-      </div>
-
-      <AlphaWaitlistModal
-        isOpen={showWaitlistModal}
-        onClose={handleWaitlistClose}
+    <div className="min-h-screen bg-gradient-to-br from-medical-50 to-medical-100 flex items-center justify-center p-4">
+      <TrialFeedbackWidget
+        onSubmit={handleFeedbackSubmit}
+        isSubmitting={isSubmittingFeedback}
       />
-    </>
+    </div>
   );
 };
 

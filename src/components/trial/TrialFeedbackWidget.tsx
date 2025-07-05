@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle, ThumbsUp, ThumbsDown } from "lucide-react";
@@ -13,7 +13,7 @@ interface TrialFeedbackWidgetProps {
 
 export interface TrialFeedback {
   wasHelpful: boolean;
-  whatHelpedMost: string;
+  whatHelpedMost: string[];
   improvementSuggestion: string;
 }
 
@@ -22,7 +22,7 @@ const TrialFeedbackWidget: React.FC<TrialFeedbackWidgetProps> = ({
   isSubmitting = false
 }) => {
   const [wasHelpful, setWasHelpful] = useState<boolean | null>(null);
-  const [whatHelpedMost, setWhatHelpedMost] = useState<string>("");
+  const [whatHelpedMost, setWhatHelpedMost] = useState<string[]>([]);
   const [improvementSuggestion, setImprovementSuggestion] = useState<string>("");
 
   const handleSubmit = () => {
@@ -35,7 +35,15 @@ const TrialFeedbackWidget: React.FC<TrialFeedbackWidgetProps> = ({
     });
   };
 
-  const isFormValid = wasHelpful !== null && whatHelpedMost.trim() !== "";
+  const handleCheckboxChange = (value: string, checked: boolean) => {
+    setWhatHelpedMost(prev => 
+      checked 
+        ? [...prev, value]
+        : prev.filter(item => item !== value)
+    );
+  };
+
+  const isFormValid = wasHelpful !== null;
 
   return (
     <Card className="w-full max-w-2xl mx-auto p-6 space-y-6">
@@ -74,30 +82,46 @@ const TrialFeedbackWidget: React.FC<TrialFeedbackWidgetProps> = ({
         {/* Question 2: What helped most? */}
         {wasHelpful !== null && (
           <div className="space-y-3">
-            <h3 className="font-medium text-medical-800">What helped most?</h3>
-            <RadioGroup value={whatHelpedMost} onValueChange={setWhatHelpedMost}>
+            <h3 className="font-medium text-medical-800">What helped most? (Select all that apply)</h3>
+            <div className="space-y-3">
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="realistic-dialogue" id="realistic-dialogue" />
+                <Checkbox 
+                  id="realistic-dialogue" 
+                  checked={whatHelpedMost.includes("realistic-dialogue")}
+                  onCheckedChange={(checked) => handleCheckboxChange("realistic-dialogue", checked as boolean)}
+                />
                 <Label htmlFor="realistic-dialogue">Realistic dialogue and conversation flow</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="practical-vocabulary" id="practical-vocabulary" />
+                <Checkbox 
+                  id="practical-vocabulary" 
+                  checked={whatHelpedMost.includes("practical-vocabulary")}
+                  onCheckedChange={(checked) => handleCheckboxChange("practical-vocabulary", checked as boolean)}
+                />
                 <Label htmlFor="practical-vocabulary">Practical medical vocabulary</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="feedback-clarity" id="feedback-clarity" />
+                <Checkbox 
+                  id="feedback-clarity" 
+                  checked={whatHelpedMost.includes("feedback-clarity")}
+                  onCheckedChange={(checked) => handleCheckboxChange("feedback-clarity", checked as boolean)}
+                />
                 <Label htmlFor="feedback-clarity">Clear feedback and guidance</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="scenario-structure" id="scenario-structure" />
+                <Checkbox 
+                  id="scenario-structure" 
+                  checked={whatHelpedMost.includes("scenario-structure")}
+                  onCheckedChange={(checked) => handleCheckboxChange("scenario-structure", checked as boolean)}
+                />
                 <Label htmlFor="scenario-structure">Structured scenario progression</Label>
               </div>
-            </RadioGroup>
+            </div>
           </div>
         )}
 
         {/* Question 3: Improvement suggestion */}
-        {whatHelpedMost && (
+        {wasHelpful !== null && (
           <div className="space-y-3">
             <h3 className="font-medium text-medical-800">How can we improve? (Optional)</h3>
             <Textarea
@@ -105,10 +129,10 @@ const TrialFeedbackWidget: React.FC<TrialFeedbackWidgetProps> = ({
               value={improvementSuggestion}
               onChange={(e) => setImprovementSuggestion(e.target.value)}
               className="min-h-[80px]"
-              maxLength={200}
+              maxLength={500}
             />
             <p className="text-xs text-medical-500">
-              {improvementSuggestion.length}/200 characters
+              {improvementSuggestion.length}/500 characters
             </p>
           </div>
         )}
