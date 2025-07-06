@@ -91,12 +91,12 @@ const HeroSection = () => {
     return (
       <section className="container mx-auto mb-12 landing-mobile-section">
         {/* Free Trial CTA Banner */}
-        <div className="mb-4 bg-gradient-to-r from-medical-500 to-medical-600 text-white px-4 py-2 rounded-lg shadow-md">
+        <div className="mb-4 mx-auto max-w-sm bg-gradient-to-r from-medical-500 to-medical-600 text-white px-4 py-2 rounded-lg shadow-md">
           <div className="flex items-center justify-center gap-2 text-sm font-medium">
             <span>🚀</span>
-            <span>Try our free trial - No signup required!</span>
+            <span>Try free trial!</span>
             <Button asChild variant="ghost" size="sm" className="text-white hover:bg-white/20 h-auto py-1 px-2 ml-2">
-              <Link to="/practice">Start Trial</Link>
+              <Link to="/trial">Start Now</Link>
             </Button>
           </div>
         </div>
@@ -131,7 +131,7 @@ const HeroSection = () => {
                 {translate("getPriorityAccess")}
               </Button>
               <Button asChild variant="outline" size="lg" className="w-full">
-                <Link to="/practice">{translate("exploreDemo")}</Link>
+                <Link to="/trial">{translate("exploreDemo")}</Link>
               </Button>
             </div>
           </div>
@@ -184,12 +184,12 @@ const HeroSection = () => {
   return (
     <section className="container mx-auto mb-12">
       {/* Free Trial CTA Banner */}
-      <div className="mb-6 bg-gradient-to-r from-medical-500 to-medical-600 text-white px-6 py-3 rounded-lg shadow-md">
+      <div className="mb-6 mx-auto max-w-md bg-gradient-to-r from-medical-500 to-medical-600 text-white px-6 py-3 rounded-lg shadow-md">
         <div className="flex items-center justify-center gap-3 text-sm font-medium">
           <span>🚀</span>
-          <span>Try our free trial - No signup required!</span>
+          <span>Try free trial!</span>
           <Button asChild variant="ghost" size="sm" className="text-white hover:bg-white/20 h-auto py-1 px-3 ml-3">
-            <Link to="/practice">Start Trial</Link>
+            <Link to="/trial">Start Now</Link>
           </Button>
         </div>
       </div>
@@ -226,7 +226,7 @@ const HeroSection = () => {
                   {translate("getPriorityAccess")}
                 </Button>
                 <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                  <Link to="/practice">{translate("exploreDemo")}</Link>
+                  <Link to="/trial">{translate("exploreDemo")}</Link>
                 </Button>
               </div>
             </div>
