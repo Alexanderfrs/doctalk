@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowRight } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface BestPracticesDialogProps {
   isOpen: boolean;
@@ -21,57 +22,21 @@ const BestPracticesDialog: React.FC<BestPracticesDialogProps> = ({
   onClose,
   scenarioId
 }) => {
+  const { t } = useTranslation();
+  
   const getBestPracticesContent = () => {
-    switch (scenarioId) {
-      case 'handover':
-        return {
-          title: "Best Practices für Schichtübergaben",
-          description: "Wichtige Prinzipien für eine sichere und effektive Patientenübergabe",
-          practices: [
-            "SBAR-Methode verwenden (Situation, Background, Assessment, Recommendation)",
-            "Alle kritischen Informationen strukturiert übermitteln",
-            "Rückfragen stellen und Verständnis sicherstellen",
-            "Medikationsänderungen und Besonderheiten hervorheben",
-            "Dokumentation zeitnah vervollständigen"
-          ]
-        };
-      case 'admission':
-        return {
-          title: "Best Practices für Patientenaufnahme",
-          description: "Grundlagen für eine professionelle Patientenaufnahme",
-          practices: [
-            "Warme und professionelle Begrüßung",
-            "Vollständige Anamnese erheben",
-            "Datenschutz und Einverständniserklärungen beachten",
-            "Orientierung über Abläufe und Ansprechpartner geben",
-            "Individuelle Bedürfnisse und Ängste erfragen"
-          ]
-        };
-      case 'medication':
-        return {
-          title: "Best Practices für Medikamentenverabreichung",
-          description: "Sicherheitsstandards bei der Arzneimittelgabe",
-          practices: [
-            "5-R-Regel beachten (Richtiger Patient, Richtiges Medikament, etc.)",
-            "Patientenidentifikation zweifach prüfen",
-            "Über Wirkung und Nebenwirkungen aufklären",
-            "Einnahme überwachen und dokumentieren",
-            "Allergien und Unverträglichkeiten erfragen"
-          ]
-        };
-      default:
-        return {
-          title: "Allgemeine Best Practices",
-          description: "Grundprinzipien der professionellen Patientenkommunikation",
-          practices: [
-            "Respektvolle und empathische Kommunikation",
-            "Aktives Zuhören praktizieren",
-            "Verständliche Sprache verwenden",
-            "Kulturelle Sensibilität zeigen",
-            "Patientenautonomie respektieren"
-          ]
-        };
-    }
+    const scenarioKey = scenarioId || 'default';
+    return {
+      title: t(`bestPractices.${scenarioKey}.title`) || t('bestPractices.default.title'),
+      description: t(`bestPractices.${scenarioKey}.description`) || t('bestPractices.default.description'),
+      practices: [
+        t(`bestPractices.${scenarioKey}.practice1`) || t('bestPractices.default.practice1'),
+        t(`bestPractices.${scenarioKey}.practice2`) || t('bestPractices.default.practice2'),
+        t(`bestPractices.${scenarioKey}.practice3`) || t('bestPractices.default.practice3'),
+        t(`bestPractices.${scenarioKey}.practice4`) || t('bestPractices.default.practice4'),
+        t(`bestPractices.${scenarioKey}.practice5`) || t('bestPractices.default.practice5')
+      ]
+    };
   };
 
   const content = getBestPracticesContent();
@@ -98,7 +63,7 @@ const BestPracticesDialog: React.FC<BestPracticesDialogProps> = ({
         <div className="flex justify-end mt-6">
           <Button onClick={onClose} className="bg-medical-600 hover:bg-medical-700">
             <ArrowRight className="h-4 w-4 mr-2" />
-            Zur Übung
+            {t('toExercise')}
           </Button>
         </div>
       </DialogContent>

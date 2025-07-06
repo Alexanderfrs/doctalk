@@ -146,6 +146,96 @@ const uiTranslations: Record<string, Record<string, string>> = {
     'practiceDescription': 'Practice medical German in realistic scenarios from your professional activities',
     'safeFlexibleTraining': 'Safe & Flexible Training',
     'safeFlexibleTrainingDesc': 'Practice in a safe environment, get instant feedback - including pronunciation - and track the progress on your tailored learning path.',
+    
+    // Scenario briefing translations
+    'scenarioBriefing': 'Scenario Briefing',
+    'patientProfile': 'Patient Profile',
+    'name': 'Name',
+    'age': 'Age',
+    'years': 'years',
+    'condition': 'Condition',
+    'mood': 'Mood',
+    'culturalNotes': 'Cultural Notes',
+    'environment': 'Environment',
+    'yourGoal': 'Your Goal',
+    'learnMore': 'Learn More',
+    'bestPracticesForScenario': 'Best Practices for this Scenario',
+    'beginInteraction': 'Begin Interaction',
+    'toExercise': 'To Exercise',
+    
+    // Scenario contexts
+    'scenario.admission.setting': 'Hospital Ward - Patient Admission',
+    'scenario.admission.environment': 'Quiet afternoon on the ward',
+    'scenario.admission.objective': 'Perform complete patient admission',
+    'scenario.admission.culturalNotes': 'Patient is polite but nervous about hospitalization',
+
+    'scenario.medication.setting': 'Patient Room - Medication Administration',
+    'scenario.medication.environment': 'Morning shift, patient is awake',
+    'scenario.medication.objective': 'Safe medication administration and patient education',
+    'scenario.medication.culturalNotes': 'Patient is curious and asks many questions',
+
+    'scenario.emergency.setting': 'Emergency Situation - Acute Chest Pain',
+    'scenario.emergency.environment': 'High-stress situation, time is critical',
+    'scenario.emergency.objective': 'Rapid primary care and stabilization',
+    'scenario.emergency.culturalNotes': 'Patient is panicking and needs reassurance',
+
+    'scenario.handover.setting': 'Shift Handover - Patient Handover',
+    'scenario.handover.environment': 'End of shift, colleague waiting',
+    'scenario.handover.objective': 'Complete and safe patient handover',
+    'scenario.handover.culturalNotes': 'Professional colleague, structured communication expected',
+
+    'scenario.dementia-care.setting': 'Nursing Home - Dementia Care',
+    'scenario.dementia-care.environment': 'Quiet morning in the living area',
+    'scenario.dementia-care.objective': 'Empathetic care and orientation assistance',
+    'scenario.dementia-care.culturalNotes': 'Resident is confused but basically friendly',
+
+    'scenario.mobility-assistance.setting': 'Patient Room - Mobility Assistance',
+    'scenario.mobility-assistance.environment': 'Afternoon, patient wants to move',
+    'scenario.mobility-assistance.objective': 'Safe mobilization and fall prevention',
+    'scenario.mobility-assistance.culturalNotes': 'Elderly patient, proud but needs help',
+
+    'scenario.communication-disability.setting': 'Residential Group - Disability Care',
+    'scenario.communication-disability.environment': 'Relaxed atmosphere in the residential group',
+    'scenario.communication-disability.objective': 'Promote communication and self-determination',
+    'scenario.communication-disability.culturalNotes': 'Resident needs time and patience for communication',
+
+    'scenario.default.setting': 'Medical Facility',
+    'scenario.default.environment': 'Daily work environment',
+    'scenario.default.objective': 'Professional medical communication',
+    'scenario.default.culturalNotes': 'Standard professional interaction',
+
+    // Best practices translations
+    'bestPractices.handover.title': 'Best Practices for Shift Handovers',
+    'bestPractices.handover.description': 'Important principles for safe and effective patient handover',
+    'bestPractices.handover.practice1': 'Use SBAR method (Situation, Background, Assessment, Recommendation)',
+    'bestPractices.handover.practice2': 'Transmit all critical information in a structured manner',
+    'bestPractices.handover.practice3': 'Ask questions and ensure understanding',
+    'bestPractices.handover.practice4': 'Highlight medication changes and special features',
+    'bestPractices.handover.practice5': 'Complete documentation promptly',
+
+    'bestPractices.admission.title': 'Best Practices for Patient Admission',
+    'bestPractices.admission.description': 'Fundamentals for professional patient admission',
+    'bestPractices.admission.practice1': 'Warm and professional greeting',
+    'bestPractices.admission.practice2': 'Obtain complete medical history',
+    'bestPractices.admission.practice3': 'Observe privacy and consent forms',
+    'bestPractices.admission.practice4': 'Provide orientation about procedures and contacts',
+    'bestPractices.admission.practice5': 'Ask about individual needs and anxieties',
+
+    'bestPractices.medication.title': 'Best Practices for Medication Administration',
+    'bestPractices.medication.description': 'Safety standards in medication administration',
+    'bestPractices.medication.practice1': 'Observe 5-R rule (Right Patient, Right Medication, etc.)',
+    'bestPractices.medication.practice2': 'Verify patient identification twice',
+    'bestPractices.medication.practice3': 'Educate about effects and side effects',
+    'bestPractices.medication.practice4': 'Monitor intake and document',
+    'bestPractices.medication.practice5': 'Ask about allergies and intolerances',
+
+    'bestPractices.default.title': 'General Best Practices',
+    'bestPractices.default.description': 'Basic principles of professional patient communication',
+    'bestPractices.default.practice1': 'Respectful and empathetic communication',
+    'bestPractices.default.practice2': 'Practice active listening',
+    'bestPractices.default.practice3': 'Use understandable language',
+    'bestPractices.default.practice4': 'Show cultural sensitivity',
+    'bestPractices.default.practice5': 'Respect patient autonomy',
   }
 };
 

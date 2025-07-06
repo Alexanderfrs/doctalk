@@ -186,5 +186,95 @@ export const spanishTranslations = {
   'mobileOnboarding.screen3.description': "Aprende el lenguaje usado en la sala",
   'mobileOnboarding.screen4.title': "Voz y Juego de Roles",
   'mobileOnboarding.screen4.subtitle': "Habla y Escucha Diálogo Médico Real con IA",
-  'mobileOnboarding.screen4.description': "Practica Conversaciones del Mundo Real"
+  'mobileOnboarding.screen4.description': "Practica Conversaciones del Mundo Real",
+
+  // Scenario briefing translations
+  'scenarioBriefing': 'Briefing del Escenario',
+  'patientProfile': 'Perfil del Paciente',
+  'name': 'Nombre',
+  'age': 'Edad',
+  'years': 'años',
+  'condition': 'Condición',
+  'mood': 'Estado de ánimo',
+  'culturalNotes': 'Notas Culturales',
+  'environment': 'Entorno',
+  'yourGoal': 'Tu Objetivo',
+  'bestPracticesForScenario': 'Mejores Prácticas para este Escenario',
+  'beginInteraction': 'Comenzar Interacción',
+
+  // Scenario contexts
+  'scenario.admission.setting': 'Sala de Hospital - Admisión de Pacientes',
+  'scenario.admission.environment': 'Tarde tranquila en la sala',
+  'scenario.admission.objective': 'Realizar admisión completa del paciente',
+  'scenario.admission.culturalNotes': 'El paciente es educado pero nervioso por la hospitalización',
+
+  'scenario.medication.setting': 'Habitación del Paciente - Administración de Medicamentos',
+  'scenario.medication.environment': 'Turno de mañana, paciente está despierto',
+  'scenario.medication.objective': 'Administración segura de medicamentos y educación del paciente',
+  'scenario.medication.culturalNotes': 'El paciente es curioso y hace muchas preguntas',
+
+  'scenario.emergency.setting': 'Situación de Emergencia - Dolor de Pecho Agudo',
+  'scenario.emergency.environment': 'Situación de alto estrés, el tiempo es crítico',
+  'scenario.emergency.objective': 'Atención primaria rápida y estabilización',
+  'scenario.emergency.culturalNotes': 'El paciente está en pánico y necesita tranquilización',
+
+  'scenario.handover.setting': 'Traspaso de Turno - Traspaso de Paciente',
+  'scenario.handover.environment': 'Final del turno, colega esperando',
+  'scenario.handover.objective': 'Traspaso completo y seguro del paciente',
+  'scenario.handover.culturalNotes': 'Colega profesional, se espera comunicación estructurada',
+
+  'scenario.dementia-care.setting': 'Hogar de Ancianos - Cuidado de Demencia',
+  'scenario.dementia-care.environment': 'Mañana tranquila en el área de vivienda',
+  'scenario.dementia-care.objective': 'Cuidado empático y asistencia de orientación',
+  'scenario.dementia-care.culturalNotes': 'El residente está confundido pero básicamente amigable',
+
+  'scenario.mobility-assistance.setting': 'Habitación del Paciente - Asistencia de Movilidad',
+  'scenario.mobility-assistance.environment': 'Por la tarde, el paciente quiere moverse',
+  'scenario.mobility-assistance.objective': 'Movilización segura y prevención de caídas',
+  'scenario.mobility-assistance.culturalNotes': 'Paciente mayor, orgulloso pero necesita ayuda',
+
+  'scenario.communication-disability.setting': 'Grupo de Vivienda - Cuidado de Discapacidad',
+  'scenario.communication-disability.environment': 'Atmósfera relajada en el grupo de vivienda',
+  'scenario.communication-disability.objective': 'Promover comunicación y autodeterminación',
+  'scenario.communication-disability.culturalNotes': 'El residente necesita tiempo y paciencia para la comunicación',
+
+  'scenario.default.setting': 'Instalación Médica',
+  'scenario.default.environment': 'Ambiente de trabajo diario',
+  'scenario.default.objective': 'Comunicación médica profesional',
+  'scenario.default.culturalNotes': 'Interacción profesional estándar',
+
+  // Best practices translations
+  'bestPractices.handover.title': 'Mejores Prácticas para Traspasos de Turno',
+  'bestPractices.handover.description': 'Principios importantes para un traspaso de paciente seguro y efectivo',
+  'bestPractices.handover.practice1': 'Usar método SBAR (Situación, Antecedentes, Evaluación, Recomendación)',
+  'bestPractices.handover.practice2': 'Transmitir toda la información crítica de manera estructurada',
+  'bestPractices.handover.practice3': 'Hacer preguntas y asegurar comprensión',
+  'bestPractices.handover.practice4': 'Destacar cambios de medicación y particularidades',
+  'bestPractices.handover.practice5': 'Completar documentación de manera oportuna',
+
+  'bestPractices.admission.title': 'Mejores Prácticas para Admisión de Pacientes',
+  'bestPractices.admission.description': 'Fundamentos para una admisión profesional de pacientes',
+  'bestPractices.admission.practice1': 'Saludo cálido y profesional',
+  'bestPractices.admission.practice2': 'Obtener historial médico completo',
+  'bestPractices.admission.practice3': 'Observar privacidad y formularios de consentimiento',
+  'bestPractices.admission.practice4': 'Proporcionar orientación sobre procedimientos y contactos',
+  'bestPractices.admission.practice5': 'Preguntar sobre necesidades individuales y ansiedades',
+
+  'bestPractices.medication.title': 'Mejores Prácticas para Administración de Medicamentos',
+  'bestPractices.medication.description': 'Estándares de seguridad en la administración de medicamentos',
+  'bestPractices.medication.practice1': 'Observar regla de las 5 R (Paciente Correcto, Medicamento Correcto, etc.)',
+  'bestPractices.medication.practice2': 'Verificar identificación del paciente dos veces',
+  'bestPractices.medication.practice3': 'Educar sobre efectos y efectos secundarios',
+  'bestPractices.medication.practice4': 'Monitorear la toma y documentar',
+  'bestPractices.medication.practice5': 'Preguntar sobre alergias e intolerancias',
+
+  'bestPractices.default.title': 'Mejores Prácticas Generales',
+  'bestPractices.default.description': 'Principios básicos de comunicación profesional con pacientes',
+  'bestPractices.default.practice1': 'Comunicación respetuosa y empática',
+  'bestPractices.default.practice2': 'Practicar escucha activa',
+  'bestPractices.default.practice3': 'Usar lenguaje comprensible',
+  'bestPractices.default.practice4': 'Mostrar sensibilidad cultural',
+  'bestPractices.default.practice5': 'Respetar la autonomía del paciente',
+
+  'toExercise': 'Al Ejercicio'
 };
