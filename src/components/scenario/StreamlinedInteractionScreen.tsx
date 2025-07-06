@@ -19,6 +19,8 @@ import ExitConfirmationDialog from "./ExitConfirmationDialog";
 import { PerformanceInsightsModal } from "./PerformanceInsightsModal";
 import TTSButton from "./TTSButton";
 import UILanguageSelector from "@/components/language/UILanguageSelector";
+import ConfidenceRatingDialog from "./ConfidenceRatingDialog";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Checkpoint {
   id: string;
@@ -59,6 +61,9 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [fontSize, setFontSize] = useState(18);
   const [waitingForCheckpointCompletion, setWaitingForCheckpointCompletion] = useState(false);
   const [languageFeedback, setLanguageFeedback] = useState<string>("");
+  const [showConfidenceRating, setShowConfidenceRating] = useState(false);
+
+  const { translate } = useLanguage();
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -689,6 +694,18 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
   const handleExit = () => {
     setShowExitConfirmation(false);
+    setShowConfidenceRating(true);
+  };
+
+  const handleConfidenceSubmit = (rating: number) => {
+    console.log('Confidence rating:', rating);
+    // For now, just log the rating. In the future, this could be stored
+    setShowConfidenceRating(false);
+    onExit();
+  };
+
+  const handleConfidenceClose = () => {
+    setShowConfidenceRating(false);
     onExit();
   };
 
@@ -1040,7 +1057,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           {/* Enhanced Language Feedback */}
           <Card className="flex-1">
             <div className="p-4 border-b border-medical-200">
-              <h3 className="font-medium text-medical-800">Language Feedback</h3>
+              <h3 className="font-medium text-medical-800">{translate("languageFeedback")}</h3>
             </div>
             <div className="p-4">
               {languageFeedback ? (
@@ -1054,7 +1071,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 </div>
               ) : (
                 <p className="text-sm text-medical-500">
-                  Your language feedback will appear here after your responses.
+                  {translate("languageFeedback")} will appear here after your responses.
                 </p>
               )}
             </div>
@@ -1063,7 +1080,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           {/* Content Feedback */}
           <Card>
             <div className="p-4 border-b border-medical-200">
-              <h3 className="font-medium text-medical-800">Content Feedback</h3>
+              <h3 className="font-medium text-medical-800">{translate("contentFeedback")}</h3>
             </div>
             <div className="p-4">
               {feedback ? (
@@ -1072,7 +1089,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 </div>
               ) : (
                 <p className="text-sm text-medical-500">
-                  Content feedback will appear here after your responses.
+                  {translate("contentFeedback")} will appear here after your responses.
                 </p>
               )}
             </div>
@@ -1094,6 +1111,12 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
         scenarioType={scenario.category}
         onClose={handleCompletionClose}
         onRestart={handleNextExercise}
+      />
+
+      <ConfidenceRatingDialog
+        isOpen={showConfidenceRating}
+        onClose={handleConfidenceClose}
+        onSubmit={handleConfidenceSubmit}
       />
     </div>
   );
