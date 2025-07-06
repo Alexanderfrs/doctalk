@@ -23,7 +23,7 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({
   const { translate } = useLanguage();
 
   return (
-    <div className="hidden md:flex items-center space-x-3">
+    <div className="flex items-center space-x-3">
       <UILanguageSelector />
       
       {isAuthenticated ? (
