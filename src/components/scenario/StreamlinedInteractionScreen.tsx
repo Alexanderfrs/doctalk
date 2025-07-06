@@ -69,28 +69,9 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     error
   } = useUnifiedMedicalLLM({
     scenarioType: getValidScenarioType(scenario.category),
-    onPatientResponse: (response) => {
-      const patientMessage: ConversationMessage = {
-        id: `patient-${Date.now()}`,
-        type: 'patient',
-        content: response,
-        timestamp: new Date()
-      };
-      
-      setMessages(prev => [...prev, patientMessage]);
-      
-      // Check if we've completed all steps
-      if (currentStep >= totalSteps - 1) {
-        setIsComplete(true);
-        setShowConfidenceRating(true);
-      } else {
-        setCurrentStep(prev => prev + 1);
-      }
-    },
-    onError: (error) => {
-      toast.error("Connection error. Please try again.");
-      console.error("LLM Error:", error);
-    }
+    scenarioDescription: scenario.title,
+    difficultyLevel: 'intermediate',
+    userLanguage: 'de'
   });
 
   // Auto-scroll to bottom when new messages arrive
@@ -123,7 +104,26 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     
     // Send to LLM for processing
     try {
-      await generateUnifiedResponse(message, messages);
+      const response = await generateUnifiedResponse(message, messages);
+      
+      // Add patient response to conversation
+      const patientMessage: ConversationMessage = {
+        id: `patient-${Date.now()}`,
+        type: 'patient',
+        content: response.patientReply,
+        timestamp: new Date(),
+        feedback: response.briefFeedback
+      };
+      
+      setMessages(prev => [...prev, patientMessage]);
+      
+      // Check if we've completed all steps
+      if (response.progressUpdate?.isComplete || currentStep >= totalSteps - 1) {
+        setIsComplete(true);
+        setShowConfidenceRating(true);
+      } else {
+        setCurrentStep(prev => prev + 1);
+      }
     } catch (error) {
       console.error("Error generating response:", error);
       toast.error("Failed to generate response. Please try again.");
