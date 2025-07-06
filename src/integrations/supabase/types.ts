@@ -121,7 +121,6 @@ export type Database = {
         Row: {
           accuracy_score: number | null
           completed_at: string
-          confidence_score: number | null
           created_at: string
           duration_minutes: number | null
           feedback_quality: string | null
@@ -134,7 +133,6 @@ export type Database = {
         Insert: {
           accuracy_score?: number | null
           completed_at?: string
-          confidence_score?: number | null
           created_at?: string
           duration_minutes?: number | null
           feedback_quality?: string | null
@@ -147,7 +145,6 @@ export type Database = {
         Update: {
           accuracy_score?: number | null
           completed_at?: string
-          confidence_score?: number | null
           created_at?: string
           duration_minutes?: number | null
           feedback_quality?: string | null
