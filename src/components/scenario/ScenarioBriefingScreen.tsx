@@ -6,8 +6,6 @@ import { AlertCircle, Users, MapPin, Target, Play, Info, X } from "lucide-react"
 import { PatientProfile } from "@/utils/patientProfiles";
 import BestPracticesDialog from "./BestPracticesDialog";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
-import UILanguageSelector from "@/components/language/UILanguageSelector";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ScenarioBriefingScreenProps {
   scenario: Scenario;
@@ -24,7 +22,6 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
 }) => {
   const [showBestPractices, setShowBestPractices] = useState(false);
   const [showExitConfirmation, setShowExitConfirmation] = useState(false);
-  const { translate } = useLanguage();
 
   // Get scenario context information
   const getScenarioContext = () => {
@@ -98,24 +95,21 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-medical-50 to-medical-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-2xl p-8 space-y-8 relative">
-        {/* Language Selector and Exit Button */}
-        <div className="absolute top-4 right-4 flex items-center gap-2">
-          <UILanguageSelector />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowExitConfirmation(true)}
-            className="text-medical-600 hover:text-medical-800"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
+        {/* Exit Button */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowExitConfirmation(true)}
+          className="absolute top-4 right-4 text-medical-600 hover:text-medical-800"
+        >
+          <X className="h-4 w-4" />
+        </Button>
 
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center gap-2 mb-4">
             <AlertCircle className="h-6 w-6 text-medical-600" />
-            <h1 className="text-2xl font-bold text-medical-800">{translate("scenarioBriefing")}</h1>
+            <h1 className="text-2xl font-bold text-medical-800">Szenario-Briefing</h1>
           </div>
           <h2 className="text-xl font-semibold text-medical-700">{scenario.title}</h2>
           <p className="text-medical-600">{scenario.description}</p>
@@ -125,28 +119,28 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
         <Card className="p-6 bg-white border-medical-200">
           <div className="flex items-center gap-2 mb-4">
             <Users className="h-5 w-5 text-medical-600" />
-            <h3 className="font-semibold text-medical-800">{translate("patientProfile")}</h3>
+            <h3 className="font-semibold text-medical-800">Patientenprofil</h3>
           </div>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="font-medium text-medical-700">{translate("name")}:</p>
+              <p className="font-medium text-medical-700">Name:</p>
               <p className="text-medical-600">{patientProfile.name}</p>
             </div>
             <div>
-              <p className="font-medium text-medical-700">{translate("age")}:</p>
+              <p className="font-medium text-medical-700">Alter:</p>
               <p className="text-medical-600">{patientProfile.age} Jahre</p>
             </div>
             <div>
-              <p className="font-medium text-medical-700">{translate("condition")}:</p>
+              <p className="font-medium text-medical-700">Zustand:</p>
               <p className="text-medical-600">{patientProfile.condition}</p>
             </div>
             <div>
-              <p className="font-medium text-medical-700">{translate("mood")}:</p>
+              <p className="font-medium text-medical-700">Stimmung:</p>
               <p className="text-medical-600">{patientProfile.mood}</p>
             </div>
           </div>
           <div className="mt-4">
-            <p className="font-medium text-medical-700 mb-1">{translate("culturalNotes")}:</p>
+            <p className="font-medium text-medical-700 mb-1">Kulturelle Hinweise:</p>
             <p className="text-medical-600 text-sm">{context.culturalNotes}</p>
           </div>
         </Card>
@@ -156,7 +150,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
           <Card className="p-4 bg-white border-medical-200">
             <div className="flex items-center gap-2 mb-3">
               <MapPin className="h-4 w-4 text-medical-600" />
-              <h4 className="font-medium text-medical-800">{translate("environment")}</h4>
+              <h4 className="font-medium text-medical-800">Umgebung</h4>
             </div>
             <p className="text-sm text-medical-600 mb-2">{context.setting}</p>
             <p className="text-xs text-medical-500">{context.environment}</p>
@@ -165,7 +159,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
           <Card className="p-4 bg-white border-medical-200">
             <div className="flex items-center gap-2 mb-3">
               <Target className="h-4 w-4 text-medical-600" />
-              <h4 className="font-medium text-medical-800">{translate("yourGoal")}</h4>
+              <h4 className="font-medium text-medical-800">Ihr Ziel</h4>
             </div>
             <p className="text-sm text-medical-600">{context.objective}</p>
           </Card>
@@ -177,8 +171,8 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
             <div className="flex items-center gap-2">
               <Info className="h-4 w-4 text-blue-600" />
               <div>
-                <h4 className="font-medium text-blue-800">{translate("learnMore")}</h4>
-                <p className="text-sm text-blue-600">{translate("bestPracticesForScenario")}</p>
+                <h4 className="font-medium text-blue-800">Mehr erfahren</h4>
+                <p className="text-sm text-blue-600">Best Practices für dieses Szenario</p>
               </div>
             </div>
             <Button
@@ -188,7 +182,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
               className="border-blue-300 text-blue-700 hover:bg-blue-100"
             >
               <Info className="h-4 w-4 mr-1" />
-              {translate("learnMore")}
+              Mehr erfahren
             </Button>
           </div>
         </Card>
@@ -201,7 +195,7 @@ const ScenarioBriefingScreen: React.FC<ScenarioBriefingScreenProps> = ({
             className="bg-medical-600 hover:bg-medical-700 text-white px-8 py-3 flex-1"
           >
             <Play className="h-5 w-5 mr-2" />
-            {translate("beginInteraction")}
+            Interaktion beginnen
           </Button>
         </div>
       </Card>
