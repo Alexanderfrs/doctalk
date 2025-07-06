@@ -48,6 +48,7 @@ export const germanTranslations = {
   joinPioneers: 'Schließen Sie sich den Pionieren an',
   getPriorityAccess: 'Sichern Sie sich Ihren Platz',
   exploreDemo: 'Demo erkunden',
+  exploreFreeDemo: 'Kostenlose Demo erkunden',
   
   // B2B Problems
   realityForHealthcareOrganizations: "Die Herausforderung für Gesundheitsorganisationen",

@@ -12,6 +12,7 @@ export const russianTranslations = {
   joinPioneers: 'Присоединяйтесь к пионерам',
   getPriorityAccess: 'Обеспечьте Своё Место',
   exploreDemo: 'Скоро: Демо',
+  exploreFreeDemo: 'Скоро: Бесплатное Демо',
   exclusiveAlphaAccess: 'Получить ранний эксклюзивный доступ',
   limitedSpots: 'ограниченные места доступны',
   medicalTeamWorking: 'Медицинская команда работает вместе',

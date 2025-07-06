@@ -39,6 +39,7 @@ export const spanishTranslations = {
   joinPioneers: 'Únete a los pioneros',
   getPriorityAccess: 'Asegura Tu Lugar',
   exploreDemo: 'Explorar Demo',
+  exploreFreeDemo: 'Explorar Demo Gratis',
   exclusiveAlphaAccess: 'Obtener acceso temprano exclusivo',
   limitedSpots: 'puntos limitados',
   medicalTeamWorking: 'Equipo médico trabajando juntos',

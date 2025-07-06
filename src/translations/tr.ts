@@ -42,6 +42,7 @@ export const turkishTranslations = {
   joinPioneers: 'Öncülere katılın',
   getPriorityAccess: 'Yerinizi Güvence Altına Alın',
   exploreDemo: 'Demo\'yu Keşfedin',
+  exploreFreeDemo: 'Ücretsiz Demo\'yu Keşfedin',
   exclusiveAlphaAccess: 'Erken özel erişim elde edin',
   limitedSpots: 'sınırlı yerler',
   medicalTeamWorking: 'Birlikte çalışan tıp ekibi',

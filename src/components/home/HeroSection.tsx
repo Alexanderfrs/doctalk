@@ -90,15 +90,6 @@ const HeroSection = () => {
   if (isMobile) {
     return (
       <section className="container mx-auto mb-12 landing-mobile-section">
-        {/* Free Trial CTA Banner */}
-        <div className="mb-4 mx-auto max-w-sm bg-gradient-to-r from-medical-500 to-medical-600 text-white px-4 py-2 rounded-lg shadow-md">
-          <div className="flex items-center justify-center gap-2 text-base font-medium">
-            <span>🚀</span>
-            <Button asChild variant="ghost" size="sm" className="text-white hover:bg-white/20 h-auto py-2 px-3">
-              <Link to="/trial">Start free trial exercise now</Link>
-            </Button>
-          </div>
-        </div>
         <div className="glass-panel hero-mobile-fix flex flex-col items-center gap-6">
           <ViewModeToggle />
           
@@ -130,7 +121,7 @@ const HeroSection = () => {
                 {translate("getPriorityAccess")}
               </Button>
               <Button asChild variant="outline" size="lg" className="w-full">
-                <Link to="/trial">{translate("exploreDemo")}</Link>
+                <Link to="/trial">{translate("exploreFreeDemo")}</Link>
               </Button>
             </div>
           </div>
@@ -182,15 +173,6 @@ const HeroSection = () => {
 
   return (
     <section className="container mx-auto mb-12">
-      {/* Free Trial CTA Banner */}
-      <div className="mb-6 mx-auto max-w-md bg-gradient-to-r from-medical-500 to-medical-600 text-white px-6 py-3 rounded-lg shadow-md">
-        <div className="flex items-center justify-center gap-3 text-base font-medium">
-          <span>🚀</span>
-          <Button asChild variant="ghost" size="sm" className="text-white hover:bg-white/20 h-auto py-2 px-4">
-            <Link to="/trial">Start free trial exercise now</Link>
-          </Button>
-        </div>
-      </div>
       <div className="glass-panel p-8 flex flex-col md:flex-row items-center gap-8">
         <div className="md:w-1/2 opacity-100 visible">
           <ViewModeToggle />
@@ -224,7 +206,7 @@ const HeroSection = () => {
                   {translate("getPriorityAccess")}
                 </Button>
                 <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                  <Link to="/trial">{translate("exploreDemo")}</Link>
+                  <Link to="/trial">{translate("exploreFreeDemo")}</Link>
                 </Button>
               </div>
             </div>

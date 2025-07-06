@@ -48,6 +48,7 @@ export const englishTranslations = {
   joinPioneers: 'Join the pioneers',
   getPriorityAccess: 'Secure Your Spot',
   exploreDemo: 'Explore Demo',
+  exploreFreeDemo: 'Explore Free Demo',
   medicalTeamWorking: 'Medical team working together',
   hospitalScene: 'Hospital scene',
   medicalEducation: 'Medical education',
