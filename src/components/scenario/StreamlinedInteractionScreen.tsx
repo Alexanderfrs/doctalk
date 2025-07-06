@@ -4,7 +4,7 @@ import { Scenario } from "@/data/scenarios";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, X, CheckCircle } from "lucide-react";
-import { useUnifiedMedicalLLM } from "@/hooks/useUnifiedMedicalLLM";
+import { default as useUnifiedMedicalLLM } from "@/hooks/useUnifiedMedicalLLM";
 import ConversationInput from "./ConversationInput";
 import FeedbackDisplay from "./FeedbackDisplay";
 import { toast } from "sonner";
@@ -23,11 +23,7 @@ interface ConversationMessage {
   type: 'user' | 'patient' | 'system';
   content: string;
   timestamp: Date;
-  feedback?: {
-    accuracy: number;
-    suggestions: string[];
-    correction?: string;
-  };
+  feedback?: string;
 }
 
 const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> = ({
@@ -46,13 +42,21 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   
   const { recordScenarioAttempt } = useProgressTracking();
   
+  // Create mock checkpoints for conversation flow
+  const totalSteps = 3;
+  const mockCheckpoints = [
+    { description: "Initiate conversation and gather initial information" },
+    { description: "Discuss main concerns and provide guidance" },
+    { description: "Conclude conversation and provide next steps" }
+  ];
+  
   const {
-    sendMessage,
+    generateUnifiedResponse,
     isLoading,
     error
   } = useUnifiedMedicalLLM({
-    scenario,
-    onPatientResponse: (response, feedback) => {
+    scenarioType: scenario.category,
+    onPatientResponse: (response) => {
       const patientMessage: ConversationMessage = {
         id: `patient-${Date.now()}`,
         type: 'patient',
@@ -63,7 +67,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       setMessages(prev => [...prev, patientMessage]);
       
       // Check if we've completed all steps
-      if (currentStep >= scenario.checkpoints.length - 1) {
+      if (currentStep >= totalSteps - 1) {
         setIsComplete(true);
         setShowConfidenceRating(true);
       } else {
@@ -83,10 +87,11 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
 
   // Initialize with scenario introduction
   useEffect(() => {
+    const patientName = scenario.title.includes('patient') ? 'the patient' : 'Patient';
     const introMessage: ConversationMessage = {
       id: 'intro',
       type: 'system',
-      content: `You are now speaking with ${scenario.patientProfile?.name || 'the patient'}. Begin the conversation.`,
+      content: `You are now speaking with ${patientName}. Begin the conversation.`,
       timestamp: new Date()
     };
     setMessages([introMessage]);
@@ -104,7 +109,12 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     setMessages(prev => [...prev, userMessage]);
     
     // Send to LLM for processing
-    await sendMessage(message, messages);
+    try {
+      await generateUnifiedResponse(message, messages);
+    } catch (error) {
+      console.error("Error generating response:", error);
+      toast.error("Failed to generate response. Please try again.");
+    }
   };
 
   const handleConfidenceSubmit = async (confidenceScore: number) => {
@@ -177,7 +187,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             <div>
               <h1 className="font-semibold text-medical-800">{scenario.title}</h1>
               <p className="text-sm text-medical-600">
-                Step {currentStep + 1} of {scenario.checkpoints.length}
+                Step {currentStep + 1} of {totalSteps}
                 {isComplete && " - Complete!"}
               </p>
             </div>
@@ -200,7 +210,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           {!isComplete && (
             <Card className="p-4 bg-medical-50 border-medical-200">
               <h3 className="font-medium text-medical-800 mb-2">Current Objective:</h3>
-              <p className="text-medical-700">{scenario.checkpoints[currentStep]?.description}</p>
+              <p className="text-medical-700">{mockCheckpoints[currentStep]?.description}</p>
             </Card>
           )}
 
@@ -221,9 +231,9 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                         : 'bg-medical-100 text-medical-800 text-center italic'
                     }`}
                   >
-                    {message.type !== 'user' && message.type !== 'system' && (
+                    {message.type === 'patient' && (
                       <div className="text-xs font-medium mb-1 opacity-70">
-                        {scenario.patientProfile?.name || 'Patient'}
+                        Patient
                       </div>
                     )}
                     <div className="whitespace-pre-wrap">{message.content}</div>
@@ -241,8 +251,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           {!isComplete && (
             <ConversationInput
               onSendMessage={handleUserMessage}
-              isLoading={isLoading}
-              placeholder={`Respond to ${scenario.patientProfile?.name || 'the patient'}...`}
+              placeholder="Respond to the patient..."
             />
           )}
 
@@ -254,7 +263,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 Scenario Complete!
               </h3>
               <p className="text-green-700 mb-4">
-                You've successfully navigated through all conversation checkpoints.
+                You've successfully navigated through all conversation steps.
               </p>
             </Card>
           )}
