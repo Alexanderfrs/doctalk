@@ -1,227 +1,105 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+
+import React from "react";
 import { Button } from "@/components/ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useViewMode } from "@/contexts/ViewModeContext";
-import { ArrowRight, ChevronLeft, ChevronRight, Users, Shield, Building2, TrendingUp } from "lucide-react";
-import SwipeableContainer from "@/components/ui/SwipeableContainer";
-import ViewModeToggle from "@/components/landing/ViewModeToggle";
-import waitlist from '@zootools/waitlist-js';
+import { ArrowRight, Play } from "lucide-react";
 
-const HeroSection = () => {
+const HeroSection: React.FC = () => {
+  const navigate = useNavigate();
   const { translate } = useLanguage();
-  const { viewMode } = useViewMode();
-  const isMobile = useIsMobile();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleWaitlistClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
+  const handleTrialClick = () => {
+    navigate('/trial');
   };
 
-  const heroContents = [
-    {
-      image: "/lovable-uploads/2cee5e65-91a5-46de-8fc0-957b2d81ef0f.png",
-      alt: translate("medicalTeamWorking"),
-    },
-    {
-      image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
-      alt: translate("hospitalScene"),
-    },
-    {
-      image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
-      alt: translate("medicalEducation"),
-    },
-  ];
-
-  const handleSwipeChange = (index: number) => {
-    setActiveIndex(index);
+  const handleGetStarted = () => {
+    navigate('/login');
   };
-
-  const handlePrevious = () => {
-    setActiveIndex((prev) => Math.max(prev - 1, 0));
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prev) => Math.min(prev + 1, heroContents.length - 1));
-  };
-
-  // Dynamic content based on view mode
-  const getHeroContent = () => {
-    if (viewMode === 'enterprise') {
-      return {
-        title: translate("empowerYourInternationalTeam"),
-        description: translate("reduceOnboardingCosts"),
-        targetAudience: translate("forHealthcareOrganizationsDesc"),
-        trustSignals: [
-          {
-            icon: <Shield className="h-4 w-4 mr-1" />,
-            text: translate("expertDeveloped")
-          },
-          {
-            icon: <TrendingUp className="h-4 w-4 mr-1" />,
-            text: "Proven ROI"
-          }
-        ]
-      };
-    } else {
-      return {
-        title: translate("landYourDreamMedicalJob"),
-        description: translate("skipExpensiveCoursesAndGetFluent"),
-        targetAudience: translate("forInternationalHealthcareWorkers"),
-        trustSignals: [
-          {
-            icon: <Shield className="h-4 w-4 mr-1" />,
-            text: translate("expertDeveloped")
-          },
-          {
-            icon: <Users className="h-4 w-4 mr-1" />,
-            text: translate("joinPioneers")
-          }
-        ]
-      };
-    }
-  };
-
-  const heroContent = getHeroContent();
-
-  if (isMobile) {
-    return (
-      <section className="container mx-auto mb-12 landing-mobile-section">
-        <div className="glass-panel hero-mobile-fix flex flex-col items-center gap-6">
-          <ViewModeToggle />
-          
-          <div className="w-full opacity-100 visible transition-all duration-500">
-            <h1 className="text-3xl font-bold mb-4 text-neutral-800">
-              {heroContent.title}
-            </h1>
-            <p className="text-lg text-neutral-600 mb-4">
-              {heroContent.description}
-            </p>
-            
-            {/* Target audience clarification */}
-            <p className="text-sm text-neutral-500 mb-6 bg-medical-50 p-3 rounded-lg border border-medical-100">
-              {heroContent.targetAudience}
-            </p>
-
-            {/* Trust Signals */}
-            <div className="flex items-center justify-center gap-4 mb-6 text-sm text-neutral-500">
-              {heroContent.trustSignals.map((signal, index) => (
-                <div key={index} className="flex items-center">
-                  {signal.icon}
-                  <span>{signal.text}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex flex-col gap-3 w-full">
-              <Button size="lg" className="btn-primary w-full" onClick={handleWaitlistClick}>
-                {translate("getPriorityAccess")}
-              </Button>
-              <Button asChild variant="outline" size="lg" className="w-full">
-                <Link to="/practice">{translate("exploreDemo")}</Link>
-              </Button>
-            </div>
-          </div>
-          
-          <div className="w-full opacity-100 visible" ref={containerRef}>
-            <div className="relative">
-              <SwipeableContainer 
-                showArrows={false} 
-                showIndicators={true}
-                onSwipe={handleSwipeChange}
-                initialIndex={activeIndex}
-                className="swipeable-mobile"
-              >
-                {heroContents.map((content, i) => (
-                  <div key={i} className="relative border-4 border-white rounded-2xl shadow-xl overflow-hidden w-full">
-                    <img 
-                      src={content.image} 
-                      alt={content.alt} 
-                      className="hero-image-mobile opacity-100 visible"
-                      loading="eager"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>
-                  </div>
-                ))}
-              </SwipeableContainer>
-              
-              <Button 
-                variant="ghost" 
-                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
-                onClick={handlePrevious}
-                disabled={activeIndex === 0}
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white/90 rounded-full p-2"
-                onClick={handleNext}
-                disabled={activeIndex === heroContents.length - 1}
-              >
-                <ChevronRight className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
-    <section className="container mx-auto mb-12">
-      <div className="glass-panel p-8 flex flex-col md:flex-row items-center gap-8">
-        <div className="md:w-1/2 opacity-100 visible">
-          <ViewModeToggle />
-          
-          <div className="transition-all duration-500">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
-              {heroContent.title}
+    <section className="relative py-20 px-4 bg-gradient-to-br from-medical-50 via-white to-medical-100 overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-medical-200 rounded-full mix-blend-multiply filter blur-xl"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl"></div>
+        <div className="absolute -bottom-32 left-20 w-72 h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-xl"></div>
+      </div>
+
+      <div className="container mx-auto max-w-6xl relative z-10">
+        <div className="text-center space-y-8">
+          {/* Main headline */}
+          <div className="space-y-4">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-medical-900 leading-tight">
+              {translate("heroTitle")}
             </h1>
-            <p className="text-lg text-neutral-600 mb-4">
-              {heroContent.description}
+            <p className="text-xl md:text-2xl text-medical-600 max-w-3xl mx-auto leading-relaxed">
+              {translate("heroSubtitle")}
             </p>
-            
-            {/* Target audience clarification */}
-            <p className="text-md text-neutral-500 mb-6 bg-medical-50 p-4 rounded-lg border border-medical-100">
-              {heroContent.targetAudience}
-            </p>
+          </div>
 
-            {/* Trust Signals */}
-            <div className="flex items-center gap-6 mb-6 text-sm text-neutral-500">
-              {heroContent.trustSignals.map((signal, index) => (
-                <div key={index} className="flex items-center">
-                  {signal.icon}
-                  <span>{signal.text}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="btn-primary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95" onClick={handleWaitlistClick}>
-                  {translate("getPriorityAccess")}
-                </Button>
-                <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                  <Link to="/practice">{translate("exploreDemo")}</Link>
-                </Button>
-              </div>
+          {/* Free Trial CTA - Prominent placement */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-medical-100 max-w-md mx-auto">
+            <div className="space-y-3">
+              <h3 className="text-lg font-semibold text-medical-900">
+                Try it free - no signup required
+              </h3>
+              <p className="text-sm text-medical-600">
+                Experience a realistic medical conversation simulation
+              </p>
+              <Button
+                onClick={handleTrialClick}
+                size="lg"
+                className="w-full bg-medical-600 hover:bg-medical-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+              >
+                <Play className="mr-2 h-5 w-5" />
+                Start Free Trial
+              </Button>
             </div>
           </div>
-        </div>
-        
-        <div className="md:w-1/2 opacity-100 visible">
-          <div className="relative border-8 border-white rounded-2xl shadow-xl overflow-hidden">
-            <img 
-              src="/lovable-uploads/2cee5e65-91a5-46de-8fc0-957b2d81ef0f.png" 
-              alt={translate("medicalTeamWorking")}
-              className="w-full h-[300px] object-cover opacity-100 visible"
-              loading="eager"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-medical-800/30 to-transparent"></div>
+
+          {/* Secondary CTA */}
+          <div className="space-y-4">
+            <Button
+              onClick={handleGetStarted}
+              size="lg"
+              variant="outline"
+              className="bg-white/90 border-medical-300 text-medical-700 hover:bg-medical-50 font-semibold py-3 px-8 rounded-lg transition-all duration-200"
+            >
+              {translate("getStarted")}
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+
+          {/* Key benefits */}
+          <div className="grid md:grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 text-center">
+              <div className="w-12 h-12 bg-medical-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-medical-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+              <h4 className="font-semibold text-medical-900 mb-2">Realistic Dialogues</h4>
+              <p className="text-sm text-medical-600">Practice with AI patients in authentic medical scenarios</p>
+            </div>
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 text-center">
+              <div className="w-12 h-12 bg-medical-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-medical-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <h4 className="font-semibold text-medical-900 mb-2">Track Progress</h4>
+              <p className="text-sm text-medical-600">Monitor your German medical communication improvement</p>
+            </div>
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 text-center">
+              <div className="w-12 h-12 bg-medical-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-medical-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <h4 className="font-semibold text-medical-900 mb-2">Medical Vocabulary</h4>
+              <p className="text-sm text-medical-600">Learn essential German medical terms and phrases</p>
+            </div>
           </div>
         </div>
       </div>

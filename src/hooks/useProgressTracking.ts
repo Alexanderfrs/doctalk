@@ -38,6 +38,7 @@ interface ScenarioAttempt {
   completed_at: string;
   duration_minutes: number | null;
   accuracy_score: number | null;
+  confidence_score: number | null;
   feedback_quality: string | null;
   notes: string | null;
   created_at: string;
@@ -139,12 +140,13 @@ export const useProgressTracking = () => {
     }
   };
 
-  // Record a scenario attempt
+  // Record a scenario attempt with confidence score
   const recordScenarioAttempt = async (attemptData: {
     scenario_id: string;
     scenario_type: string;
     duration_minutes?: number;
     accuracy_score?: number;
+    confidence_score?: number;
     feedback_quality?: 'excellent' | 'good' | 'needs_improvement';
     notes?: string;
   }) => {
