@@ -104,7 +104,7 @@ export const spanishTranslations = {
   exclusiveAlphaAccessLimitedSpots: 'Obtener acceso temprano exclusivo - Plazas limitadas disponibles',
   getStarted: 'Empezar',
   startFree: 'Comienza gratis',
-  bestPracticesForScenario: 'Mejores Prácticas para este escenario',
+  learnMore: 'Aprende más',
   tailoredForMedicalCareer: "Adaptado para cada paso de tu carrera médica",
   doctalkDesignedFor: "DocTalk está diseñado para satisfacer las necesidades lingüísticas específicas de los diferentes profesionales de la salud, ayudándote a comunicarte con confianza y precisión.",
   forCareWorkersTitle: "Para los cuidadores",
@@ -186,44 +186,5 @@ export const spanishTranslations = {
   'mobileOnboarding.screen3.description': "Aprende el lenguaje usado en la sala",
   'mobileOnboarding.screen4.title': "Voz y Juego de Roles",
   'mobileOnboarding.screen4.subtitle': "Habla y Escucha Diálogo Médico Real con IA",
-  'mobileOnboarding.screen4.description': "Practica Conversaciones del Mundo Real",
-
-  // Scenario interface translations
-  learningObjectives: "Objetivos de Aprendizaje",
-  languageFeedback: "Retroalimentación del Idioma",
-  contentFeedback: "Retroalimentación del Contenido",
-  yourConfidenceRating: "Tu Evaluación de Confianza",
-  howConfidentAreYou: "¿Qué tan seguro te sientes con tu rendimiento en este escenario?",
-  veryConfident: "Muy seguro",
-  confident: "Seguro",
-  neutral: "Neutral",
-  lessConfident: "Menos seguro",
-  notConfident: "No seguro",
-  submitRating: "Enviar Evaluación",
-  thankYouForRating: "¡Gracias por tu evaluación!",
-  confidenceRatingSubmitted: "Tu evaluación de confianza ha sido registrada.",
-  
-  // Scenario briefing translations
-  scenarioBriefing: "Resumen del Escenario",
-  patientProfile: "Perfil del Paciente",
-  environment: "Entorno",
-  yourGoal: "Tu Objetivo",
-  learnMore: "Aprender Más",
-  bestPractices: "Mejores Prácticas",
-  beginInteraction: "Comenzar Interacción",
-  
-  // Patient profile fields
-  name: "Nombre",
-  age: "Edad",
-  condition: "Condición",
-  mood: "Estado de Ánimo",
-  culturalNotes: "Notas Culturales",
-  
-  // Common UI elements
-  exit: "Salir",
-  continue: "Continuar",
-  back: "Atrás",
-  close: "Cerrar",
-  confirm: "Confirmar",
-  cancel: "Cancelar"
+  'mobileOnboarding.screen4.description': "Practica Conversaciones del Mundo Real"
 };
