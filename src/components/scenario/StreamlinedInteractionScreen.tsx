@@ -23,11 +23,7 @@ interface ConversationMessage {
   type: 'user' | 'patient' | 'system';
   content: string;
   timestamp: Date;
-  feedback?: {
-    accuracy: number;
-    suggestions: string[];
-    correction?: string;
-  };
+  feedback?: string;
 }
 
 const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> = ({
@@ -41,6 +37,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [isComplete, setIsComplete] = useState(false);
   const [showConfidenceRating, setShowConfidenceRating] = useState(false);
   const [isSubmittingConfidence, setIsSubmittingConfidence] = useState(false);
+  const [showFeedback, setShowFeedback] = useState<Record<string, boolean>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const startTime = useRef<Date>(new Date());
   
@@ -50,29 +47,14 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const totalSteps = Math.max(scenario.dialogue.length / 2, 3); // At least 3 steps
   
   const {
-    sendMessage,
+    generateUnifiedResponse,
     isLoading,
     error
   } = useUnifiedMedicalLLM({
-    scenario,
-    onPatientResponse: (response, feedback) => {
-      const patientMessage: ConversationMessage = {
-        id: `patient-${Date.now()}`,
-        type: 'patient',
-        content: response,
-        timestamp: new Date()
-      };
-      
-      setMessages(prev => [...prev, patientMessage]);
-      
-      // Check if we've completed enough conversation exchanges
-      if (currentStep >= totalSteps - 1) {
-        setIsComplete(true);
-        setShowConfidenceRating(true);
-      } else {
-        setCurrentStep(prev => prev + 1);
-      }
-    },
+    scenarioType: scenario.category as 'patient-care' | 'emergency' | 'handover' | 'elderly-care' | 'disability-care',
+    scenarioDescription: scenario.description,
+    difficultyLevel: 'intermediate',
+    userLanguage: 'de',
     onError: (error) => {
       toast.error("Connection error. Please try again.");
       console.error("LLM Error:", error);
@@ -106,8 +88,33 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     
     setMessages(prev => [...prev, userMessage]);
     
-    // Send to LLM for processing
-    await sendMessage(message, messages);
+    try {
+      // Generate response using the LLM
+      const response = await generateUnifiedResponse(message, [
+        { speaker: 'user', text: message, timestamp: new Date().toISOString() }
+      ]);
+      
+      const patientMessage: ConversationMessage = {
+        id: `patient-${Date.now()}`,
+        type: 'patient',
+        content: response.patientReply,
+        timestamp: new Date(),
+        feedback: response.briefFeedback || undefined
+      };
+      
+      setMessages(prev => [...prev, patientMessage]);
+      
+      // Check if we've completed enough conversation exchanges
+      if (currentStep >= totalSteps - 1) {
+        setIsComplete(true);
+        setShowConfidenceRating(true);
+      } else {
+        setCurrentStep(prev => prev + 1);
+      }
+    } catch (error) {
+      console.error("Error generating response:", error);
+      toast.error("Failed to generate response. Please try again.");
+    }
   };
 
   const handleConfidenceSubmit = async (confidenceScore: number) => {
@@ -137,6 +144,13 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     } finally {
       setIsSubmittingConfidence(false);
     }
+  };
+
+  const handleDismissFeedback = (messageId: string) => {
+    setShowFeedback(prev => ({
+      ...prev,
+      [messageId]: false
+    }));
   };
 
   if (showConfidenceRating) {
@@ -211,29 +225,33 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           <Card className="min-h-[400px] max-h-[500px] overflow-y-auto">
             <div className="p-4 space-y-4">
               {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
+                <div key={message.id}>
                   <div
-                    className={`max-w-[80%] p-3 rounded-lg ${
-                      message.type === 'user'
-                        ? 'bg-medical-600 text-white'
-                        : message.type === 'patient'
-                        ? 'bg-gray-100 text-gray-900'
-                        : 'bg-medical-100 text-medical-800 text-center italic'
-                    }`}
+                    className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    {message.type === 'patient' && (
-                      <div className="text-xs font-medium mb-1 opacity-70">
-                        Patient
-                      </div>
-                    )}
-                    <div className="whitespace-pre-wrap">{message.content}</div>
-                    {message.feedback && (
-                      <FeedbackDisplay feedback={message.feedback} />
-                    )}
+                    <div
+                      className={`max-w-[80%] p-3 rounded-lg ${
+                        message.type === 'user'
+                          ? 'bg-medical-600 text-white'
+                          : message.type === 'patient'
+                          ? 'bg-gray-100 text-gray-900'
+                          : 'bg-medical-100 text-medical-800 text-center italic'
+                      }`}
+                    >
+                      {message.type === 'patient' && (
+                        <div className="text-xs font-medium mb-1 opacity-70">
+                          Patient
+                        </div>
+                      )}
+                      <div className="whitespace-pre-wrap">{message.content}</div>
+                    </div>
                   </div>
+                  {message.feedback && showFeedback[message.id] !== false && (
+                    <FeedbackDisplay
+                      feedback={message.feedback}
+                      onDismiss={() => handleDismissFeedback(message.id)}
+                    />
+                  )}
                 </div>
               ))}
               <div ref={messagesEndRef} />
