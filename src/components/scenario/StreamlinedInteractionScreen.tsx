@@ -4,7 +4,7 @@ import { Scenario } from "@/data/scenarios";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, X, CheckCircle } from "lucide-react";
-import { useUnifiedMedicalLLM } from "@/hooks/useUnifiedMedicalLLM";
+import useUnifiedMedicalLLM from "@/hooks/useUnifiedMedicalLLM";
 import ConversationInput from "./ConversationInput";
 import FeedbackDisplay from "./FeedbackDisplay";
 import { toast } from "sonner";
@@ -46,6 +46,9 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   
   const { recordScenarioAttempt } = useProgressTracking();
   
+  // Create checkpoints based on dialogue length - simulate conversation steps
+  const totalSteps = Math.max(scenario.dialogue.length / 2, 3); // At least 3 steps
+  
   const {
     sendMessage,
     isLoading,
@@ -62,8 +65,8 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
       
       setMessages(prev => [...prev, patientMessage]);
       
-      // Check if we've completed all steps
-      if (currentStep >= scenario.checkpoints.length - 1) {
+      // Check if we've completed enough conversation exchanges
+      if (currentStep >= totalSteps - 1) {
         setIsComplete(true);
         setShowConfidenceRating(true);
       } else {
@@ -86,7 +89,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     const introMessage: ConversationMessage = {
       id: 'intro',
       type: 'system',
-      content: `You are now speaking with ${scenario.patientProfile?.name || 'the patient'}. Begin the conversation.`,
+      content: `You are now in a ${scenario.title} scenario. Begin the conversation with the patient.`,
       timestamp: new Date()
     };
     setMessages([introMessage]);
@@ -177,7 +180,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             <div>
               <h1 className="font-semibold text-medical-800">{scenario.title}</h1>
               <p className="text-sm text-medical-600">
-                Step {currentStep + 1} of {scenario.checkpoints.length}
+                Step {currentStep + 1} of {totalSteps}
                 {isComplete && " - Complete!"}
               </p>
             </div>
@@ -200,7 +203,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           {!isComplete && (
             <Card className="p-4 bg-medical-50 border-medical-200">
               <h3 className="font-medium text-medical-800 mb-2">Current Objective:</h3>
-              <p className="text-medical-700">{scenario.checkpoints[currentStep]?.description}</p>
+              <p className="text-medical-700">{scenario.description}</p>
             </Card>
           )}
 
@@ -221,9 +224,9 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                         : 'bg-medical-100 text-medical-800 text-center italic'
                     }`}
                   >
-                    {message.type !== 'user' && message.type !== 'system' && (
+                    {message.type === 'patient' && (
                       <div className="text-xs font-medium mb-1 opacity-70">
-                        {scenario.patientProfile?.name || 'Patient'}
+                        Patient
                       </div>
                     )}
                     <div className="whitespace-pre-wrap">{message.content}</div>
@@ -241,8 +244,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           {!isComplete && (
             <ConversationInput
               onSendMessage={handleUserMessage}
-              isLoading={isLoading}
-              placeholder={`Respond to ${scenario.patientProfile?.name || 'the patient'}...`}
+              disabled={isLoading}
             />
           )}
 
@@ -254,7 +256,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                 Scenario Complete!
               </h3>
               <p className="text-green-700 mb-4">
-                You've successfully navigated through all conversation checkpoints.
+                You've successfully navigated through the conversation.
               </p>
             </Card>
           )}
