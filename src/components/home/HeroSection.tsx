@@ -92,11 +92,10 @@ const HeroSection = () => {
       <section className="container mx-auto mb-12 landing-mobile-section">
         {/* Free Trial CTA Banner */}
         <div className="mb-4 mx-auto max-w-sm bg-gradient-to-r from-medical-500 to-medical-600 text-white px-4 py-2 rounded-lg shadow-md">
-          <div className="flex items-center justify-center gap-2 text-sm font-medium">
+          <div className="flex items-center justify-center gap-2 text-base font-medium">
             <span>🚀</span>
-            <span>Try free trial!</span>
-            <Button asChild variant="ghost" size="sm" className="text-white hover:bg-white/20 h-auto py-1 px-2 ml-2">
-              <Link to="/trial">Start Now</Link>
+            <Button asChild variant="ghost" size="sm" className="text-white hover:bg-white/20 h-auto py-2 px-3">
+              <Link to="/trial">Start free trial exercise now</Link>
             </Button>
           </div>
         </div>
@@ -185,11 +184,10 @@ const HeroSection = () => {
     <section className="container mx-auto mb-12">
       {/* Free Trial CTA Banner */}
       <div className="mb-6 mx-auto max-w-md bg-gradient-to-r from-medical-500 to-medical-600 text-white px-6 py-3 rounded-lg shadow-md">
-        <div className="flex items-center justify-center gap-3 text-sm font-medium">
+        <div className="flex items-center justify-center gap-3 text-base font-medium">
           <span>🚀</span>
-          <span>Try free trial!</span>
-          <Button asChild variant="ghost" size="sm" className="text-white hover:bg-white/20 h-auto py-1 px-3 ml-3">
-            <Link to="/trial">Start Now</Link>
+          <Button asChild variant="ghost" size="sm" className="text-white hover:bg-white/20 h-auto py-2 px-4">
+            <Link to="/trial">Start free trial exercise now</Link>
           </Button>
         </div>
       </div>

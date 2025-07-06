@@ -30,13 +30,17 @@ const TrialScenarioContainer: React.FC<TrialScenarioContainerProps> = ({
     setCurrentScreen('completion');
   };
 
+  const handleExit = () => {
+    setCurrentScreen('completion');
+  };
+
   if (currentScreen === 'briefing') {
     return (
       <ScenarioBriefingScreen
         scenario={scenario}
         patientProfile={patientProfile}
         onBeginInteraction={handleBeginInteraction}
-        onExit={onExit}
+        onExit={handleExit}
       />
     );
   }
@@ -46,7 +50,7 @@ const TrialScenarioContainer: React.FC<TrialScenarioContainerProps> = ({
       <StreamlinedInteractionScreen
         scenario={scenario}
         onBack={handleBackToBriefing}
-        onExit={onExit}
+        onExit={handleExit}
         onComplete={handleInteractionComplete}
       />
     );
