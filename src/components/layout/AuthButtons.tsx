@@ -36,18 +36,16 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({
           <span>{translate("logout")}</span>
         </Button>
       ) : (
-        <>
-          {showAuthButtons && (
-            <Button 
-              variant="outline"
-              size="sm"
-              onClick={onLogin}
-              className="active:scale-95 transition-transform duration-150"
-            >
-              {translate("login")}
-            </Button>
-          )}
-        </>
+        showAuthButtons && (
+          <Button 
+            variant="outline"
+            size="sm"
+            onClick={onLogin}
+            className="active:scale-95 transition-transform duration-150"
+          >
+            {translate("login")}
+          </Button>
+        )
       )}
     </div>
   );

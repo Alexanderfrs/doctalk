@@ -18,6 +18,7 @@ import CheckpointTracker from "./CheckpointTracker";
 import ExitConfirmationDialog from "./ExitConfirmationDialog";
 import { PerformanceInsightsModal } from "./PerformanceInsightsModal";
 import TTSButton from "./TTSButton";
+import UILanguageSelector from "@/components/language/UILanguageSelector";
 
 interface Checkpoint {
   id: string;
@@ -734,6 +735,9 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
             </div>
           </div>
           <div className="flex items-center gap-3">
+            {/* Language Selector */}
+            <UILanguageSelector />
+            
             {/* Font Size Controls */}
             <div className="flex items-center gap-1 bg-medical-50 rounded-lg p-1">
               <Button

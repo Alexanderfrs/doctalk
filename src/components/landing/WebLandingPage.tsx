@@ -108,7 +108,7 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
     waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
   };
   return <div className="min-h-screen flex flex-col relative" {...swipeHandlers}>
-      <AppHeader onLogin={handleLogin} showSlogan={false} showAuthButtons={false} />
+      <AppHeader onLogin={handleLogin} showSlogan={false} showAuthButtons={true} />
       <SideNavigator sections={sections} />
       
       <main className="flex-grow pt-24">
