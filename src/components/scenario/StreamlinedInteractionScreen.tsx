@@ -37,6 +37,7 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
   const [isComplete, setIsComplete] = useState(false);
   const [showConfidenceRating, setShowConfidenceRating] = useState(false);
   const [isSubmittingConfidence, setIsSubmittingConfidence] = useState(false);
+  const [activeFeedback, setActiveFeedback] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const startTime = useRef<Date>(new Date());
   
@@ -50,12 +51,24 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     { description: "Conclude conversation and provide next steps" }
   ];
   
+  // Map scenario categories to valid types for the hook
+  const getValidScenarioType = (category: string) => {
+    switch (category) {
+      case 'teamwork':
+        return 'handover';
+      case 'documentation':
+        return 'patient-care';
+      default:
+        return category as 'patient-care' | 'emergency' | 'handover' | 'elderly-care' | 'disability-care';
+    }
+  };
+  
   const {
     generateUnifiedResponse,
     isLoading,
     error
   } = useUnifiedMedicalLLM({
-    scenarioType: scenario.category,
+    scenarioType: getValidScenarioType(scenario.category),
     onPatientResponse: (response) => {
       const patientMessage: ConversationMessage = {
         id: `patient-${Date.now()}`,
@@ -144,6 +157,10 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
     } finally {
       setIsSubmittingConfidence(false);
     }
+  };
+
+  const handleDismissFeedback = () => {
+    setActiveFeedback(null);
   };
 
   if (showConfidenceRating) {
@@ -238,7 +255,10 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
                     )}
                     <div className="whitespace-pre-wrap">{message.content}</div>
                     {message.feedback && (
-                      <FeedbackDisplay feedback={message.feedback} />
+                      <FeedbackDisplay 
+                        feedback={message.feedback} 
+                        onDismiss={handleDismissFeedback}
+                      />
                     )}
                   </div>
                 </div>
@@ -251,7 +271,6 @@ const StreamlinedInteractionScreen: React.FC<StreamlinedInteractionScreenProps> 
           {!isComplete && (
             <ConversationInput
               onSendMessage={handleUserMessage}
-              placeholder="Respond to the patient..."
             />
           )}
 
