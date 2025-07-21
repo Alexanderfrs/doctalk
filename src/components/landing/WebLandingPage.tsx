@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/layout/Footer";
 import AppHeader from "@/components/layout/AppHeader";
@@ -8,7 +8,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import HeroSection from "@/components/home/HeroSection";
 import TargetUsersSection from "@/components/landing/TargetUsersSection";
 import PricingSection from "@/components/landing/PricingSection";
-import ProblemSolutionSection from "@/components/landing/ProblemSolutionSection";
+import ProblemSection from "@/components/landing/ProblemSection";
+import SolutionSection from "@/components/landing/SolutionSection";
 import { LandingPageProps } from "@/types/landing";
 import { useSwipeable } from "react-swipeable";
 import waitlist from '@zootools/waitlist-js';
@@ -17,9 +18,9 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
   onLogin
 }) => {
   const navigate = useNavigate();
-  const {
-    translate
-  } = useLanguage();
+  const { translate } = useLanguage();
+  const [currentSection, setCurrentSection] = useState("hero");
+
   const handleLogin = () => {
     navigate('/login');
   };
@@ -30,12 +31,26 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
     id: "target-users",
     label: translate("whoItsFor")
   }, {
-    id: "problem-solution",
-    label: translate("whyDocTalk")
+    id: "problem",
+    label: translate("theProblem")
+  }, {
+    id: "solution",
+    label: translate("whyChooseDocTalk")
   }, {
     id: "pricing",
     label: translate("pricing")
   }];
+
+  // Simple scroll to section function
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
 
   // Add swipe gesture to navigate between sections on web
   const swipeHandlers = useSwipeable({
@@ -103,37 +118,70 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
     document.addEventListener('click', handleAnchorClick);
     return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
+
+  // Track current section based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroSection = document.getElementById('hero');
+      const targetUsersSection = document.getElementById('target-users');
+      
+      if (heroSection && targetUsersSection) {
+        const heroRect = heroSection.getBoundingClientRect();
+        const targetRect = targetUsersSection.getBoundingClientRect();
+        
+        // Show navigation only when hero section is prominently visible
+        // Hide navigation when target-users section starts coming into view
+        const showNavigation = heroRect.bottom > window.innerHeight * 0.3 && targetRect.top > window.innerHeight * 0.3;
+        setCurrentSection(showNavigation ? 'hero' : 'other');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial state
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   const handleWaitlistClick = (event: React.MouseEvent) => {
     event.preventDefault();
     waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
   };
-  return <div className="min-h-screen flex flex-col relative" {...swipeHandlers}>
-      <AppHeader onLogin={handleLogin} showSlogan={false} showAuthButtons={true} />
+    return <div className="h-screen overflow-y-auto" style={{scrollSnapType: 'y mandatory'}} {...swipeHandlers}>
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm">
+        <AppHeader onLogin={handleLogin} showSlogan={false} showAuthButtons={true} showLandingNavigation={currentSection === 'hero'} />
+      </div>
       <SideNavigator sections={sections} />
       
-      <main className="flex-grow pt-24">
-        <div id="hero">
-          <HeroSection />
-        </div>
+      <section id="hero" className="h-screen flex items-center justify-center" style={{scrollSnapAlign: 'start'}}>
+        <HeroSection />
+      </section>
 
-        <section id="target-users" className="py-16 px-4">
-          <div className="container mx-auto">
-            <TargetUsersSection />
-          </div>
-        </section>
-        
-        <section id="problem-solution">
-          <ProblemSolutionSection />
-        </section>
-        
-        <section id="pricing" className="py-16 bg-neutral-50 px-4">
-          <div className="container mx-auto">
-            <PricingSection />
-          </div>
-        </section>
-      </main>
+      <section id="target-users" className="h-screen flex items-center justify-center bg-neutral-50 pt-20" style={{scrollSnapAlign: 'start'}}>
+        <div className="container mx-auto px-4">
+          <TargetUsersSection />
+        </div>
+      </section>
       
-      <Footer />
+      <section id="problem" className="h-screen flex items-center justify-center pt-20" style={{scrollSnapAlign: 'start'}}>
+        <div className="container mx-auto px-4">
+          <ProblemSection />
+        </div>
+      </section>
+      
+      <section id="solution" className="h-screen flex items-center justify-center bg-neutral-50 pt-20" style={{scrollSnapAlign: 'start'}}>
+        <div className="container mx-auto px-4">
+          <SolutionSection />
+        </div>
+      </section>
+      
+      <section id="pricing" className="h-screen flex items-center justify-center pt-20" style={{scrollSnapAlign: 'start'}}>
+        <div className="container mx-auto px-4">
+          <PricingSection />
+        </div>
+      </section>
+      
+      {/* Footer section with its own snap point to allow staying there */}
+      <section id="footer" className="bg-medical-50 min-h-[400px] flex items-center justify-center" style={{scrollSnapAlign: 'start'}}>
+        <Footer />
+      </section>
     </div>;
 };
 export default WebLandingPage;

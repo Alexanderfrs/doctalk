@@ -5,6 +5,9 @@ import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import MobileOnboardingScreen from "@/components/mobile/MobileOnboardingScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import useScrollSnap from "@/hooks/useScrollSnap";
+import ScrollNavigation from "@/components/navigation/ScrollNavigation";
+import "@/styles/scroll-snap.css";
 import waitlist from '@zootools/waitlist-js';
 
 const MobileLandingPage: React.FC = () => {
@@ -16,22 +19,39 @@ const MobileLandingPage: React.FC = () => {
   // Check if we should return to onboarding
   const shouldReturnToOnboarding = location.state?.returnToOnboarding;
   
+  const sections = [
+    { id: "onboarding-1", label: "Screen 1" },
+    { id: "onboarding-2", label: "Screen 2" },
+    { id: "onboarding-3", label: "Screen 3" },
+    { id: "onboarding-4", label: "Screen 4" }
+  ];
+
+  const { currentSection, scrollToSection } = useScrollSnap(sections);
+  
+  useEffect(() => {
+    setCurrentSlide(currentSection);
+  }, [currentSection]);
+  
   useEffect(() => {
     if (shouldReturnToOnboarding) {
-      setCurrentSlide(0); // Reset to first slide
+      setCurrentSlide(0);
+      scrollToSection(0);
       // Clear the state to prevent issues on future navigation
       navigate("/", { replace: true, state: {} });
     }
-  }, [shouldReturnToOnboarding, navigate]);
+  }, [shouldReturnToOnboarding, navigate, scrollToSection]);
 
   const { isAuthenticated } = useAuth();
 
   const handleSwipe = (index: number) => {
     setCurrentSlide(index);
+    scrollToSection(index);
   };
 
   const handleNext = () => {
-    setCurrentSlide((prevSlide) => Math.min(prevSlide + 1, 3));
+    const nextSlide = Math.min(currentSlide + 1, 3);
+    setCurrentSlide(nextSlide);
+    scrollToSection(nextSlide);
   };
 
   const handleSkip = () => {
@@ -45,43 +65,61 @@ const MobileLandingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-medical-50 to-white">
-      <SwipeableContainer
-        onSwipe={handleSwipe}
-        initialIndex={currentSlide}
-        showIndicators={true}
-        className="h-screen"
-      >
-        <MobileOnboardingScreen
-          screenNumber={1}
-          onNext={handleNext}
-          onSkip={handleSkip}
-          onStart={handleStart}
-          currentIndex={currentSlide}
-        />
-        <MobileOnboardingScreen
-          screenNumber={2}
-          onNext={handleNext}
-          onSkip={handleSkip}
-          onStart={handleStart}
-          currentIndex={currentSlide}
-        />
-        <MobileOnboardingScreen
-          screenNumber={3}
-          onNext={handleNext}
-          onSkip={handleSkip}
-          onStart={handleStart}
-          currentIndex={currentSlide}
-        />
-        <MobileOnboardingScreen
-          screenNumber={4}
-          onNext={handleNext}
-          onSkip={handleSkip}
-          onStart={handleStart}
-          currentIndex={currentSlide}
-          isLast={true}
-        />
-      </SwipeableContainer>
+    <div className="scroll-snap-container bg-gradient-to-b from-medical-50 to-white">
+      <ScrollNavigation 
+        sections={sections}
+        currentSection={currentSection}
+        onSectionClick={scrollToSection}
+      />
+      
+      <section id="onboarding-1" className="scroll-snap-section">
+        <div className="section-content">
+          <MobileOnboardingScreen
+            screenNumber={1}
+            onNext={handleNext}
+            onSkip={handleSkip}
+            onStart={handleStart}
+            currentIndex={currentSlide}
+          />
+        </div>
+      </section>
+      
+      <section id="onboarding-2" className="scroll-snap-section">
+        <div className="section-content">
+          <MobileOnboardingScreen
+            screenNumber={2}
+            onNext={handleNext}
+            onSkip={handleSkip}
+            onStart={handleStart}
+            currentIndex={currentSlide}
+          />
+        </div>
+      </section>
+      
+      <section id="onboarding-3" className="scroll-snap-section">
+        <div className="section-content">
+          <MobileOnboardingScreen
+            screenNumber={3}
+            onNext={handleNext}
+            onSkip={handleSkip}
+            onStart={handleStart}
+            currentIndex={currentSlide}
+          />
+        </div>
+      </section>
+      
+      <section id="onboarding-4" className="scroll-snap-section">
+        <div className="section-content">
+          <MobileOnboardingScreen
+            screenNumber={4}
+            onNext={handleNext}
+            onSkip={handleSkip}
+            onStart={handleStart}
+            currentIndex={currentSlide}
+            isLast={true}
+          />
+        </div>
+      </section>
     </div>
   );
 };

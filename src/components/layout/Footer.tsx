@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
   const { translate } = useLanguage();
   
   return (
-    <footer className="bg-medical-50 pt-12 pb-8 px-4 md:px-0 mt-auto">
+    <footer className="pt-12 pb-8 px-4 md:px-0 mt-auto">
       <div className="container mx-auto">
         <div className="flex flex-col items-center text-center">
           <div className="mb-4">
@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
           </p>
           <div className="flex items-center mt-4 text-sm text-neutral-500">
             <Heart className="h-4 w-4 text-medical-400 mr-1" />
-            <span>Made with love by a former nurse, health specialist, and cognitive psychologist</span>
+            <span>Made with love by a nurse and a psychologist</span>
           </div>
           <div className="flex items-center gap-6 mt-4">
             <a

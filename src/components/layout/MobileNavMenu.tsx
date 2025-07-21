@@ -21,6 +21,7 @@ interface MobileNavMenuProps {
   handleLogout: () => void;
   onClose: () => void;
   showAuthButtons?: boolean;
+  showLandingNavigation?: boolean;
 }
 
 const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
@@ -31,7 +32,8 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
   handleRegister,
   handleLogout,
   onClose,
-  showAuthButtons = true
+  showAuthButtons = true,
+  showLandingNavigation = true
 }) => {
   const { translate } = useLanguage();
   const [animateOut, setAnimateOut] = useState(false);
@@ -79,19 +81,32 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
       </div>
       
       <div className="flex flex-col p-4">
-        <nav className="space-y-1 mb-6">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className="flex items-center px-4 py-3 text-base text-neutral-700 hover:bg-neutral-100 active:bg-neutral-200 rounded-md transition-colors duration-150"
-              onClick={onClose}
-            >
-              <span className="mr-3">{item.icon}</span>
-              <span>{item.label}</span>
-            </Link>
-          ))}
-        </nav>
+        {(isAuthenticated || showLandingNavigation) && (
+          <nav className="space-y-1 mb-6">
+            {navItems.map((item) => (
+              isAuthenticated ? (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="flex items-center px-4 py-3 text-base text-neutral-700 hover:bg-neutral-100 active:bg-neutral-200 rounded-md transition-colors duration-150"
+                  onClick={onClose}
+                >
+                  <span className="mr-3">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              ) : (
+                <a
+                  key={item.path}
+                  href={item.path}
+                  className="flex items-center px-4 py-3 text-base text-neutral-700 hover:bg-neutral-100 active:bg-neutral-200 rounded-md transition-colors duration-150"
+                  onClick={onClose}
+                >
+                  <span>{item.label}</span>
+                </a>
+              )
+            ))}
+          </nav>
+        )}
 
         <div className="flex flex-col space-y-3 mt-4">
           {isAuthenticated ? (

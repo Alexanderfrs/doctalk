@@ -68,28 +68,28 @@ export const englishTranslations = {
   // B2C Problems
   problemHighCosts: "Prohibitive Training Costs",
   problemHighCostsDesc: "Traditional medical German courses cost €500-2,000, putting quality training out of reach for many professionals.",
-  // problemHighCostsStat: "€3,000-8,000 per course",
+  problemHighCostsStat: "€500-2,000 per course",
   
   problemTimeConstraints: "Critical Communication Gaps",
   problemTimeConstraintsDesc: "Healthcare demands fast, accurate communication—misunderstandings in high-stress settings risk patient safety.",
-  // problemTimeConstraintsStat: "Miscommunication costs lives",
+  problemTimeConstraintsStat: "Miscommunication costs lives",
   
   problemGenericSolutions: "Generic Language Solutions",
   problemGenericSolutionsDesc: "General language apps lack medical context, while tutors often don't understand healthcare-specific communication needs.",
-  // problemGenericSolutionsStat: "Limited medical context",
+  problemGenericSolutionsStat: "Limited medical context",
   
   // B2B Problems
   problemStaffTurnover: "High Staff Turnover Costs",
   problemStaffTurnoverDesc: "Replacing international healthcare staff costs €50,000+ per person due to recruitment, training, and productivity losses.",
-  // problemStaffTurnoverStat: "€50,000+ replacement cost",
+  problemStaffTurnoverStat: "€50,000+ replacement cost",
   
-  // problemExtendedOnboarding: "Extended Integration Periods",
+  problemExtendedOnboarding: "Extended Integration Periods",
   problemExtendedOnboardingDesc: "International staff require 6-12 months to become fully productive, creating resource strain and reduced efficiency.",
   problemExtendedOnboardingStat: "6-12 months integration time",
   
   problemPatientSafety: "Patient Safety Risks",
   problemPatientSafetyDesc: "Communication barriers between international staff and patients/colleagues create safety risks and liability concerns.",
-  // problemPatientSafetyStat: "Communication errors affect patient outcomes",
+  problemPatientSafetyStat: "Communication errors affect patient outcomes",
   
   theSolution: "The Solution",
   revolutionaryApproachToMedicalGerman: "A Revolutionary Approach to Learning Medical German",
@@ -98,28 +98,28 @@ export const englishTranslations = {
   // B2C Solutions
   solutionAffordable: "Radically Affordable & Flexible",
   solutionAffordableDesc: "Medical German training at a fraction of tutor costs—learn at your pace with bite-sized, personalized lessons in a safe environment.",
-  // solutionAffordableHighlight: "Flexible & cost-effective",
+  solutionAffordableHighlight: "Flexible & cost-effective",
   
   solutionFlexible: "Dialog-First Learning Innovation",
-  solutionFlexibleDesc: "Master German through realistic practice scenarios designed specifically for healthcare environments, leading to faster language mastery than traditional methods.",
-  // solutionFlexibleHighlight: "Real-world readiness training",
+  solutionFlexibleDesc: "Master German through realistic healthcare practice scenarios, achieving faster language mastery than traditional methods.",
+  solutionFlexibleHighlight: "Real-world readiness training",
   
-  solutionSpecialized: "Medicine-Focused with Certification Prep",
-  solutionSpecializedDesc: "Designed for healthcare professionals by medical and language experts, with upcoming Anerkennung and FSP certification preparation support.",
-  // solutionSpecializedHighlight: "Expert-developed + certification prep",
+  solutionSpecialized: "Medicine-Focused with Certification",
+  solutionSpecializedDesc: "Designed for healthcare professionals by medical experts, with upcoming Anerkennung and FSP certification preparation support.",
+  solutionSpecializedHighlight: "Expert-developed + certification prep",
   
   // B2B Solutions
   solutionScalable: "Scalable Team Training",
   solutionScalableDesc: "Deploy medical German training across your entire international team with centralized management, progress tracking, and reporting.",
-  // solutionScalableHighlight: "Team-wide deployment & tracking",
+  solutionScalableHighlight: "Team-wide deployment & tracking",
   
   solutionReducedTurnover: "Reduced Turnover & Faster Integration",
   solutionReducedTurnoverDesc: "Accelerate staff integration from 6-12 months to 3-6 months while improving job satisfaction and reducing turnover rates.",
-  // solutionReducedTurnoverHighlight: "50% faster integration",
+  solutionReducedTurnoverHighlight: "50% faster integration",
   
   solutionComplianceReporting: "Compliance & Reporting",
   solutionComplianceReportingDesc: "Meet regulatory requirements with progress reports, certification tracking, and compliance documentation for healthcare authorities.",
-  // solutionComplianceReportingHighlight: "Full compliance support",
+  solutionComplianceReportingHighlight: "Full compliance support",
   
   readyToTransformYourCareer: "Ready to Transform Your Medical Career in Germany?",
   readyToTransformYourOrganization: "Ready to Transform Your Healthcare Organization?",

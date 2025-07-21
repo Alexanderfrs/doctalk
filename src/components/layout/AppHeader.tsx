@@ -16,13 +16,15 @@ interface AppHeaderProps {
   onLogout?: () => void;
   showSlogan?: boolean;
   showAuthButtons?: boolean;
+  showLandingNavigation?: boolean;
 }
 
 const AppHeader: React.FC<AppHeaderProps> = ({ 
   onLogin, 
   onLogout, 
   showSlogan = false,
-  showAuthButtons = true
+  showAuthButtons = true,
+  showLandingNavigation = true
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -168,17 +170,19 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           <AppLogo path={logoPath} showSlogan={showSlogan} size="large" />
 
           {/* Desktop Navigation for non-authenticated users */}
-          <nav className="hidden md:flex space-x-1">
-            {navItems.map((item) => (
-              <a
-                key={item.path}
-                href={item.path}
-                className="flex items-center px-4 py-2 rounded-lg transition-colors text-neutral-600 hover:bg-neutral-100"
-              >
-                <span>{item.label}</span>
-              </a>
-            ))}
-          </nav>
+          {showLandingNavigation && (
+            <nav className="hidden md:flex space-x-1">
+              {navItems.map((item) => (
+                <a
+                  key={item.path}
+                  href={item.path}
+                  className="flex items-center px-4 py-2 rounded-lg transition-colors text-neutral-600 hover:bg-neutral-100"
+                >
+                  <span>{item.label}</span>
+                </a>
+              ))}
+            </nav>
+          )}
 
           {/* Language selector and Auth buttons */}
           <AuthButtons 
@@ -214,6 +218,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
         handleLogout={handleLogout}
         onClose={() => setIsMobileMenuOpen(false)}
         showAuthButtons={showAuthButtons}
+        showLandingNavigation={showLandingNavigation}
       />
     </header>
   );
