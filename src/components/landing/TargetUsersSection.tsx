@@ -76,6 +76,23 @@ const TargetUsersSection = () => {
             : translate("doctalkDesignedFor")
           }
         </p>
+        
+        {/* Language Support Badge */}
+        {viewMode !== 'enterprise' && (
+          <div className="mt-6 flex items-center justify-center">
+            <div className="flex items-center gap-3 px-4 py-2 bg-medical-50 rounded-full border border-medical-100">
+              <span className="text-sm text-neutral-600 font-medium">{translate('languageSupport.availableIn')}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-lg">🇺🇦</span>
+                <span className="text-lg">🇷🇺</span>
+                <span className="text-lg">🇹🇷</span>
+                <span className="text-lg">🇪🇸</span>
+                <span className="text-lg">🇷🇴</span>
+                <span className="text-lg">🇵🇱</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
