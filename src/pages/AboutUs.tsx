@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -77,8 +77,17 @@ const AboutUs = () => {
                     <span className="text-4xl font-bold text-medical-600">VK</span>
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-neutral-800 mb-3">
+                <h3 className="text-2xl font-bold text-neutral-800 mb-3 flex items-center justify-center gap-3">
                   Vlada Kolisnyk
+                  <a 
+                    href="https://www.linkedin.com/in/vlada-kolisnyk-882b80262/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors"
+                    aria-label="Vlada Kolisnyk LinkedIn Profile"
+                  >
+                    <Linkedin className="h-4 w-4" />
+                  </a>
                 </h3>
                 <p className="text-medical-600 font-semibold text-lg mb-6">
                   {translate('aboutUs.vladaTitle')}
@@ -108,8 +117,17 @@ const AboutUs = () => {
                     <span className="text-4xl font-bold text-medical-600">AF</span>
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-neutral-800 mb-3">
+                <h3 className="text-2xl font-bold text-neutral-800 mb-3 flex items-center justify-center gap-3">
                   Alexander Fries
+                  <a 
+                    href="https://www.linkedin.com/in/alex-fries/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors"
+                    aria-label="Alexander Fries LinkedIn Profile"
+                  >
+                    <Linkedin className="h-4 w-4" />
+                  </a>
                 </h3>
                 <p className="text-medical-600 font-semibold text-lg mb-6">
                   {translate('aboutUs.alexTitle')}
