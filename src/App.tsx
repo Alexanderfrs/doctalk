@@ -22,6 +22,7 @@ import BrandBanner from "./components/brand/BrandBanner";
 import Onboarding from "./pages/Onboarding";
 import Index from "./pages/Index";
 import TrialPage from "./pages/TrialPage";
+import AboutUs from "./pages/AboutUs";
 import TutorialOverlay from "./components/tutorial/TutorialOverlay";
 import "./styles/mobile.css";
 
@@ -140,6 +141,9 @@ const App = () => {
                     
                     {/* Trial route - accessible without authentication */}
                     <Route path="/trial" element={<TrialPage />} />
+                    
+                    {/* About Us route - accessible without authentication */}
+                    <Route path="/about" element={<AboutUs />} />
                     
                     {/* Protected routes that require onboarding */}
                     <Route 

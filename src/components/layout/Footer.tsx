@@ -30,6 +30,14 @@ const Footer: React.FC = () => {
             <Heart className="h-4 w-4 text-medical-400 mr-1" />
             <span>Made with love by a nurse and a psychologist</span>
           </div>
+          <div className="mt-2">
+            <Link 
+              to="/about" 
+              className="text-sm text-medical-600 hover:text-medical-700 transition-colors underline"
+            >
+              About Us
+            </Link>
+          </div>
           <div className="flex items-center gap-6 mt-4">
             <a
               href="mailto:Doctalk.ai@gmail.com"
