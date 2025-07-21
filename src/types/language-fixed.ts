@@ -12,7 +12,7 @@ export interface GermanDialect {
 }
 
 export const supportedLanguages: Language[] = [
-  { code: 'de', name: 'German', nativeName: 'DE', flag: 'DE' },
+  { code: 'de', name: 'German', nativeName: 'Deutsch', flag: '🇩🇪' },
   { code: 'en', name: 'English', nativeName: 'EN', flag: 'EN' }
 ];
 

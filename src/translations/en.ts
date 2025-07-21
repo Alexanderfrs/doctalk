@@ -226,5 +226,23 @@ export const englishTranslations = {
   'mobileOnboarding.screen3.description': "Learn the language used on the ward",
   'mobileOnboarding.screen4.title': "Voice & Role-playing",
   'mobileOnboarding.screen4.subtitle': "Speak and Listen to Real Medical Dialogue with AI",
-  'mobileOnboarding.screen4.description': "Practice Real-World Conversations"
+  'mobileOnboarding.screen4.description': "Practice Real-World Conversations",
+
+  // About Us page translations
+  'aboutUs.backToHome': 'Back to Home',
+  'aboutUs.ourStory': 'Our Story',
+  'aboutUs.subtitle': 'Built by people who\'ve lived the problem.',
+  'aboutUs.description1': 'DocTalk was born from a simple realization: international medical professionals need practical language training, not classroom theory.',
+  'aboutUs.description2': 'We\'ve combined real healthcare experience with advanced AI to create the first app that truly understands the pressure-filled environment where accurate and confident medical communication matters most.',
+  'aboutUs.vladaTitle': 'Co-Founder • Product & Medical Expert',
+  'aboutUs.vladaDescription': 'After moving from Ukraine to nurse in Germany, Vlada faced language barriers, cultural adaptation, and complex healthcare bureaucracy. Her mission: help international professionals overcome these challenges and communicate confidently—so no one struggles alone.',
+  'aboutUs.alexTitle': 'Co-Founder • Tech & Education Specialist',
+  'aboutUs.alexDescription': 'Cognitive scientist and AI engineer specializing in language learning and adaptive systems. Alex is passionate about empowering healthcare professionals to communicate confidently through cutting-edge technology.',
+  'aboutUs.ctaTitle': 'Ready to Transform Your Medical Communication?',
+  'aboutUs.ctaSubtitle': 'Become part of the healthcare workforce on its fast track to career success.',
+  'aboutUs.ctaButton': 'Start Your Journey with DocTalk',
+
+  // Language availability
+  'languageSupport.availableIn': 'Available in:',
+  'languageSupport.learnInNative': 'Learn Medical German in your native language'
 };

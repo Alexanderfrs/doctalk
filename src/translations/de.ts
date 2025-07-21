@@ -111,13 +111,13 @@ export const germanTranslations = {
   theProblem: "Das Problem",
   challengesFacingHealthcareProfessionals: "Herausforderungen für Gesundheitsfachkräfte",
   problemHighCosts: "Prohibitive Ausbildungskosten",
-  problemHighCostsDesc: "Traditionelle medizinische Deutschkurse kosten €3.000-8.000 und machen qualitativ hochwertige Ausbildung für viele Fachkräfte unerschwinglich.",
-  problemHighCostsStat: "€3.000-8.000 pro Kurs",
+  problemHighCostsDesc: "Traditionelle medizinische Deutschkurse kosten €500-2,000 und sind für viele Fachkräfte unerschwinglich.",
+  problemHighCostsStat: "€500-2,000 pro Kurs",
   problemTimeConstraints: "Kritische Kommunikationslücken",
-  problemTimeConstraintsDesc: "Das Gesundheitswesen braucht schnelle, präzise Kommunikation mit verschiedenen Patienten, Kollegen und Dialekten—Missverständnisse in stressigen Situationen gefährden Patientensicherheit und Ergebnisse.",
-  problemTimeConstraintsStat: "Kommunikationsfehler kosten Leben",
+  problemTimeConstraintsDesc: "Das Gesundheitswesen erfordert schnelle, präzise Kommunikation – Missverständnisse in Stresssituationen gefährden die Patientensicherheit.",
+  problemTimeConstraintsStat: "Missverständnisse kosten Leben",
   problemGenericSolutions: "Allgemeine Sprachlösungen",
-  problemGenericSolutionsDesc: "Allgemeine Sprach-Apps fehlen medizinischer Kontext, während Tutoren oft die spezifischen Kommunikationsbedürfnisse im Gesundheitswesen nicht verstehen.",
+  problemGenericSolutionsDesc: "Allgemeine Sprach-Apps fehlt der medizinische Kontext, während Tutoren oft nicht die spezifischen Kommunikationsbedürfnisse im Gesundheitswesen verstehen.",
   problemGenericSolutionsStat: "Begrenzter medizinischer Kontext",
   problemIntegrationChallenges: "Integrations-Herausforderungen",
   problemIntegrationChallengesDesc: "Kulturelle Arbeitsplatznormen, medizinische Hierarchien und bürokratische Prozesse schaffen zusätzliche Barrieren über die Sprache hinaus.",
@@ -142,7 +142,7 @@ export const germanTranslations = {
   
   // B2C Target Users
   tailoredForMedicalCareer: "Maßgeschneidert für jeden Schritt Ihrer medizinischen Laufbahn",
-  doctalkDesignedFor: "DocTalk ist darauf ausgelegt, die spezifischen Sprachbedürfnisse verschiedener Gesundheitsfachkräfte zu erfüllen und Ihnen zu helfen, selbstbewusst und präzise zu kommunizieren.",
+  doctalkDesignedFor: "DocTalk erfüllt die spezifischen Sprachbedürfnisse verschiedener Gesundheitsfachkräfte und ermöglicht, selbstbewusst und präzise zu kommunizieren",
   forCareWorkersTitle: "Für Pflegekräfte",
   forCareWorkersDescription: "Grundlegende Kommunikation für außergewöhnliche Pflege und schnelle Integration in Ihr deutsches Team.",
   forDoctorsTitle: "Für Ärzte",
@@ -295,4 +295,22 @@ export const germanTranslations = {
   'scenario.doctor': 'Arzt',
   'scenario.colleague': 'Kollege',
   'scenario.you': 'Sie',
+
+  // About Us page translations
+  'aboutUs.backToHome': 'Zurück zur Startseite',
+  'aboutUs.ourStory': 'Unsere Geschichte',
+  'aboutUs.subtitle': 'Entwickelt von Menschen, die das Problem erlebt haben.',
+  'aboutUs.description1': 'DocTalk entstand aus einer Erkenntnis: Internationale Mediziner brauchen praktisches Sprachtraining, keine Schulbuchtheorie.',
+  'aboutUs.description2': 'Wir haben medizinische Erfahrung mit KI kombiniert, um die erste App zu schaffen, die das stressige Umfeld versteht, in dem präzise, akkurate, und schnelle Kommunikation entscheidend ist.',
+  'aboutUs.vladaTitle': 'Mitgründerin • Produkt & Medizin Expertin',
+  'aboutUs.vladaDescription': 'Nach ihrem Umzug aus der Ukraine, um in Deutschland als Krankenschwester zu arbeiten, erlebte Vlada Sprachbarrieren und komplexe Gesundheitsbürokratie. Ihre Mission: Internationalen Fachkräften helfen, diese Herausforderungen zu überwinden—damit niemand alleine kämpfen muss.',
+  'aboutUs.alexTitle': 'Mitgründer • Technik & Bildungs Spezialist',
+  'aboutUs.alexDescription': 'Alex ist Kognitionswissenschaftler und KI-Ingenieur für Spracherwerb und adaptive Lernsysteme. Er möchte Gesundheitsfachkräfte durch innovative Bildungstechnologie zu selbstbewusstem Kommunizieren und schneller Integration in den Arbeitsalltag befähigen.',
+  'aboutUs.ctaTitle': 'Bereit, Ihre medizinische Kommunikation zu transformieren?',
+  'aboutUs.ctaSubtitle': 'Werden Sie Teil der Gesundheitsfachkräfte auf dem Weg zum beruflichen Erfolg.',
+  'aboutUs.ctaButton': 'Starten Sie Ihre Reise mit DocTalk',
+
+  // Language availability
+  'languageSupport.availableIn': 'Verfügbar in:',
+  'languageSupport.learnInNative': 'Lernen Sie Medizinisches Deutsch in Ihrer Muttersprache'
 };
