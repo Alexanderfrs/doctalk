@@ -1,6 +1,7 @@
-/* Full-page scroll snap styles */
+
+/* Improved scroll snap styles with smoother behavior */
 .scroll-snap-container {
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity; /* Changed from mandatory to proximity for smoother behavior */
   overflow-y: auto;
   overflow-x: hidden;
   height: 100vh;
@@ -8,8 +9,8 @@
   position: relative;
 }
 
-/* Disable scroll snap on mobile to prevent conflicts with touch */
-@media (max-width: 768px) {
+/* Disable scroll snap on mobile and tablets to prevent conflicts */
+@media (max-width: 1024px) {
   .scroll-snap-container {
     scroll-snap-type: none;
   }
@@ -17,7 +18,7 @@
 
 .scroll-snap-section {
   scroll-snap-align: start;
-  scroll-snap-stop: always;
+  scroll-snap-stop: normal; /* Changed from always for smoother transitions */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -26,38 +27,63 @@
               transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Intersection observer animation classes */
+/* Special handling for pricing section to prevent overlap */
+.pricing-section {
+  min-height: auto; /* Remove rigid height constraint */
+  padding: 2rem 0;
+}
+
+@media (min-height: 900px) {
+  .pricing-section {
+    min-height: 100vh;
+  }
+}
+
+/* Intersection observer animation classes with improved transitions */
 .section-entering {
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .section-visible {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .section-exiting {
-  opacity: 0.3;
-  transform: translateY(-20px);
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.4;
+  transform: translateY(-15px);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Smooth scroll for webkit browsers */
+/* Smoother scrollbar for webkit browsers */
 .scroll-snap-container::-webkit-scrollbar {
-  width: 0px;
+  width: 4px;
   background: transparent;
+}
+
+.scroll-snap-container::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+
+.scroll-snap-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
 }
 
 /* Hide scrollbar for Firefox */
 .scroll-snap-container {
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
 }
 
-/* Navigation dots */
+/* Improved navigation dots with better contrast */
 .scroll-nav-dots {
   position: fixed;
   right: 2rem;
@@ -73,12 +99,13 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  border: 2px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.8);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(10px);
   position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .scroll-nav-dot::before {
@@ -87,16 +114,17 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: transparent;
   transition: all 0.3s ease;
 }
 
 .scroll-nav-dot:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.8);
   transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .scroll-nav-dot:hover::before {
@@ -107,28 +135,17 @@
   background: #3b82f6;
   border-color: #3b82f6;
   transform: scale(1.3);
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Mobile adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .scroll-nav-dots {
-    right: 1rem;
-    gap: 0.75rem;
-  }
-  
-  .scroll-nav-dot {
-    width: 10px;
-    height: 10px;
-  }
-  
-  .scroll-nav-dot::before {
-    width: 16px;
-    height: 16px;
+    display: none; /* Hide on mobile/tablet */
   }
 }
 
-/* Header adjustments for full-screen sections */
+/* Header adjustments with improved transparency */
 .fixed-header {
   position: fixed;
   top: 0;
@@ -136,31 +153,30 @@
   right: 0;
   z-index: 1000;
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(20px);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .fixed-header.transparent {
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(30px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Section content centering */
+/* Improved section content centering with flexible height */
 .section-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 6rem 2rem 2rem; /* Added top padding for fixed header */
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 80px); /* Account for header */
   box-sizing: border-box;
-  overflow-y: auto; /* Allow scrolling within section if needed */
 }
 
 /* Ensure proper spacing in sections */
@@ -172,17 +188,16 @@
 /* Responsive adjustments for smaller screens */
 @media (max-height: 800px) {
   .section-content {
-    padding: 1rem;
+    padding: 5rem 1rem 1rem;
     justify-content: flex-start;
-    padding-top: 6rem; /* Account for fixed header */
+    min-height: calc(100vh - 80px);
   }
 }
 
 @media (max-height: 600px) {
   .section-content {
     min-height: auto;
-    padding: 0.5rem;
-    padding-top: 5rem;
+    padding: 4rem 1rem 1rem;
   }
 }
 

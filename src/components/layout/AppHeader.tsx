@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -87,10 +86,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({
       >
         <div className="container mx-auto">
           <div className="flex items-center justify-between">
-            {/* Logo */}
             <AppLogo path={logoPath} showSlogan={showSlogan} size="large" />
 
-            {/* Desktop Navigation for authenticated users */}
             <nav className="hidden md:flex space-x-1">
               {navItems.map((item) => (
                 <Link
@@ -109,7 +106,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
               ))}
             </nav>
 
-            {/* Language selector and Auth buttons */}
             <AuthButtons 
               isAuthenticated={isAuthenticated} 
               onLogin={handleLogin}
@@ -118,7 +114,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
               showAuthButtons={showAuthButtons}
             />
 
-            {/* Mobile menu button */}
             <div className="md:hidden flex items-center space-x-2">
               <UILanguageSelector />
               <Button
@@ -133,7 +128,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         <MobileNavMenu 
           isOpen={isMobileMenuOpen}
           navItems={navItems}
@@ -148,35 +142,33 @@ const AppHeader: React.FC<AppHeaderProps> = ({
     );
   }
 
-  // For non-authenticated users, show basic navigation
+  // For non-authenticated users, show basic navigation with FIXED navigation links
   const navItems = [
     { path: "/#target-users", label: translate("whoItsFor"), icon: null },
-    { path: "/#problem-solution", label: translate("whyDocTalk"), icon: null },
+    { path: "/#solution", label: translate("whyChooseDocTalk"), icon: null },
     { path: "/#pricing", label: translate("pricing"), icon: null },
   ];
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 px-4 md:px-8", 
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4 px-4 md:px-8", 
         isScrolled 
-          ? "bg-white/90 backdrop-blur-md shadow-sm" 
+          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-white/20" 
           : "bg-transparent"
       )}
     >
       <div className="container mx-auto">
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <AppLogo path={logoPath} showSlogan={showSlogan} size="large" />
 
-          {/* Desktop Navigation for non-authenticated users */}
           {showLandingNavigation && (
             <nav className="hidden md:flex space-x-1">
               {navItems.map((item) => (
                 <a
                   key={item.path}
                   href={item.path}
-                  className="flex items-center px-4 py-2 rounded-lg transition-colors text-neutral-600 hover:bg-neutral-100"
+                  className="flex items-center px-4 py-2 rounded-lg transition-all duration-200 text-neutral-600 hover:bg-neutral-100 hover:text-neutral-800"
                 >
                   <span>{item.label}</span>
                 </a>
@@ -184,7 +176,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
             </nav>
           )}
 
-          {/* Language selector and Auth buttons */}
           <AuthButtons 
             isAuthenticated={isAuthenticated} 
             onLogin={handleLogin}
@@ -193,7 +184,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
             showAuthButtons={showAuthButtons}
           />
 
-          {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
             <UILanguageSelector />
             <Button
@@ -208,7 +198,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       <MobileNavMenu 
         isOpen={isMobileMenuOpen}
         navItems={navItems}

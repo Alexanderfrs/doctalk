@@ -24,6 +24,7 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
   const handleLogin = () => {
     navigate('/login');
   };
+  
   const sections = [{
     id: "hero",
     label: translate("home")
@@ -41,7 +42,7 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
     label: translate("pricing")
   }];
 
-  // Simple scroll to section function
+  // Improved scroll to section function with better smoothness
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -52,20 +53,15 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
     }
   };
 
-  // Add swipe gesture to navigate between sections on web
+  // Enhanced swipe gesture handling with debouncing
   const swipeHandlers = useSwipeable({
     onSwipedUp: eventData => {
       const currentSection = window.location.hash.replace('#', '') || 'hero';
       const currentIndex = sections.findIndex(s => s.id === currentSection);
       if (currentIndex < sections.length - 1) {
         const nextSection = sections[currentIndex + 1];
-        const element = document.getElementById(nextSection.id);
-        if (element) {
-          element.scrollIntoView({
-            behavior: 'smooth'
-          });
-          window.history.pushState(null, '', `#${nextSection.id}`);
-        }
+        scrollToSection(nextSection.id);
+        window.history.pushState(null, '', `#${nextSection.id}`);
       }
     },
     onSwipedDown: eventData => {
@@ -73,13 +69,8 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
       const currentIndex = sections.findIndex(s => s.id === currentSection);
       if (currentIndex > 0) {
         const prevSection = sections[currentIndex - 1];
-        const element = document.getElementById(prevSection.id);
-        if (element) {
-          element.scrollIntoView({
-            behavior: 'smooth'
-          });
-          window.history.pushState(null, '', `#${prevSection.id}`);
-        }
+        scrollToSection(prevSection.id);
+        window.history.pushState(null, '', `#${prevSection.id}`);
       }
     },
     trackTouch: true,
@@ -87,101 +78,115 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
     delta: 100
   });
 
-  // Handle anchor links for navigation
+  // Handle anchor links for navigation with improved reliability
   useEffect(() => {
     if (window.location.hash) {
       const id = window.location.hash.replace('#', '');
       const element = document.getElementById(id);
       if (element) {
-        element.scrollIntoView({
-          behavior: 'smooth'
-        });
+        setTimeout(() => {
+          element.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }, 100);
       }
     }
+    
     const handleAnchorClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const anchor = target.closest('a[href^="#"]');
       if (anchor) {
         event.preventDefault();
-        const id = anchor.getAttribute('href')?.replace('#', '');
-        if (id) {
-          const element = document.getElementById(id);
-          if (element) {
-            element.scrollIntoView({
-              behavior: 'smooth'
-            });
-            window.history.pushState(null, '', `#${id}`);
-          }
+        const href = anchor.getAttribute('href');
+        if (href) {
+          const id = href.replace('#', '');
+          scrollToSection(id);
+          window.history.pushState(null, '', href);
         }
       }
     };
+    
     document.addEventListener('click', handleAnchorClick);
     return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
 
-  // Track current section based on scroll position
+  // Improved section tracking with debouncing
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
     const handleScroll = () => {
-      const heroSection = document.getElementById('hero');
-      const targetUsersSection = document.getElementById('target-users');
-      
-      if (heroSection && targetUsersSection) {
-        const heroRect = heroSection.getBoundingClientRect();
-        const targetRect = targetUsersSection.getBoundingClientRect();
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        const heroSection = document.getElementById('hero');
+        const targetUsersSection = document.getElementById('target-users');
         
-        // Show navigation only when hero section is prominently visible
-        // Hide navigation when target-users section starts coming into view
-        const showNavigation = heroRect.bottom > window.innerHeight * 0.3 && targetRect.top > window.innerHeight * 0.3;
-        setCurrentSection(showNavigation ? 'hero' : 'other');
-      }
+        if (heroSection && targetUsersSection) {
+          const heroRect = heroSection.getBoundingClientRect();
+          const targetRect = targetUsersSection.getBoundingClientRect();
+          
+          const showNavigation = heroRect.bottom > window.innerHeight * 0.3 && targetRect.top > window.innerHeight * 0.3;
+          setCurrentSection(showNavigation ? 'hero' : 'other');
+        }
+      }, 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check initial state
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timeoutId);
+    };
   }, []);
+
   const handleWaitlistClick = (event: React.MouseEvent) => {
     event.preventDefault();
     waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
   };
-    return <div className="h-screen overflow-y-auto" style={{scrollSnapType: 'y mandatory'}} {...swipeHandlers}>
+
+  return (
+    <div className="h-screen overflow-y-auto scroll-snap-container" {...swipeHandlers}>
       <div className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm">
         <AppHeader onLogin={handleLogin} showSlogan={false} showAuthButtons={true} showLandingNavigation={currentSection === 'hero'} />
       </div>
       <SideNavigator sections={sections} />
       
-      <section id="hero" className="h-screen flex items-center justify-center" style={{scrollSnapAlign: 'start'}}>
-        <HeroSection />
+      <section id="hero" className="scroll-snap-section">
+        <div className="section-content">
+          <HeroSection />
+        </div>
       </section>
 
-      <section id="target-users" className="h-screen flex items-center justify-center bg-neutral-50 pt-20" style={{scrollSnapAlign: 'start'}}>
-        <div className="container mx-auto px-4">
+      <section id="target-users" className="scroll-snap-section bg-neutral-50">
+        <div className="section-content">
           <TargetUsersSection />
         </div>
       </section>
       
-      <section id="problem" className="h-screen flex items-center justify-center pt-20" style={{scrollSnapAlign: 'start'}}>
-        <div className="container mx-auto px-4">
+      <section id="problem" className="scroll-snap-section">
+        <div className="section-content">
           <ProblemSection />
         </div>
       </section>
       
-      <section id="solution" className="h-screen flex items-center justify-center bg-neutral-50 pt-20" style={{scrollSnapAlign: 'start'}}>
-        <div className="container mx-auto px-4">
+      <section id="solution" className="scroll-snap-section bg-neutral-50">
+        <div className="section-content">
           <SolutionSection />
         </div>
       </section>
       
-      <section id="pricing" className="h-screen flex items-center justify-center pt-20" style={{scrollSnapAlign: 'start'}}>
-        <div className="container mx-auto px-4">
+      <section id="pricing" className="scroll-snap-section pricing-section">
+        <div className="section-content">
           <PricingSection />
         </div>
       </section>
       
-      {/* Footer section with its own snap point to allow staying there */}
-      <section id="footer" className="bg-medical-50 min-h-[400px] flex items-center justify-center" style={{scrollSnapAlign: 'start'}}>
-        <Footer />
+      <section id="footer" className="bg-medical-50 min-h-[400px] flex items-center justify-center last-section">
+        <div className="section-footer">
+          <Footer />
+        </div>
       </section>
-    </div>;
+    </div>
+  );
 };
+
 export default WebLandingPage;
