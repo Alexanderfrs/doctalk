@@ -36,13 +36,13 @@ export const englishTranslations = {
   
   // B2C Content (Individual)
   landYourDreamMedicalJob: 'Your fast track to working in German healthcare.',
-  skipExpensiveCoursesAndGetFluent: 'Learn professional medical German and prepare for your new job – wherever you are.',
-  forInternationalHealthcareWorkers: 'For international healthcare workers – whether you\'re preparing from abroad or already in Germany.',
+  // skipExpensiveCoursesAndGetFluent: 'Learn professional medical German and prepare for your new job – wherever you are.',
+  forInternationalHealthcareWorkers: 'Master medical German with innovative, speaking-focused training that speeds job readiness, simplifies bureaucracy, and prepares you for Anerkennung exams and real-world success.',
   
   // B2B Content (Enterprise)
   empowerYourInternationalTeam: 'Empower your international healthcare team',
-  reduceOnboardingCosts: 'Reduce onboarding costs & time while improving patient safety with specialized medical German training for your international staff.',
-  forHealthcareOrganizationsDesc: 'For hospitals, nursing homes and schools, and mobile care services looking to effectively integrate and retain international professionals.',
+  // reduceOnboardingCosts: 'Cut onboarding time and costs while raising patient safety with specialized medical German training tailored for healthcare organizations committed to integrating and retaining international professionals.',
+  forHealthcareOrganizationsDesc: 'Cut onboarding time and costs while boosting patient safety with expert medical German training that helps healthcare teams integrate and retain international professionals.',
   
   expertDeveloped: 'Expert-developed',
   joinPioneers: 'Join the pioneers',
@@ -131,8 +131,8 @@ export const englishTranslations = {
   doctalkDesignedFor: "DocTalk is designed to meet the specific language needs of different healthcare professionals, helping you communicate with confidence and precision.",
   
   // Target Users Section - B2B
-  tailoredForHealthcareOrganizations: "Tailored for every type of healthcare organization",
-  doctalkDesignedForOrganizations: "DocTalk is designed to meet the specific training needs of different healthcare organizations, helping your international team communicate with confidence and precision.",
+  tailoredForHealthcareOrganizations: "Tailored for every corner of modern healthcare",
+  doctalkDesignedForOrganizations: "DocTalk delivers targeted medical German training to accelerate integration, boost worker satisfaction, and improve patient safety - empowering your international team to communicate clearly and compliantly from day one.",
   
   forCareWorkersTitle: "For Care Workers",
   forCareWorkersDescription: "Essential communication for exceptional care and rapid integration into your team.",
@@ -142,13 +142,15 @@ export const englishTranslations = {
   forMedicalStudentsDescription: "Build a solid linguistic foundation for a decisive advantage in your clinical rotations and internships, and future career.",
   
   // B2B Target Users
-  forHospitalsTitle: "For Hospitals",
-  forHospitalsDescription: "Comprehensive training programs that reduce onboarding time and improve patient safety across all departments.",
-  forClinicsTitle: "For Clinics",
-  forClinicsDescription: "Specialized training for smaller teams with flexible scheduling and personalized progress tracking.",
+  forHospitalsTitle: "For Hospitals & Clinics",
+  forHospitalsDescription: "End costly integration delays with training that accelerates onboarding, boosts patient safety, and meets compliance requirements from day one.",
+  forNursingHomesTitle: "For Nursing Homes & Mobile Care Services",
+  forNursingHomesDescription: "Improve communication and care quality for vulnerable patients with tailored language programs.",
+  forClinicsTitle: "For Recruitment Agencies",
+  forClinicsDescription: "Deliver fully prepared candidates with specialized medical German, ensuring smoother onboarding, stronger performance, and happier clients.",
   forMedicalSchoolsTitle: "For Nursing Schools",
-  forMedicalSchoolsDescription: "Curriculum integration for international care workers preparing for German healthcare systems.",
-  
+  forMedicalSchoolsDescription: "Embed medical German into your curriculum so graduates enter the workforce ready to communicate confidently and meet German healthcare standards.",
+
   comingSoon: "Coming Soon",
   alphaTester: "Early Tester",
   alphaTesterDesc: "For pioneers ready to shape the future of medical learning.",

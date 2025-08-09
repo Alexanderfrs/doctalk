@@ -53,7 +53,7 @@ const HeroSection = () => {
     if (viewMode === 'enterprise') {
       return {
         title: translate("empowerYourInternationalTeam"),
-        description: translate("reduceOnboardingCosts"),
+        // description: translate("reduceOnboardingCosts"),
         targetAudience: translate("forHealthcareOrganizationsDesc"),
         trustSignals: [
           {
@@ -69,7 +69,7 @@ const HeroSection = () => {
     } else {
       return {
         title: translate("landYourDreamMedicalJob"),
-        description: translate("skipExpensiveCoursesAndGetFluent"),
+        // description: translate("skipExpensiveCoursesAndGetFluent"),
         targetAudience: translate("forInternationalHealthcareWorkers"),
         trustSignals: [
           {
