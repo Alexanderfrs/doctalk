@@ -52,9 +52,9 @@ const ProblemSection = () => {
     },
     {
       icon: <AlertTriangle className="h-8 w-8 text-red-500" />,
-      title: translate("problemComplianceRisks"),
-      description: translate("problemComplianceRisksDesc"),
-      stat: translate("problemComplianceRisksStat")
+      title: translate("problemPatientSafety"),
+      description: translate("problemPatientSafetyDesc"),
+      stat: translate("problemPatientSafetyStat")
     }
   ];
 

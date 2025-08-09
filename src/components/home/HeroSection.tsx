@@ -62,7 +62,7 @@ const HeroSection = () => {
           },
           {
             icon: <TrendingUp className="h-4 w-4 mr-1" />,
-            text: "Proven ROI"
+            text: "Designed for Measurable Results"
           }
         ]
       };
