@@ -28,10 +28,15 @@ export const useAuthentication = () => {
   const signUp = async (email: string, password: string, name: string) => {
     try {
       setIsLoading(true);
+      
+      // SECURITY FIX: Add emailRedirectTo parameter to prevent authentication issues
+      const redirectUrl = `${window.location.origin}/dashboard`;
+      
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
+          emailRedirectTo: redirectUrl,
           data: {
             name,
           },
