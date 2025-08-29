@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
 type UserRole = 'admin' | 'user' | null;
@@ -19,18 +18,9 @@ export const useUserRole = () => {
       }
 
       try {
-        const { data, error } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .single();
-
-        if (error && error.code !== 'PGRST116') {
-          console.error('Error fetching user role:', error);
-          setRole('user'); // Default to user role on error
-        } else {
-          setRole(data?.role || 'user');
-        }
+        // For now, default all users to 'user' role
+        // TODO: Implement proper role system when user_roles table is available
+        setRole('user');
       } catch (error) {
         console.error('Error fetching user role:', error);
         setRole('user');
