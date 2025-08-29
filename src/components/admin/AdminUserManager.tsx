@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,9 +23,38 @@ const AdminUserManager: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // TODO: Implement admin promotion once user_roles table types are available
-      toast.info('Admin promotion feature will be available once database types are updated');
-      console.log('Would promote user:', email.trim());
+      // First, check if user exists
+      const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
+      
+      if (userError) {
+        toast.error('Failed to fetch users');
+        return;
+      }
+
+      const user = userData.users.find(u => u.email === email.trim());
+      
+      if (!user) {
+        toast.error('User not found. They must sign up first.');
+        return;
+      }
+
+      // Add admin role
+      const { error } = await supabase
+        .from('user_roles')
+        .upsert({ 
+          user_id: user.id, 
+          role: 'admin' 
+        }, {
+          onConflict: 'user_id,role'
+        });
+
+      if (error) {
+        console.error('Error promoting user:', error);
+        toast.error('Failed to promote user to admin');
+        return;
+      }
+
+      toast.success(`Successfully promoted ${email} to admin`);
       setEmail('');
     } catch (error) {
       console.error('Error promoting user:', error);
