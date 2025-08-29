@@ -10,11 +10,46 @@ import VocabularyPracticeTab from "@/components/vocabulary/VocabularyPracticeTab
 import AppHeader from "@/components/layout/AppHeader";
 import Footer from "@/components/layout/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useVocabulary } from "@/hooks/useVocabulary";
+import { useVocabularyDeduplication } from "@/hooks/useVocabularyDeduplication";
+import { PracticeConfig } from "@/components/vocabulary/PracticeSetupDialog";
 
 const Vocabulary: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const isMobile = useIsMobile();
   const { translate } = useLanguage();
+  
+  const {
+    searchTerm,
+    setSearchTerm,
+    filteredWords,
+    activeCategory,
+    setActiveCategory,
+    activeDomain,
+    setActiveDomain,
+    isFiltersOpen,
+    setIsFiltersOpen,
+    updateMasteredStatus,
+    allWords
+  } = useVocabulary();
+
+  const { deduplicatedWords } = useVocabularyDeduplication(filteredWords);
+
+  const handleResetFilters = () => {
+    setActiveCategory("all");
+    setActiveDomain("all");
+    setSearchTerm("");
+  };
+
+  const handleStartPractice = (config: PracticeConfig) => {
+    console.log('Starting practice with config:', config);
+    // TODO: Implement practice navigation
+  };
+
+  // Get available categories from the words
+  const availableCategories = Array.from(
+    new Set(allWords.map(word => word.category))
+  ).filter(Boolean);
 
   if (!isAuthenticated) {
     return (
@@ -36,7 +71,18 @@ const Vocabulary: React.FC = () => {
   }
 
   if (isMobile) {
-    return <VocabularyMobileView />;
+    return <VocabularyMobileView 
+      searchTerm={searchTerm}
+      onSearchChange={setSearchTerm}
+      activeCategory={activeCategory}
+      activeDomain={activeDomain}
+      onCategoryChange={setActiveCategory}
+      onDomainChange={setActiveDomain}
+      onResetFilters={handleResetFilters}
+      words={deduplicatedWords}
+      availableCategories={availableCategories}
+      onStartPractice={handleStartPractice}
+    />;
   }
 
   return (
@@ -54,11 +100,26 @@ const Vocabulary: React.FC = () => {
             </TabsList>
             
             <TabsContent value="browse">
-              <VocabularyBrowseTab />
+              <VocabularyBrowseTab 
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                activeCategory={activeCategory}
+                activeDomain={activeDomain}
+                isFiltersOpen={isFiltersOpen}
+                onCategoryChange={setActiveCategory}
+                onDomainChange={setActiveDomain}
+                onFiltersToggle={() => setIsFiltersOpen(!isFiltersOpen)}
+                onResetFilters={handleResetFilters}
+                words={deduplicatedWords}
+              />
             </TabsContent>
             
             <TabsContent value="practice">
-              <VocabularyPracticeTab />
+              <VocabularyPracticeTab 
+                availableCategories={availableCategories}
+                totalWords={deduplicatedWords.length}
+                onStartPractice={handleStartPractice}
+              />
             </TabsContent>
           </Tabs>
         </div>
