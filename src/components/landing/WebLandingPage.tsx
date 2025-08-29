@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/layout/Footer";
@@ -146,7 +145,12 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
   return (
     <div className="h-screen overflow-y-auto scroll-snap-container" {...swipeHandlers}>
       <div className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm">
-        <AppHeader onLogin={handleLogin} showSlogan={false} showAuthButtons={true} showLandingNavigation={currentSection === 'hero'} />
+        <AppHeader 
+          onLogin={handleLogin} 
+          showSlogan={false} 
+          showAuthButtons={true} 
+          showLandingNavigation={currentSection === 'hero'} 
+        />
       </div>
       <SideNavigator sections={sections} />
       
