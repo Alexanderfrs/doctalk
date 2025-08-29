@@ -43,25 +43,21 @@ const TargetUsersSection = () => {
       icon: <Building2 className="h-12 w-12 text-medical-600" />,
       title: translate("forHospitalsTitle"),
       description: translate("forHospitalsDescription"),
-      comingSoon: false
     },
     {
       icon: <School className="h-12 w-12 text-medical-600" />,
       title: translate("forNursingHomesTitle"),
       description: translate("forNursingHomesDescription"),
-      comingSoon: false
     },
     {
       icon: <Users2 className="h-12 w-12 text-medical-600" />,
       title: translate("forClinicsTitle"),
       description: translate("forClinicsDescription"),
-      comingSoon: false
     },
     // {
     //   icon: <School className="h-12 w-12 text-medical-600" />,
     //   title: translate("forMedicalSchoolsTitle"),
     //   description: translate("forMedicalSchoolsDescription"),
-    //   comingSoon: false
     // }
   ];
 
