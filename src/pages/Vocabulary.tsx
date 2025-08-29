@@ -33,7 +33,7 @@ const Vocabulary: React.FC = () => {
     allWords
   } = useVocabulary();
 
-  const { deduplicatedWords } = useVocabularyDeduplication(filteredWords);
+  const deduplicatedWords = useVocabularyDeduplication(filteredWords);
 
   const handleResetFilters = () => {
     setActiveCategory("all");
