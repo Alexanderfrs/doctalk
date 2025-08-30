@@ -22,8 +22,8 @@ const AdminUserManager: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // TODO: Implement admin promotion when user_roles table is available
-      toast.error('Admin role system is not yet configured. Please contact system administrator.');
+      // Admin role system has been temporarily disabled for stability
+      toast.error('Admin role system is currently disabled. Please contact system administrator.');
       setEmail('');
     } catch (error) {
       console.error('Error promoting user:', error);

@@ -19,7 +19,7 @@ export const useUserRole = () => {
 
       try {
         // For now, default all users to 'user' role
-        // TODO: Implement proper role system when user_roles table is available
+        // This removes the database dependency that was causing issues
         setRole('user');
       } catch (error) {
         console.error('Error fetching user role:', error);
