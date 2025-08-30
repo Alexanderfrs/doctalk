@@ -97,38 +97,38 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
   ];
 
   return (
-    <div className="min-h-screen w-full flex flex-col bg-gradient-to-b from-medical-50 to-white relative overflow-hidden">
-      {/* Skip button - positioned absolutely */}
+    <div className="min-h-screen min-h-[100dvh] w-full flex flex-col bg-gradient-to-b from-medical-50 to-white relative overflow-hidden">
+      {/* Skip button - positioned absolutely with high contrast */}
       {!isLast && (
-        <div className="absolute top-4 right-4 z-10 safe-area-top">
+        <div className="absolute top-4 right-4 z-20 safe-area-top">
           <Button 
             variant="ghost" 
             onClick={onSkip}
-            className="text-medical-600 hover:text-medical-700 touch-target px-4 py-2"
+            className="text-medical-600 hover:text-medical-700 bg-white/80 backdrop-blur-sm shadow-sm touch-target px-4 py-2 font-medium"
           >
             {translate("skip") || "Skip"}
           </Button>
         </div>
       )}
 
-      {/* Main content - centered with proper spacing */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-32 pt-20">
-        <div className="w-full max-w-xs mx-auto text-center space-y-6">
+      {/* Main content - centered with proper spacing and full opacity */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-20" style={{ paddingBottom: '140px' }}>
+        <div className="w-full max-w-sm mx-auto text-center space-y-6">
           {/* Icon or Image - only show for non-logo screens */}
           {!content.showLogo && !content.showRecognitionProcess && (
-            <div className="text-5xl mb-4">
+            <div className="text-6xl mb-6 opacity-100">
               {content.icon}
             </div>
           )}
 
-          {/* Logo for first screen - bigger and centered */}
+          {/* Logo for first screen - bigger and centered with full opacity */}
           {content.showLogo && (
-            <div className="flex flex-col items-center space-y-4 mb-6">
+            <div className="flex flex-col items-center space-y-4 mb-8 opacity-100">
               <div className="bg-white rounded-xl p-6 shadow-lg">
                 <img 
                   src="/lovable-uploads/fbff1d77-b805-4a84-9721-79292aad57c6.png"
                   alt="DocTalk Logo"
-                  className="h-20 w-auto"
+                  className="h-20 w-auto opacity-100"
                 />
               </div>
             </div>
@@ -136,17 +136,15 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
 
           {/* Recognition Process content for second screen */}
           {content.showRecognitionProcess && (
-            <div className="flex flex-col items-center space-y-6">
+            <div className="flex flex-col items-center space-y-6 opacity-100">
               <div className="space-y-4 w-full">
                 {recognitionSteps.map((step, index) => (
                   <div 
                     key={index}
-                    className={`flex items-start space-x-3 p-3 bg-white rounded-lg shadow-sm transition-all duration-500 animate-complete ${
-                      showAnimations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                    }`}
+                    className="flex items-start space-x-3 p-3 bg-white rounded-lg shadow-sm transition-all duration-500 opacity-100"
                     style={{ 
                       animationDelay: `${index * 200}ms`,
-                      opacity: showAnimations ? 1 : 0,
+                      opacity: showAnimations ? 1 : 0.3,
                       transform: showAnimations ? 'translateY(0)' : 'translateY(16px)'
                     }}
                   >
@@ -159,8 +157,8 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
                         )}
                       </div>
                       <div className="text-left">
-                        <div className="text-sm font-medium text-medical-800">{step.text}</div>
-                        <div className="text-xs text-medical-600">{step.description}</div>
+                        <div className="text-sm font-medium text-medical-800 opacity-100">{step.text}</div>
+                        <div className="text-xs text-medical-600 opacity-100">{step.description}</div>
                       </div>
                     </div>
                   </div>
@@ -169,40 +167,38 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
             </div>
           )}
 
-          {/* Title */}
-          <h1 className="text-2xl font-bold text-medical-800 leading-tight">
+          {/* Title with full opacity */}
+          <h1 className="text-2xl font-bold text-medical-800 leading-tight opacity-100">
             {content.title}
           </h1>
 
-          {/* Subtitle */}
+          {/* Subtitle with full opacity */}
           {content.subtitle && (
-            <h2 className="text-lg font-medium text-medical-600 leading-relaxed">
+            <h2 className="text-lg font-medium text-medical-600 leading-relaxed opacity-100">
               {content.subtitle}
             </h2>
           )}
 
           {/* For screen 4, show description before bullet points */}
           {screenNumber === 4 && content.description && (
-            <p className="text-sm text-neutral-600 leading-relaxed">
+            <p className="text-sm text-neutral-600 leading-relaxed opacity-100">
               {content.description}
             </p>
           )}
 
           {/* Description with special handling for bullet points on screen 3 */}
           {!content.showRecognitionProcess && screenNumber !== 4 && (
-            <div className="space-y-4">
+            <div className="space-y-4 opacity-100">
               {content.showBulletPoints ? (
                 <div className="space-y-4">
                   <div className="space-y-3">
                     {bulletPoints.map((point, index) => (
                       <div 
                         key={index}
-                        className={`flex items-center justify-start space-x-3 text-left transition-all duration-500 animate-complete ${
-                          showAnimations ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                        }`}
+                        className="flex items-center justify-start space-x-3 text-left transition-all duration-500 opacity-100"
                         style={{ 
                           animationDelay: `${index * 150}ms`,
-                          opacity: showAnimations ? 1 : 0,
+                          opacity: showAnimations ? 1 : 0.3,
                           transform: showAnimations ? 'translateY(0)' : 'translateY(16px)'
                         }}
                       >
@@ -216,17 +212,17 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
                               <Check className="w-3 h-3 text-white" />
                             )}
                           </div>
-                          <span className="text-sm text-neutral-700">{point}</span>
+                          <span className="text-sm text-neutral-700 opacity-100">{point}</span>
                         </div>
                       </div>
                     ))}
                   </div>
-                  <p className="text-sm text-neutral-600 leading-relaxed mt-4">
+                  <p className="text-sm text-neutral-600 leading-relaxed mt-4 opacity-100">
                     {content.description}
                   </p>
                 </div>
               ) : content.description ? (
-                <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">
+                <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line opacity-100">
                   {content.description}
                 </p>
               ) : null}
@@ -235,19 +231,19 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
         </div>
       </div>
 
-      {/* Action button - fixed at bottom with consistent positioning */}
-      <div className="absolute bottom-8 left-0 right-0 w-full px-6 safe-area-bottom">
+      {/* Action button - fixed at bottom with high contrast and full opacity */}
+      <div className="absolute bottom-8 left-0 right-0 w-full px-6 safe-area-bottom z-20">
         {isLast ? (
           <Button 
             onClick={onStart}
-            className="w-full h-12 text-base font-semibold bg-medical-500 hover:bg-medical-600 text-white rounded-xl touch-target"
+            className="w-full h-12 text-base font-semibold bg-medical-500 hover:bg-medical-600 text-white rounded-xl touch-target opacity-100 shadow-lg"
           >
             {translate("start") || "Start"}
           </Button>
         ) : (
           <Button 
             onClick={onNext}
-            className="w-full h-12 text-base font-semibold bg-medical-500 hover:bg-medical-600 text-white rounded-xl touch-target"
+            className="w-full h-12 text-base font-semibold bg-medical-500 hover:bg-medical-600 text-white rounded-xl touch-target opacity-100 shadow-lg"
           >
             {translate("next") || "Next"}
           </Button>
