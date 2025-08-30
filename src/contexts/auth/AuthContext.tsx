@@ -2,22 +2,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User, Session } from '@supabase/supabase-js';
+import { AuthContextType } from './types';
+import { useAuthentication } from './useAuthentication';
+import { useProfileManagement } from './useProfileManagement';
 
-interface AuthContextType {
-  user: User | null;
-  session: Session | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  signOut: () => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  session: null,
-  isAuthenticated: false,
-  isLoading: true,
-  signOut: async () => {},
-});
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -28,9 +17,28 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    session,
+    setSession,
+    user,
+    setUser,
+    isLoading,
+    setIsLoading,
+    signIn,
+    signUp,
+    signOut
+  } = useAuthentication();
+
+  const {
+    profile,
+    setProfile,
+    onboardingComplete,
+    setOnboardingComplete,
+    fetchProfile,
+    completeOnboarding,
+    skipOnboarding,
+    updateProfile
+  } = useProfileManagement();
 
   useEffect(() => {
     // Get initial session
@@ -38,6 +46,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
+      
+      if (session?.user) {
+        fetchProfile(session.user.id);
+      }
     });
 
     // Listen for auth changes
@@ -47,21 +59,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
+      
+      if (session?.user) {
+        fetchProfile(session.user.id);
+      } else {
+        setProfile(null);
+        setOnboardingComplete(false);
+      }
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [fetchProfile, setSession, setUser, setIsLoading, setProfile, setOnboardingComplete]);
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
-  };
-
-  const value = {
+  const value: AuthContextType = {
     user,
     session,
-    isAuthenticated: !!user,
+    profile,
     isLoading,
+    signIn,
+    signUp,
     signOut,
+    isAuthenticated: !!user,
+    onboardingComplete,
+    completeOnboarding: (data) => completeOnboarding(user, data),
+    skipOnboarding: () => skipOnboarding(user),
+    updateProfile: (data) => updateProfile(user, data)
   };
 
   return (
