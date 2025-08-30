@@ -29,9 +29,9 @@ const Index = () => {
           navigate("/dashboard");
         }
       } else {
-        // If not authenticated, redirect to landing page
+        // CRITICAL FIX: Redirect to /landing instead of / to prevent infinite loop
         console.log("Redirecting to landing page");
-        navigate("/");
+        navigate("/landing");
       }
     }
   }, [isAuthenticated, onboardingComplete, isLoading, navigate, shouldShowOnboarding, isMobileUser]);

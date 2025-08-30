@@ -30,62 +30,100 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   } = useProfileManagement();
   
   useEffect(() => {
-    const fetchInitialSession = async () => {
+    const initializeAuth = async () => {
       try {
+        console.log("Initializing auth...");
         setIsLoading(true);
-        const { data: { session } } = await supabase.auth.getSession();
         
-        setSession(session);
-        setUser(session?.user ?? null);
+        // Set up auth state listener FIRST
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+          console.log("Auth state changed:", event, session?.user?.id);
+          
+          // Only update synchronous state here to prevent deadlocks
+          setSession(session);
+          setUser(session?.user ?? null);
+          
+          // Use setTimeout to prevent potential deadlocks with Supabase client
+          if (session?.user) {
+            setTimeout(async () => {
+              try {
+                await fetchProfile(session.user.id);
+              } catch (error) {
+                console.error("Error fetching profile in auth state change:", error);
+              }
+            }, 0);
+          }
+        });
+
+        // THEN check for existing session
+        const { data: { session }, error } = await supabase.auth.getSession();
         
-        if (session?.user) {
-          await fetchProfile(session.user.id);
+        if (error) {
+          console.error("Error getting session:", error);
+        } else {
+          console.log("Initial session:", session?.user?.id);
+          setSession(session);
+          setUser(session?.user ?? null);
+          
+          if (session?.user) {
+            try {
+              await fetchProfile(session.user.id);
+            } catch (error) {
+              console.error("Error fetching profile during init:", error);
+            }
+          }
         }
+
+        return () => {
+          console.log("Cleaning up auth subscription");
+          subscription?.unsubscribe();
+        };
+        
       } catch (error) {
-        console.error("Error fetching session:", error);
+        console.error("Error initializing auth:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("Auth state changed:", event, session);
-      
-      // Only update synchronous state here
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      // Use setTimeout to prevent potential deadlocks with Supabase client
-      if (session?.user) {
-        setTimeout(async () => {
-          await fetchProfile(session.user.id);
-        }, 0);
-      }
-    });
-
-    // THEN check for existing session
-    fetchInitialSession();
-
+    const cleanup = initializeAuth();
+    
     return () => {
-      subscription?.unsubscribe();
+      cleanup.then(cleanupFn => cleanupFn && cleanupFn());
     };
   }, []);
 
   const signOut = async () => {
-    await authSignOut();
+    try {
+      await authSignOut();
+    } catch (error) {
+      console.error("Error during signout:", error);
+    }
   };
 
   const completeOnboarding = async (data?: { name?: string }) => {
-    await profileCompleteOnboarding(user, data);
+    try {
+      await profileCompleteOnboarding(user, data);
+    } catch (error) {
+      console.error("Error completing onboarding:", error);
+    }
   };
 
   const skipOnboarding = async () => {
-    await profileSkipOnboarding(user);
+    try {
+      await profileSkipOnboarding(user);
+    } catch (error) {
+      console.error("Error skipping onboarding:", error);
+    }
   };
 
   const updateProfile = async (data: Partial<{name: string, email: string, profession: string}>) => {
-    return await profileUpdateProfile(user, data);
+    try {
+      return await profileUpdateProfile(user, data);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      return { error, data: null };
+    }
   };
 
   return (

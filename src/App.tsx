@@ -39,6 +39,7 @@ function App() {
                   <TooltipProvider>
                     <Routes>
                       <Route path="/" element={<Index />} />
+                      <Route path="/landing" element={<LandingPage />} />
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/practice" element={<Practice />} />
                       <Route path="/scenario/:id" element={<ScenarioDetail />} />
@@ -48,7 +49,6 @@ function App() {
                       <Route path="/register" element={<Register />} />
                       <Route path="/onboarding" element={<Onboarding />} />
                       <Route path="/trial" element={<TrialPage />} />
-                      <Route path="/landing" element={<LandingPage />} />
                       <Route path="/language-certification" element={<LanguageCertification />} />
                       <Route path="/about" element={<AboutUs />} />
                       <Route path="/admin" element={<Admin />} />
