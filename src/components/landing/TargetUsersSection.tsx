@@ -1,76 +1,130 @@
 
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Stethoscope, GraduationCap, Globe, Users } from "lucide-react";
+import { useViewMode } from "@/contexts/ViewModeContext";
+import { Heart, Stethoscope, GraduationCap, Building2, Users2, School, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import waitlist from '@zootools/waitlist-js';
 
-const TargetUsersSection: React.FC = () => {
+const TargetUsersSection = () => {
   const { translate } = useLanguage();
+  const { viewMode } = useViewMode();
 
-  const targetUsers = [
+  const handleWaitlistClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    waitlist.openPopup("pw4BglxIAKRzobt7xjV6");
+  };
+
+  // B2C Target Users (Individual Professionals)
+  const b2cTargetUsers = [
     {
-      icon: <Stethoscope className="h-8 w-8 text-medical-600" />,
-      title: translate('targetUsers.doctors.title'),
-      description: translate('targetUsers.doctors.description'),
+      icon: <Heart className="h-12 w-12 text-medical-600" />,
+      title: translate("forCareWorkersTitle"),
+      description: translate("forCareWorkersDescription"),
       comingSoon: false
     },
     {
-      icon: <Users className="h-8 w-8 text-medical-600" />,
-      title: translate('targetUsers.nurses.title'),
-      description: translate('targetUsers.nurses.description'),
+      icon: <Stethoscope className="h-12 w-12 text-medical-600" />,
+      title: translate("forDoctorsTitle"),
+      description: translate("forDoctorsDescription"),
       comingSoon: false
     },
     {
-      icon: <GraduationCap className="h-8 w-8 text-medical-600" />,
-      title: translate('targetUsers.students.title'),
-      description: translate('targetUsers.students.description'),
-      comingSoon: false
-    },
-    {
-      icon: <Globe className="h-8 w-8 text-medical-600" />,
-      title: translate('targetUsers.international.title'),
-      description: translate('targetUsers.international.description'),
+      icon: <GraduationCap className="h-12 w-12 text-medical-600" />,
+      title: translate("forMedicalStudentsTitle"),
+      description: translate("forMedicalStudentsDescription"),
       comingSoon: false
     }
   ];
 
+  // B2B Target Users (Organizations)
+  const b2bTargetUsers = [
+    {
+      icon: <Building2 className="h-12 w-12 text-medical-600" />,
+      title: translate("forHospitalsTitle"),
+      description: translate("forHospitalsDescription"),
+    },
+    {
+      icon: <School className="h-12 w-12 text-medical-600" />,
+      title: translate("forNursingHomesTitle"),
+      description: translate("forNursingHomesDescription"),
+    },
+    {
+      icon: <Users2 className="h-12 w-12 text-medical-600" />,
+      title: translate("forClinicsTitle"),
+      description: translate("forClinicsDescription"),
+    },
+    // {
+    //   icon: <School className="h-12 w-12 text-medical-600" />,
+    //   title: translate("forMedicalSchoolsTitle"),
+    //   description: translate("forMedicalSchoolsDescription"),
+    // }
+  ];
+
+  const targetUsers = viewMode === 'enterprise' ? b2bTargetUsers : b2cTargetUsers;
+
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-medical-900 mb-4">
-            {translate('targetUsers.title')}
-          </h2>
-          <p className="text-xl text-medical-700 max-w-3xl mx-auto">
-            {translate('targetUsers.subtitle')}
-          </p>
-        </div>
+    <div className="container mx-auto">
+      <div className="text-center mb-12 transition-all duration-500">
+        <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 mb-4">
+          {viewMode === 'enterprise' 
+            ? translate("tailoredForHealthcareOrganizations")
+            : translate("tailoredForMedicalCareer")
+          }
+        </h2>
+        <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
+          {viewMode === 'enterprise' 
+            ? translate("doctalkDesignedForOrganizations")
+            : translate("doctalkDesignedFor")
+          }
+        </p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {targetUsers.map((user, index) => (
-            <Card key={index} className="border-medical-200 hover:border-medical-300 transition-colors">
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-medical-50 rounded-full w-fit">
-                  {user.icon}
-                </div>
-                <CardTitle className="text-xl text-medical-900 flex items-center justify-center gap-2">
-                  {user.title}
-                  {user.comingSoon && (
-                    <Badge variant="secondary" className="text-xs">
-                      {translate('common.comingSoon')}
-                    </Badge>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-medical-700 text-center">{user.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {/* Language Support Badge */}
+        {viewMode !== 'enterprise' && (
+          <div className="mt-6 flex items-center justify-center">
+            <div className="flex items-center gap-3 px-4 py-2 bg-medical-50 rounded-full border border-medical-100">
+              <span className="text-sm text-neutral-600 font-medium">{translate('languageSupport.availableIn')}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-lg">🇺🇦</span>
+                <span className="text-lg">🇷🇺</span>
+                <span className="text-lg">🇹🇷</span>
+                <span className="text-lg">🇪🇸</span>
+                <span className="text-lg">🇷🇴</span>
+                <span className="text-lg">🇵🇱</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </section>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        {targetUsers.map((user, index) => (
+          <div key={index} className="relative bg-white p-8 rounded-2xl shadow-lg border border-neutral-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            {user.comingSoon && (
+              <div className="absolute top-4 right-4 bg-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                {translate("comingSoon")}
+              </div>
+            )}
+            <div className="w-20 h-20 bg-medical-50 rounded-full flex items-center justify-center mb-6 mx-auto">
+              {user.icon}
+            </div>
+            <h3 className="text-xl font-bold mb-4 text-neutral-800 text-center">
+              {user.title}
+            </h3>
+            <p className="text-neutral-600 text-center leading-relaxed">
+              {user.description}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* CTA Section */}
+      <div className="text-center">
+        <Button className="btn-primary px-8 py-3" onClick={handleWaitlistClick}>
+          {translate("getPriorityAccess")}
+        </Button>
+      </div>
+    </div>
   );
 };
 

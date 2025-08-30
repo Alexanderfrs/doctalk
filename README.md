@@ -1,163 +1,171 @@
 
-# Medical German Learning Platform
+# DocTalk - Medical German Communication App
 
-A comprehensive platform for healthcare professionals to learn Medical German, featuring interactive scenarios, vocabulary practice, and AI-powered conversations.
+DocTalk is a specialized application designed for healthcare professionals to improve their German communication skills in medical settings.
 
-## 🚀 Getting Started
+## Project Overview
+
+This application helps doctors, nurses, caregivers, and medical students from various countries practice German medical terminology and scenarios through interactive exercises and real-world medical conversations.
+
+## Technology Stack
+
+- **Frontend**: React 18.3.1 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **State Management**: React Context + React Query
+- **Router**: React Router DOM 6.26.2
+- **Authentication**: Supabase Auth
+- **Database**: Supabase (PostgreSQL)
+- **Mobile**: Capacitor (iOS/Android support)
+- **UI Components**: Radix UI primitives with custom theming
+- **Icons**: Lucide React
+- **Animations**: Framer Motion
+- **Charts**: Recharts
+
+## Development Setup
 
 ### Prerequisites
 
-- Node.js 18+ 
-- npm or yarn
-- Supabase account
+- Node.js 18+ and npm
+- For mobile development: 
+  - iOS: macOS with Xcode 14+
+  - Android: Android Studio with SDK
 
 ### Installation
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd medical-german-app
-```
+```sh
+# Step 1: Clone the repository
+git clone <YOUR_GIT_URL>
 
-2. Install dependencies:
-```bash
+# Step 2: Navigate to the project directory
+cd doctalk
+
+# Step 3: Install dependencies
 npm install
-```
 
-3. Set up environment variables:
-Create a `.env` file in the root directory and add your Supabase credentials:
-```env
-VITE_SUPABASE_URL=your-supabase-url
-VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
-```
-
-4. Set up Supabase:
-- Create a new Supabase project
-- Run the SQL migrations found in the `supabase/migrations` folder
-- Configure authentication providers if needed
-
-5. Start the development server:
-```bash
+# Step 4: Start the development server
 npm run dev
 ```
 
-## 🏗️ Architecture
+The application will be available at `http://localhost:8080`
 
-### Frontend
-- **React 18** with TypeScript
-- **Vite** for build tooling
-- **Tailwind CSS** for styling
-- **Tanstack Query** for data fetching
-- **React Router** for navigation
+## Mobile Development
 
-### Backend
-- **Supabase** for authentication, database, and real-time features
-- **PostgreSQL** database with Row Level Security (RLS)
-- **Edge Functions** for AI integrations
+This app supports mobile deployment using Capacitor for both iOS and Android platforms.
 
-### Security Features
-- **Row Level Security (RLS)** on all database tables
-- **Role-based access control** with admin/user roles
-- **Secure database functions** with proper search_path configuration
-- **Protected admin dashboard** for sensitive data management
-- **Email redirect configuration** for secure authentication flows
+### Initial Mobile Setup
 
-## 🔒 Security
-
-This application implements comprehensive security measures:
-
-### Database Security
-- All tables use Row Level Security (RLS) policies
-- Admin-only access to sensitive data (subscribers, feedback)
-- Security definer functions prevent SQL injection
-- Proper search_path configuration in database functions
-
-### Authentication Security
-- Email redirect URLs configured for secure signup flows
-- Password validation and leak protection
-- Session management with automatic token refresh
-- Role-based access control system
-
-### Admin Access
-- Secure admin dashboard at `/admin`
-- Admin users can view subscriber lists and trial feedback
-- Data export functionality with CSV downloads
-- Admin role assignment through secure API
-
-## 📱 Features
-
-### For Learners
-- **Interactive Scenarios**: Practice real medical conversations
-- **Vocabulary Practice**: Learn medical terms with spaced repetition
-- **Progress Tracking**: Monitor learning progress and streaks
-- **AI Conversations**: Practice with AI-powered medical scenarios
-- **Multi-language Support**: Available in multiple languages
-
-### For Administrators
-- **Secure Admin Dashboard**: Access to analytics and user data
-- **Subscriber Management**: View and export waitlist subscribers
-- **Feedback Analysis**: Review trial user feedback and insights
-- **User Role Management**: Promote users to admin status
-
-## 🔧 Configuration
-
-### Supabase Configuration
-1. Enable Row Level Security on all tables
-2. Configure authentication providers in Supabase dashboard
-3. Set up email templates for user registration
-4. Add required secrets for AI integrations (OpenAI, ElevenLabs)
-
-### Admin Setup
-To create the first admin user:
-1. Sign up for an account through the normal registration flow
-2. In the Supabase SQL editor, run:
-```sql
-INSERT INTO public.user_roles (user_id, role) 
-VALUES ('your-user-id-here', 'admin');
-```
-
-## 🚀 Deployment
-
-1. Build the application:
-```bash
+```sh
+# Build the web app first
 npm run build
+
+# Initialize Capacitor (only needed once)
+npx cap init
+
+# Add iOS platform
+npx cap add ios
+
+# Add Android platform (optional)
+npx cap add android
 ```
 
-2. Deploy to your preferred hosting platform:
-- **Vercel**: Connect your GitHub repository for automatic deployments
-- **Netlify**: Drag and drop the `dist` folder or connect via Git
-- **Custom**: Upload the `dist` folder to your web server
+### Mobile Development Workflow
 
-3. Configure environment variables in your hosting platform
+```sh
+# 1. Build the web app
+npm run build
 
-4. Update Supabase redirect URLs to match your production domain
+# 2. Sync changes to mobile platforms
+npx cap sync
 
-## 📊 Monitoring
+# 3. Open in native IDE
+npx cap open ios     # Opens Xcode
+npx cap open android # Opens Android Studio
 
-- Authentication events are logged in Supabase
-- Admin actions are tracked for audit purposes
-- Performance monitoring through browser dev tools
-- Error tracking via console logs
+# 4. Run on device/simulator
+npx cap run ios
+npx cap run android
+```
 
-## 🤝 Contributing
+### iOS App Store Deployment Requirements
+
+1. **Apple Developer Account** ($99/year)
+2. **macOS with Xcode 14+**
+3. **iOS device or simulator** for testing
+4. **App Store Connect** account setup
+
+### Mobile-Specific Features
+
+- Touch-optimized interface with gesture support
+- Responsive design that scales from mobile to desktop
+- Swipe navigation for scenarios and content
+- Touch-friendly interactive elements
+- Optimized for thumb zones on mobile devices
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npx cap sync` - Sync web app to mobile platforms
+- `npx cap run ios` - Run on iOS device/simulator
+- `npx cap run android` - Run on Android device/emulator
+
+## Project Structure
+
+```
+src/
+├── components/         # Reusable UI components
+├── pages/             # Route components
+├── hooks/             # Custom React hooks
+├── contexts/          # React contexts
+├── translations/      # Internationalization
+├── data/             # Static data and mock content
+├── integrations/     # External service integrations
+└── lib/              # Utility functions
+
+public/               # Static assets
+supabase/            # Supabase configuration and functions
+```
+
+## Features
+
+- **Multi-language Support**: English, German, Spanish, Russian, Turkish
+- **Interactive Medical Scenarios**: Practice real-world medical conversations
+- **Vocabulary Management**: Learn and track medical German terminology
+- **Progress Tracking**: Monitor learning progress and achievements
+- **Authentication**: Secure user accounts and data
+- **Responsive Design**: Works seamlessly on mobile and desktop
+- **Offline Capability**: Core features work without internet connection
+
+## Deployment Options
+
+### Web Deployment
+- **Lovable**: One-click deployment via the Publish button
+- **Netlify/Vercel**: Connect your Git repository for automatic deployments
+- **Custom Domain**: Configure custom domains in project settings
+
+### Mobile App Stores
+- **iOS App Store**: Deploy using Xcode and App Store Connect
+- **Google Play Store**: Deploy using Android Studio and Play Console
+
+## Environment Variables
+
+The app uses Supabase for backend services. The configuration is automatically set up through the Lovable-Supabase integration.
+
+## Contributing
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/new-feature`
-3. Commit your changes: `git commit -am 'Add new feature'`
-4. Push to the branch: `git push origin feature/new-feature`
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly on both web and mobile
 5. Submit a pull request
 
-## 📝 License
+## Support
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+For questions about mobile deployment, refer to the [Capacitor documentation](https://capacitorjs.com/docs) or the [Lovable mobile development guide](https://lovable.dev/blogs/TODO).
 
-## 🆘 Support
+## License
 
-For support and questions:
-- Check the documentation in the `/docs` folder
-- Review the FAQ section
-- Contact the development team
-
----
-
-**Note**: This application is designed for healthcare professionals learning Medical German. All medical content is for educational purposes only and should not replace professional medical advice.
+This project is built for healthcare education and professional development.

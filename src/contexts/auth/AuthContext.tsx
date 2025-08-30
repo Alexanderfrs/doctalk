@@ -1,20 +1,11 @@
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { User, Session } from '@supabase/supabase-js';
 import { AuthContextType } from './types';
 import { useAuthentication } from './useAuthentication';
 import { useProfileManagement } from './useProfileManagement';
 
-const AuthContext = createContext<AuthContextType | null>(null);
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const {
@@ -26,69 +17,103 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading,
     signIn,
     signUp,
-    signOut
+    signOut: authSignOut
   } = useAuthentication();
 
   const {
     profile,
-    setProfile,
     onboardingComplete,
-    setOnboardingComplete,
     fetchProfile,
-    completeOnboarding,
-    skipOnboarding,
-    updateProfile
+    completeOnboarding: profileCompleteOnboarding,
+    skipOnboarding: profileSkipOnboarding,
+    updateProfile: profileUpdateProfile
   } = useProfileManagement();
-
+  
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const fetchInitialSession = async () => {
+      try {
+        setIsLoading(true);
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          await fetchProfile(session.user.id);
+        }
+      } catch (error) {
+        console.error("Error fetching session:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("Auth state changed:", event, session);
+      
+      // Only update synchronous state here
       setSession(session);
       setUser(session?.user ?? null);
-      setIsLoading(false);
       
+      // Use setTimeout to prevent potential deadlocks with Supabase client
       if (session?.user) {
-        fetchProfile(session.user.id);
+        setTimeout(async () => {
+          await fetchProfile(session.user.id);
+        }, 0);
       }
     });
 
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setIsLoading(false);
-      
-      if (session?.user) {
-        fetchProfile(session.user.id);
-      } else {
-        setProfile(null);
-        setOnboardingComplete(false);
-      }
-    });
+    // THEN check for existing session
+    fetchInitialSession();
 
-    return () => subscription.unsubscribe();
-  }, [fetchProfile, setSession, setUser, setIsLoading, setProfile, setOnboardingComplete]);
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, []);
 
-  const value: AuthContextType = {
-    user,
-    session,
-    profile,
-    isLoading,
-    signIn,
-    signUp,
-    signOut,
-    isAuthenticated: !!user,
-    onboardingComplete,
-    completeOnboarding: (data) => completeOnboarding(user, data),
-    skipOnboarding: () => skipOnboarding(user),
-    updateProfile: (data) => updateProfile(user, data)
+  const signOut = async () => {
+    await authSignOut();
+  };
+
+  const completeOnboarding = async (data?: { name?: string }) => {
+    await profileCompleteOnboarding(user, data);
+  };
+
+  const skipOnboarding = async () => {
+    await profileSkipOnboarding(user);
+  };
+
+  const updateProfile = async (data: Partial<{name: string, email: string, profession: string}>) => {
+    return await profileUpdateProfile(user, data);
   };
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={{
+        session,
+        user,
+        profile,
+        isLoading,
+        signIn,
+        signUp,
+        signOut,
+        isAuthenticated: !!user,
+        onboardingComplete,
+        completeOnboarding,
+        skipOnboarding,
+        updateProfile,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
