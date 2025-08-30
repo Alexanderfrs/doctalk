@@ -182,7 +182,7 @@
     opacity: 1 !important;
   }
   
-  /* Mobile onboarding screen improvements */
+  /* Mobile onboarding screen improvements - CRITICAL FIXES */
   .mobile-onboarding-screen {
     min-height: 100vh !important;
     min-height: 100dvh !important;
@@ -194,20 +194,38 @@
     visibility: visible !important;
   }
   
-  .mobile-onboarding-screen * {
+  /* Force all onboarding elements to be fully visible */
+  .mobile-onboarding-screen *,
+  .scroll-snap-section *,
+  .section-content * {
     opacity: 1 !important;
     visibility: visible !important;
+    color: inherit !important;
   }
   
-  /* Ensure onboarding action button has proper spacing */
-  .mobile-onboarding-action-button {
-    z-index: 20 !important;
-    position: absolute !important;
-    bottom: 32px !important;
-    left: 24px !important;
-    right: 24px !important;
+  /* Ensure onboarding buttons are always in viewport */
+  .mobile-onboarding-screen button {
     opacity: 1 !important;
     visibility: visible !important;
+    position: relative !important; /* Override any fixed positioning */
+  }
+  
+  /* Compact mobile onboarding layout */
+  .mobile-onboarding-screen .flex-1 {
+    padding: 48px 24px 24px !important; /* Reduced top/bottom padding */
+  }
+  
+  /* Ensure content doesn't overflow viewport */
+  .mobile-onboarding-screen .space-y-6 {
+    gap: 1rem !important; /* Reduced spacing */
+  }
+  
+  .mobile-onboarding-screen .space-y-4 {
+    gap: 0.75rem !important; /* Reduced spacing */
+  }
+  
+  .mobile-onboarding-screen .space-y-3 {
+    gap: 0.5rem !important; /* Reduced spacing */
   }
 }
 
@@ -357,60 +375,35 @@ img {
   position: relative;
 }
 
-/* Mobile landing page specific fixes */
-@media (max-width: 768px) {
-  .mobile-landing {
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
-  }
-  
-  .mobile-screen {
-    height: 100vh;
-    height: 100dvh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-  
-  /* CRITICAL: Override any opacity issues */
-  .mobile-onboarding-screen,
-  .mobile-onboarding-screen *,
-  .scroll-snap-section,
-  .scroll-snap-section *,
-  .section-content,
-  .section-content * {
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-  
-  /* Force full opacity on all text elements */
-  .mobile-onboarding-screen h1,
-  .mobile-onboarding-screen h2,
-  .mobile-onboarding-screen p,
-  .mobile-onboarding-screen span,
-  .mobile-onboarding-screen div {
-    opacity: 1 !important;
-    color: inherit !important;
-  }
-  
-  /* Ensure buttons are always visible */
-  .mobile-onboarding-screen button {
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-}
-
 /* Force visibility on scroll snap sections */
 .scroll-snap-section {
   opacity: 1 !important;
   visibility: visible !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .section-content {
   opacity: 1 !important;
   visibility: visible !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Critical fix for mobile scroll snap content visibility */
+@media (max-width: 768px) {
+  .scroll-snap-section {
+    overflow-y: auto !important; /* Allow scrolling within sections if needed */
+  }
+  
+  /* Ensure all content is visible and properly spaced */
+  .scroll-snap-section .section-content > div {
+    padding: 12px !important;
+    max-height: 100vh !important;
+    max-height: 100dvh !important;
+    box-sizing: border-box !important;
+  }
 }

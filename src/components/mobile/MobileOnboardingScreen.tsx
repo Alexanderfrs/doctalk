@@ -111,37 +111,37 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
         </div>
       )}
 
-      {/* Main content - centered with proper spacing and full opacity */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-20" style={{ paddingBottom: '140px' }}>
-        <div className="w-full max-w-sm mx-auto text-center space-y-6">
-          {/* Icon or Image - only show for non-logo screens */}
+      {/* Main content - much more compact layout */}
+      <div className="flex-1 flex flex-col items-center justify-between px-6 py-12">
+        <div className="w-full max-w-sm mx-auto text-center space-y-4">
+          {/* Icon or Image - smaller for better space usage */}
           {!content.showLogo && !content.showRecognitionProcess && (
-            <div className="text-6xl mb-6 opacity-100">
+            <div className="text-5xl mb-4">
               {content.icon}
             </div>
           )}
 
-          {/* Logo for first screen - bigger and centered with full opacity */}
+          {/* Logo for first screen - more compact */}
           {content.showLogo && (
-            <div className="flex flex-col items-center space-y-4 mb-8 opacity-100">
-              <div className="bg-white rounded-xl p-6 shadow-lg">
+            <div className="flex flex-col items-center space-y-3 mb-6">
+              <div className="bg-white rounded-xl p-4 shadow-lg">
                 <img 
                   src="/lovable-uploads/fbff1d77-b805-4a84-9721-79292aad57c6.png"
                   alt="DocTalk Logo"
-                  className="h-20 w-auto opacity-100"
+                  className="h-16 w-auto"
                 />
               </div>
             </div>
           )}
 
-          {/* Recognition Process content for second screen */}
+          {/* Recognition Process content for second screen - more compact */}
           {content.showRecognitionProcess && (
-            <div className="flex flex-col items-center space-y-6 opacity-100">
-              <div className="space-y-4 w-full">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="space-y-3 w-full">
                 {recognitionSteps.map((step, index) => (
                   <div 
                     key={index}
-                    className="flex items-start space-x-3 p-3 bg-white rounded-lg shadow-sm transition-all duration-500 opacity-100"
+                    className="flex items-start space-x-3 p-3 bg-white rounded-lg shadow-sm transition-all duration-500"
                     style={{ 
                       animationDelay: `${index * 200}ms`,
                       opacity: showAnimations ? 1 : 0.3,
@@ -157,8 +157,8 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
                         )}
                       </div>
                       <div className="text-left">
-                        <div className="text-sm font-medium text-medical-800 opacity-100">{step.text}</div>
-                        <div className="text-xs text-medical-600 opacity-100">{step.description}</div>
+                        <div className="text-sm font-medium text-medical-800">{step.text}</div>
+                        <div className="text-xs text-medical-600">{step.description}</div>
                       </div>
                     </div>
                   </div>
@@ -167,35 +167,35 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
             </div>
           )}
 
-          {/* Title with full opacity */}
-          <h1 className="text-2xl font-bold text-medical-800 leading-tight opacity-100">
+          {/* Title - more compact */}
+          <h1 className="text-xl font-bold text-medical-800 leading-tight">
             {content.title}
           </h1>
 
-          {/* Subtitle with full opacity */}
+          {/* Subtitle - more compact */}
           {content.subtitle && (
-            <h2 className="text-lg font-medium text-medical-600 leading-relaxed opacity-100">
+            <h2 className="text-base font-medium text-medical-600 leading-relaxed">
               {content.subtitle}
             </h2>
           )}
 
           {/* For screen 4, show description before bullet points */}
           {screenNumber === 4 && content.description && (
-            <p className="text-sm text-neutral-600 leading-relaxed opacity-100">
+            <p className="text-sm text-neutral-600 leading-relaxed">
               {content.description}
             </p>
           )}
 
           {/* Description with special handling for bullet points on screen 3 */}
           {!content.showRecognitionProcess && screenNumber !== 4 && (
-            <div className="space-y-4 opacity-100">
+            <div className="space-y-3">
               {content.showBulletPoints ? (
-                <div className="space-y-4">
-                  <div className="space-y-3">
+                <div className="space-y-3">
+                  <div className="space-y-2">
                     {bulletPoints.map((point, index) => (
                       <div 
                         key={index}
-                        className="flex items-center justify-start space-x-3 text-left transition-all duration-500 opacity-100"
+                        className="flex items-center justify-start space-x-3 text-left transition-all duration-500"
                         style={{ 
                           animationDelay: `${index * 150}ms`,
                           opacity: showAnimations ? 1 : 0.3,
@@ -204,50 +204,50 @@ const MobileOnboardingScreen: React.FC<MobileOnboardingScreenProps> = ({
                       >
                         <div className="flex items-center space-x-2">
                           <div 
-                            className={`w-5 h-5 rounded-full border-2 border-medical-500 flex items-center justify-center transition-all duration-500 ${
+                            className={`w-4 h-4 rounded-full border-2 border-medical-500 flex items-center justify-center transition-all duration-500 ${
                               showAnimations ? 'bg-medical-500' : 'bg-transparent'
                             }`}
                           >
                             {showAnimations && (
-                              <Check className="w-3 h-3 text-white" />
+                              <Check className="w-2.5 h-2.5 text-white" />
                             )}
                           </div>
-                          <span className="text-sm text-neutral-700 opacity-100">{point}</span>
+                          <span className="text-sm text-neutral-700">{point}</span>
                         </div>
                       </div>
                     ))}
                   </div>
-                  <p className="text-sm text-neutral-600 leading-relaxed mt-4 opacity-100">
+                  <p className="text-sm text-neutral-600 leading-relaxed mt-3">
                     {content.description}
                   </p>
                 </div>
               ) : content.description ? (
-                <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line opacity-100">
+                <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">
                   {content.description}
                 </p>
               ) : null}
             </div>
           )}
         </div>
-      </div>
 
-      {/* Action button - fixed at bottom with high contrast and full opacity */}
-      <div className="absolute bottom-8 left-0 right-0 w-full px-6 safe-area-bottom z-20">
-        {isLast ? (
-          <Button 
-            onClick={onStart}
-            className="w-full h-12 text-base font-semibold bg-medical-500 hover:bg-medical-600 text-white rounded-xl touch-target opacity-100 shadow-lg"
-          >
-            {translate("start") || "Start"}
-          </Button>
-        ) : (
-          <Button 
-            onClick={onNext}
-            className="w-full h-12 text-base font-semibold bg-medical-500 hover:bg-medical-600 text-white rounded-xl touch-target opacity-100 shadow-lg"
-          >
-            {translate("next") || "Next"}
-          </Button>
-        )}
+        {/* Action button - moved to bottom of content flow instead of fixed positioning */}
+        <div className="w-full max-w-sm mx-auto mt-8">
+          {isLast ? (
+            <Button 
+              onClick={onStart}
+              className="w-full h-12 text-base font-semibold bg-medical-500 hover:bg-medical-600 text-white rounded-xl touch-target shadow-lg"
+            >
+              {translate("start") || "Start"}
+            </Button>
+          ) : (
+            <Button 
+              onClick={onNext}
+              className="w-full h-12 text-base font-semibold bg-medical-500 hover:bg-medical-600 text-white rounded-xl touch-target shadow-lg"
+            >
+              {translate("next") || "Next"}
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );
