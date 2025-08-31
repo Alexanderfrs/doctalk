@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -53,7 +54,6 @@ const HeroSection = () => {
     if (viewMode === 'enterprise') {
       return {
         title: translate("empowerYourInternationalTeam"),
-        // description: translate("reduceOnboardingCosts"),
         targetAudience: translate("forHealthcareOrganizationsDesc"),
         trustSignals: [
           {
@@ -69,7 +69,6 @@ const HeroSection = () => {
     } else {
       return {
         title: translate("landYourDreamMedicalJob"),
-        // description: translate("skipExpensiveCoursesAndGetFluent"),
         targetAudience: translate("forInternationalHealthcareWorkers"),
         trustSignals: [
           {
@@ -97,9 +96,6 @@ const HeroSection = () => {
             <h1 className="text-3xl font-bold mb-4 text-neutral-800">
               {heroContent.title}
             </h1>
-            <p className="text-lg text-neutral-600 mb-4">
-              {heroContent.description}
-            </p>
             
             {/* Target audience clarification */}
             <p className="text-sm text-neutral-500 mb-6 bg-medical-50 p-3 rounded-lg border border-medical-100">
@@ -119,9 +115,6 @@ const HeroSection = () => {
             <div className="flex flex-col gap-3 w-full">
               <Button size="lg" className="btn-primary w-full" onClick={handleWaitlistClick}>
                 {translate("getPriorityAccess")}
-              </Button>
-              <Button asChild variant="outline" size="lg" className="w-full">
-                <Link to="/trial">{translate("exploreFreeDemo")}</Link>
               </Button>
             </div>
           </div>
@@ -181,9 +174,6 @@ const HeroSection = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-neutral-800">
               {heroContent.title}
             </h1>
-            <p className="text-lg text-neutral-600 mb-4">
-              {heroContent.description}
-            </p>
             
             {/* Target audience clarification */}
             <p className="text-md text-neutral-500 mb-6 bg-medical-50 p-4 rounded-lg border border-medical-100">
@@ -204,9 +194,6 @@ const HeroSection = () => {
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" className="btn-primary shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95" onClick={handleWaitlistClick}>
                   {translate("getPriorityAccess")}
-                </Button>
-                <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 active:scale-95">
-                  <Link to="/trial">{translate("exploreFreeDemo")}</Link>
                 </Button>
               </div>
             </div>
