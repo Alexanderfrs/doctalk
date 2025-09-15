@@ -315,7 +315,7 @@ export const germanTranslations = {
   'languageSupport.learnInNative': 'Lernen Sie medizinisches Deutsch in Ihrer Muttersprache',
 
   // Trusted Partners Section
-  trustedPartnersTitle: "Vertraut von führenden Institutionen",
-  trustedPartnersSubtitle: "Unterstützen Fachkräfte im Gesundheitswesen weltweit auf ihrem Sprachlernweg",
+  trustedPartnersTitle: "Unterstützt von führenden Institutionen",
+  trustedPartnersSubtitle: "Gefördert von renommierten Organisationen, die sich der Weiterentwicklung der Gesundheitsbildung verschrieben haben",
   trustedPartners: "Vertrauenspartner",
 };

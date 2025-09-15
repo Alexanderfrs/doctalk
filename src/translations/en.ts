@@ -249,7 +249,7 @@ export const englishTranslations = {
   'languageSupport.learnInNative': 'Learn Medical German in your native language',
 
   // Trusted Partners Section
-  trustedPartnersTitle: "Trusted by Leading Institutions",
-  trustedPartnersSubtitle: "Supporting healthcare professionals worldwide in their language learning journey",
+  trustedPartnersTitle: "Supported by Leading Institutions",
+  trustedPartnersSubtitle: "Backed by prestigious organizations committed to advancing healthcare education",
   trustedPartners: "Trusted Partners",
 };
