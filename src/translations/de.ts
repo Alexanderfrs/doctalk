@@ -312,5 +312,10 @@ export const germanTranslations = {
 
   // Language availability
   'languageSupport.availableIn': 'Verfügbar in:',
-  'languageSupport.learnInNative': 'Lernen Sie Medizinisches Deutsch in Ihrer Muttersprache'
+  'languageSupport.learnInNative': 'Lernen Sie medizinisches Deutsch in Ihrer Muttersprache',
+
+  // Trusted Partners Section
+  trustedPartnersTitle: "Vertraut von führenden Institutionen",
+  trustedPartnersSubtitle: "Unterstützen Fachkräfte im Gesundheitswesen weltweit auf ihrem Sprachlernweg",
+  trustedPartners: "Vertrauenspartner",
 };

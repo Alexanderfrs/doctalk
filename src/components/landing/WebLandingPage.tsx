@@ -10,6 +10,7 @@ import TargetUsersSection from "@/components/landing/TargetUsersSection";
 import PricingSection from "@/components/landing/PricingSection";
 import ProblemSection from "@/components/landing/ProblemSection";
 import SolutionSection from "@/components/landing/SolutionSection";
+import TrustedPartnersSection from "@/components/landing/TrustedPartnersSection";
 import { LandingPageProps } from "@/types/landing";
 import { useSwipeable } from "react-swipeable";
 import waitlist from '@zootools/waitlist-js';
@@ -40,6 +41,9 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
   }, {
     id: "pricing",
     label: translate("pricing")
+  }, {
+    id: "trusted-partners",
+    label: translate("trustedPartners")
   }];
 
   // Improved scroll to section function with better smoothness
@@ -177,6 +181,12 @@ const WebLandingPage: React.FC<LandingPageProps> = ({
       <section id="pricing" className="scroll-snap-section pricing-section">
         <div className="section-content">
           <PricingSection />
+        </div>
+      </section>
+      
+      <section id="trusted-partners" className="scroll-snap-section bg-neutral-50">
+        <div className="section-content">
+          <TrustedPartnersSection />
         </div>
       </section>
       

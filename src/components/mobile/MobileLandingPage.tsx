@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import SwipeableContainer from "@/components/ui/SwipeableContainer";
 import MobileOnboardingScreen from "@/components/mobile/MobileOnboardingScreen";
+import TrustedPartnersSection from "@/components/landing/TrustedPartnersSection";
 import { useAuth } from "@/contexts/AuthContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import useScrollSnap from "@/hooks/useScrollSnap";
@@ -23,7 +24,8 @@ const MobileLandingPage: React.FC = () => {
     { id: "onboarding-1", label: "Screen 1" },
     { id: "onboarding-2", label: "Screen 2" },
     { id: "onboarding-3", label: "Screen 3" },
-    { id: "onboarding-4", label: "Screen 4" }
+    { id: "onboarding-4", label: "Screen 4" },
+    { id: "trusted-partners", label: "Partners" },
   ];
 
   const { currentSection, scrollToSection } = useScrollSnap(sections);
@@ -116,8 +118,14 @@ const MobileLandingPage: React.FC = () => {
             onSkip={handleSkip}
             onStart={handleStart}
             currentIndex={currentSlide}
-            isLast={true}
+            isLast={false}
           />
+        </div>
+      </section>
+      
+      <section id="trusted-partners" className="scroll-snap-section">
+        <div className="section-content">
+          <TrustedPartnersSection />
         </div>
       </section>
     </div>

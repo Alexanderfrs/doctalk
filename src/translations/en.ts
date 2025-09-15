@@ -246,5 +246,10 @@ export const englishTranslations = {
 
   // Language availability
   'languageSupport.availableIn': 'Available in:',
-  'languageSupport.learnInNative': 'Learn Medical German in your native language'
+  'languageSupport.learnInNative': 'Learn Medical German in your native language',
+
+  // Trusted Partners Section
+  trustedPartnersTitle: "Trusted by Leading Institutions",
+  trustedPartnersSubtitle: "Supporting healthcare professionals worldwide in their language learning journey",
+  trustedPartners: "Trusted Partners",
 };

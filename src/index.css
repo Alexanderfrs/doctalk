@@ -221,4 +221,29 @@
     visibility: visible !important;
     transform: translateY(0) !important;
   }
+
+  /* Custom Animations */
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-33.333%);
+    }
+  }
+
+  .animate-scroll {
+    animation: scroll 40s linear infinite;
+  }
+
+  .hover\\:pause-animation:hover {
+    animation-play-state: paused;
+  }
+
+  /* Accessibility - respect user preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-scroll {
+      animation-play-state: paused;
+    }
+  }
 }
